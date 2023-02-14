@@ -1,6 +1,7 @@
 #include "Window.h"
 
 #include <iostream>
+#include <glad/glad.h>
 #include "GLFW/glfw3.h"
 #include "imgui.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -8,14 +9,18 @@
 
 void SayHello()
 {
-	/* Initialize the library */
-	if (!glfwInit())
-		return;
+	// Initialise GLFW
+    if (!glfwInit())
+    {
+        return;
+    }
 
-	GLFWwindow* window = glfwCreateWindow(480, 480, "Test", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "Test", nullptr, nullptr);
 
-    /* Make the window's context current */
+    // Make Window Current & Load GLAD
     glfwMakeContextCurrent(window);
+    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
     glClearColor(0.5f, 0.5f, 1.0f, 1.0f);
 
     // Setup Dear ImGui context
@@ -24,9 +29,10 @@ void SayHello()
     ImGuiIO& io = ImGui::GetIO();
     // Setup Platform/Renderer bindings
     ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 450");
+    ImGui_ImplOpenGL3_Init("#version 460");
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsClassic();
+    ImGui::GetStyle().WindowRounding = 8.0f;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))

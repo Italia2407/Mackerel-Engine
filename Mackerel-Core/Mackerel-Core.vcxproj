@@ -26,6 +26,7 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_draw.cpp" />
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_tables.cpp" />
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
+    <ClCompile Include="ext\GLAD\src\glad.c" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +39,8 @@
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_rectpack.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_textedit.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_truetype.h" />
+    <ClInclude Include="ext\GLAD\include\glad\glad.h" />
+    <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -135,7 +138,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\Dear-ImGui 1.89.2;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLFW 3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLAD\include;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\Dear-ImGui 1.89.2;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLFW 3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
