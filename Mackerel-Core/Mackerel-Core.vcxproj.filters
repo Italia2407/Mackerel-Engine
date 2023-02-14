@@ -13,15 +13,75 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\ImGui">
+      <UniqueIdentifier>{9eb12738-2791-4710-8980-22655953348b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{ed675c5e-4d0f-4133-9ab7-6118a52447cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ImGui\Backends">
+      <UniqueIdentifier>{ffe88599-0232-479f-963c-bf5200273827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGui\Backends">
+      <UniqueIdentifier>{7d3d0de6-0d7b-4636-8548-b7402aae43e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_demo.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_draw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_tables.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\ImGui\Backends</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.cpp">
+      <Filter>Source Files\ImGui\Backends</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Window.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
+      <Filter>Header Files\ImGui\Backends</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3.h">
+      <Filter>Header Files\ImGui\Backends</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\ImGui\Backends</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\imconfig.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\imgui.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\imgui_internal.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_rectpack.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_textedit.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_truetype.h">
+      <Filter>Header Files\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
