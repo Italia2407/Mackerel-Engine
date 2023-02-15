@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <string>
 
+#include "Material.h"
+
 namespace MCK {
 struct UniformData
 {
@@ -11,7 +13,7 @@ struct UniformData
 	std::string uniformName;
 	GLuint uniformLocation;
 
-	virtual void Bind(GLuint shaderProgram) = 0;
+	virtual void Bind(AssetType::Material::UniformState& uniformState) = 0;
 };
 
 struct UInt08Uniform : UniformData
@@ -20,7 +22,7 @@ struct UInt08Uniform : UniformData
 
 	uint8_t value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct UInt16Uniform : UniformData
 {
@@ -28,7 +30,7 @@ struct UInt16Uniform : UniformData
 
 	uint16_t value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct UInt32Uniform : UniformData
 {
@@ -36,7 +38,7 @@ struct UInt32Uniform : UniformData
 
 	uint32_t value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct UInt64Uniform : UniformData
 {
@@ -44,7 +46,7 @@ struct UInt64Uniform : UniformData
 
 	uint64_t value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 
 struct Int08Uniform : UniformData
@@ -53,7 +55,7 @@ struct Int08Uniform : UniformData
 
 	int8_t value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct Int16Uniform : UniformData
 {
@@ -61,7 +63,7 @@ struct Int16Uniform : UniformData
 
 	int16_t value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct Int32Uniform : UniformData
 {
@@ -69,7 +71,7 @@ struct Int32Uniform : UniformData
 
 	int32_t value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct Int64Uniform : UniformData
 {
@@ -77,7 +79,7 @@ struct Int64Uniform : UniformData
 
 	int64_t value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 
 struct FloatUniform : UniformData
@@ -86,7 +88,7 @@ struct FloatUniform : UniformData
 
 	float value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct DoubleUniform : UniformData
 {
@@ -94,6 +96,6 @@ struct DoubleUniform : UniformData
 
 	double value;
 
-	void Bind(GLuint shaderProgram) override;
+	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
 }

@@ -8,7 +8,7 @@ UniformData::UniformData(GLuint shaderProgram, std::string name) :
 FloatUniform::FloatUniform(GLuint shaderProgram, std::string name, float value) :
 	UniformData(shaderProgram, name), value(value) {}
 
-void FloatUniform::Bind(GLuint shaderProgram)
+void FloatUniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1f(uniformLocation, value);
 }
