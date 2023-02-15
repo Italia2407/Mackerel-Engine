@@ -3,9 +3,12 @@
 #include <iostream>
 #include <glad/glad.h>
 #include "GLFW/glfw3.h"
+
 #include "imgui.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
+
+#include <Eigen/Dense.h>
 
 void SayHello()
 {
@@ -60,5 +63,9 @@ void SayHello()
 
     glfwTerminate();
 
+    Eigen::Vector3<float> vecA(12.0f, 13.0f, 4.0f);
+    Eigen::Vector3<float> vecB(2.0f, 42.0f, 10.0f);
+
 	std::cout << "Hello World!\n";
+    std::cout << "Dot Result = " << vecA.dot(vecB) << std::endl;
 }

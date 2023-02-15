@@ -138,7 +138,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLAD\include;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\Dear-ImGui 1.89.2;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLFW 3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\Eigen 3.4.0;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLAD\include;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\Dear-ImGui 1.89.2;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLFW 3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
