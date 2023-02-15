@@ -31,6 +31,12 @@
     <Filter Include="Source Files\GLAD">
       <UniqueIdentifier>{986a2fac-b29b-4e30-ab06-bf5f1c5d4441}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Class Diagrams">
+      <UniqueIdentifier>{efb4cd8c-e288-4311-b4a4-b5beb35510eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AssetTypes">
+      <UniqueIdentifier>{343a5cf1-15c0-4f93-9df9-b31f5deb9575}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -59,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="ext\GLAD\src\glad.c">
       <Filter>Source Files\GLAD</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UniformData.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,5 +107,25 @@
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h">
       <Filter>Header Files\GLAD</Filter>
     </ClInclude>
+    <ClInclude Include="src\Material.h">
+      <Filter>Header Files\AssetTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Header Files\AssetTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Header Files\AssetTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture.h">
+      <Filter>Header Files\AssetTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UniformData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\MaterialDiagram.cd">
+      <Filter>Class Diagrams</Filter>
+    </None>
   </ItemGroup>
 </Project>

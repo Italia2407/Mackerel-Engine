@@ -27,6 +27,7 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_tables.cpp" />
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
+    <ClCompile Include="src\UniformData.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -41,7 +42,15 @@
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_truetype.h" />
     <ClInclude Include="ext\GLAD\include\glad\glad.h" />
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
+    <ClInclude Include="src\Material.h" />
+    <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\UniformData.h" />
     <ClInclude Include="src\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\MaterialDiagram.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -103,6 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -120,6 +130,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -139,6 +150,8 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\Eigen 3.4.0;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLAD\include;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\Dear-ImGui 1.89.2;D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\GLFW 3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -162,6 +175,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
