@@ -32,7 +32,7 @@ namespace MCK
 			}
 
 			// private member variables
-			std::unordered_map<MaterialEnum, AssetType::Material> data;
+			std::unordered_map<MaterialEnum, AssetType::Material*> data;
 
 			// private implementation of Singleton functions
 			
@@ -50,8 +50,9 @@ namespace MCK
 			/// Attempts to load the specified material into memory from disk.
 			/// </summary>
 			/// <param name="asset">: enum identifier of the desired material</param>
+			/// <param name="filepath">: filepath to the material</param>
 			/// <returns>true if the function succeeded or false if it fails</returns>
-			bool privLoad(MaterialEnum asset);
+			bool privLoad(MaterialEnum asset, std::string filepath);
 
 			/// <summary>
 			/// Private implementation of the MaterialLibrary::Load() function.
@@ -63,12 +64,13 @@ namespace MCK
 			bool privFree(MaterialEnum asset);
 
 		public:
-
 			/// <summary>
 			/// <para>Releases all material in memory, and frees the MaterialLibrary instance.</para>
 			/// <para>Should only be called at the end of the applications lifetime!</para>
 			/// </summary>
-			void Release();
+			/// <returns>true if the library was successfully released, false if it
+			//				wasn't initialised to begin with</returns>
+			bool Release();
 
 			/// <summary>
 			/// Attempts to retrieve the specified material from memory.
@@ -86,9 +88,9 @@ namespace MCK
 			/// </summary>
 			/// <param name="asset">: enum identifier of the desired material</param>
 			/// <returns>true if the function succeeded or false if it fails</returns>
-			bool Load(MaterialEnum asset)
+			bool Load(MaterialEnum asset, std::string filepath)
 			{
-				return Instance()->privLoad(asset);
+				return Instance()->privLoad(asset, filepath);
 			}
 
 			/// <summary>
