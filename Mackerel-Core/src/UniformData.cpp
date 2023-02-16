@@ -84,6 +84,28 @@ void DoubleUniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1d(shaderProgram, value);
 }
+//vec2
+Vec2Uniform::Vec2Uniform(GLuint shaderProgram, std::string name, Eigen::Vector2f value) :
+	UniformData(shaderProgram, name), value(value) {}
 
+void Vec2Uniform::Bind(AssetType::Material::UniformState& uniformState)
+{
+	glUniform2f(shaderProgram, &value[]);
+}
+//vec3
+Vec3Uniform::Vec3Uniform(GLuint shaderProgram, std::string name, Eigen::Vector3f value) :
+	UniformData(shaderProgram, name), value(value) {}
 
+void Vec3Uniform::Bind(AssetType::Material::UniformState& uniformState)
+{
+	glUniform3f(shaderProgram, &value[]);
+}
+//vec4
+Vec4Uniform::Vec4Uniform(GLuint shaderProgram, std::string name, Eigen::Vector4f value) :
+	UniformData(shaderProgram, name), value(value) {}
+
+void Vec4Uniform::Bind(AssetType::Material::UniformState& uniformState)
+{
+	glUniform4f(shaderProgram, &value[]);
+}
 }
