@@ -98,4 +98,12 @@ struct DoubleUniform : UniformData
 
 	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
+
+//uvec2
+//uvec3
+//uvec4
+
+//vec2
+//vec3
+//vec4
 }
