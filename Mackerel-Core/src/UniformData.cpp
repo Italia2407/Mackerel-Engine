@@ -99,7 +99,7 @@ Vec2Uniform::Vec2Uniform(GLuint shaderProgram, std::string name, Eigen::Vector2f
 
 void Vec2Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
-	glUniform2f(shaderProgram, &value[]);
+	glUniform2f(uniformLocation, value[0], value[1]);
 }
 //vec3
 Vec3Uniform::Vec3Uniform(GLuint shaderProgram, std::string name, Eigen::Vector3f value) :
@@ -107,7 +107,7 @@ Vec3Uniform::Vec3Uniform(GLuint shaderProgram, std::string name, Eigen::Vector3f
 
 void Vec3Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
-	glUniform3f(shaderProgram, &value[]);
+	glUniform3f(uniformLocation, value[0], value[1], value[2]);
 }
 //vec4
 Vec4Uniform::Vec4Uniform(GLuint shaderProgram, std::string name, Eigen::Vector4f value) :
@@ -115,6 +115,6 @@ Vec4Uniform::Vec4Uniform(GLuint shaderProgram, std::string name, Eigen::Vector4f
 
 void Vec4Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
-	glUniform4f(shaderProgram, &value[]);
+	glUniform4f(uniformLocation, value[0], value[1], value[2], value[3]);
 }
 }
