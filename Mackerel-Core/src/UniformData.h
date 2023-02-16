@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <string>
+#include <Eigen/Core.h>
 
 #include "Material.h"
 
@@ -98,12 +99,28 @@ struct DoubleUniform : UniformData
 
 	void Bind(AssetType::Material::UniformState& uniformState) override;
 };
+struct Vec2Uniform : UniformData
+{
+	Vec2Uniform(GLuint shaderProgram, std::string name, Eigen::Vector2f value);
 
-//uvec2
-//uvec3
-//uvec4
+	Eigen::Vector2f value;
 
-//vec2
-//vec3
-//vec4
+	void Bind(AssetType::Material::UniformState& uniformState) override;
+};
+struct Vec3Uniform : UniformData
+{
+	Vec3Uniform(GLuint shaderProgram, std::string name, Eigen::Vector3f value);
+
+	Eigen::Vector3f value;
+
+	void Bind(AssetType::Material::UniformState& uniformState) override;
+};
+struct Vec4Uniform : UniformData
+{
+	Vec4Uniform(GLuint shaderProgram, std::string name, Eigen::Vector4f value);
+
+	Eigen::Vector4f value;
+
+	void Bind(AssetType::Material::UniformState& uniformState) override;
+};
 }
