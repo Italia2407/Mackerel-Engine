@@ -78,6 +78,9 @@
     <ClCompile Include="src\UniformData.cpp">
       <Filter>Source Files\AssetTypes\Material</Filter>
     </ClCompile>
+    <ClCompile Include="src\MaterialLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -130,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="src\Texture.h">
       <Filter>Source Files\AssetTypes\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MaterialLibrary.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MaterialEnum.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
