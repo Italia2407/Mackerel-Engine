@@ -5,122 +5,131 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\ImGui">
-      <UniqueIdentifier>{9eb12738-2791-4710-8980-22655953348b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ImGui">
-      <UniqueIdentifier>{ed675c5e-4d0f-4133-9ab7-6118a52447cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ImGui\Backends">
-      <UniqueIdentifier>{ffe88599-0232-479f-963c-bf5200273827}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ImGui\Backends">
-      <UniqueIdentifier>{7d3d0de6-0d7b-4636-8548-b7402aae43e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GLAD">
-      <UniqueIdentifier>{57d61343-3c07-413d-9e72-a6bd069023c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GLAD">
-      <UniqueIdentifier>{986a2fac-b29b-4e30-ab06-bf5f1c5d4441}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Class Diagrams">
       <UniqueIdentifier>{efb4cd8c-e288-4311-b4a4-b5beb35510eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\AssetTypes">
+    <Filter Include="Source Files\AssetTypes">
       <UniqueIdentifier>{343a5cf1-15c0-4f93-9df9-b31f5deb9575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="External Files\ImGui">
+      <UniqueIdentifier>{9eb12738-2791-4710-8980-22655953348b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Files\ImGui\Backends">
+      <UniqueIdentifier>{ffe88599-0232-479f-963c-bf5200273827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Files\GLAD">
+      <UniqueIdentifier>{57d61343-3c07-413d-9e72-a6bd069023c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{1c6a4f56-ba00-4684-9064-a7c9b47ec93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Resource Management">
+      <UniqueIdentifier>{be332b34-daf7-415a-b1f7-a1e7002381fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AssetTypes\Mesh">
+      <UniqueIdentifier>{83dc9543-72a0-4753-b4ca-dcc0b6bd9b64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AssetTypes\Material">
+      <UniqueIdentifier>{50c35953-fdcb-4e01-ad3f-950ae07317f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AssetTypes\Shader">
+      <UniqueIdentifier>{4a16d2a8-9a20-4662-a0cd-3a17c9cd1864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AssetTypes\Texture">
+      <UniqueIdentifier>{16a92eb2-1d9d-4c86-a749-30e10389bbb0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ext\GLAD\src\glad.c">
+      <Filter>External Files\GLAD</Filter>
+    </ClCompile>
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_demo.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_draw.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_tables.cpp">
-      <Filter>Source Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp">
-      <Filter>Source Files\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\ImGui\Backends</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files\ImGui\Backends</Filter>
+      <Filter>External Files\ImGui\Backends</Filter>
     </ClCompile>
-    <ClCompile Include="ext\GLAD\src\glad.c">
-      <Filter>Source Files\GLAD</Filter>
+    <ClCompile Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3.cpp">
+      <Filter>External Files\ImGui\Backends</Filter>
     </ClCompile>
     <ClCompile Include="src\UniformData.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\AssetTypes\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
-      <Filter>Header Files\ImGui\Backends</Filter>
+      <Filter>External Files\ImGui\Backends</Filter>
     </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3.h">
-      <Filter>Header Files\ImGui\Backends</Filter>
+      <Filter>External Files\ImGui\Backends</Filter>
     </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files\ImGui\Backends</Filter>
+      <Filter>External Files\ImGui\Backends</Filter>
     </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imconfig.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imgui.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imgui_internal.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_rectpack.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_textedit.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_truetype.h">
-      <Filter>Header Files\ImGui</Filter>
+      <Filter>External Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ext\GLAD\include\glad\glad.h">
-      <Filter>Header Files\GLAD</Filter>
+      <Filter>External Files\GLAD</Filter>
     </ClInclude>
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h">
-      <Filter>Header Files\GLAD</Filter>
+      <Filter>External Files\GLAD</Filter>
     </ClInclude>
-    <ClInclude Include="src\Material.h">
-      <Filter>Header Files\AssetTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Shader.h">
-      <Filter>Header Files\AssetTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mesh.h">
-      <Filter>Header Files\AssetTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Texture.h">
-      <Filter>Header Files\AssetTypes</Filter>
+    <ClInclude Include="src\Window.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\UniformData.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\AssetTypes\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Material.h">
+      <Filter>Source Files\AssetTypes\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Source Files\AssetTypes\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Source Files\AssetTypes\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture.h">
+      <Filter>Source Files\AssetTypes\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
