@@ -27,6 +27,7 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_tables.cpp" />
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
+    <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\UniformData.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>

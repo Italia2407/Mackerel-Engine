@@ -6,27 +6,39 @@
 #include "Texture.h"
 
 #include <string>
-#include <list>
+#include <map>
 
+namespace MCK {
 struct UniformData;
+}
 
 namespace MCK::AssetType {
 class Material
 {
 public:
-	Material();
+	Material(Shader* shader);
 	~Material();
 
 	struct UniformState
 	{
-		GLuint texSlots;
+		GLuint texSlots = 0;
 	};
 
 private:
 	Shader* _shader;
 
 	UniformState _uniformState;
-	std::list<UniformData*> _uniforms;
+	std::map<std::string, UniformData*> _uniforms;
 
+	UniformData* getUniform(std::string name);
+
+public:
+
+	bool AddFloatUniform(std::string name, float value);
+	bool SetFloatUniform(std::string name, float value);
+	bool AddDoubleUniform(std::string name, double value);
+	bool SetDoubleUniform(std::string name, double value);
+
+	void BindUniforms();
 };
 }

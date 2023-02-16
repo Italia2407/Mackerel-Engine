@@ -9,6 +9,8 @@
 #include "backends/imgui_impl_glfw.h"
 
 #include <Eigen/Dense.h>
+#include <vector>
+#include <list>
 
 void SayHello()
 {
