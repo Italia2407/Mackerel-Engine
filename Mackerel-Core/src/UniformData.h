@@ -10,7 +10,7 @@
 namespace MCK {
 struct UniformData
 {
-	UniformData(GLuint location, std::string name);
+	UniformData(GLuint shaderProgramID, std::string name);
 
 	GLuint uniformLocation;
 	std::string uniformName;
@@ -20,7 +20,7 @@ struct UniformData
 
 struct UInt08Uniform : UniformData
 {
-	UInt08Uniform(GLuint location, std::string name, uint8_t value);
+	UInt08Uniform(GLuint shaderProgramID, std::string name, uint8_t value);
 
 	uint8_t value;
 
@@ -28,7 +28,7 @@ struct UInt08Uniform : UniformData
 };
 struct UInt16Uniform : UniformData
 {
-	UInt16Uniform(GLuint location, std::string name, uint16_t value);
+	UInt16Uniform(GLuint shaderProgramID, std::string name, uint16_t value);
 
 	uint16_t value;
 
@@ -36,7 +36,7 @@ struct UInt16Uniform : UniformData
 };
 struct UInt32Uniform : UniformData
 {
-	UInt32Uniform(GLuint location, std::string name, uint32_t value);
+	UInt32Uniform(GLuint shaderProgramID, std::string name, uint32_t value);
 
 	uint32_t value;
 
@@ -44,7 +44,7 @@ struct UInt32Uniform : UniformData
 };
 struct UInt64Uniform : UniformData
 {
-	UInt64Uniform(GLuint location, std::string name, uint64_t value);
+	UInt64Uniform(GLuint shaderProgramID, std::string name, uint64_t value);
 
 	uint64_t value;
 
@@ -53,7 +53,7 @@ struct UInt64Uniform : UniformData
 
 struct Int08Uniform : UniformData
 {
-	Int08Uniform(GLuint location, std::string name, int8_t value);
+	Int08Uniform(GLuint shaderProgramID, std::string name, int8_t value);
 
 	int8_t value;
 
@@ -61,7 +61,7 @@ struct Int08Uniform : UniformData
 };
 struct Int16Uniform : UniformData
 {
-	Int16Uniform(GLuint location, std::string name, int16_t value);
+	Int16Uniform(GLuint shaderProgramID, std::string name, int16_t value);
 
 	int16_t value;
 
@@ -69,7 +69,7 @@ struct Int16Uniform : UniformData
 };
 struct Int32Uniform : UniformData
 {
-	Int32Uniform(GLuint location, std::string name, int32_t value);
+	Int32Uniform(GLuint shaderProgramID, std::string name, int32_t value);
 
 	int32_t value;
 
@@ -77,7 +77,7 @@ struct Int32Uniform : UniformData
 };
 struct Int64Uniform : UniformData
 {
-	Int64Uniform(GLuint location, std::string name, int64_t value);
+	Int64Uniform(GLuint shaderProgramID, std::string name, int64_t value);
 
 	int64_t value;
 
@@ -86,7 +86,7 @@ struct Int64Uniform : UniformData
 
 struct FloatUniform : UniformData
 {
-	FloatUniform(GLuint location, std::string name, float value);
+	FloatUniform(GLuint shaderProgramID, std::string name, float value);
 
 	float value;
 
@@ -94,7 +94,7 @@ struct FloatUniform : UniformData
 };
 struct DoubleUniform : UniformData
 {
-	DoubleUniform(GLuint location, std::string name, double value);
+	DoubleUniform(GLuint shaderProgramID, std::string name, double value);
 
 	double value;
 
@@ -103,7 +103,7 @@ struct DoubleUniform : UniformData
 
 struct Vec2Uniform : UniformData
 {
-	Vec2Uniform(GLuint location, std::string name, Eigen::Vector2f value);
+	Vec2Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector2f value);
 
 	Eigen::Vector2f value;
 
@@ -111,7 +111,7 @@ struct Vec2Uniform : UniformData
 };
 struct Vec3Uniform : UniformData
 {
-	Vec3Uniform(GLuint location, std::string name, Eigen::Vector3f value);
+	Vec3Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector3f value);
 
 	Eigen::Vector3f value;
 
@@ -119,7 +119,7 @@ struct Vec3Uniform : UniformData
 };
 struct Vec4Uniform : UniformData
 {
-	Vec4Uniform(GLuint location, std::string name, Eigen::Vector4f value);
+	Vec4Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector4f value);
 
 	Eigen::Vector4f value;
 
@@ -128,7 +128,7 @@ struct Vec4Uniform : UniformData
 
 struct UVec2Uniform : UniformData
 {
-	UVec2Uniform(GLuint location, std::string name, Eigen::Vector2<uint32_t> value);
+	UVec2Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector2<uint32_t> value);
 
 	Eigen::Vector2<uint32_t> value;
 
@@ -136,7 +136,7 @@ struct UVec2Uniform : UniformData
 };
 struct UVec3Uniform : UniformData
 {
-	UVec3Uniform(GLuint location, std::string name, Eigen::Vector3<uint32_t> value);
+	UVec3Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector3<uint32_t> value);
 
 	Eigen::Vector3<uint32_t> value;
 
@@ -144,7 +144,7 @@ struct UVec3Uniform : UniformData
 };
 struct UVec4Uniform : UniformData
 {
-	UVec4Uniform(GLuint location, std::string name, Eigen::Vector4<uint32_t> value);
+	UVec4Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector4<uint32_t> value);
 
 	Eigen::Vector4<uint32_t> value;
 
@@ -153,7 +153,7 @@ struct UVec4Uniform : UniformData
 
 struct TextureUniform : UniformData
 {
-	TextureUniform(GLuint location, std::string name, AssetType::Texture* texture);
+	TextureUniform(GLuint shaderProgramID, std::string name, AssetType::Texture* texture);
 
 	AssetType::Texture* texture;
 

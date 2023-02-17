@@ -1,5 +1,10 @@
 #pragma once
 
+#include <glad/glad.h>
+
+#include <map>
+#include <optional>
+
 namespace MCK::AssetType {
 class Shader
 {
