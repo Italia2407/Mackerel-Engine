@@ -5,6 +5,7 @@
 #include <Eigen/Core.h>
 
 #include "Material.h"
+#include "Texture.h"
 
 namespace MCK {
 struct UniformData
@@ -14,7 +15,7 @@ struct UniformData
 	std::string uniformName;
 	GLuint uniformLocation;
 
-	virtual void Bind(AssetType::Material::UniformState& uniformState) = 0;
+	virtual bool Bind(AssetType::Material::UniformState& uniformState) = 0;
 };
 
 struct UInt08Uniform : UniformData
@@ -23,7 +24,7 @@ struct UInt08Uniform : UniformData
 
 	uint8_t value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct UInt16Uniform : UniformData
 {
@@ -31,7 +32,7 @@ struct UInt16Uniform : UniformData
 
 	uint16_t value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct UInt32Uniform : UniformData
 {
@@ -39,7 +40,7 @@ struct UInt32Uniform : UniformData
 
 	uint32_t value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct UInt64Uniform : UniformData
 {
@@ -47,7 +48,7 @@ struct UInt64Uniform : UniformData
 
 	uint64_t value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 
 struct Int08Uniform : UniformData
@@ -56,7 +57,7 @@ struct Int08Uniform : UniformData
 
 	int8_t value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct Int16Uniform : UniformData
 {
@@ -64,7 +65,7 @@ struct Int16Uniform : UniformData
 
 	int16_t value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct Int32Uniform : UniformData
 {
@@ -72,7 +73,7 @@ struct Int32Uniform : UniformData
 
 	int32_t value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct Int64Uniform : UniformData
 {
@@ -80,7 +81,7 @@ struct Int64Uniform : UniformData
 
 	int64_t value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 
 struct FloatUniform : UniformData
@@ -89,7 +90,7 @@ struct FloatUniform : UniformData
 
 	float value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct DoubleUniform : UniformData
 {
@@ -97,15 +98,16 @@ struct DoubleUniform : UniformData
 
 	double value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
+
 struct Vec2Uniform : UniformData
 {
 	Vec2Uniform(GLuint shaderProgram, std::string name, Eigen::Vector2f value);
 
 	Eigen::Vector2f value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct Vec3Uniform : UniformData
 {
@@ -113,7 +115,7 @@ struct Vec3Uniform : UniformData
 
 	Eigen::Vector3f value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 struct Vec4Uniform : UniformData
 {
@@ -121,6 +123,40 @@ struct Vec4Uniform : UniformData
 
 	Eigen::Vector4f value;
 
-	void Bind(AssetType::Material::UniformState& uniformState) override;
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
+};
+
+struct UVec2Uniform : UniformData
+{
+	UVec2Uniform(GLuint shaderProgram, std::string name, Eigen::Vector2<uint32_t> value);
+
+	Eigen::Vector2<uint32_t> value;
+
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
+};
+struct UVec3Uniform : UniformData
+{
+	UVec3Uniform(GLuint shaderProgram, std::string name, Eigen::Vector3<uint32_t> value);
+
+	Eigen::Vector3<uint32_t> value;
+
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
+};
+struct UVec4Uniform : UniformData
+{
+	UVec4Uniform(GLuint shaderProgram, std::string name, Eigen::Vector4<uint32_t> value);
+
+	Eigen::Vector4<uint32_t> value;
+
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
+};
+
+struct TextureUniform : UniformData
+{
+	TextureUniform(GLuint shaderProgram, std::string name, AssetType::Texture* texture);
+
+	AssetType::Texture* texture;
+
+	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
 }
