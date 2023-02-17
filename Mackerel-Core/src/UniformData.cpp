@@ -1,36 +1,36 @@
-#include "UniformData.h"
+#include "UniformData.h"shade
 
 namespace MCK {
-UniformData::UniformData(GLuint shaderprogram, std::string name) :
-	uniformName(name), uniformLocation(glGetUniformLocation(shaderprogram, name.c_str())) {}
+UniformData::UniformData(GLuint location, std::string name) :
+	uniformLocation(location), uniformName(name) {}
 
 // uint8
-UInt08Uniform::UInt08Uniform(GLuint shaderprogram, std::string name, uint8_t value) :
-	UniformData(shaderprogram, name), value(value) {}
+UInt08Uniform::UInt08Uniform(GLuint location, std::string name, uint8_t value) :
+	UniformData(location, name), value(value) {}
 bool UInt08Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1ui(uniformLocation, value);
 	return true;
 }
 // uint16
-UInt16Uniform::UInt16Uniform(GLuint shaderprogram, std::string name, uint16_t value) :
-	UniformData(shaderprogram, name), value(value) {}
+UInt16Uniform::UInt16Uniform(GLuint location, std::string name, uint16_t value) :
+	UniformData(location, name), value(value) {}
 bool UInt16Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1ui(uniformLocation, value);
 	return true;
 }
 // uint32
-UInt32Uniform::UInt32Uniform(GLuint shaderprogram, std::string name, uint32_t value) :
-	UniformData(shaderprogram, name), value(value) {}
+UInt32Uniform::UInt32Uniform(GLuint location, std::string name, uint32_t value) :
+	UniformData(location, name), value(value) {}
 bool UInt32Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1ui(uniformLocation, value);
 	return true;
 }
 // uint64 
-UInt64Uniform::UInt64Uniform(GLuint shaderprogram, std::string name, uint64_t value) :
-	UniformData(shaderprogram, name), value(value) {}
+UInt64Uniform::UInt64Uniform(GLuint location, std::string name, uint64_t value) :
+	UniformData(location, name), value(value) {}
 bool UInt64Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1ui(uniformLocation, static_cast<GLuint>(value));
@@ -38,32 +38,32 @@ bool UInt64Uniform::Bind(AssetType::Material::UniformState& uniformState)
 }
 
 // int8
-Int08Uniform::Int08Uniform(GLuint shaderprogram, std::string name, int8_t value) :
-	UniformData(shaderprogram, name), value(value) {}
+Int08Uniform::Int08Uniform(GLuint location, std::string name, int8_t value) :
+	UniformData(location, name), value(value) {}
 bool Int08Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1i(uniformLocation, value);
 	return true;
 }
 // int16
-Int16Uniform::Int16Uniform(GLuint shaderprogram, std::string name, int16_t value) :
-	UniformData(shaderprogram, name), value(value) {}
+Int16Uniform::Int16Uniform(GLuint location, std::string name, int16_t value) :
+	UniformData(location, name), value(value) {}
 bool Int16Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1i(uniformLocation, value);
 	return true;
 }
 // int32
-Int32Uniform::Int32Uniform(GLuint shaderprogram, std::string name, int32_t value) :
-	UniformData(shaderprogram, name), value(value) {}
+Int32Uniform::Int32Uniform(GLuint location, std::string name, int32_t value) :
+	UniformData(location, name), value(value) {}
 bool Int32Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1i(uniformLocation, value);
 	return true;
 }
 // int64
-Int64Uniform::Int64Uniform(GLuint shaderprogram, std::string name, int64_t value) :
-	UniformData(shaderprogram, name), value(value) {}
+Int64Uniform::Int64Uniform(GLuint location, std::string name, int64_t value) :
+	UniformData(location, name), value(value) {}
 bool Int64Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1i(uniformLocation, static_cast<GLint>(value));
@@ -71,16 +71,16 @@ bool Int64Uniform::Bind(AssetType::Material::UniformState& uniformState)
 }
 
 // float
-FloatUniform::FloatUniform(GLuint shaderprogram, std::string name, float value) :
-	UniformData(shaderprogram, name), value(value) {}
+FloatUniform::FloatUniform(GLuint location, std::string name, float value) :
+	UniformData(location, name), value(value) {}
 bool FloatUniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1f(uniformLocation, value);
 	return true;
 }
 // double
-DoubleUniform::DoubleUniform(GLuint shaderprogram, std::string name, double value) :
-	UniformData(shaderprogram, name), value(value) {}
+DoubleUniform::DoubleUniform(GLuint location, std::string name, double value) :
+	UniformData(location, name), value(value) {}
 bool DoubleUniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform1d(uniformLocation, value);
@@ -88,24 +88,24 @@ bool DoubleUniform::Bind(AssetType::Material::UniformState& uniformState)
 }
 
 //vec2
-Vec2Uniform::Vec2Uniform(GLuint shaderProgram, std::string name, Eigen::Vector2f value) :
-	UniformData(shaderProgram, name), value(value) {}
+Vec2Uniform::Vec2Uniform(GLuint location, std::string name, Eigen::Vector2f value) :
+	UniformData(location, name), value(value) {}
 bool Vec2Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform2f(uniformLocation, value[0], value[1]);
 	return true;
 }
 //vec3
-Vec3Uniform::Vec3Uniform(GLuint shaderProgram, std::string name, Eigen::Vector3f value) :
-	UniformData(shaderProgram, name), value(value) {}
+Vec3Uniform::Vec3Uniform(GLuint location, std::string name, Eigen::Vector3f value) :
+	UniformData(location, name), value(value) {}
 bool Vec3Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform3f(uniformLocation, value[0], value[1], value[2]);
 	return true;
 }
 //vec4
-Vec4Uniform::Vec4Uniform(GLuint shaderProgram, std::string name, Eigen::Vector4f value) :
-	UniformData(shaderProgram, name), value(value) {}
+Vec4Uniform::Vec4Uniform(GLuint location, std::string name, Eigen::Vector4f value) :
+	UniformData(location, name), value(value) {}
 bool Vec4Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform4f(uniformLocation, value[0], value[1], value[2], value[3]);
@@ -113,24 +113,24 @@ bool Vec4Uniform::Bind(AssetType::Material::UniformState& uniformState)
 }
 
 //uvec2
-UVec2Uniform::UVec2Uniform(GLuint shaderProgram, std::string name, Eigen::Vector2<uint32_t> value) :
-	UniformData(shaderProgram, name), value(value) {}
+UVec2Uniform::UVec2Uniform(GLuint location, std::string name, Eigen::Vector2<uint32_t> value) :
+	UniformData(location, name), value(value) {}
 bool UVec2Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform2ui(uniformLocation, value[0], value[1]);
 	return true;
 }
 //uvec3
-UVec3Uniform::UVec3Uniform(GLuint shaderProgram, std::string name, Eigen::Vector3<uint32_t> value) :
-	UniformData(shaderProgram, name), value(value) {}
+UVec3Uniform::UVec3Uniform(GLuint location, std::string name, Eigen::Vector3<uint32_t> value) :
+	UniformData(location, name), value(value) {}
 bool UVec3Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform3ui(uniformLocation, value[0], value[1], value[2]);
 	return true;
 }
 //uvec4
-UVec4Uniform::UVec4Uniform(GLuint shaderProgram, std::string name, Eigen::Vector4<uint32_t> value) :
-	UniformData(shaderProgram, name), value(value) {}
+UVec4Uniform::UVec4Uniform(GLuint location, std::string name, Eigen::Vector4<uint32_t> value) :
+	UniformData(location, name), value(value) {}
 bool UVec4Uniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	glUniform4ui(uniformLocation, value[0], value[1], value[2], value[3]);
@@ -138,8 +138,8 @@ bool UVec4Uniform::Bind(AssetType::Material::UniformState& uniformState)
 }
 
 // Texture
-TextureUniform::TextureUniform(GLuint shaderProgram, std::string name, AssetType::Texture* texture) :
-	UniformData(shaderProgram, name), texture(texture) {}
+TextureUniform::TextureUniform(GLuint location, std::string name, AssetType::Texture* texture) :
+	UniformData(location, name), texture(texture) {}
 bool TextureUniform::Bind(AssetType::Material::UniformState& uniformState)
 {
 	// Check if no more than 32 have been bound
@@ -151,6 +151,7 @@ bool TextureUniform::Bind(AssetType::Material::UniformState& uniformState)
 
 	glActiveTexture(texSlot);
 	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
+	glUniform1i(uniformLocation, uniformState.texSlots);
 
 	uniformState.texSlots += 1;
 	return true;
