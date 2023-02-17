@@ -1,4 +1,4 @@
-#include "UniformData.h"shade
+#include "UniformData.h"
 
 namespace MCK {
 UniformData::UniformData(GLuint location, std::string name) :
