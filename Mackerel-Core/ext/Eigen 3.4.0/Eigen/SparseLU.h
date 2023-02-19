@@ -21,7 +21,7 @@
   */
 
 // Ordering interface
-#include "OrderingMethods"
+#include "OrderingMethods.h"
 
 #include "src/Core/util/DisableStupidWarnings.h"
 
