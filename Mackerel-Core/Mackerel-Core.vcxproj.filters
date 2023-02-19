@@ -46,6 +46,12 @@
     <Filter Include="Source Files\AssetTypes\Texture">
       <UniqueIdentifier>{16a92eb2-1d9d-4c86-a749-30e10389bbb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Rendering">
+      <UniqueIdentifier>{7e29936c-0138-48fc-b14c-f24bfb0a6e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{5cc9a9b4-273b-4ffd-b60f-71940f212744}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -83,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="src\Material.cpp">
       <Filter>Source Files\AssetTypes\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>Source Files\Systems\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderBatch.cpp">
+      <Filter>Source Files\Systems\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>Source Files\AssetTypes\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,10 +158,19 @@
     <ClInclude Include="src\MaterialEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
+    <ClInclude Include="src\RenderBatch.h">
+      <Filter>Source Files\Systems\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer.h">
+      <Filter>Source Files\Systems\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
       <Filter>Class Diagrams</Filter>
+    </None>
+    <None Include="res\Shaders\vert\perspective.glsl">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

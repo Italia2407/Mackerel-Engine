@@ -200,8 +200,7 @@ bool TextureUniform::Bind(AssetType::Material::UniformState& uniformState)
 	// Get the Texture Slot
 	GLuint texSlot = GL_TEXTURE0 + uniformState.texSlots;
 
-	glActiveTexture(texSlot);
-	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
+	glBindTexture(texSlot, texture->getTextureID());
 	glUniform1i(uniformLocation, uniformState.texSlots);
 
 	uniformState.texSlots += 1;
