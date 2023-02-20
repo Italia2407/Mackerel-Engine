@@ -76,11 +76,13 @@ void Renderer::bindGBuffer(GLuint screenWidth, GLuint screenHeight)
 	}
 	glDrawBuffers((GLuint)GBufferAttachments.size(), &GBufferAttachments[0]);
 
-	// Generate Depth Buffer
+	// TODO: Generate Depth Buffer
 }
 
 void Renderer::renderGBuffer()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, _GBuffer);
+
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -108,6 +110,8 @@ void Renderer::renderFrameBuffer()
 
 		lightingMaterial->ResetUniforms();
 	}
+
+	// TODO: Copy Depth Buffer (from Geometry Buffer) to Frame Buffer
 
 	for (auto [GBTextureName, GBTexture] : _GBufferTextures)
 	{// Clear G Buffer Textures
