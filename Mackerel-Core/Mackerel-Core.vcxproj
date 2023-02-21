@@ -30,10 +30,13 @@
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\MaterialLibrary.cpp" />
     <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\MeshLibrary.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\ShaderLibrary.cpp" />
     <ClCompile Include="src\TestComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\TextureLibrary.cpp" />
     <ClCompile Include="src\UniformData.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
@@ -58,11 +61,16 @@
     <ClInclude Include="src\MaterialEnum.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\MaterialLibrary.h" />
+    <ClInclude Include="src\MeshEnum.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\ShaderEnum.h" />
+    <ClInclude Include="src\ShaderLibrary.h" />
     <ClInclude Include="src\TestComponent.h" />
     <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\TextureEnum.h" />
+    <ClInclude Include="src\TextureLibrary.h" />
     <ClInclude Include="src\UniformData.h" />
     <ClInclude Include="src\Window.h" />
   </ItemGroup>

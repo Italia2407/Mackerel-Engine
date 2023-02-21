@@ -3,11 +3,15 @@
 #include <string>
 #include <unordered_map>
 
-#include "Material.h"
 #include "MaterialEnum.h"
 
 namespace MCK
 {
+	namespace AssetType
+	{
+		class Material;
+	}
+
 	/// <summary>
 	/// This class is the resource manager responsible for loading, retrieving, and
 	///		releasing Materials in memory.
