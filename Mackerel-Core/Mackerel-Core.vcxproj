@@ -37,6 +37,7 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\UniformData.cpp" />
     <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="TextureLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h" />
@@ -67,6 +68,8 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\UniformData.h" />
     <ClInclude Include="src\Window.h" />
+    <ClInclude Include="TextureEnum.h" />
+    <ClInclude Include="TextureLibrary.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\vert\perspective.glsl" />
