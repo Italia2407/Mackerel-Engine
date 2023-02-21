@@ -27,10 +27,12 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_tables.cpp" />
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
+    <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\MaterialLibrary.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\TestComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\UniformData.cpp" />
     <ClCompile Include="src\Window.cpp" />
@@ -47,6 +49,10 @@
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_truetype.h" />
     <ClInclude Include="ext\GLAD\include\glad\glad.h" />
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
+    <ClInclude Include="ext\nlohmann\json.hpp" />
+    <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="src\Component.h" />
+    <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\MaterialEnum.h" />
     <ClInclude Include="src\Mesh.h" />
@@ -54,6 +60,7 @@
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\TestComponent.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\UniformData.h" />
     <ClInclude Include="src\Window.h" />

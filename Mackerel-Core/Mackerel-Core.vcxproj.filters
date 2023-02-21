@@ -52,6 +52,12 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{5cc9a9b4-273b-4ffd-b60f-71940f212744}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Files\nlohmann">
+      <UniqueIdentifier>{2d2f3ff2-3d66-4e66-b6a5-3dee22ec73cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\EntitySystem">
+      <UniqueIdentifier>{cf4707f1-f044-4856-8846-c40588888651}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -98,6 +104,12 @@
     </ClCompile>
     <ClCompile Include="src\Texture.cpp">
       <Filter>Source Files\AssetTypes\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity.cpp">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +175,21 @@
     </ClInclude>
     <ClInclude Include="src\Renderer.h">
       <Filter>Source Files\Systems\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\nlohmann\json_fwd.hpp">
+      <Filter>External Files\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\nlohmann\json.hpp">
+      <Filter>External Files\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entity.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TestComponent.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
