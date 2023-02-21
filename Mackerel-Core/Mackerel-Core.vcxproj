@@ -53,6 +53,7 @@
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\Entity.h" />
+    <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\MaterialEnum.h" />
     <ClInclude Include="src\Mesh.h" />
@@ -68,6 +69,7 @@
   <ItemGroup>
     <None Include="res\Shaders\vert\perspective.glsl" />
     <None Include="src\MaterialDiagram.cd" />
+    <None Include="src\unlit.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

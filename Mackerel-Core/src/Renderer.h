@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 
+#include "Light.h"
 #include "RenderBatch.h"
 
 namespace MCK::Rendering {
@@ -34,19 +35,27 @@ private:
 	GLuint _GBuffer;
 	GLuint _frameBuffer;
 
+	GLuint _lightUniformBuffer;
+
 	std::vector<RenderBatch*> _geometryBatches;
 
 	std::map<std::string, AssetType::Texture*> _GBufferTextures;
-	std::vector<AssetType::Material*> _lightingMaterials;
+	std::vector<AssetType::Shader*> _lightingShaders;
+	
+	std::vector<PointLight*> _pointLights;
+	std::vector<DirectionLight*> _directionLights;
+	std::vector<SpotLight*> _spotLights;
 
 private:
 	bool addGBufferTexture(std::string name);
-	bool addLightingMaterial(AssetType::Shader* lightingShader);
 
 	void bindGBuffer(GLuint screenWidth, GLuint screenHeight);
+	bool bindLightUniformBuffer();
 
 	void renderGBuffer();
 	void renderFrameBuffer();
+
+	//bool updatePointLight(GLuint pointLightID, PointLight* pointLight);
 public:
 	static void BindGBuffer(GLuint screenWidth, GLuint screenHeight)
 	{

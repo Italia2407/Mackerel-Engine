@@ -2,7 +2,7 @@
 
 namespace MCK::Rendering {
 Renderer::Renderer() :
-	_GBuffer(0), _frameBuffer(0) {}
+	_GBuffer(0), _frameBuffer(0), _lightUniformBuffer(0) {}
 Renderer::~Renderer()
 {
 	for (auto [GBTextureName, GBTexture] : _GBufferTextures)
@@ -11,13 +11,6 @@ Renderer::~Renderer()
 			delete GBTexture;
 	}
 	_GBufferTextures.clear();
-
-	for (auto lightingMaterial : _lightingMaterials)
-	{// Delete all Lighting Materials
-		if (lightingMaterial)
-			delete lightingMaterial;
-	}
-	_lightingMaterials.clear();
 }
 
 bool Renderer::addGBufferTexture(std::string name)
@@ -32,31 +25,25 @@ bool Renderer::addGBufferTexture(std::string name)
 	}
 
 	AssetType::Texture* newTexture = new AssetType::Texture();
-	for (auto material : _lightingMaterials)
-	{// Add G Buffer Texture to all Lighting Materials
-		material->AddTextureUniform(name, newTexture);
-	}
-
 	_GBufferTextures[name] = newTexture;
+
 	return true;
 }
-bool Renderer::addLightingMaterial(AssetType::Shader* lightingShader)
+
+/**
+ * Creates the Lighting Uniform Buffer for all Lighting Shaders.
+ * 
+ * \return Whether the Lighting Uniform Buffer was Successfully Created
+ */
+bool Renderer::bindLightUniformBuffer()
 {
-	for (auto lightingMaterial : _lightingMaterials) {
-	if (lightingMaterial->shader() == lightingShader)
-	{// Check if no duplicate Lighting Material Exist
-		return false;
-	}
-	}
+	// Generate the Lights Uniform Buffer
+	glGenBuffers(1, &_lightUniformBuffer);
+	glBufferData(_lightUniformBuffer, 6668, 0, GL_STATIC_DRAW);
 
-	AssetType::Material* newLightingMaterial = new AssetType::Material(lightingShader);
+	// Binds Uniform Block to Binding Point 0
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _lightUniformBuffer);
 
-	for (auto [GBTextureName, GBTexture] : _GBufferTextures)
-	{// Add all G Buffer Textures to Material
-		newLightingMaterial->AddTextureUniform(GBTextureName, GBTexture);
-	}
-
-	_lightingMaterials.push_back(newLightingMaterial);
 	return true;
 }
 
@@ -101,14 +88,57 @@ void Renderer::renderFrameBuffer()
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (auto lightingMaterial : _lightingMaterials)
+	// Load Light Data into Lighting Uniform Buffer
 	{
-		lightingMaterial->shader(); // Use Shader
-		lightingMaterial->BindUniforms();
+	size_t numPointLights = _pointLights.size();
+	size_t numDirectionLights = _directionLights.size();
+	size_t numSpotLight = _spotLights.size();
+
+	glBufferSubData(_lightUniformBuffer, 0, 4, &numPointLights);
+	glBufferSubData(_lightUniformBuffer, 4, 4, &numPointLights);
+	glBufferSubData(_lightUniformBuffer, 8, 4, &numPointLights);
+
+	// Load Point Light Data
+	for (int i = 0; i < _pointLights.size(); i++)
+	{
+		PointLight* pointLight = _pointLights[i];
+
+		glBufferSubData(_lightUniformBuffer, 12 + 0, 16, pointLight->position.data());
+
+		glBufferSubData(_lightUniformBuffer, 12 + 16, 16, pointLight->diffuseColour.data());
+		glBufferSubData(_lightUniformBuffer, 12 + 32, 16, pointLight->specularColour.data());
+		glBufferSubData(_lightUniformBuffer, 12 + 48, 16, pointLight->ambientColour.data());
+	}
+	// Load Direction Light Data
+	for (int i = 0; i < _directionLights.size(); i++)
+	{
+		DirectionLight* directionLight = _directionLights[i];
+
+		glBufferSubData(_lightUniformBuffer, 2060 + 0, 16, directionLight->direction.data());
+
+		glBufferSubData(_lightUniformBuffer, 2060 + 16, 16, directionLight->diffuseColour.data());
+		glBufferSubData(_lightUniformBuffer, 2060 + 32, 16, directionLight->specularColour.data());
+		glBufferSubData(_lightUniformBuffer, 2060 + 48, 16, directionLight->ambientColour.data());
+	}
+	// Load Spot Light Data
+	for (int i = 0; i < _spotLights.size(); i++)
+	{
+		SpotLight* spotLight = _spotLights[i];
+
+		glBufferSubData(_lightUniformBuffer, 4108 + 0, 16, spotLight->position.data());
+		glBufferSubData(_lightUniformBuffer, 4108 + 16, 16, spotLight->direction.data());
+
+		glBufferSubData(_lightUniformBuffer, 4108 + 32, 16, spotLight->diffuseColour.data());
+		glBufferSubData(_lightUniformBuffer, 4108 + 48, 16, spotLight->specularColour.data());
+		glBufferSubData(_lightUniformBuffer, 4108 + 64, 16, spotLight->ambientColour.data());
+	}
+	}
+
+	for (auto lightingShader : _lightingShaders)
+	{
+		lightingShader->getProgramID(); // Use Shader
 
 		// Draw Quad Mesh
-
-		lightingMaterial->ResetUniforms();
 	}
 
 	// TODO: Copy Depth Buffer (from Geometry Buffer) to Frame Buffer

@@ -191,12 +191,18 @@
     <ClInclude Include="src\TestComponent.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClInclude>
+    <ClInclude Include="src\Light.h">
+      <Filter>Source Files\Systems\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
       <Filter>Class Diagrams</Filter>
     </None>
     <None Include="res\Shaders\vert\perspective.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="src\unlit.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
