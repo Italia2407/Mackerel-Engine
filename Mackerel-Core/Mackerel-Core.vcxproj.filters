@@ -206,17 +206,8 @@
     <ClInclude Include="src\TestComponent.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClInclude>
-    <ClInclude Include="MeshLibrary.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshEnum.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureLibrary.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureEnum.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
+    <ClInclude Include="src\Light.h">
+      <Filter>Source Files\Systems\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\EntityFactory.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
@@ -230,6 +221,9 @@
       <Filter>Class Diagrams</Filter>
     </None>
     <None Include="res\Shaders\vert\perspective.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="src\unlit.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

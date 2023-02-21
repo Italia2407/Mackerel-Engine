@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include<iostream>
 
 namespace MCK::EntitySystem 
 {
@@ -44,7 +45,7 @@ namespace MCK::EntitySystem
 
 		/**
 		 * Invoked at the end of each frame. 
-		 * Checks if the entity is queued to be destroyed and deallocates if so
+		 * Checks if the entity is queued to be destroyed and deallocates if so TODO make private
 		 * 
 		 */
 		void OnFrameEnd();
@@ -76,6 +77,34 @@ namespace MCK::EntitySystem
 		 * \param Component: The instance of the component
 		 */
 		void RemoveComponent(Component* component);
+
+		/*json TestEntityJson()
+		{
+			json test = {
+				{"entity",{
+					{"name","entity-name"},
+					{"components",{
+						{
+							{"type","TestComponent"},
+							{"data", {
+								{"exampleAttribute1","exampleString"},
+								{"exampleAttribute2",42}
+							}}
+						}
+					}}
+				}}
+			};
+
+			return test;
+		}
+
+		void Deserialise(json entity)
+		{
+			// Test deserialisation
+			std::cout << "Name: " << entity["name"] << std::endl;
+			json comps = entity["components"];
+			std::cout << "Component type: " << comps["type"] << std::endl;
+		}*/
 
 		/**
 		 * Marks the entity for destruction.
