@@ -120,6 +120,12 @@
     <ClCompile Include="TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClCompile>
+    <ClCompile Include="src\EntityPool.cpp">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EntityFactory.cpp">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -212,10 +218,10 @@
     <ClInclude Include="TextureEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
-    <ClInclude Include="EntityFactory.h">
+    <ClInclude Include="src\EntityFactory.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
     </ClInclude>
-    <ClInclude Include="EntityPool.h">
+    <ClInclude Include="src\EntityPool.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
     </ClInclude>
   </ItemGroup>
