@@ -117,6 +117,9 @@
     <ClCompile Include="TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -207,6 +210,12 @@
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
     <ClInclude Include="TextureEnum.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLibrary.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
   </ItemGroup>

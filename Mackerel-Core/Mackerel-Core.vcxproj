@@ -28,6 +28,7 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
     <ClCompile Include="MeshLibrary.cpp" />
+    <ClCompile Include="ShaderLibrary.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\MaterialLibrary.cpp" />
     <ClCompile Include="src\Material.cpp" />
@@ -55,6 +56,8 @@
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
     <ClInclude Include="MeshEnum.h" />
     <ClInclude Include="MeshLibrary.h" />
+    <ClInclude Include="ShaderEnum.h" />
+    <ClInclude Include="ShaderLibrary.h" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Material.h" />
