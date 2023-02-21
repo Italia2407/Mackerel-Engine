@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <Eigen/Eigen.h>
 
 #include "Shader.h"
 #include "Texture.h"
