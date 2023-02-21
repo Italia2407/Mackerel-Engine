@@ -28,6 +28,8 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
     <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\EntityFactory.cpp" />
+    <ClCompile Include="src\EntityPool.cpp" />
     <ClCompile Include="src\MaterialLibrary.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
@@ -56,6 +58,8 @@
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\Entity.h" />
+    <ClInclude Include="src\EntityFactory.h" />
+    <ClInclude Include="src\EntityPool.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\MaterialEnum.h" />

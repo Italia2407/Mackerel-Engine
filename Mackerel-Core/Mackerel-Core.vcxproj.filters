@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Systems\EntitySystem">
       <UniqueIdentifier>{cf4707f1-f044-4856-8846-c40588888651}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Memory Management">
+      <UniqueIdentifier>{5f5c7d82-68df-4826-9bf4-ea6c5df0bba1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -110,6 +113,18 @@
     </ClCompile>
     <ClCompile Include="src\TestComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EntityPool.cpp">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EntityFactory.cpp">
+      <Filter>Source Files\Systems\Memory Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="src\Light.h">
       <Filter>Source Files\Systems\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EntityFactory.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EntityPool.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
