@@ -40,6 +40,8 @@
     <ClCompile Include="TextureLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EntityFactory.h" />
+    <ClInclude Include="EntityPool.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3_loader.h" />

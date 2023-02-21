@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Systems\EntitySystem">
       <UniqueIdentifier>{cf4707f1-f044-4856-8846-c40588888651}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Memory Management">
+      <UniqueIdentifier>{5f5c7d82-68df-4826-9bf4-ea6c5df0bba1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -208,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="TextureEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityFactory.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityPool.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
