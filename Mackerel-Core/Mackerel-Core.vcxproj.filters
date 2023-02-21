@@ -111,6 +111,9 @@
     <ClCompile Include="src\TestComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
+    <ClCompile Include="MeshLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -190,6 +193,12 @@
     </ClInclude>
     <ClInclude Include="src\TestComponent.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshLibrary.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshEnum.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
