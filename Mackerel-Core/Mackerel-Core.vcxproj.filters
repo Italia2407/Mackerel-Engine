@@ -114,17 +114,20 @@
     <ClCompile Include="src\TestComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
-    <ClCompile Include="MeshLibrary.cpp">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureLibrary.cpp">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClCompile>
     <ClCompile Include="src\EntityPool.cpp">
       <Filter>Source Files\Systems\Memory Management</Filter>
     </ClCompile>
     <ClCompile Include="src\EntityFactory.cpp">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextureLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +217,21 @@
     </ClInclude>
     <ClInclude Include="src\EntityPool.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureLibrary.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEnum.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderEnum.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderLibrary.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureEnum.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
