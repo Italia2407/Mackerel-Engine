@@ -61,6 +61,9 @@
     <Filter Include="Source Files\Systems\Memory Management">
       <UniqueIdentifier>{5f5c7d82-68df-4826-9bf4-ea6c5df0bba1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Input System">
+      <UniqueIdentifier>{5a73f732-1725-4cd8-88c8-43c3686980d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -114,17 +117,20 @@
     <ClCompile Include="src\TestComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
-    <ClCompile Include="MeshLibrary.cpp">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureLibrary.cpp">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClCompile>
     <ClCompile Include="src\EntityPool.cpp">
       <Filter>Source Files\Systems\Memory Management</Filter>
     </ClCompile>
     <ClCompile Include="src\EntityFactory.cpp">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextureLibrary.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +220,24 @@
     </ClInclude>
     <ClInclude Include="src\EntityPool.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEnum.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderEnum.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderLibrary.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureEnum.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureLibrary.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
