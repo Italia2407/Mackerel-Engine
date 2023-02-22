@@ -41,6 +41,7 @@
     <ClCompile Include="src\TextureLibrary.cpp" />
     <ClCompile Include="src\UniformData.cpp" />
     <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="TimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h" />
@@ -77,6 +78,7 @@
     <ClInclude Include="src\TextureLibrary.h" />
     <ClInclude Include="src\UniformData.h" />
     <ClInclude Include="src\Window.h" />
+    <ClInclude Include="TimeManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\vert\perspective.glsl" />

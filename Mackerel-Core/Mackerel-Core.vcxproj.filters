@@ -61,6 +61,9 @@
     <Filter Include="Source Files\Systems\Memory Management">
       <UniqueIdentifier>{5f5c7d82-68df-4826-9bf4-ea6c5df0bba1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Time Management">
+      <UniqueIdentifier>{27375c6e-4617-48c8-b49d-b918f01687f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -128,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="src\TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Source Files\Systems\Time Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="src\TextureEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Source Files\Systems\Time Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
