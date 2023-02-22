@@ -129,6 +129,315 @@
     <ClCompile Include="src\TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\API\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\API\logbuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\async\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\async\prog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\boost\deque.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\boost\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\boost\list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\boost\map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\boost\set.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\boost\string.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\boost\vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\gtkmm\hello_gtkmm\main.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\gtkmm\hello_gtkmm\window.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\gtkmm\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\gtkmm\sigc++.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\gtkmm\ustring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\MinGW\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\MinGW\prog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\OpenGL\Cube\imageloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\OpenGL\Cube\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\OpenGL\basic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\OpenGL\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\basic\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\fast-dictionary\listwithsearch.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\fast-dictionary\main.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\fast-dictionary\mainwindow.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\fast-dictionary\moc_listwithsearch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\fast-dictionary\moc_mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\about.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\addsplittedfiledialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\joinercore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\joinerwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\partprocessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\splitablefiledelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\splittercore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\splitterwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\shared-lib\myapp\main.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\Qt\shared-lib\mylib\mylib.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\send-to-network\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\send-to-network\network-logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\shared-static-libs\lib\mylib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\shared-static-libs\myapp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\all-logs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\autospace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\check-macros.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\conditional.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\configurator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\containers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\crash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\custom-class.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\custom-crash-handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\custom-format-spec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\custom-performance-output.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\default-configurations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\default-log-file-from-arg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\del-logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\different-output.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\flags.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\global-configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\locale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\log-dispatch-callback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\loggable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\logger-log-functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\logrotate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\logrotate-pthread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\make-loggable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\manipulators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\multi-loggers-to-same-file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\multi-loggers-with-async.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\multiple-loggers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\new-logger-registration-callback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\no-default-log-file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\occasional.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\plog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\post-performance-tracking-handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\pthread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\roll-out.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\smart-pointer-null-check.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\std-array.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\syslog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\thread-names.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\timed-block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\timed-scope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\verbose.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\STL\very-basic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\VC++\VCPP2015_Win32\VCPP2015_Win32\easylogging++.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\VC++\VCPP2015_Win32\VCPP2015_Win32\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\VC++\VCPP2015_Win32_Multithreaded\VCPP2015_Win32\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\VC++\VCPP2015_Win32_Multithreaded\VCPP2015_Win32\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\wxWidgets\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\wxWidgets\wxhashmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\wxWidgets\wxhashset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\wxWidgets\wxlist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\wxWidgets\wxlonglong.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\wxWidgets\wxstring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\samples\wxWidgets\wxvector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\src\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\test\easylogging++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\test\main.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -233,6 +542,204 @@
     <ClInclude Include="src\TextureEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\API\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\async\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\async\mymath.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\boost\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\gtkmm\hello_gtkmm\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\gtkmm\hello_gtkmm\window.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\gtkmm\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\MinGW\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\OpenGL\Cube\imageloader.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\OpenGL\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\basic\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\basic\mythread.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\fast-dictionary\listwithsearch.hh">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\fast-dictionary\mainwindow.hh">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\fast-dictionary\ui_mainwindow.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\about.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\addsplittedfiledialog.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\joinercore.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\joinerwidget.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\mainwindow.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\partprocessor.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\splitablefiledelegate.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\splittercore.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\file-splitter-joiner\splitterwidget.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\shared-lib\myapp\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\shared-lib\mylib\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\shared-lib\mylib\mylib.hh">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\Qt\shared-lib\mylib\mylib_global.hh">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\send-to-network\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\STL\shared-static-libs\lib\include\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\STL\shared-static-libs\lib\include\mylib.hpp">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\STL\shared-static-libs\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\STL\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\VC++\VCPP2015_Win32\VCPP2015_Win32\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\VC++\VCPP2015_Win32_Multithreaded\VCPP2015_Win32\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\samples\wxWidgets\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\src\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\command-line-args-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\configurations-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\custom-format-specifier-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\date-utils-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\easylogging++.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\enum-helper-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\file-utils-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\format-specifier-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\global-configurations-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\helpers-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\hit-counter-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\log-format-resolution-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\loggable-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\logger-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\macros-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\os-utils-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\plog-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\post-log-dispatch-handler-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\registry-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\strict-file-size-check-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\string-utils-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\syslog-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\typed-configurations-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\utilities-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\verbose-app-arguments-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\easyloggingpp-9.97.0\test\write-all-test.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
@@ -244,5 +751,10 @@
     <None Include="src\unlit.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Mackerel-Core1.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
