@@ -12,10 +12,10 @@ namespace MCK
 		class Mesh;
 	}
 
-	/// <summary>
-	/// This class is the resource manager responsible for loading, retrieving, and
-	///		releasing Meshes in memory.
-	/// </summary>
+	/**
+	 * This class is the resource manager responsible for loading, retrieving, and
+	 * releasing Meshes in memory.
+	 */
 	class MeshLibrary
 	{
 	private:
@@ -41,58 +41,65 @@ namespace MCK
 
 		// private implementation of Singleton functions
 
-		/// <summary>
-		/// Private implementation of the MeshLibrary::Get() function.
-		/// Attempts to retrieve the specified mesh from memory.
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired mesh</param>
-		/// <param name="out">: output reference to return the retrieved mesh</param>
-		/// <returns>true if the function succeeded or false if it fails</returns>
+		/**
+		 * Private implementation of the MeshLibrary::Get() function.
+		 * Attempts to retrieve the specified mesh from memory.
+		 * 
+		 * \param asset: enum identifier of the desired mesh
+		 * \param out: output reference to return the retrieved mesh
+		 * \return true if the function succeeded or false if it fails
+		 */
 		bool privGet(MeshEnum asset, AssetType::Mesh* out);
 
-		/// <summary>
-		/// Private implementation of the MeshLibrary::Load() function.
-		/// Attempts to load the specified mesh into memory from disk.
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired mesh</param>
-		/// <param name="filepath">: filepath to the mesh</param>
-		/// <returns>true if the function succeeded or false if it fails</returns>
+		/**
+		 * Private implementation of the MeshLibrary::Load() function.
+		 * Attempts to load the specified mesh into memory from disk.
+		 * 
+		 * \param asset: enum identifier of the desired mesh
+		 * \param filepath: filepath to the mesh
+		 * \return true if the function succeeded or false if it fails
+		 */
 		bool privLoad(MeshEnum asset, std::string filepath);
 
-		/// <summary>
-		/// Private implementation of the MeshLibrary::Load() function.
-		/// Attempts to release the specified mesh from memory. 
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired mesh</param>
-		/// <returns>true if a mesh was released from memory or false if it wasn't
-		///				loaded in the first place.</returns>
+		/**
+		 * Private implementation of the MeshLibrary::Load() function.
+		 * Attempts to release the specified mesh from memory. 
+		 * 
+		 * \param asset: enum identifier of the desired mesh
+		 * \return true if a mesh was released from memory or false if it wasn't
+		 *		loaded in the first place.
+		 */
 		bool privFree(MeshEnum asset);
 
 	public:
-		/// <summary>
-		/// <para>Releases all meshes in memory, and frees the MeshLibrary instance.</para>
-		/// <para>Should only be called at the end of the applications lifetime!</para>
-		/// </summary>
-		/// <returns>true if the library was successfully released, false if it
-		//				wasn't initialised to begin with</returns>
+		/**
+		 * Releases all meshes in memory, and frees the MeshLibrary instance.
+		 * Should only be called at the end of the applications lifetime!
+		 * 
+		 * \return true if the library was successfully released, false if it
+		 *		wasn't initialised to begin with
+		 */
 		bool Release();
 
-		/// <summary>
-		/// Attempts to retrieve the specified mesh from memory.
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired mesh</param>
-		/// <param name="out">: output reference to return the retrieved mesh</param>
-		/// <returns>true if the function succeeded or false if it fails</returns>
+		/**
+		 * Attempts to retrieve the specified mesh from memory.
+		 * 
+		 * \param asset: enum identifier of the desired mesh
+		 * \param out: output reference to return the retrieved mesh
+		 * \return true if the function succeeded or false if it fails
+		 */
 		bool Get(MeshEnum asset, AssetType::Mesh* out)
 		{
 			return Instance()->privGet(asset, out);
 		}
 
-		/// <summary>
-		/// Attempts to load the specified mesh into memory from disk.
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired mesh</param>
-		/// <returns>true if the function succeeded or false if it fails</returns>
+		/**
+		 * Attempts to load the specified mesh into memory from disk.
+		 * 
+		 * \param asset: enum identifier of the desired mesh
+		 * \param filepath: filepath to the mesh
+		 * \return true if the function succeeded or false if it fails
+		 */
 		bool Load(MeshEnum asset, std::string filepath)
 		{
 			return Instance()->privLoad(asset, filepath);
@@ -104,6 +111,13 @@ namespace MCK
 		/// <param name="asset">: enum identifier of the desired mesh</param>
 		/// <returns>true if a mesh was released from memory or false if it wasn't
 		///				loaded in the first place.</returns>
+		/**
+		 * Attempts to release the specified mesh from memory.
+		 * 
+		 * \param asset: enum identifier of the desired mesh
+		 * \return true if a mesh was released from memory or false if it wasn't
+		 *		loaded in the first place.
+		 */
 		bool Free(MeshEnum asset)
 		{
 			return Instance()->privFree(asset);

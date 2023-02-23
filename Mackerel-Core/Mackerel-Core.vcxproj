@@ -67,6 +67,7 @@
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\MaterialLibrary.h" />
     <ClInclude Include="src\MeshEnum.h" />
+    <ClInclude Include="src\MeshLibrary.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />

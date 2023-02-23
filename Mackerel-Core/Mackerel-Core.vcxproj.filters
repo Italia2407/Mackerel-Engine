@@ -242,6 +242,9 @@
     <ClInclude Include="TimeManager.h">
       <Filter>Source Files\Systems\Time Management</Filter>
     </ClInclude>
+    <ClInclude Include="src\MeshLibrary.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
