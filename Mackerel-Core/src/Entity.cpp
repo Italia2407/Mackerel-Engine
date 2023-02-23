@@ -25,6 +25,24 @@ namespace MCK::EntitySystem
 	}
 
 	/**
+	 * Serialises and adds a component from JSON.
+	 *
+	 * \param componentKey The key of the component to add
+	 * \param data The data within the component
+	 */
+	void Entity::AddComponent(std::string componentKey, json data)
+	{
+		Component* component = componentFactory->CreateComponent(componentKey);
+
+		if (component != nullptr)
+		{
+			component->Deserialise(data);
+
+			AddComponent(component);
+		}
+	}
+
+	/**
 	 * Removes an instance of a component.
 	 *
 	 * \param Component: The instance of the component
@@ -39,6 +57,22 @@ namespace MCK::EntitySystem
 				components.erase(components.begin() + componentIndex);
 				break;
 			}
+		}
+	}
+
+	/**
+	* Deserialises an entity from a JSON object, adding all listed components.
+	*
+	* \param entity: The entity in JSON
+	*/
+	void Entity::Deserialise(json entity)
+	{
+		// Get the entities components
+		json comps = entity["entity"]["components"];
+
+		for (int i = 0; i < comps.size(); ++i)
+		{
+			AddComponent(comps[i]["type"].get<std::string>(), comps[i]["data"]);
 		}
 	}
 

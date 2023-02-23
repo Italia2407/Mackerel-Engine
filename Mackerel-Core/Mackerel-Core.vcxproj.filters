@@ -135,6 +135,9 @@
     <ClCompile Include="TimeManager.cpp">
       <Filter>Source Files\Systems\Time Management</Filter>
     </ClCompile>
+    <ClCompile Include="src\ComponentFactory.cpp">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="src\MeshLibrary.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComponentFactory.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

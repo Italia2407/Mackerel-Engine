@@ -11,9 +11,13 @@
 #include <Eigen/Dense.h>
 #include <vector>
 #include <list>
+#include "Entity.h"
 
 void SayHello()
 {
+    MCK::EntitySystem::Entity entity;
+    entity.Deserialise(entity.TestEntityJson());
+
 	// Initialise GLFW
     if (!glfwInit())
     {
