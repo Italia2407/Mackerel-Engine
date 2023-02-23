@@ -43,7 +43,7 @@ namespace MCK
 			
 			/**
 			 * Private implementation of the MaterialLibrary::Get() function.
-			 * Attempts to retrieve the specified material from memory.
+			/// Attempts to retrieve the specified material from memory.
 			 * 
 			 * \param asset: enum identifier of the desired material
 			 * \param out: output reference to return the retrieved material
@@ -53,7 +53,7 @@ namespace MCK
 
 			/**
 			 * Private implementation of the MaterialLibrary::Load() function.
-			 * Attempts to load the specified material into memory from disk.
+			/// Attempts to load the specified material into memory from disk.
 			 * 
 			 * \param asset: enum identifier of the desired material
 			 * \param filepath: filepath to the material
@@ -63,7 +63,7 @@ namespace MCK
 
 			/**
 			 * Private implementation of the MaterialLibrary::Load() function.
-			 * Attempts to release the specified material from memory.
+			/// Attempts to release the specified material from memory.
 			 * 
 			 * \param asset: enum identifier of the desired material
 			 * \return true if a material was released from memory or false if it wasn't

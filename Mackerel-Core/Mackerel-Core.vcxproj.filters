@@ -132,7 +132,7 @@
     <ClCompile Include="src\TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClCompile>
-    <ClCompile Include="src\TimeManager.cpp">
+    <ClCompile Include="TimeManager.cpp">
       <Filter>Source Files\Systems\Time Management</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,11 +239,11 @@
     <ClInclude Include="src\TextureEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Source Files\Systems\Time Management</Filter>
+    </ClInclude>
     <ClInclude Include="src\MeshLibrary.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TimeManager.h">
-      <Filter>Source Files\Systems\Time Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
