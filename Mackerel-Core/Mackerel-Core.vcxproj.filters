@@ -132,14 +132,14 @@
     <ClCompile Include="src\TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClCompile>
-    <ClCompile Include="TimeManager.cpp">
-      <Filter>Source Files\Systems\Time Management</Filter>
-    </ClCompile>
     <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LoggingSystem.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TimeManager.cpp">
+      <Filter>Source Files\Systems\Time Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,14 +245,14 @@
     <ClInclude Include="src\TextureEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
-    <ClInclude Include="TimeManager.h">
-      <Filter>Source Files\Systems\Time Management</Filter>
-    </ClInclude>
     <ClInclude Include="src\MeshLibrary.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
     <ClInclude Include="src\LoggingSystem.h">
       <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TimeManager.h">
+      <Filter>Source Files\Systems\Time Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
