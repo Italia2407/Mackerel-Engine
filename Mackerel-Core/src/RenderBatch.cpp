@@ -7,11 +7,6 @@ RenderBatch::~RenderBatch() {}
 
 bool RenderBatch::AddBatchInstance(Instance instance)
 {
-	if (instance.material->shader() != _shader)
-	{// Batch Shader isn't same as Material Shader
-		return false;
-	}
-
 	_instances.push_back(instance);
 	return true;
 }

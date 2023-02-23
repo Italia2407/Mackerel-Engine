@@ -9,6 +9,10 @@
 #include "Light.h"
 #include "RenderBatch.h"
 
+#include "UniformBuffer.h"
+
+#define MAX_LIGHTS (32)
+
 namespace MCK::Rendering {
 class Renderer
 {
@@ -35,11 +39,11 @@ private:
 	GLuint _GBuffer;
 	GLuint _frameBuffer;
 
-	GLuint _lightUniformBuffer;
+	UniformBuffer* _lightUniformBuffer;
 
 	std::vector<RenderBatch*> _geometryBatches;
 
-	std::map<std::string, AssetType::Texture*> _GBufferTextures;
+	AssetType::Texture* _GBufferTextures[32];
 	std::vector<AssetType::Shader*> _lightingShaders;
 	
 	std::vector<PointLight*> _pointLights;
@@ -47,21 +51,32 @@ private:
 	std::vector<SpotLight*> _spotLights;
 
 private:
-	bool addGBufferTexture(std::string name);
+	bool initialiseRenderer(GLuint screenWidth, GLuint screenHeight);
 
-	void bindGBuffer(GLuint screenWidth, GLuint screenHeight);
-	bool bindLightUniformBuffer();
+	bool createGBuffer(GLuint screenWidth, GLuint screenHeight);
+	bool createLightingUniformBuffer();
 
 	void renderGBuffer();
 	void renderFrameBuffer();
 
 	//bool updatePointLight(GLuint pointLightID, PointLight* pointLight);
-public:
-	static void BindGBuffer(GLuint screenWidth, GLuint screenHeight)
-	{
-		getInstance()->bindGBuffer(screenWidth, screenHeight);
-	}
+	bool attachPointLight(PointLight* pointLight);
+	bool attachDirectionLight(DirectionLight* directionLight);
+	bool attachSpotLight(SpotLight* spotLight);
 
+public:
+	/**
+	 * Initialises the Renderer.
+	 * 
+	 * \param screenWidth: The Target Screen's Width
+	 * \param screenHeight: The Target Screen's Height
+	 * \return Whether the Renderer was Successfully Initialised
+	 */
+	static bool InitialiseRenderer(GLuint screenWidth, GLuint screenHeight)
+	{
+		bool result = getInstance()->initialiseRenderer(screenWidth, screenHeight);
+		return result;
+	}
 	static void ClearRenderer()
 	{
 		if (_instance)

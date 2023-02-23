@@ -7,6 +7,8 @@
 #include <vector>
 #include <Eigen/Eigen.h>
 
+#include "UniformBuffer.h"
+
 namespace MCK::Rendering {
 class RenderBatch
 {
@@ -21,14 +23,13 @@ public:
 		Eigen::Vector3f scale;
 
 		AssetType::Material* material;
-
-		bool LoadUniforms();
 	};
 
 private:
 	AssetType::Shader* _shader;
 	AssetType::Mesh* _mesh;
 
+	UniformBuffer* _meshTransformBuffer;
 	std::vector<Instance> _instances;
 
 public:

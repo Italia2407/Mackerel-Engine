@@ -1,162 +1,194 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <string>
 #include <Eigen/Core.h>
 
-#include "Material.h"
 #include "Texture.h"
 
 namespace MCK {
 struct UniformData
 {
-	UniformData(GLuint shaderProgramID, std::string name);
+	UniformData() :
+		uniformOffset(0) {}
 
-	GLuint uniformLocation;
-	std::string uniformName;
+	GLuint uniformOffset;
 
-	virtual bool Bind(AssetType::Material::UniformState& uniformState) = 0;
+	virtual void* getUniformValue() = 0;
+	virtual GLuint getUniformSize() = 0;
 };
 
 struct UInt08Uniform : UniformData
 {
-	UInt08Uniform(GLuint shaderProgramID, std::string name, uint8_t value);
+	UInt08Uniform(uint8_t value) :
+		UniformData(), value(value) {}
 
 	uint8_t value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 1; }
 };
 struct UInt16Uniform : UniformData
 {
-	UInt16Uniform(GLuint shaderProgramID, std::string name, uint16_t value);
+	UInt16Uniform(uint16_t value) :
+		UniformData(), value(value) {}
 
 	uint16_t value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 2; }
 };
 struct UInt32Uniform : UniformData
 {
-	UInt32Uniform(GLuint shaderProgramID, std::string name, uint32_t value);
+	UInt32Uniform(uint32_t value) :
+		UniformData(), value(value) {}
 
 	uint32_t value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 4; }
 };
 struct UInt64Uniform : UniformData
 {
-	UInt64Uniform(GLuint shaderProgramID, std::string name, uint64_t value);
+	UInt64Uniform(uint64_t value) :
+		UniformData(), value(value) {}
 
 	uint64_t value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 4; }
 };
 
 struct Int08Uniform : UniformData
 {
-	Int08Uniform(GLuint shaderProgramID, std::string name, int8_t value);
+	Int08Uniform(int8_t value) :
+		UniformData(), value(value) {}
 
 	int8_t value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 1; }
 };
 struct Int16Uniform : UniformData
 {
-	Int16Uniform(GLuint shaderProgramID, std::string name, int16_t value);
+	Int16Uniform(int16_t value) :
+		UniformData(), value(value) {}
 
 	int16_t value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 2; }
 };
 struct Int32Uniform : UniformData
 {
-	Int32Uniform(GLuint shaderProgramID, std::string name, int32_t value);
+	Int32Uniform(int32_t value) :
+		UniformData(), value(value) {}
 
 	int32_t value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 4; }
 };
 struct Int64Uniform : UniformData
 {
-	Int64Uniform(GLuint shaderProgramID, std::string name, int64_t value);
+	Int64Uniform(int64_t value) :
+		UniformData(), value(value) {}
 
 	int64_t value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 8; }
 };
 
 struct FloatUniform : UniformData
 {
-	FloatUniform(GLuint shaderProgramID, std::string name, float value);
+	FloatUniform(float value) :
+		UniformData(), value(value) {}
 
 	float value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 4; }
 };
 struct DoubleUniform : UniformData
 {
-	DoubleUniform(GLuint shaderProgramID, std::string name, double value);
+	DoubleUniform(double value) :
+		UniformData(), value(value) {}
 
 	double value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return &value; }
+	GLuint getUniformSize() override { return 8; }
 };
 
 struct Vec2Uniform : UniformData
 {
-	Vec2Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector2f value);
+	Vec2Uniform(Eigen::Vector2f value) :
+		UniformData(), value(value) {}
 
 	Eigen::Vector2f value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return value.data(); }
+	GLuint getUniformSize() override { return 8; }
 };
 struct Vec3Uniform : UniformData
 {
-	Vec3Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector3f value);
+	Vec3Uniform(Eigen::Vector3f value) :
+		UniformData(), value(value) {}
 
 	Eigen::Vector3f value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return value.data(); }
+	GLuint getUniformSize() override { return 16; }
 };
 struct Vec4Uniform : UniformData
 {
-	Vec4Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector4f value);
+	Vec4Uniform(Eigen::Vector4f value) :
+		UniformData(), value(value) {}
 
 	Eigen::Vector4f value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return value.data(); }
+	GLuint getUniformSize() override { return 16; }
 };
 
 struct UVec2Uniform : UniformData
 {
-	UVec2Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector2<uint32_t> value);
+	UVec2Uniform(Eigen::Vector2<uint32_t> value) :
+		UniformData(), value(value) {}
 
 	Eigen::Vector2<uint32_t> value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return value.data(); }
+	GLuint getUniformSize() override { return 8; }
 };
 struct UVec3Uniform : UniformData
 {
-	UVec3Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector3<uint32_t> value);
+	UVec3Uniform(Eigen::Vector3<uint32_t> value) :
+		UniformData(), value(value) {}
 
 	Eigen::Vector3<uint32_t> value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return value.data(); }
+	GLuint getUniformSize() override { return 16; }
 };
 struct UVec4Uniform : UniformData
 {
-	UVec4Uniform(GLuint shaderProgramID, std::string name, Eigen::Vector4<uint32_t> value);
+	UVec4Uniform(Eigen::Vector4<uint32_t> value) :
+		UniformData(), value(value) {}
 
 	Eigen::Vector4<uint32_t> value;
 
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
+	void* getUniformValue() override { return value.data(); }
+	GLuint getUniformSize() override { return 16; }
 };
-
+/*
 struct TextureUniform : UniformData
 {
-	TextureUniform(GLuint shaderProgramID, std::string name, AssetType::Texture* texture);
+	TextureUniform(GLuint shaderProgramID, AssetType::Texture* texture);
 
 	AssetType::Texture* texture;
 
 	bool Bind(AssetType::Material::UniformState& uniformState) override;
 };
+*/
 }
