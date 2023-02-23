@@ -30,6 +30,7 @@
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\EntityPool.cpp" />
+    <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\MaterialLibrary.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
@@ -56,11 +57,12 @@
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
     <ClInclude Include="ext\nlohmann\json.hpp" />
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
-    <ClInclude Include="InputManager.h" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
+    <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\MaterialEnum.h" />
