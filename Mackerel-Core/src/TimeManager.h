@@ -27,15 +27,19 @@ namespace MCK
 		}
 
 		// private member variables
+
 		int timescale = 0;
+		// list of key-value pairs that holds the timers
+		std::list<std::pair<double, std::function<void()>>> timers;
 
 		// private implemenetations of Singleton functions
 
 		/**
 		 * Private implementation of the TimeManager::GetUpTime() function.
-		 * Gets the total up time of the application.
+		 * Gets the total up time of the application aka the value of the GLFW timer, which
+		 *	has elapsed since GLFW was initialized, or set using glfwSetTime.
 		 *
-		 * \return total up time as a double
+		 * \return the value of the GLFW timer as a double
 		 */
 		double privGetUpTime();
 
@@ -48,7 +52,7 @@ namespace MCK
 		 *		second is the callback function
 		 * \return true if timer successfully set or false if it fails
 		 */
-		bool privSetTimer(std::pair<double, std::function<bool()>> timer);
+		void privSetTimer(std::pair<double, std::function<void()>> timer);
 
 		/**
 		 * Private implementation of the TimeManager::setTimescale() function.
@@ -57,7 +61,7 @@ namespace MCK
 		 * \param scale: value the user wants to change the timescale to.
 		 * \return true if timescale successfully changed, false if it fails
 		 */
-		bool privSetTimescale(int scale);
+		void privSetTimescale(int scale);
 
 		/**
 		 * Private implementation of the TimeManager::getFrameTime() function.
@@ -101,9 +105,9 @@ namespace MCK
 		 * \param timer: key-value pair of end time and callback function
 		 * \return true if timer has been successfully created, false if it fails
 		 */
-		bool setTimer(std::pair<double, std::function<bool()>> timer)
+		void setTimer(std::pair<double, std::function<void()>> timer)
 		{
-			return Instance()->privSetTimer(timer);
+			Instance()->privSetTimer(timer);
 		}
 
 		/**
@@ -112,9 +116,9 @@ namespace MCK
 		 * \param scale: value the user wants to change the timescale to.
 		 * \return true if timescale successfully changed, false if it fails.
 		 */
-		bool setTimescale(int scale)
+		void setTimescale(int scale)
 		{
-			return Instance()->privSetTimescale(scale);
+			Instance()->privSetTimescale(scale);
 		}
 
 		/**
