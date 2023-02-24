@@ -1,6 +1,11 @@
 #pragma once
 
-#include "Component.h"
+#include <string>
+
+// Forward Declarations
+namespace MCK::EntitySystem {
+class Component;
+}
 
 namespace MCK::EntitySystem
 {

@@ -1,13 +1,18 @@
 #pragma once
 
-#include "Mesh.h"
-#include "Shader.h"
-#include "Material.h"
-
 #include <vector>
 #include <Eigen/Eigen.h>
 
-#include "UniformBuffer.h"
+// Forward Declarations
+namespace MCK {
+class UniformBuffer;
+}
+namespace MCK::AssetType {
+class Material;
+
+class Mesh;
+class Shader;
+}
 
 namespace MCK::Rendering {
 class RenderBatch

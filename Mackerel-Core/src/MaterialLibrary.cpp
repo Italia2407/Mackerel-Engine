@@ -1,5 +1,7 @@
 #include "MaterialLibrary.h"
 
+#include "Material.h"
+
 using namespace MCK;
 
 MaterialLibrary* MaterialLibrary::instance = nullptr;

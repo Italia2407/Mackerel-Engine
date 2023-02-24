@@ -3,13 +3,17 @@
 #include <glad/glad.h>
 #include <Eigen/Eigen.h>
 
-#include "UniformBuffer.h"
-#include "Texture.h"
-
 #include <string>
 #include <map>
 #include <optional>
 
+// Forward Declarations
+namespace MCK {
+class UniformBuffer;
+}
+namespace MCK::AssetType {
+class Texture;
+}
 
 namespace MCK::AssetType {
 class Material

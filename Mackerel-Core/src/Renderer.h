@@ -6,12 +6,21 @@
 #include <map>
 #include <vector>
 
-#include "Light.h"
-#include "RenderBatch.h"
+// Forward Declarations
+namespace MCK {
+class UniformBuffer;
+}
+namespace MCK::AssetType {
+class Texture;
+class Shader;
+}
+namespace MCK::Rendering {
+struct PointLight;
+struct DirectionLight;
+struct SpotLight;
 
-#include "UniformBuffer.h"
-
-#define MAX_LIGHTS (32)
+class RenderBatch;
+}
 
 namespace MCK::Rendering {
 class Renderer

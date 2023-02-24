@@ -3,11 +3,14 @@
 #include <glad/glad.h>
 #include <Eigen/Eigen.h>
 
-#include "UniformData.h"
-
 #include <string>
 #include <map>
 #include <optional>
+
+// Forward Declarations
+namespace MCK {
+struct UniformData;
+}
 
 namespace MCK {
 class UniformBuffer

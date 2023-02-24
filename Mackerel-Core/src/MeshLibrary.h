@@ -5,13 +5,13 @@
 
 #include "MeshEnum.h"
 
+// Forward Declarations
+namespace MCK::AssetType {
+class Mesh;
+}
+
 namespace MCK
 {
-	namespace AssetType
-	{
-		class Mesh;
-	}
-
 	/**
 	 * This class is the resource manager responsible for loading, retrieving, and
 	 * releasing Meshes in memory.

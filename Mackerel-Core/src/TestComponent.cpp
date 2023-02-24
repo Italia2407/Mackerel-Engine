@@ -1,5 +1,7 @@
 #include "TestComponent.h"
+
 #include "Entity.h"
+
 #include <typeinfo>
 #include <iostream>
 

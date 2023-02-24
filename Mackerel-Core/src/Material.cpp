@@ -1,5 +1,8 @@
 #include "Material.h"
 
+#include "UniformBuffer.h"
+#include "Texture.h"
+
 #include <iostream>
 
 namespace MCK::AssetType {

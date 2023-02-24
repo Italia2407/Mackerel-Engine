@@ -3,8 +3,6 @@
 #include <glad/glad.h>
 #include <Eigen/Core.h>
 
-#include "Texture.h"
-
 namespace MCK {
 struct UniformData
 {
@@ -181,14 +179,4 @@ struct UVec4Uniform : UniformData
 	void* getUniformValue() override { return value.data(); }
 	GLuint getUniformSize() override { return 16; }
 };
-/*
-struct TextureUniform : UniformData
-{
-	TextureUniform(GLuint shaderProgramID, AssetType::Texture* texture);
-
-	AssetType::Texture* texture;
-
-	bool Bind(AssetType::Material::UniformState& uniformState) override;
-};
-*/
 }

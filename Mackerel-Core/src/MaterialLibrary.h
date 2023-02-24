@@ -5,13 +5,13 @@
 
 #include "MaterialEnum.h"
 
+// Forward Declarations
+namespace MCK::AssetType {
+class Material;
+}
+
 namespace MCK
 {
-	namespace AssetType
-	{
-		class Material;
-	}
-
 	/**
 	 * This class is the resource manager responsible for loading, retrieving, and
 	 *	releasing Materials in memory.

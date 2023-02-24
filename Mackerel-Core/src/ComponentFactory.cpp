@@ -1,4 +1,6 @@
 #include "ComponentFactory.h"
+
+#include "Component.h"
 #include "TestComponent.h"
 
 namespace MCK::EntitySystem

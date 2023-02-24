@@ -1,5 +1,7 @@
 #include "UniformBuffer.h"
 
+#include "UniformData.h"
+
 namespace MCK {
 UniformBuffer::UniformBuffer() :
 	_uniformBufferObject(0), _bufferByteSize(0), _isCreated(false) {}

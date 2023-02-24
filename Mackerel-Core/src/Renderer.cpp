@@ -1,5 +1,15 @@
 #include "Renderer.h"
 
+#include "UniformBuffer.h"
+
+#include "Texture.h"
+#include "Shader.h"
+
+#include "Light.h"
+#include "RenderBatch.h"
+
+#define MAX_LIGHTS (32)
+
 namespace MCK::Rendering {
 Renderer::Renderer() :
 	_GBuffer(0), _frameBuffer(0), _lightUniformBuffer(nullptr)
