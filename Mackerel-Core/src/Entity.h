@@ -1,6 +1,11 @@
 #pragma once
 #include <vector>
 #include<iostream>
+#include <string>
+#include "ComponentFactory.h"
+#include "../ext/nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 namespace MCK::EntitySystem 
 {
@@ -9,6 +14,8 @@ namespace MCK::EntitySystem
 
 	class Entity
 	{
+	private:
+		ComponentFactory* componentFactory;
 	public:
 		/**
 		 * The parent entity. Nullptr if non-existent.
@@ -65,6 +72,15 @@ namespace MCK::EntitySystem
 		void AddComponent(Component* component);
 
 		/**
+		 * Serialises and adds a component from JSON.
+		 *
+		 * \param componentKey The key of the component to add
+		 * \param data The data within the component
+		 */
+		void AddComponent(std::string componentKey, json data);
+
+
+		/**
 		 * Returns a component of a given type.
 		 * 
 		 * \return A pointer to the requested component. Returns nullptr if none found.
@@ -78,7 +94,12 @@ namespace MCK::EntitySystem
 		 */
 		void RemoveComponent(Component* component);
 
-		/*json TestEntityJson()
+		/**
+		 * Test function. TODO remove
+		 * 
+		 * \return 
+		 */
+		json TestEntityJson()
 		{
 			json test = {
 				{"entity",{
@@ -90,6 +111,13 @@ namespace MCK::EntitySystem
 								{"exampleAttribute1","exampleString"},
 								{"exampleAttribute2",42}
 							}}
+						},
+						{
+							{"type","TestComponent2"},
+							{"data", {
+								{"exampleAttribute3","exampleString2"},
+								{"exampleAttribute4",100}
+							}}
 						}
 					}}
 				}}
@@ -98,13 +126,13 @@ namespace MCK::EntitySystem
 			return test;
 		}
 
-		void Deserialise(json entity)
-		{
-			// Test deserialisation
-			std::cout << "Name: " << entity["name"] << std::endl;
-			json comps = entity["components"];
-			std::cout << "Component type: " << comps["type"] << std::endl;
-		}*/
+		/**
+		 * Deserialises an entity from a JSON object, adding all listed components.
+		 * 
+		 * \param entity: The entity in JSON
+		 */
+		void Deserialise(json entity);
+
 
 		/**
 		 * Marks the entity for destruction.

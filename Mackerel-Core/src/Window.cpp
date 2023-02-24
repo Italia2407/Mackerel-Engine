@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include "LoggingSystem.h"
+
 #include <iostream>
 #include <glad/glad.h>
 #include "GLFW/glfw3.h"
@@ -11,9 +13,13 @@
 #include <Eigen/Dense.h>
 #include <vector>
 #include <list>
+#include "Entity.h"
 
 void SayHello()
 {
+    MCK::EntitySystem::Entity entity;
+    entity.Deserialise(entity.TestEntityJson());
+
 	// Initialise GLFW
     if (!glfwInit())
     {
