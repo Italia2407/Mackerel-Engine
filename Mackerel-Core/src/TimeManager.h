@@ -28,7 +28,8 @@ namespace MCK
 
 		// private member variables
 
-		int timescale = 0;
+		double timescale;
+		double lastFrame;
 		// list of key-value pairs that holds the timers
 		std::list<std::pair<double, std::function<void()>>> timers;
 
@@ -61,7 +62,7 @@ namespace MCK
 		 * \param scale: value the user wants to change the timescale to.
 		 * \return true if timescale successfully changed, false if it fails
 		 */
-		void privSetTimescale(int scale);
+		void privSetTimescale(double scale);
 
 		/**
 		 * Private implementation of the TimeManager::getFrameTime() function.
@@ -90,6 +91,15 @@ namespace MCK
 
 	public:
 		/**
+		 * Releases all timers in memory, and frees the TimeManager instance.
+		 * Should only be called at the end of the applications lifetime!
+		 *
+		 * \return true if the manager was successfully released, false if it
+		 *	wasn't initialised to begin with
+		 */
+		bool Release();
+
+		/**
 		 * Gets the total up time of the application.
 		 *
 		 * \return up time as a double
@@ -116,7 +126,7 @@ namespace MCK
 		 * \param scale: value the user wants to change the timescale to.
 		 * \return true if timescale successfully changed, false if it fails.
 		 */
-		void setTimescale(int scale)
+		void setTimescale(double scale)
 		{
 			Instance()->privSetTimescale(scale);
 		}

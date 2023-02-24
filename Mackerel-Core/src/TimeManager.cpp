@@ -7,15 +7,28 @@ TimeManager* TimeManager::instance = nullptr;
 
 TimeManager::TimeManager()
 {
-
+	timescale = 0.0;
+	lastFrame = glfwGetTime();
 }
 
-TimeManager::~TimeManager()
-{
+TimeManager::~TimeManager() {}
 
-}
 
 // private Singleton functions
+bool MCK::TimeManager::Release()
+{
+	bool success = false;
+
+	if (instance)
+	{
+		timers.clear();
+		delete instance;
+		success = true;
+	}
+
+	return success;
+}
+
 
 double MCK::TimeManager::privGetUpTime()
 {
@@ -46,8 +59,25 @@ void MCK::TimeManager::privSetTimer(std::pair<double, std::function<void()>> tim
 }
 
 
-void MCK::TimeManager::privSetTimescale(int scale)
+void MCK::TimeManager::privSetTimescale(double scale)
 {
 	timescale = scale;
 }
 
+
+double MCK::TimeManager::privGetFrameTime()
+{
+	return (glfwGetTime() - lastFrame) * timescale;
+}
+
+
+double MCK::TimeManager::privGetUnscaledFrameTime()
+{
+	return glfwGetTime() - lastFrame;
+}
+
+
+void MCK::TimeManager::privUpdate()
+{
+
+}
