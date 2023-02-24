@@ -79,5 +79,24 @@ double MCK::TimeManager::privGetUnscaledFrameTime()
 
 void MCK::TimeManager::privUpdate()
 {
+	// iterator for the list
+	std::list<std::pair<double, std::function<void()>>>::iterator it;
+	it = timers.begin();
 
+	double now = glfwGetTime() * timescale;
+
+	while (it != timers.end())
+	{
+		++it;
+
+		if (now >= it->first)
+		{
+			// send callback for the timer
+			it->second();
+			// pop it off the list
+			timers.pop_front();
+		}
+		else
+			return;	// no point checking further, as those timers don't need stopped
+	}
 }
