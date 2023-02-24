@@ -44,6 +44,7 @@ namespace MCK::EntitySystem
 
 	bool TestComponent::Deserialise(json data)
 	{
+		std::cout << "DESERIALISE " << data.dump() << std::endl;
 		return true;
 	}
 }
