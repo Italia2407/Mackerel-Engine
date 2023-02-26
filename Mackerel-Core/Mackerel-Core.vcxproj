@@ -55,6 +55,7 @@
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_rectpack.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_textedit.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_truetype.h" />
+    <ClInclude Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.h" />
     <ClInclude Include="ext\GLAD\include\glad\glad.h" />
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
     <ClInclude Include="ext\nlohmann\json.hpp" />
@@ -88,6 +89,9 @@
     <None Include="res\Shaders\vert\perspective.glsl" />
     <None Include="src\MaterialDiagram.cd" />
     <None Include="src\unlit.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\LoggingSystem.conf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
