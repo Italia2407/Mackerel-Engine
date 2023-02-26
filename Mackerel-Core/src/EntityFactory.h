@@ -2,10 +2,13 @@
 
 #include "EntityPool.h"
 
+// Forward Declarations
+namespace MCK::EntitySystem {
+class Entity;
+}
+
 namespace MCK::EntitySystem
 {
-	class Entity;
-
 	class EntityFactory
 	{
 		public:

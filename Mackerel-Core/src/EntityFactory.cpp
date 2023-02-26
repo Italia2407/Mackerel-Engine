@@ -1,5 +1,7 @@
 #include "EntityFactory.h"
 
+#include "Entity.h"
+
 namespace MCK::EntitySystem
 {
 	Entity* EntityFactory::Get()

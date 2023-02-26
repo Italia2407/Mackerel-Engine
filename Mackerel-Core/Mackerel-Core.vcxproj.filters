@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Systems\EntitySystem">
       <UniqueIdentifier>{cf4707f1-f044-4856-8846-c40588888651}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Shader Headers">
+      <UniqueIdentifier>{6fef7a7b-a3eb-4744-8f9f-75d0f0eef781}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Systems\Memory Management">
       <UniqueIdentifier>{5f5c7d82-68df-4826-9bf4-ea6c5df0bba1}</UniqueIdentifier>
     </Filter>
@@ -92,9 +95,6 @@
     </ClCompile>
     <ClCompile Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3.cpp">
       <Filter>External Files\ImGui\Backends</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UniformData.cpp">
-      <Filter>Source Files\AssetTypes\Material</Filter>
     </ClCompile>
     <ClCompile Include="src\MaterialLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
@@ -132,14 +132,35 @@
     <ClCompile Include="src\TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClCompile>
-    <ClCompile Include="TimeManager.cpp">
-      <Filter>Source Files\Systems\Time Management</Filter>
-    </ClCompile>
     <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LoggingSystem.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TimeManager.cpp">
+      <Filter>Source Files\Systems\Time Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComponentFactory.cpp">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextureLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light.cpp">
+      <Filter>Source Files\Systems\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UniformBuffer.cpp">
+      <Filter>Source Files\AssetTypes\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UniformData.cpp">
+      <Filter>Source Files\AssetTypes\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,14 +266,35 @@
     <ClInclude Include="src\TextureEnum.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
-    <ClInclude Include="TimeManager.h">
-      <Filter>Source Files\Systems\Time Management</Filter>
-    </ClInclude>
     <ClInclude Include="src\MeshLibrary.h">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClInclude>
     <ClInclude Include="src\LoggingSystem.h">
       <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TimeManager.h">
+      <Filter>Source Files\Systems\Time Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComponentFactory.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEnum.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderEnum.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderLibrary.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureEnum.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureLibrary.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UniformBuffer.h">
+      <Filter>Source Files\AssetTypes\Material</Filter>
     </ClInclude>
     <ClInclude Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.h">
       <Filter>External Files</Filter>
@@ -265,7 +307,19 @@
     <None Include="res\Shaders\vert\perspective.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="src\unlit.glsl">
+    <None Include="res\Shaders\frag\monoColour.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="res\Shaders\lightsHeader.glsl">
+      <Filter>Resource Files\Shaders\Shader Headers</Filter>
+    </None>
+    <None Include="res\Shaders\vertexHeader.glsl">
+      <Filter>Resource Files\Shaders\Shader Headers</Filter>
+    </None>
+    <None Include="res\Shaders\fragmentHeader.glsl">
+      <Filter>Resource Files\Shaders\Shader Headers</Filter>
+    </None>
+    <None Include="res\Shaders\light\unlit.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

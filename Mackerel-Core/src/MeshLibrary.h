@@ -5,13 +5,13 @@
 
 #include "MeshEnum.h"
 
+// Forward Declarations
+namespace MCK::AssetType {
+class Mesh;
+}
+
 namespace MCK
 {
-	namespace AssetType
-	{
-		class Mesh;
-	}
-
 	/**
 	 * This class is the resource manager responsible for loading, retrieving, and
 	 * releasing Meshes in memory.
@@ -105,12 +105,6 @@ namespace MCK
 			return Instance()->privLoad(asset, filepath);
 		}
 
-		/// <summary>
-		/// Attempts to release the specified mesh from memory. 
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired mesh</param>
-		/// <returns>true if a mesh was released from memory or false if it wasn't
-		///				loaded in the first place.</returns>
 		/**
 		 * Attempts to release the specified mesh from memory.
 		 * 

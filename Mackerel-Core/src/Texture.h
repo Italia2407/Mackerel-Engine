@@ -12,7 +12,12 @@ private:
 public:
 	GLuint getTextureID() { return _textureID; }
 
-	bool GenerateTexture(GLuint width, GLuint height);
+	bool GenerateFloatTexture(GLuint width, GLuint height);
+	bool GenerateIntTexture(GLuint width, GLuint height);
+	bool GenerateUIntTexture(GLuint width, GLuint height);
+
 	bool ClearTexture();
+
+	bool BindTexture(GLuint textureSlotID);
 };
 }

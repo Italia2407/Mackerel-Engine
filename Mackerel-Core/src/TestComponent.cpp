@@ -1,5 +1,7 @@
 #include "TestComponent.h"
+
 #include "Entity.h"
+
 #include <typeinfo>
 #include <iostream>
 
@@ -44,6 +46,7 @@ namespace MCK::EntitySystem
 
 	bool TestComponent::Deserialise(json data)
 	{
+		std::cout << "DESERIALISE " << data.dump() << std::endl;
 		return true;
 	}
 }

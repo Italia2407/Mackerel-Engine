@@ -1,14 +1,16 @@
 #pragma once
 #include "../ext/nlohmann/json.hpp"
 
+// Forward Declacrations
+namespace MCK::EntitySystem {
+class Entity;
+}
+
 using json = nlohmann::json;
 using TypeInfoRef = std::reference_wrapper<const std::type_info>;
 
 namespace MCK::EntitySystem 
 {
-
-	class Entity;
-
 	class Component
 	{
 	public:
