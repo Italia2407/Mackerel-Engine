@@ -16,6 +16,10 @@ namespace MCK
 		TimeManager();
 		~TimeManager();
 
+		// not to be copied!
+		TimeManager(const TimeManager&) = delete;
+		TimeManager& operator=(const TimeManager&) = delete;
+
 		// singleton bookkeeping
 
 		static TimeManager* instance;
