@@ -30,8 +30,13 @@ namespace MCK
 
 		double timescale;
 		double lastFrame;
+		double lastScaledFrame;
+		double upTime;
+		double scaledUpTime;
+
 		// list of key-value pairs that holds the timers
 		std::list<std::pair<double, std::function<void()>>> timers;
+		std::list<std::pair<double, std::function<void()>>> scaledTimers;
 
 		// private implemenetations of Singleton functions
 
@@ -45,22 +50,38 @@ namespace MCK
 		double privGetUpTime();
 
 		/**
+		 * Private implementation of the TimeManager::GetScaledUpTime() function.
+		 * Gets the total scaled up time of the application, which is tracked by scaledUpTime.
+		 *
+		 * \return the value of scaledUpTime
+		 */
+		double privGetScaledUpTime();
+
+		/**
 		 * Private implemenetation of the TimeManager::setTimer() function.
-		 * Attempts to create a timer, by correctly adding it to the list of timers
+		 * Creates a timer, by correctly adding it to the list of timers
 		 *	based on its end time.
 		 *
 		 * \param timer: key-value pair, where the first value is the end time and the
 		 *		second is the callback function
-		 * \return true if timer successfully set or false if it fails
 		 */
 		void privSetTimer(std::pair<double, std::function<void()>> timer);
 
 		/**
+		 * Private implemenetation of the TimeManager::setScaledTimer() function.
+		 * Creates a scaled timer, by correctly adding it to the list of scaled
+		 *	timers based on its end time.
+		 *
+		 * \param timer: key-value pair, where the first value is the end time and the
+		 *		second is the callback function
+		 */
+		void privSetScaledTimer(std::pair<double, std::function<void()>> timer);
+
+		/**
 		 * Private implementation of the TimeManager::setTimescale() function.
-		 * Attempts to change the timescale to the new scale provided by the user.
+		 * Changes the timescale to the new scale provided by the user.
 		 *
 		 * \param scale: value the user wants to change the timescale to.
-		 * \return true if timescale successfully changed, false if it fails
 		 */
 		void privSetTimescale(double scale);
 
@@ -110,10 +131,19 @@ namespace MCK
 		}
 
 		/**
-		 * Attempts to create a new timer by passing the information to the time manager.
+		 * Gets the total scaled up time of the application.
+		 * 
+		 * \return scaled up time as a double
+		 */
+		double GetScaledUpTime()
+		{
+			return Instance()->privGetScaledUpTime();
+		}
+
+		/**
+		 * Creates a new timer by passing the information to the time manager.
 		 *
 		 * \param timer: key-value pair of end time and callback function
-		 * \return true if timer has been successfully created, false if it fails
 		 */
 		void setTimer(std::pair<double, std::function<void()>> timer)
 		{
@@ -121,10 +151,19 @@ namespace MCK
 		}
 
 		/**
-		 * Attempts to change the timescale to the new scale provided by the user.
+		 * Creates a new scaled timer by passing the information to the time manager.
+		 * 
+		 * \param timer: key-value pair of end time and callback function
+		 */
+		void setScaledTimer(std::pair<double, std::function<void()>> timer)
+		{
+			Instance()->privSetScaledTimer(timer);
+		}
+
+		/**
+		 * Changes the timescale to the new scale provided by the user.
 		 *
 		 * \param scale: value the user wants to change the timescale to.
-		 * \return true if timescale successfully changed, false if it fails.
 		 */
 		void setTimescale(double scale)
 		{
@@ -136,7 +175,7 @@ namespace MCK
 		 *
 		 * \return scaled time since the last frame
 		 */
-		double getFrameTime()
+		double getScaledFrameTime()
 		{
 			return Instance()->privGetFrameTime();
 		}
@@ -146,7 +185,7 @@ namespace MCK
 		 *
 		 * \return time since the last frame, without scaling
 		 */
-		double getUnscaledFrameTime()
+		double getFrameTime()
 		{
 			return Instance()->privGetUnscaledFrameTime();
 		}
