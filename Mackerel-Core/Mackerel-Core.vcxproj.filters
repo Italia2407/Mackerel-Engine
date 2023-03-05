@@ -67,6 +67,27 @@
     <Filter Include="Source Files\Systems\Time Management">
       <UniqueIdentifier>{27375c6e-4617-48c8-b49d-b918f01687f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Logging System">
+      <UniqueIdentifier>{6bedb308-12b1-44ce-8525-577dbca988b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Configs">
+      <UniqueIdentifier>{8665c044-5c13-46b2-b41b-4d0189a44c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Files\easylogging">
+      <UniqueIdentifier>{a13528f9-b630-4a90-9035-55cef805ad13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Resource Management\Mesh">
+      <UniqueIdentifier>{0a7b3027-6778-4815-9c97-4728c59163fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Resource Management\Shader">
+      <UniqueIdentifier>{fa0f0dc6-a6b7-4e2e-9368-929fe0746cd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Resource Management\Texture">
+      <UniqueIdentifier>{e8f6cc70-63e8-45d0-9e72-f2f527864345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Resource Management\Material">
+      <UniqueIdentifier>{8ca0dc8c-cfd6-463f-aa7b-0329cebc4b14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -96,9 +117,6 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_opengl3.cpp">
       <Filter>External Files\ImGui\Backends</Filter>
     </ClCompile>
-    <ClCompile Include="src\MaterialLibrary.cpp">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClCompile>
     <ClCompile Include="src\Material.cpp">
       <Filter>Source Files\AssetTypes\Material</Filter>
     </ClCompile>
@@ -123,21 +141,6 @@
     <ClCompile Include="src\EntityFactory.cpp">
       <Filter>Source Files\Systems\Memory Management</Filter>
     </ClCompile>
-    <ClCompile Include="src\MeshLibrary.cpp">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ShaderLibrary.cpp">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TextureLibrary.cpp">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClCompile>
-    <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LoggingSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TimeManager.cpp">
       <Filter>Source Files\Systems\Time Management</Filter>
     </ClCompile>
@@ -161,6 +164,24 @@
     </ClCompile>
     <ClCompile Include="src\UniformData.cpp">
       <Filter>Source Files\AssetTypes\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoggingSystem.cpp">
+      <Filter>Source Files\Systems\Logging System</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp">
+      <Filter>External Files\easylogging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MaterialLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextureLibrary.cpp">
+      <Filter>Source Files\Systems\Resource Management\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,12 +236,6 @@
     <ClInclude Include="src\Texture.h">
       <Filter>Source Files\AssetTypes\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="src\MaterialLibrary.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MaterialEnum.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
     <ClInclude Include="src\RenderBatch.h">
       <Filter>Source Files\Systems\Rendering</Filter>
     </ClInclude>
@@ -251,27 +266,6 @@
     <ClInclude Include="src\EntityPool.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
     </ClInclude>
-    <ClInclude Include="src\TextureLibrary.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MeshEnum.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ShaderEnum.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ShaderLibrary.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TextureEnum.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MeshLibrary.h">
-      <Filter>Source Files\Systems\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LoggingSystem.h">
-      <Filter>External Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\TimeManager.h">
       <Filter>Source Files\Systems\Time Management</Filter>
     </ClInclude>
@@ -296,8 +290,35 @@
     <ClInclude Include="src\UniformBuffer.h">
       <Filter>Source Files\AssetTypes\Material</Filter>
     </ClInclude>
+    <ClInclude Include="src\LoggingSystem.h">
+      <Filter>Source Files\Systems\Logging System</Filter>
+    </ClInclude>
     <ClInclude Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.h">
-      <Filter>External Files</Filter>
+      <Filter>External Files\easylogging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MaterialEnum.h">
+      <Filter>Source Files\Systems\Resource Management\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MaterialLibrary.h">
+      <Filter>Source Files\Systems\Resource Management\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEnum.h">
+      <Filter>Source Files\Systems\Resource Management\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshLibrary.h">
+      <Filter>Source Files\Systems\Resource Management\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderEnum.h">
+      <Filter>Source Files\Systems\Resource Management\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderLibrary.h">
+      <Filter>Source Files\Systems\Resource Management\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureEnum.h">
+      <Filter>Source Files\Systems\Resource Management\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureLibrary.h">
+      <Filter>Source Files\Systems\Resource Management\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -324,6 +345,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\LoggingSystem.conf" />
+    <Text Include="src\LoggingSystem.conf">
+      <Filter>Resource Files\Configs</Filter>
+    </Text>
   </ItemGroup>
 </Project>
