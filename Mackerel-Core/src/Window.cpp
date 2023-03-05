@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include "LoggingSystem.h"
+
 #include <iostream>
 #include <glad/glad.h>
 #include "GLFW/glfw3.h"
@@ -11,14 +13,24 @@
 #include <Eigen/Dense.h>
 #include <vector>
 #include <list>
+#include "Entity.h"
 
 void SayHello()
 {
+    MCK::EntitySystem::Entity entity;
+    entity.Deserialise(entity.TestEntityJson());
+
 	// Initialise GLFW
     if (!glfwInit())
     {
         return;
     }
+
+    // intialize logging system
+    MCK::Logger::initialize();
+
+    //Initial system start message
+    MCK::Logger::log("System Starting", MCK::Logger::LogLevel::Basic, std::source_location::current());
 
 	GLFWwindow* window = glfwCreateWindow(1280, 720, "Test", nullptr, nullptr);
 
@@ -68,6 +80,7 @@ void SayHello()
     Eigen::Vector3<float> vecA(12.0f, 13.0f, 4.0f);
     Eigen::Vector3<float> vecB(2.0f, 42.0f, 10.0f);
 
-	std::cout << "Hello World!\n";
-    std::cout << "Dot Result = " << vecA.dot(vecB) << std::endl;
+    std::stringstream ss;
+    ss << "Hello World! " << "Dot Result = " << vecA.dot(vecB);
+    MCK::Logger::log(ss.str(), MCK::Logger::LogLevel::Basic, std::source_location::current());
 }

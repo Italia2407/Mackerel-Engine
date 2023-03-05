@@ -5,17 +5,17 @@
 
 #include "MaterialEnum.h"
 
+// Forward Declarations
+namespace MCK::AssetType {
+class Material;
+}
+
 namespace MCK
 {
-	namespace AssetType
-	{
-		class Material;
-	}
-
-	/// <summary>
-	/// This class is the resource manager responsible for loading, retrieving, and
-	///		releasing Materials in memory.
-	/// </summary>
+	/**
+	 * This class is the resource manager responsible for loading, retrieving, and
+	 *	releasing Materials in memory.
+	 */
 	class MaterialLibrary
 	{
 		private:
@@ -41,69 +41,77 @@ namespace MCK
 
 			// private implementation of Singleton functions
 			
-			/// <summary>
-			/// Private implementation of the MaterialLibrary::Get() function.
-			/// Attempts to retrieve the specified material from memory.
-			/// </summary>
-			/// <param name="asset">: enum identifier of the desired material</param>
-			/// <param name="out">: output reference to return the retrieved material</param>
-			/// <returns>true if the function succeeded or false if it fails</returns>
+			/**
+			 * Private implementation of the MaterialLibrary::Get() function.
+			 * Attempts to retrieve the specified material from memory.
+			 * 
+			 * \param asset: enum identifier of the desired material
+			 * \param out: output reference to return the retrieved material
+			 * \return true if the function succeeded or false if it fails
+			 */
 			bool privGet(MaterialEnum asset, AssetType::Material* out);
 
-			/// <summary>
-			/// Private implementation of the MaterialLibrary::Load() function.
-			/// Attempts to load the specified material into memory from disk.
-			/// </summary>
-			/// <param name="asset">: enum identifier of the desired material</param>
-			/// <param name="filepath">: filepath to the material</param>
-			/// <returns>true if the function succeeded or false if it fails</returns>
+			/**
+			 * Private implementation of the MaterialLibrary::Load() function.
+			 * Attempts to load the specified material into memory from disk.
+			 * 
+			 * \param asset: enum identifier of the desired material
+			 * \param filepath: filepath to the material
+			 * \return true if the function succeeded or false if it fails
+			 */
 			bool privLoad(MaterialEnum asset, std::string filepath);
 
-			/// <summary>
-			/// Private implementation of the MaterialLibrary::Load() function.
-			/// Attempts to release the specified material from memory. 
-			/// </summary>
-			/// <param name="asset">: enum identifier of the desired material</param>
-			/// <returns>true if a material was released from memory or false if it wasn't
-			///				loaded in the first place.</returns>
+			/**
+			 * Private implementation of the MaterialLibrary::Load() function.
+			 * Attempts to release the specified material from memory.
+			 * 
+			 * \param asset: enum identifier of the desired material
+			 * \return true if a material was released from memory or false if it wasn't
+			 *			loaded in the first place.
+			 */
 			bool privFree(MaterialEnum asset);
 
 		public:
-			/// <summary>
-			/// <para>Releases all material in memory, and frees the MaterialLibrary instance.</para>
-			/// <para>Should only be called at the end of the applications lifetime!</para>
-			/// </summary>
-			/// <returns>true if the library was successfully released, false if it
-			//				wasn't initialised to begin with</returns>
+			/**
+			 * Releases all materials in memory, and frees the MaterialLibrary instance.
+			 * Should only be called at the end of the applications lifetime!
+			 * 
+			 * \return true if the library was successfully released, false if it
+			 *	wasn't initialised to begin with
+			 */
 			bool Release();
 
-			/// <summary>
-			/// Attempts to retrieve the specified material from memory.
-			/// </summary>
-			/// <param name="asset">: enum identifier of the desired material</param>
-			/// <param name="out">: output reference to return the retrieved material</param>
-			/// <returns>true if the function succeeded or false if it fails</returns>
+			/**
+			 * Attempts to retrieve the specified material from memory.
+			 * 
+			 * \param asset: enum identifier of the desired material
+			 * \param out: output reference to return the retrieved material
+			 * \return true if the function succeeded or false if it fails
+			 */
 			bool Get(MaterialEnum asset, AssetType::Material* out)
 			{
 				return Instance()->privGet(asset, out);
 			}
 
-			/// <summary>
-			/// Attempts to load the specified material into memory from disk.
-			/// </summary>
-			/// <param name="asset">: enum identifier of the desired material</param>
-			/// <returns>true if the function succeeded or false if it fails</returns>
+			/**
+			 * Attempts to load the specified material into memory from disk.
+			 * 
+			 * \param asset: enum identifier of the desired material
+			 * \param filepath: filepath to the material
+			 * \return true if the function succeeded or false if it fails
+			 */
 			bool Load(MaterialEnum asset, std::string filepath)
 			{
 				return Instance()->privLoad(asset, filepath);
 			}
 
-			/// <summary>
-			/// Attempts to release the specified material from memory. 
-			/// </summary>
-			/// <param name="asset">: enum identifier of the desired material</param>
-			/// <returns>true if a material was released from memory or false if it wasn't
-			///				loaded in the first place.</returns>
+			/**
+			 * Attempts to release the specified material from memory.
+			 * 
+			 * \param asset: enum identifier of the desired material
+			 * \return true if a material was released from memory or false if it wasn't
+			 *		loaded in the first place.
+			 */
 			bool Free(MaterialEnum asset)
 			{
 				return Instance()->privFree(asset);

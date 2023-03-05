@@ -12,10 +12,10 @@ namespace MCK
 		class Texture;
 	}
 
-	/// <summary>
-	/// This class is the resource manager responsible for loading, retrieving, and
-	///		releasing Textures in memory.
-	/// </summary>
+	/**
+	 * This class is the resource manager responsible for loading, retrieving, and
+	 * releasing Textures in memory.
+	 */
 	class TextureLibrary
 	{
 	private:
@@ -41,69 +41,77 @@ namespace MCK
 
 		// private implementation of Singleton functions
 
-		/// <summary>
-		/// Private implementation of the TextureLibrary::Get() function.
-		/// Attempts to retrieve the specified texture from memory.
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired texture</param>
-		/// <param name="out">: output reference to return the retrieved texture</param>
-		/// <returns>true if the function succeeded or false if it fails</returns>
+		/**
+		 * Private implementation of the TextureLibrary::Get() function.
+		 * Attempts to retrieve the specified texture from memory.
+		 * 
+		 * \param asset: enum identifier of the desired texture
+		 * \param out: output reference to return the retrieved texture
+		 * \return true if the function succeeded or false if it fails
+		 */
 		bool privGet(TextureEnum asset, AssetType::Texture* out);
 
-		/// <summary>
-		/// Private implementation of the TextureLibrary::Load() function.
-		/// Attempts to load the specified texture into memory from disk.
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired texture</param>
-		/// <param name="filepath">: filepath to the texture</param>
-		/// <returns>true if the function succeeded or false if it fails</returns>
+		/**
+		 * Private implementation of the TextureLibrary::Load() function.
+		 * Attempts to load the specified texture into memory from disk.
+		 * 
+		 * \param asset: enum identifier of the desired texture
+		 * \param filepath: filepath to the texture
+		 * \return true if the function succeeded or false if it fails
+		 */
 		bool privLoad(TextureEnum asset, std::string filepath);
 
-		/// <summary>
-		/// Private implementation of the TextureLibrary::Load() function.
-		/// Attempts to release the specified texture from memory. 
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired texture</param>
-		/// <returns>true if a texture was released from memory or false if it wasn't
-		///				loaded in the first place.</returns>
+		/**
+		 * Private implementation of the TextureLibrary::Load() function.
+		 * Attempts to release the specified texture from memory. 
+		 * 
+		 * \param asset: enum identifier of the desired texture
+		 * \return true if a texture was released from memory or false if it wasn't
+		 *		loaded in the first place.
+		 */
 		bool privFree(TextureEnum asset);
 
 	public:
-		/// <summary>
-		/// <para>Releases all textures in memory, and frees the TextureLibrary instance.</para>
-		/// <para>Should only be called at the end of the applications lifetime!</para>
-		/// </summary>
-		/// <returns>true if the library was successfully released, false if it
-		//				wasn't initialised to begin with</returns>
+		/**
+		 * Releases all textures in memory, and frees the TextureLibrary instance.
+		 * Should only be called at the end of the applications lifetime!
+		 * 
+		 * \return true if the library was successfully released, false if it
+		 *		wasn't initialised to begin with
+		 */
 		bool Release();
 
-		/// <summary>
-		/// Attempts to retrieve the specified texture from memory.
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired texture</param>
-		/// <param name="out">: output reference to return the retrieved texture</param>
-		/// <returns>true if the function succeeded or false if it fails</returns>
+		/**
+		 * Attempts to retrieve the specified texture from memory.
+		 * 
+		 * \param asset: enum identifier of the desired texture
+		 * \param out: output reference to return the retrieved texture
+		 * \return true if the function succeeded or false if it fails
+		 */
 		bool Get(TextureEnum asset, AssetType::Texture* out)
 		{
 			return Instance()->privGet(asset, out);
 		}
 
-		/// <summary>
-		/// Attempts to load the specified texture into memory from disk.
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired texture</param>
-		/// <returns>true if the function succeeded or false if it fails</returns>
+		/**
+		 * Attempts to load the specified texture into memory from disk.
+		 * 
+		 * \param asset: enum identifier of the desired texture
+		 * \param filepath: filepath to the texture
+		 * \return true if the function succeeded or false if it fails
+		 */
 		bool Load(TextureEnum asset, std::string filepath)
 		{
 			return Instance()->privLoad(asset, filepath);
 		}
 
-		/// <summary>
-		/// Attempts to release the specified texture from memory. 
-		/// </summary>
-		/// <param name="asset">: enum identifier of the desired texture</param>
-		/// <returns>true if a texture was released from memory or false if it wasn't
-		///				loaded in the first place.</returns>
+		/**
+		 * Attempts to release the specified texture from memory. 
+		 * 
+		 * \param asset: enum identifier of the desired texture
+		 * \return true if a texture was released from memory or false if it wasn't
+		 *		loaded in the first place.
+		 */
 		bool Free(TextureEnum asset)
 		{
 			return Instance()->privFree(asset);

@@ -26,10 +26,14 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_draw.cpp" />
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_tables.cpp" />
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
+    <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
+    <ClCompile Include="src\ComponentFactory.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\EntityPool.cpp" />
+    <ClCompile Include="src\LoggingSystem.cpp" />
+    <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\MaterialLibrary.cpp" />
     <ClCompile Include="src\Material.cpp" />
@@ -40,6 +44,8 @@
     <ClCompile Include="src\TestComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\TextureLibrary.cpp" />
+    <ClCompile Include="src\TimeManager.cpp" />
+    <ClCompile Include="src\UniformBuffer.cpp" />
     <ClCompile Include="src\UniformData.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
@@ -53,22 +59,26 @@
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_rectpack.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_textedit.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_truetype.h" />
+    <ClInclude Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.h" />
     <ClInclude Include="ext\GLAD\include\glad\glad.h" />
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
     <ClInclude Include="ext\nlohmann\json.hpp" />
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
     <ClInclude Include="src\Component.h" />
+    <ClInclude Include="src\ComponentFactory.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
     <ClInclude Include="src\InputManager.h" />
     <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\Light.h" />
+    <ClInclude Include="src\LoggingSystem.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\MaterialEnum.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\MaterialLibrary.h" />
     <ClInclude Include="src\MeshEnum.h" />
+    <ClInclude Include="src\MeshLibrary.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
@@ -78,13 +88,22 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureEnum.h" />
     <ClInclude Include="src\TextureLibrary.h" />
+    <ClInclude Include="src\UniformBuffer.h" />
+    <ClInclude Include="src\TimeManager.h" />
     <ClInclude Include="src\UniformData.h" />
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\Shaders\fragmentHeader.glsl" />
+    <None Include="res\Shaders\frag\monoColour.glsl" />
+    <None Include="res\Shaders\lightsHeader.glsl" />
+    <None Include="res\Shaders\light\unlit.glsl" />
+    <None Include="res\Shaders\vertexHeader.glsl" />
     <None Include="res\Shaders\vert\perspective.glsl" />
     <None Include="src\MaterialDiagram.cd" />
-    <None Include="src\unlit.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\LoggingSystem.conf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -147,7 +166,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -170,7 +189,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -193,7 +212,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -221,7 +240,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

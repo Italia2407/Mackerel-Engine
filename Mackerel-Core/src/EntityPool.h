@@ -9,6 +9,7 @@
  */
 #define DEFAULT_ENTITY_ALLOC_SIZE 16U
 
+// Forward Declarations
 namespace MCK::EntitySystem
 {
 	class Entity;

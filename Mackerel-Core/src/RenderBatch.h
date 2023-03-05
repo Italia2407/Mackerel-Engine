@@ -1,11 +1,18 @@
 #pragma once
 
-#include "Mesh.h"
-#include "Shader.h"
-#include "Material.h"
-
 #include <vector>
 #include <Eigen/Eigen.h>
+
+// Forward Declarations
+namespace MCK {
+class UniformBuffer;
+}
+namespace MCK::AssetType {
+class Material;
+
+class Mesh;
+class Shader;
+}
 
 namespace MCK::Rendering {
 class RenderBatch
@@ -21,14 +28,13 @@ public:
 		Eigen::Vector3f scale;
 
 		AssetType::Material* material;
-
-		bool LoadUniforms();
 	};
 
 private:
 	AssetType::Shader* _shader;
 	AssetType::Mesh* _mesh;
 
+	UniformBuffer* _meshTransformBuffer;
 	std::vector<Instance> _instances;
 
 public:
