@@ -2,6 +2,8 @@
 
 namespace MCK::Input
 {
+	InputManager* InputManager::instance = nullptr;
+
 	InputManager::InputManager()
 	{
 	}
@@ -36,19 +38,17 @@ namespace MCK::Input
 		}
 	}
 
-	void InputManager::privSubscribe(Key key, KeyEvent event, callbackFunc& callback)
+	InputSubReceipt* InputManager::privSubscribe(Key key, KeyEvent event, callbackFunc& callback, InputSubReceipt* receipt)
 	{
 		KeyHandler* curHandler = CheckMake(key);
-		curHandler->Register(event, callback);
+		return curHandler->Register(event, callback, receipt);
 	}
 
-	void InputManager::privUnsubscribe(Key key, KeyEvent event, callbackFunc& callback)
+	void InputManager::privUnsubscribe(InputSubReceipt* receipt)
 	{
-		if (callbacks.contains(key))
+		for (auto handler : callbacks)
 		{
-			KeyHandler* curHandler = callbacks[key];
-			curHandler->Deregister(event, callback);
-			CheckDemakeUnsafe(key);
+			handler.second->Deregister(receipt);
 		}
 	}
 

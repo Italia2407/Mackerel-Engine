@@ -71,7 +71,9 @@
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
+    <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\InputSubReceipt.h" />
     <ClInclude Include="src\KeyHandler.h" />
     <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\Light.h" />

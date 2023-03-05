@@ -4,15 +4,14 @@
 #include <functional>
 #include <GLFW/glfw3.h>
 #include <list>
+#include <vector>
 
 #include "Keys.h"
 #include "KeyEvents.h"
+#include "InputSubReceipt.h"
 
 namespace MCK::Input
 {
-	using callbackFunc = std::function<void()>;
-	using callbackList = std::list<callbackFunc>;
-
 	class KeyHandler
 	{
 		public:
@@ -40,8 +39,9 @@ namespace MCK::Input
 			 * 
 			 * \param event: the key event that should envoke the callback.
 			 * \param callback: the callback function to be envoked.
+			 * \param receipt (optional): if not null, the given receipt is appended to instead of returning a new one.
 			 */
-			void Register(KeyEvent event, callbackFunc callback);
+			InputSubReceipt* Register(KeyEvent event, callbackFunc callback, InputSubReceipt* receipt = nullptr);
 
 			/**
 			 * Deregisters the givencallback.
@@ -49,7 +49,7 @@ namespace MCK::Input
 			 * \param event: the associated event to deregister the callback from.
 			 * \param callback: the callback to deregister.
 			 */
-			void Deregister(KeyEvent event, callbackFunc callback);
+			void Deregister(InputSubReceipt* receipt);
 
 			/**
 			 * Checks if the KeyHandler has any associated callbacks.

@@ -8,6 +8,7 @@
 #include "KeyEvents.h"
 #include "KeyHandler.h"
 #include "Keys.h"
+#include "InputSubReceipt.h"
 
 namespace MCK::Input
 {
@@ -59,8 +60,8 @@ namespace MCK::Input
 			void CheckDemakeUnsafe(Key key);
 
 			// private implementations of static functions
-			void privSubscribe(Key key, KeyEvent event, callbackFunc& callback);
-			void privUnsubscribe(Key key, KeyEvent event, callbackFunc& callback);
+			InputSubReceipt* privSubscribe(Key key, KeyEvent event, callbackFunc& callback, InputSubReceipt* receipt = nullptr);
+			void privUnsubscribe(InputSubReceipt* receipt);
 
 			void privCheckKeys(GLFWwindow* window);
 
@@ -73,9 +74,9 @@ namespace MCK::Input
 			 * \param event: the key event that should trigger the callback
 			 * \param callback: the callback function
 			 */
-			static void Subscribe(Key key, KeyEvent event, callbackFunc& callback)
+			static InputSubReceipt* Subscribe(Key key, KeyEvent event, callbackFunc& callback, InputSubReceipt* receipt = nullptr)
 			{
-				Instance()->privSubscribe(key, event, callback);
+				return Instance()->privSubscribe(key, event, callback, receipt);
 			}
 
 			/**
@@ -85,9 +86,9 @@ namespace MCK::Input
 			 * \param event: the relevant key event
 			 * \param callback: the callback function to be deregistered
 			 */
-			static void Unsubscribe(Key key, KeyEvent event, callbackFunc& callback)
+			static void Unsubscribe(InputSubReceipt* receipt)
 			{
-				Instance()->privUnsubscribe(key, event, callback);
+				Instance()->privUnsubscribe(receipt);
 			}
 
 			/**

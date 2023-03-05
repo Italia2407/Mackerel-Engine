@@ -12,6 +12,7 @@ namespace MCK
 		Released = 0,
 		Pressed = 1,
 		Held = 2, // Take note that this used differently than glfw uses 'Repeated' (See KeyHandler class and glfw docs)
-		Null = 3 // Not used by glfw, but used for default key state in Key Handlers
+		Null = 3, // Not used by glfw, but used for default key state in Key Handlers
+		All = 4 // Used to subscribe/unsubscribe a callback function to all events for a given key
 	};
 }

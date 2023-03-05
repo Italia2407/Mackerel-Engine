@@ -341,6 +341,12 @@
     <ClInclude Include="src\KeyHandler.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
+    <ClInclude Include="src\Input.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InputSubReceipt.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">

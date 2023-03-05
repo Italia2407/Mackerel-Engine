@@ -40,71 +40,80 @@ void MCK::Input::KeyHandler::CheckState(GLFWwindow* window)
 void MCK::Input::KeyHandler::onPressed()
 {
 	for (auto func : pressedList)
-		func();
+		func(key, KeyEvent::Pressed);
 }
 
 void MCK::Input::KeyHandler::onReleased()
 {
 	for (auto func : releasedList)
-		func();
+		func(key, KeyEvent::Released);
 }
 
 void MCK::Input::KeyHandler::onHeld()
 {
 	for (auto func : heldList)
-		func();
+		func(key, KeyEvent::Held);
 }
 
-void MCK::Input::KeyHandler::Register(KeyEvent event, callbackFunc callback)
+MCK::Input::InputSubReceipt* MCK::Input::KeyHandler::Register(KeyEvent event, callbackFunc callback, InputSubReceipt* receipt)
 {
+	InputSubReceipt* ret;
+
+	if (receipt)
+	{
+		ret = receipt;
+		if (ret->ContainsKey(key) == false)
+			ret->data.emplace(key, InputSubReceipt::IttTriplet());
+	}
+	else
+	{
+		ret = new InputSubReceipt;
+		ret->data.emplace(key, InputSubReceipt::IttTriplet());
+	}
+
 	switch (event)
 	{
 		case KeyEvent::Pressed:
-			if (std::find(pressedList.begin(), pressedList.end(), callback) == pressedList.end())
-				pressedList.push_back(callback);
+			ret->GetItt(key).pressed_iterators.push_back(pressedList.insert(pressedList.end(), callback));
 			break;
 
 		case KeyEvent::Released:
-			if (std::find(releasedList.begin(), releasedList.end(), callback) == releasedList.end())
-				releasedList.push_back(callback);
+			ret->GetItt(key).released_iterators.push_back(releasedList.insert(releasedList.end(), callback));
 			break;
 
 		case KeyEvent::Held:
-			if (std::find(heldList.begin(), heldList.end(), callback) == heldList.end())
-				heldList.push_back(callback);
+			ret->GetItt(key).held_iterators.push_back(heldList.insert(heldList.end(), callback));
+			break;
+
+		case KeyEvent::All:
+			ret->GetItt(key).pressed_iterators.push_back(pressedList.insert(pressedList.end(), callback));
+			ret->GetItt(key).released_iterators.push_back(releasedList.insert(releasedList.end(), callback));
+			ret->GetItt(key).held_iterators.push_back(heldList.insert(heldList.end(), callback));
 			break;
 
 		default:
 			break;
 	}
+
+	return ret;
 }
 
-void MCK::Input::KeyHandler::Deregister(KeyEvent event, callbackFunc callback)
+void MCK::Input::KeyHandler::Deregister(InputSubReceipt* receipt)
 {
-	callbackList::iterator itt;
-
-	switch (event)
+	if (receipt->ContainsKey(key))
 	{
-	case KeyEvent::Pressed:
-		itt = std::find(pressedList.begin(), pressedList.end(), callback);
-		if (itt != pressedList.end())
+		for (auto itt : receipt->GetItt(key).pressed_iterators)
 			pressedList.erase(itt);
-		break;
 
-	case KeyEvent::Released:
-		itt = std::find(releasedList.begin(), releasedList.end(), callback);
-		if (itt != releasedList.end())
+		for (auto itt : receipt->GetItt(key).released_iterators)
 			releasedList.erase(itt);
-		break;
 
-	case KeyEvent::Held:
-		itt = std::find(heldList.begin(), heldList.end(), callback);
-		if (itt != heldList.end())
+		for (auto itt : receipt->GetItt(key).held_iterators)
 			heldList.erase(itt);
-		break;
 
-	default:
-		break;
+		receipt->GetItt(key).pressed_iterators.clear();
+		receipt->GetItt(key).released_iterators.clear();
+		receipt->GetItt(key).held_iterators.clear();
 	}
 }
 
