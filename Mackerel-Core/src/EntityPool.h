@@ -3,6 +3,10 @@
 #include <stack>
 #include <set>
 
+/**
+ * The default number of entities to allocate if the pool is emptied and another
+ *     entity is requested. Also doubles as the starting pool size.
+ */
 #define DEFAULT_ENTITY_ALLOC_SIZE 16U
 
 // Forward Declarations

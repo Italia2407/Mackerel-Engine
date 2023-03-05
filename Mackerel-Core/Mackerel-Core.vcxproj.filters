@@ -64,6 +64,9 @@
     <Filter Include="Source Files\Systems\Memory Management">
       <UniqueIdentifier>{5f5c7d82-68df-4826-9bf4-ea6c5df0bba1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Input System">
+      <UniqueIdentifier>{5a73f732-1725-4cd8-88c8-43c3686980d1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Systems\Time Management">
       <UniqueIdentifier>{27375c6e-4617-48c8-b49d-b918f01687f6}</UniqueIdentifier>
     </Filter>
@@ -182,6 +185,15 @@
     </ClCompile>
     <ClCompile Include="src\TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KeyEvents.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KeyHandler.cpp">
+      <Filter>Source Files\Systems\Input System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +331,21 @@
     </ClInclude>
     <ClInclude Include="src\TextureLibrary.h">
       <Filter>Source Files\Systems\Resource Management\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InputManager.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Keys.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KeyHandler.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InputSubReceipt.h">
+      <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
