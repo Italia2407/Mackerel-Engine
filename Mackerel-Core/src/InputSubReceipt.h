@@ -40,7 +40,7 @@ namespace MCK::Input
 				return data.contains(key);
 			}
 
-			IttTriplet GetItt(Key key)
+			IttTriplet& GetItt(Key key)
 			{
 				return data[key];
 			}
