@@ -186,6 +186,15 @@
     <ClCompile Include="src\TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="src\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KeyEvents.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KeyHandler.cpp">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -327,6 +336,9 @@
       <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
     <ClInclude Include="src\Keys.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KeyHandler.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
   </ItemGroup>

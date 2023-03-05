@@ -32,6 +32,8 @@
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\EntityPool.cpp" />
+    <ClCompile Include="src\KeyEvents.h" />
+    <ClCompile Include="src\KeyHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
@@ -70,6 +72,7 @@
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\KeyHandler.h" />
     <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\LoggingSystem.h" />

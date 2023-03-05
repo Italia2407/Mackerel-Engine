@@ -10,17 +10,53 @@ namespace MCK::Input
 	{
 	}
 
-	void InputManager::privSubscribe(Key keyVal, std::function<void> callback)
+	KeyHandler* InputManager::CheckMake(Key key)
 	{
-		// 1. Add a new list if the key hasn't been subscribe to before
-		if (callbacks.contains(keyVal) == false)
-			callbacks.emplace(keyVal, callbackList());
+		if (callbacks.contains(key) == false)
+			callbacks.emplace(key, new KeyHandler(key));
 
-		// 2. add the callback
-		callbacks[keyVal].push_back(callback);
+		return callbacks[key];
+	}
 
-		// 3. ???
+	void InputManager::CheckDemake(Key key)
+	{
+		if (callbacks.contains(key) && callbacks[key]->Empty())
+		{
+			delete callbacks[key];
+			callbacks.erase(key);
+		}
+	}
 
-		// 4. profit
+	void InputManager::CheckDemakeUnsafe(Key key)
+	{
+		if (callbacks[key]->Empty())
+		{
+			delete callbacks[key];
+			callbacks.erase(key);
+		}
+	}
+
+	void InputManager::privSubscribe(Key key, KeyEvent event, callbackFunc& callback)
+	{
+		KeyHandler* curHandler = CheckMake(key);
+		curHandler->Register(event, callback);
+	}
+
+	void InputManager::privUnsubscribe(Key key, KeyEvent event, callbackFunc& callback)
+	{
+		if (callbacks.contains(key))
+		{
+			KeyHandler* curHandler = callbacks[key];
+			curHandler->Deregister(event, callback);
+			CheckDemakeUnsafe(key);
+		}
+	}
+
+	void InputManager::privCheckKeys(GLFWwindow* window)
+	{
+		for (auto handler : callbacks)
+		{
+			handler.second->CheckState(window);
+		}
 	}
 }

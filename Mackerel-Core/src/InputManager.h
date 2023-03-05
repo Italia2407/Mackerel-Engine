@@ -5,14 +5,16 @@
 #include <list>
 #include <map>
 
+#include "KeyEvents.h"
+#include "KeyHandler.h"
 #include "Keys.h"
 
 namespace MCK::Input
 {
-	using callbackList = std::list<std::function<void>>;
-
 	class InputManager
 	{
+		using callbackMap = std::map<Key, KeyHandler*>;
+
 		private:
 			InputManager();
 			~InputManager();
@@ -31,23 +33,71 @@ namespace MCK::Input
 			}
 
 			// private member variables
-			std::map<Key, callbackList> callbacks;
+			callbackMap callbacks;
+
+			// private member functions
+			/**
+			 * Instatiates the associated key handler if it doesn't exist.
+			 * 
+			 * \param key: the associated key.
+			 *
+			 * \return the associated key handler.
+			 */
+			KeyHandler* CheckMake(Key key);
+			/**
+			 * Deletes the associated key handler if it is empty.
+			 *
+			 * \param key: the associated key.
+			 */
+			void CheckDemake(Key key);
+			/**
+			 * Deletes the associated key handler if it is empty, but doesn't check if
+			 *     it exists first.
+			 *
+			 * \param key: the associated key.
+			 */
+			void CheckDemakeUnsafe(Key key);
 
 			// private implementations of static functions
-			void privSubscribe(Key keyVal, std::function<void> callback);
+			void privSubscribe(Key key, KeyEvent event, callbackFunc& callback);
+			void privUnsubscribe(Key key, KeyEvent event, callbackFunc& callback);
 
-			void privCheckKeys();
+			void privCheckKeys(GLFWwindow* window);
 
 		public:
 			/**
-			 * Adds the given function as a callback for when the given key is pressed.
+			 * Adds the given function as a callback for when the given event occurs
+			 *     with the given key.
 			 * 
-			 * \param keyVal: the key that should trigger the callback
+			 * \param key: the key that should trigger the callback
+			 * \param event: the key event that should trigger the callback
 			 * \param callback: the callback function
 			 */
-			static void Subscribe(Key keyVal, std::function<void> callback)
+			static void Subscribe(Key key, KeyEvent event, callbackFunc& callback)
 			{
-				Instance()->privSubscribe(keyVal, callback);
+				Instance()->privSubscribe(key, event, callback);
+			}
+
+			/**
+			 * Removes the given callback function for the associated key and key event.
+			 * 
+			 * \param key: the relevant key
+			 * \param event: the relevant key event
+			 * \param callback: the callback function to be deregistered
+			 */
+			static void Unsubscribe(Key key, KeyEvent event, callbackFunc& callback)
+			{
+				Instance()->privUnsubscribe(key, event, callback);
+			}
+
+			/**
+			 * Checks the states of tracked keys and envokes relevant callbacks.
+			 * 
+			 * \param window: the glfw window to query the key states from.
+			 */
+			static void CheckKeys(GLFWwindow* window)
+			{
+				Instance()->privCheckKeys(window);
 			}
 	};
 }

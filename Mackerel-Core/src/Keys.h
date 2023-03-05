@@ -2,6 +2,10 @@
 
 namespace MCK
 {
+	/**
+	 * This enum class contains an enum for detectible keyboard inputs, it is
+	 *     based on the GLFW key constants.
+	 */
 	enum class Key
 	{
 		__UNKNOWN = -1,
