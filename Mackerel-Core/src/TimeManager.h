@@ -21,7 +21,6 @@ namespace MCK
 		TimeManager& operator=(const TimeManager&) = delete;
 
 		// singleton bookkeeping
-
 		static TimeManager* instance;
 		static TimeManager* Instance()
 		{
@@ -122,14 +121,14 @@ namespace MCK
 		 * \return true if the manager was successfully released, false if it
 		 *	wasn't initialised to begin with
 		 */
-		bool Release();
+		static bool Release();
 
 		/**
 		 * Gets the total up time of the application.
 		 *
 		 * \return up time as a double
 		 */
-		double GetUpTime()
+		static double GetUpTime()
 		{
 			return Instance()->privGetUpTime();
 		}
@@ -139,7 +138,7 @@ namespace MCK
 		 * 
 		 * \return scaled up time as a double
 		 */
-		double GetScaledUpTime()
+		static double GetScaledUpTime()
 		{
 			return Instance()->privGetScaledUpTime();
 		}
@@ -149,7 +148,7 @@ namespace MCK
 		 *
 		 * \param timer: key-value pair of end time and callback function
 		 */
-		void setTimer(std::pair<double, std::function<void()>> timer)
+		static void setTimer(std::pair<double, std::function<void()>> timer)
 		{
 			Instance()->privSetTimer(timer);
 		}
@@ -159,7 +158,7 @@ namespace MCK
 		 * 
 		 * \param timer: key-value pair of end time and callback function
 		 */
-		void setScaledTimer(std::pair<double, std::function<void()>> timer)
+		static void setScaledTimer(std::pair<double, std::function<void()>> timer)
 		{
 			Instance()->privSetScaledTimer(timer);
 		}
@@ -169,7 +168,7 @@ namespace MCK
 		 *
 		 * \param scale: value the user wants to change the timescale to.
 		 */
-		void setTimescale(double scale)
+		static void setTimescale(double scale)
 		{
 			Instance()->privSetTimescale(scale);
 		}
@@ -179,7 +178,7 @@ namespace MCK
 		 *
 		 * \return scaled time since the last frame
 		 */
-		double getScaledFrameTime()
+		static double getScaledFrameTime()
 		{
 			return Instance()->privGetFrameTime();
 		}
@@ -189,7 +188,7 @@ namespace MCK
 		 *
 		 * \return time since the last frame, without scaling
 		 */
-		double getFrameTime()
+		static double getFrameTime()
 		{
 			return Instance()->privGetUnscaledFrameTime();
 		}
@@ -199,7 +198,7 @@ namespace MCK
 		 * Removes all finished timers, sends callbacks for each of them.
 		 *
 		*/
-		void Update()
+		static void Update()
 		{
 			Instance()->privUpdate();
 		}
