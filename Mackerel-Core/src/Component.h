@@ -39,7 +39,7 @@ namespace MCK::EntitySystem
 		/**
 		 * Returns the type id of this component
 		 * 
-		 * \return The name as a C string.
+		 * \return The type info
 		 */
 		virtual TypeInfoRef GetType() = 0;
 

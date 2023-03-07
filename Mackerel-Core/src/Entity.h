@@ -7,6 +7,7 @@
 
 // Forward Declarations
 namespace MCK::EntitySystem {
+class Scene;
 class Component;
 class ComponentFactory;
 }

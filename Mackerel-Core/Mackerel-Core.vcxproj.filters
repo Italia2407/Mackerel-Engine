@@ -195,6 +195,9 @@
     <ClCompile Include="src\KeyHandler.cpp">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="src\InputSubReceipt.h">
       <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

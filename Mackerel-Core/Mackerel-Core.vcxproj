@@ -42,6 +42,7 @@
     <ClCompile Include="src\MeshLibrary.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\ShaderLibrary.cpp" />
     <ClCompile Include="src\TestComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="src\MeshLibrary.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderEnum.h" />
     <ClInclude Include="src\ShaderLibrary.h" />
