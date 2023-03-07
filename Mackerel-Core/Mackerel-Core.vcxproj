@@ -33,8 +33,11 @@
     <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\EntityPool.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
+    <ClCompile Include="src\KeyEvents.h" />
+    <ClCompile Include="src\KeyHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
     <ClCompile Include="src\Light.cpp" />
+    <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\MaterialLibrary.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
@@ -59,6 +62,7 @@
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_rectpack.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_textedit.h" />
     <ClInclude Include="ext\Dear-ImGui 1.89.2\imstb_truetype.h" />
+    <ClInclude Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.h" />
     <ClInclude Include="ext\GLAD\include\glad\glad.h" />
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
     <ClInclude Include="ext\nlohmann\json.hpp" />
@@ -68,6 +72,11 @@
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
+    <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\InputSubReceipt.h" />
+    <ClInclude Include="src\KeyHandler.h" />
+    <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\LoggingSystem.h" />
@@ -99,6 +108,9 @@
     <None Include="res\Shaders\vertexHeader.glsl" />
     <None Include="res\Shaders\vert\perspective.glsl" />
     <None Include="src\MaterialDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\LoggingSystem.conf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
