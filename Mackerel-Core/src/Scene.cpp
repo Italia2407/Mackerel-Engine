@@ -1,7 +1,8 @@
+#include "ComponentFactory.h"
+#include "EntityFactory.h"
 #include "Entity.h"
 #include "EntityFactory.h"
 #include "Component.h"
-#include "ComponentFactory.h"
 #include "Scene.h"
 
 using json = nlohmann::json;
@@ -11,7 +12,11 @@ namespace MCK::EntitySystem
 	Entity* Scene::CreateEntity()
 	{
 		Entity* newEntity = entityFactory.Get();
+
+		newEntity->scene = this;
+
 		entities.push_back(newEntity);
+
 		return newEntity;
 	}
 
@@ -21,7 +26,7 @@ namespace MCK::EntitySystem
 		// If the entity has no parent, we need to remove it from the scenes list of entities
 		if (entity->parent == nullptr)
 		{
-			unsigned int numEntities = entities.size();
+			size_t numEntities = entities.size();
 			for (unsigned int i = 0; i < numEntities; ++i)
 			{
 				if (entities[i] == entity)
@@ -33,6 +38,16 @@ namespace MCK::EntitySystem
 		}
 
 		entityFactory.Recycle(entity);
+	}
+
+	Component* Scene::CreateComponent(std::string key)
+	{
+		return componentFactory.CreateComponent(key);
+	}
+
+	void Scene::FreeComponent(Component* component)
+	{
+		componentFactory.FreeComponent(component);
 	}
 
 	void Scene::Deserialise(json sceneJson)

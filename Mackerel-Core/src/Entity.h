@@ -19,8 +19,10 @@ namespace MCK::EntitySystem
 class Entity
 {
 private:
-	ComponentFactory* componentFactory;
 public:
+
+	Scene* scene;
+
 	/**
 		* The parent entity. Nullptr if non-existent.
 		*/

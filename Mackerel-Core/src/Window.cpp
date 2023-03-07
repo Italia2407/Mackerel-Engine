@@ -14,6 +14,7 @@
 #include <vector>
 #include <list>
 #include "Entity.h"
+#include "Scene.h"
 
 #include "Input.h"
 
@@ -25,8 +26,8 @@ void InputCallbackTest(MCK::Key key, MCK::KeyEvent keyEvent)
 
 void SayHello()
 {
-    MCK::EntitySystem::Entity entity;
-    entity.Deserialise(entity.TestEntityJson());
+    MCK::EntitySystem::Scene scene;
+    scene.Deserialise(scene.TestSceneJson());
 
 	// Initialise GLFW
     if (!glfwInit())

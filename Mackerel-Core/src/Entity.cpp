@@ -1,7 +1,9 @@
-#include "Entity.h"
-
-#include "Component.h"
 #include "ComponentFactory.h"
+#include "EntityFactory.h"
+#include "Entity.h"
+#include "Component.h"
+#include "Scene.h"
+
 
 namespace MCK::EntitySystem
 {
@@ -34,7 +36,7 @@ namespace MCK::EntitySystem
 	 */
 	void Entity::AddComponent(std::string componentKey, json data)
 	{
-		Component* component = componentFactory->CreateComponent(componentKey);
+		Component* component = scene->CreateComponent(componentKey);
 
 		if (component != nullptr)
 		{
@@ -173,11 +175,13 @@ namespace MCK::EntitySystem
 			childEntities[i]->Deallocate();
 		}
 
-		// TODO deallocate (depends on how we allocate)
-
 		for (unsigned int i = 0; i < components.size(); ++i)
 		{
-			// TODO deallocate components
+			scene->FreeComponent(components[i]);
 		}
+
+		childEntities.clear();
+		components.clear();
+		scene->FreeEntity(this);
 	}
 }

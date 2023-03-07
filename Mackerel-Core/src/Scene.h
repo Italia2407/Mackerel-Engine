@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include "EntityFactory.h"
+#include "ComponentFactory.h"
 #include "../ext/nlohmann/json.hpp"
 
 // Forward declarations
@@ -15,6 +17,8 @@ using json = nlohmann::json;
 
 namespace MCK::EntitySystem
 {
+
+
 	class Scene
 	{
 	private:
@@ -24,10 +28,47 @@ namespace MCK::EntitySystem
 		ComponentFactory componentFactory;
 
 	public:
+		/**
+		 * Creates a blank entity and adds it to the scene.
+		 * 
+		 * \return The created entity
+		 */
 		Entity* CreateEntity();
+
+		/**
+		 * Frees an entity from memory. Deallocate/Destroy the entity prior to this
+		 * 
+		 * \param entity The entity to be freed
+		 */
 		void FreeEntity(Entity* entity);
+
+		/**
+		 * Deserialises a scene from JSON.
+		 * 
+		 * \param sceneJson The JSON object
+		 */
 		void Deserialise(json sceneJson);
 
+		/**
+		 * Creates a component of a given type, specified by the key.
+		 * 
+		 * \param key The key specifying the type of component
+		 * \return A pointer to the component
+		 */
+		Component* CreateComponent(std::string key);
+
+		/**
+		 * Frees a component from memory.
+		 * 
+		 * \param component The component to free
+		 */
+		void FreeComponent(Component* component);
+
+		/**
+		 * Test JSON for a scene. TODO remove
+		 * 
+		 * \return 
+		 */
 		json TestSceneJson()
 		{
 			json entity1 = {
@@ -71,6 +112,8 @@ namespace MCK::EntitySystem
 
 				}}
 			};
+		
+			return scene;
 		}
 	};
 }
