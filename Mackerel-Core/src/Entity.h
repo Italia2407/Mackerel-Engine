@@ -129,6 +129,31 @@ public:
 			}}
 		};
 
+		json test2 = {
+			{"entity",{
+				{"name","entity-name"},
+				{"components",{
+					{
+						{"type","TestComponent"},
+						{"data", {
+							{"exampleAttribute1","exampleString"},
+							{"exampleAttribute2",42}
+						}}
+					},
+					{
+						{"type","TestComponent2"},
+						{"data", {
+							{"exampleAttribute3","exampleString2"},
+							{"exampleAttribute4",100}
+						}}
+					}
+				}},
+				{"children",{
+					test
+				}}
+			}}
+		};
+
 		return test;
 	}
 

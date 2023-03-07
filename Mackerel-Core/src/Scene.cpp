@@ -9,6 +9,11 @@ using json = nlohmann::json;
 
 namespace MCK::EntitySystem
 {
+	/**
+	 * Creates a blank entity and adds it to the scene.
+	 *
+	 * \return The created entity
+	 */
 	Entity* Scene::CreateEntity()
 	{
 		Entity* newEntity = entityFactory.Get();
@@ -20,7 +25,11 @@ namespace MCK::EntitySystem
 		return newEntity;
 	}
 
-	
+	/**
+	 * Frees an entity from memory. Deallocate/Destroy the entity prior to this
+	 *
+	 * \param entity The entity to be freed
+	 */
 	void Scene::FreeEntity(Entity* entity)
 	{
 		// If the entity has no parent, we need to remove it from the scenes list of entities
@@ -40,16 +49,32 @@ namespace MCK::EntitySystem
 		entityFactory.Recycle(entity);
 	}
 
+	/**
+	 * Creates a component of a given type, specified by the key.
+	 *
+	 * \param key The key specifying the type of component
+	 * \return A pointer to the component
+	 */
 	Component* Scene::CreateComponent(std::string key)
 	{
 		return componentFactory.CreateComponent(key);
 	}
 
+	/**
+	 * Frees a component from memory.
+	 *
+	 * \param component The component to free
+	 */
 	void Scene::FreeComponent(Component* component)
 	{
 		componentFactory.FreeComponent(component);
 	}
 
+	/**
+	 * Deserialises a scene from JSON.
+	 *
+	 * \param sceneJson The JSON object
+	 */
 	void Scene::Deserialise(json sceneJson)
 	{
 		json entitiesJson = sceneJson["scene"]["entities"];
