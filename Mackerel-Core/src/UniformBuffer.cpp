@@ -1244,4 +1244,77 @@ bool UniformBuffer::SetUVec4BufferUniform(std::string name, Eigen::Vector4<uint3
 
 	return true;
 }
+
+// Mat4
+/**
+ * Add New Mat4 Buffer Uniform.
+ *
+ * \param name: The Buffer Uniform's Name
+ * \param value: The Buffer Uniform's Value
+ * \return Whether the Buffer Uniform was Successfully Added
+ */
+bool UniformBuffer::AddMat4BufferUniform(std::string name, Eigen::Matrix4f value)
+{
+	if (_isCreated)
+	{// Cannot add Buffer Uniforms if UBO is already Created
+		return false;
+	}
+	if (_bufferUniforms.contains(name))
+	{// Buffer Uniform already Exists with the Given Name
+		return false;
+	}
+
+	Mat4Uniform* bufferUniform = new Mat4Uniform(value);
+	bufferUniform->uniformOffset = _bufferByteSize;
+	_bufferByteSize += bufferUniform->getUniformSize();
+
+	_bufferUniforms[name] = bufferUniform;
+	return true;
+}
+/**
+ * Get Value of Mat4 Buffer Uniform.
+ *
+ * \param name: The Buffer Uniform's Name
+ * \return The Buffer Uniform's Value, if Existent
+ */
+std::optional<Eigen::Matrix4f> UniformBuffer::GetMat4BufferUniform(std::string name)
+{
+	if (!_bufferUniforms.contains(name))
+	{// No Buffer Uniform Exists with the Given Name
+		return {};
+	}
+	Mat4Uniform* castBufferUniform = dynamic_cast<Mat4Uniform*>(_bufferUniforms[name]);
+	if (!castBufferUniform)
+	{// Buffer Uniform isn't Mat4 Type
+		return {};
+	}
+
+	return castBufferUniform->value;
+}
+/**
+ * Change Value of Mat4 Buffer Uniform.
+ *
+ * \param name: The Uniform's Name
+ * \param value: The Uniform's New Value
+ * \return  Whether the Uniform's Value was Successfully Changed
+ */
+bool UniformBuffer::SetMat4BufferUniform(std::string name, Eigen::Matrix4f value)
+{
+	if (!_bufferUniforms.contains(name))
+	{// No Buffer Uniform Exists with the Given Name
+		return false;
+	}
+	Mat4Uniform* castBufferUniform = dynamic_cast<Mat4Uniform*>(_bufferUniforms[name]);
+	if (!castBufferUniform)
+	{// Buffer Uniform isn't Mat4 Type
+		return false;
+	}
+
+	// Update Buffer Uniform Data
+	castBufferUniform->value = value;
+	// Update Uniform Buffer Object Data
+	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+
+	return true;
+}
 }

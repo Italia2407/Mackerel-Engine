@@ -55,6 +55,8 @@ private:
 	bool addUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value);
 	bool addUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value);
 
+	bool addMat4Uniform(std::string name, Eigen::Matrix4f value);
+
 public:
 	bool UseMaterial();
 	void ResetMaterial();
@@ -98,6 +100,9 @@ public:
 	bool SetUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value);
 	std::optional<Eigen::Vector4<uint32_t>> GetUVec4Uniform(std::string name);
 	bool SetUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value);
+
+	std::optional<Eigen::Matrix4f> GetMat4Uniform(std::string name);
+	bool SetMat4Uniform(std::string name, Eigen::Matrix4f value);
 
 	Texture* GetTexture(GLuint slot);
 	void SetTexture(GLuint slot, Texture* texture);

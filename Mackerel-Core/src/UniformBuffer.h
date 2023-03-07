@@ -29,7 +29,7 @@ private:
 
 public:
 	GLuint getBufferByteSize() { return _bufferByteSize; }
-	bool isCreated() { return _isCreated; }
+	bool IsCreated() { return _isCreated; }
 
 public:
 	bool CreateUniformBufferObject();
@@ -106,5 +106,10 @@ public:
 	bool AddUVec4BufferUniform(std::string name, Eigen::Vector4<uint32_t> value);
 	std::optional<Eigen::Vector4<uint32_t>> GetUVec4BufferUniform(std::string name);
 	bool SetUVec4BufferUniform(std::string name, Eigen::Vector4<uint32_t> value);
+
+	// Mat4
+	bool AddMat4BufferUniform(std::string name, Eigen::Matrix4f value);
+	std::optional<Eigen::Matrix4f> GetMat4BufferUniform(std::string name);
+	bool SetMat4BufferUniform(std::string name, Eigen::Matrix4f value);
 };
 }

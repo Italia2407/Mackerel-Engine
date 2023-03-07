@@ -8,13 +8,28 @@
 #include "Shader.h"
 
 namespace MCK::Rendering {
-RenderBatch::RenderBatch(AssetType::Shader* shader, AssetType::Mesh* mesh) :
-	_shader(shader), _mesh(mesh) {}
-RenderBatch::~RenderBatch() {}
-
-bool RenderBatch::AddBatchInstance(Instance instance)
+RenderBatch::RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader) :
+	_mesh(mesh), _shader(shader) {}
+RenderBatch::~RenderBatch()
 {
-	_instances.push_back(instance);
+	// Clear Transform Buffer Object
+	delete _meshTransformBuffer;
+
+	// Empty all Instances
+	_instances.clear();
+}
+
+bool RenderBatch::AddBatchInstance(AssetType::Material* material, Eigen::Vector3f position, Eigen::Quaternion<float> rotation, Eigen::Vector3f scale)
+{
+	Instance batchInstance{}; {
+		batchInstance.material = material;
+
+		batchInstance.position = position;
+		batchInstance.rotation = rotation;
+		batchInstance.scale = scale;
+	}
+
+	_instances.push_back(batchInstance);
 	return true;
 }
 }

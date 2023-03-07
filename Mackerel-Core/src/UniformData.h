@@ -179,4 +179,15 @@ struct UVec4Uniform : UniformData
 	void* getUniformValue() override { return value.data(); }
 	GLuint getUniformSize() override { return 16; }
 };
+
+struct Mat4Uniform : UniformData
+{
+	Mat4Uniform(Eigen::Matrix4f value) :
+		UniformData(), value(value) {}
+
+	Eigen::Matrix4f value;
+
+	void* getUniformValue() override { return value.data(); }
+	GLuint getUniformSize() override { return 64; }
+};
 }

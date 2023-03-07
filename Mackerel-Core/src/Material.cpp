@@ -635,7 +635,7 @@ void Material::SetTexture(GLuint slot, Texture* texture)
  */
 bool Material::bindUniformBuffer()
 {
-	if (!_uniformBuffer->isCreated())
+	if (!_uniformBuffer->IsCreated())
 	{// Create Uniform Buffer Object
 		if (!_uniformBuffer->CreateUniformBufferObject())
 			return false;
