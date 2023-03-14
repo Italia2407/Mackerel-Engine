@@ -50,6 +50,18 @@ namespace MCK::EntitySystem
 	}
 
 	/**
+	 * Updates all a scene and all the entities in it.
+	 *
+	 */
+	void Scene::UpdateScene()
+	{
+		for (unsigned int i = 0; i < entities.size(); ++i)
+		{
+			entities[i]->UpdateEntity();
+		}
+	}
+
+	/**
 	 * Creates a component of a given type, specified by the key.
 	 *
 	 * \param key The key specifying the type of component

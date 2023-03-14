@@ -112,12 +112,17 @@ namespace MCK::EntitySystem
 	 * Invoked each frame. Updates all components.
 	 *
 	 */
-	void Entity::OnUpdate()
+	void Entity::UpdateEntity()
 	{
 
 		for (unsigned int i = 0; i < components.size(); ++i)
 		{
 			components[i]->OnUpdate();
+		}
+
+		for (unsigned int i = 0; i < childEntities.size(); ++i)
+		{
+			childEntities[i]->UpdateEntity();
 		}
 
 	}

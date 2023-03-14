@@ -43,6 +43,12 @@ namespace MCK::EntitySystem
 		void FreeEntity(Entity* entity);
 
 		/**
+		 * Updates all a scene and all the entities in it.
+		 * 
+		 */
+		void UpdateScene();
+
+		/**
 		 * Deserialises a scene from JSON.
 		 * 
 		 * \param sceneJson The JSON object

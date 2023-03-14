@@ -54,7 +54,7 @@ public:
 		* Invoked each frame. Updates all components.
 		* 
 		*/
-	void OnUpdate();
+	void UpdateEntity();
 
 	/**
 		* Invoked at the end of each frame. 
