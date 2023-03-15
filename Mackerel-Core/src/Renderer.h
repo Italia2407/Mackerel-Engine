@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <Eigen/Eigen.h>
 
 #include <string>
 #include <map>
@@ -9,15 +10,20 @@
 // Forward Declarations
 namespace MCK {
 class UniformBuffer;
+class FrameBuffer;
 }
 namespace MCK::AssetType {
+class Material;
 class Texture;
+
+class Mesh;
 class Shader;
 }
 namespace MCK::Rendering {
-struct PointLight;
-struct DirectionLight;
-struct SpotLight;
+class Light;
+class PointLight;
+class DirectionLight;
+class SpotLight;
 
 class RenderBatch;
 }
@@ -45,16 +51,25 @@ private:
 		return _instance;
 	}
 
+	FrameBuffer* _geometryBuffer;
+	FrameBuffer* _lightingBuffer;
+
+	AssetType::Texture* _depthBufferTexture;
+
 	GLuint _GBuffer;
 	GLuint _frameBuffer;
 
-	UniformBuffer* _lightUniformBuffer;
+	//std::vector<RenderBatch*> _geometryBatches;
+	std::map<std::pair<AssetType::Mesh*, AssetType::Shader*>, RenderBatch*> _geometryBatches;
 
-	std::vector<RenderBatch*> _geometryBatches;
+	AssetType::Texture* _GBufferTextures[31];
+	AssetType::Texture* _depthTexture;
 
-	AssetType::Texture* _GBufferTextures[32];
-	std::vector<AssetType::Shader*> _lightingShaders;
-	
+	// Light & Shadow Rendering
+	std::vector<AssetType::Shader*> _pointLightShaders;
+	std::vector<AssetType::Shader*> _directionLightShaders;
+	std::vector<AssetType::Shader*> _spotLightShaders;
+
 	std::vector<PointLight*> _pointLights;
 	std::vector<DirectionLight*> _directionLights;
 	std::vector<SpotLight*> _spotLights;
@@ -63,15 +78,22 @@ private:
 	bool initialiseRenderer(GLuint screenWidth, GLuint screenHeight);
 
 	bool createGBuffer(GLuint screenWidth, GLuint screenHeight);
-	bool createLightingUniformBuffer();
+	bool createLightingBuffer(GLuint screenWidth, GLuint screenHeight);
 
 	void renderGBuffer();
-	void renderFrameBuffer();
+	void renderLightingBuffer();
+	void renderShadowMap(Light* light);
 
-	//bool updatePointLight(GLuint pointLightID, PointLight* pointLight);
-	bool attachPointLight(PointLight* pointLight);
-	bool attachDirectionLight(DirectionLight* directionLight);
-	bool attachSpotLight(SpotLight* spotLight);
+	// Functions to tell the Renderer what needs to be Rendered
+
+	bool queuePointLight(PointLight* pointLight);
+	bool queueDirectionLight(DirectionLight* directionLight);
+	bool queueSpotLight(SpotLight* spotLight);
+
+	bool queueRenderBatchInstance(AssetType::Mesh* mesh, AssetType::Shader* shader, AssetType::Material* material,
+		Eigen::Vector3f position, Eigen::Quaternion<float> rotation, Eigen::Vector3f scale);
+
+	void renderFrame();
 
 public:
 	/**

@@ -18,29 +18,30 @@ namespace MCK::Rendering {
 class RenderBatch
 {
 public:
-	RenderBatch(AssetType::Shader* shader, AssetType::Mesh* mesh);
+	RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader);
 	~RenderBatch();
 
+private:
 	struct Instance
 	{
+		AssetType::Material* material;
+
 		Eigen::Vector3f position;
 		Eigen::Quaternion<float> rotation;
 		Eigen::Vector3f scale;
-
-		AssetType::Material* material;
 	};
 
 private:
-	AssetType::Shader* _shader;
 	AssetType::Mesh* _mesh;
+	AssetType::Shader* _shader;
 
 	UniformBuffer* _meshTransformBuffer;
 	std::vector<Instance> _instances;
 
 public:
-	bool AddBatchInstance(Instance instance);
+	bool AddBatchInstance(AssetType::Material* material, Eigen::Vector3f position, Eigen::Quaternion<float> rotation, Eigen::Vector3f scale);
 
-	bool LoadShaderMesh();
+	bool LoadMeshShader();
 	void DrawBatchObjects();
 };
 }

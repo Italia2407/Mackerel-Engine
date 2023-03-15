@@ -3,43 +3,74 @@
 #include <glad/glad.h>
 #include <Eigen/Eigen.h>
 
+// Forward Declarations
+namespace MCK {
+class UniformBuffer;
+}
+
+namespace MCK::AssetType {
+class Texture;
+}
+
 namespace MCK::Rendering {
-struct Light
+class Light
 {
+public:
 	Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
 
-	Eigen::Vector4f diffuseColour;
-	Eigen::Vector4f specularColour;
-	Eigen::Vector4f ambientColour;
+protected:
+	Eigen::Vector4f _diffuseColour;
+	Eigen::Vector4f _specularColour;
+	Eigen::Vector4f _ambientColour;
 
-	static GLuint getBaseLightShaderOffsetSize();
+	AssetType::Texture* _shadowMap;
+	UniformBuffer* _parametersBuffer;
+
+	virtual Eigen::Matrix4f getMVPMatrix();
+
+	virtual bool updateLightingParameters() = 0;
+
+public:
+	bool UseLight();
 };
 
-struct PointLight : Light
+class PointLight : public Light
 {
+public:
 	PointLight(Eigen::Vector3f position, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
 
-	Eigen::Vector3f position;
+private:
+	Eigen::Vector3f _position;
 
-	static GLuint getPointLightShaderOffsetSize();
+	Eigen::Matrix4f getMVPMatrix() override;
+
+	bool updateLightingParameters() override;
 };
-struct DirectionLight : Light
+class DirectionLight : public Light
 {
+public:
 	DirectionLight(Eigen::Vector3f direction, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
 
-	Eigen::Vector3f direction;
+private:
+	Eigen::Vector3f _direction;
 
-	static GLuint getDirectionLightShaderOffsetSize();
+	Eigen::Matrix4f getMVPMatrix() override;
+
+	bool updateLightingParameters() override;
 };
-struct SpotLight : Light
+class SpotLight : public Light
 {
+public:
 	SpotLight(Eigen::Vector3f position, Eigen::Vector3f direction, float beamAngle, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
 
-	Eigen::Vector3f position;
-	Eigen::Vector3f direction;
+private:
+	Eigen::Vector3f _position;
+	Eigen::Vector3f _direction;
 
-	float beamAngle;
+	float _beamAngle;
 
-	static GLuint getSpotLightShaderOffsetSize();
+	Eigen::Matrix4f getMVPMatrix() override;
+
+	bool updateLightingParameters() override;
 };
 }

@@ -195,6 +195,9 @@
     <ClCompile Include="src\KeyHandler.cpp">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClCompile>
+    <ClCompile Include="src\Framebuffer.cpp">
+      <Filter>Source Files\Systems\Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
@@ -349,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="src\InputSubReceipt.h">
       <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FrameBuffer.h">
+      <Filter>Source Files\Systems\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>

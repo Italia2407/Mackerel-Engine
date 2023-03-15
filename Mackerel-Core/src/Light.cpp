@@ -1,46 +1,109 @@
 #include "Light.h"
 
+#include "Texture.h"
+#include "UniformBuffer.h"
+
 namespace MCK::Rendering {
 Light::Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
-	diffuseColour(diffuseColour), specularColour(specularColour), ambientColour(ambientColour) {}
-
-GLuint Light::getBaseLightShaderOffsetSize()
+	_diffuseColour(diffuseColour), _specularColour(specularColour), _ambientColour(ambientColour), _shadowMap(nullptr), _parametersBuffer(nullptr)
 {
-	GLuint diffuseColourSize = GLuint(sizeof(float) * 4);
-	GLuint specularColourSize = GLuint(sizeof(float) * 4);
-	GLuint ambientColourSize = GLuint(sizeof(float) * 4);
+	// Initialise & Create Shadow Map Texture
+	_shadowMap = new AssetType::Texture();
+	_shadowMap->GenerateFloatTexture(1024, 1024);
 
-	return diffuseColourSize + specularColourSize + ambientColourSize;
+	// Initialse & Create Parameters Buffer
+	_parametersBuffer = new UniformBuffer();
+	{
+	// Add Light ModelViewProjection
+	_parametersBuffer->AddMat4BufferUniform("modelViewProjection", Eigen::Matrix4f::Zero());
+
+	// Add Position & Direction
+	_parametersBuffer->AddVec3BufferUniform("position", Eigen::Vector3f::Zero());
+	_parametersBuffer->AddVec3BufferUniform("direction", Eigen::Vector3f::Zero());
+
+	// Add Beam Angle
+	_parametersBuffer->AddFloatBufferUniform("beamAngle", 0.0f);
+
+	// Add Light Colours
+	_parametersBuffer->AddVec4BufferUniform("diffuseColour", Eigen::Vector4f::Zero());
+	_parametersBuffer->AddVec4BufferUniform("specularColour", Eigen::Vector4f::Zero());
+	_parametersBuffer->AddVec4BufferUniform("ambientColour", Eigen::Vector4f::Zero());
+	}
+	_parametersBuffer->CreateUniformBufferObject();
+}
+
+Eigen::Matrix4f Light::getMVPMatrix()
+{
+	return Eigen::Matrix4f::Zero();
+}
+
+bool Light::UseLight()
+{
+	updateLightingParameters();
+
+	// Bind Parameters Buffer
+	_parametersBuffer->BindUniformBufferObject(0);
+
+	// Bind Shadow Map
+	_shadowMap->BindTexture(31);
+
+	return true;
 }
 
 PointLight::PointLight(Eigen::Vector3f position, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
-	Light(diffuseColour, specularColour, ambientColour), position(position) {}
-
-GLuint PointLight::getPointLightShaderOffsetSize()
-{
-	GLuint positionSize = GLuint(sizeof(float) * 4);
-
-	return getBaseLightShaderOffsetSize() + positionSize;
-}
-
+	Light(diffuseColour, specularColour, ambientColour), _position(position) {}
 DirectionLight::DirectionLight(Eigen::Vector3f direction, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
-	Light(diffuseColour, specularColour, ambientColour), direction(direction) {}
-
-GLuint DirectionLight::getDirectionLightShaderOffsetSize()
-{
-	GLuint directionSize = GLuint(sizeof(float) * 4);
-
-	return getBaseLightShaderOffsetSize() + directionSize;
-}
-
+	Light(diffuseColour, specularColour, ambientColour), _direction(direction) {}
 SpotLight::SpotLight(Eigen::Vector3f position, Eigen::Vector3f direction, float beamAngle, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
-	Light(diffuseColour, specularColour, ambientColour), position(position), direction(direction), beamAngle(beamAngle) {}
+	Light(diffuseColour, specularColour, ambientColour), _position(position), _direction(direction), _beamAngle(beamAngle) {}
 
-GLuint SpotLight::getSpotLightShaderOffsetSize()
+bool PointLight::updateLightingParameters()
 {
-	GLuint positionSize = GLuint(sizeof(float) * 4);
-	GLuint directionSize = GLuint(sizeof(float) * 4);
+	// Set ModelViewProjection
+	_parametersBuffer->SetMat4BufferUniform("modelViewProjection", getMVPMatrix());
 
-	return getBaseLightShaderOffsetSize() + positionSize + directionSize;
+	// Set Position
+	_parametersBuffer->SetVec3BufferUniform("position", _position);
+
+	// Set Colours
+	_parametersBuffer->SetVec4BufferUniform("diffuseColour", _diffuseColour);
+	_parametersBuffer->SetVec4BufferUniform("specularColour", _specularColour);
+	_parametersBuffer->SetVec4BufferUniform("ambientColour", _ambientColour);
+
+	return true;
+}
+bool DirectionLight::updateLightingParameters()
+{
+	// Set ModelViewProjection
+	_parametersBuffer->SetMat4BufferUniform("modelViewProjection", getMVPMatrix());
+
+	// Set Direction
+	_parametersBuffer->SetVec3BufferUniform("direction", _direction);
+
+	// Set Colours
+	_parametersBuffer->SetVec4BufferUniform("diffuseColour", _diffuseColour);
+	_parametersBuffer->SetVec4BufferUniform("specularColour", _specularColour);
+	_parametersBuffer->SetVec4BufferUniform("ambientColour", _ambientColour);
+
+	return true;
+}
+bool SpotLight::updateLightingParameters()
+{
+	// Set ModelViewProjection
+	_parametersBuffer->SetMat4BufferUniform("modelViewProjection", getMVPMatrix());
+
+	// Set Position & Direction
+	_parametersBuffer->SetVec3BufferUniform("position", _position);
+	_parametersBuffer->SetVec3BufferUniform("direction", _direction);
+
+	// Set Beam Angle
+	_parametersBuffer->SetFloatBufferUniform("beamAngle", _beamAngle);
+
+	// Set Colours
+	_parametersBuffer->SetVec4BufferUniform("diffuseColour", _diffuseColour);
+	_parametersBuffer->SetVec4BufferUniform("specularColour", _specularColour);
+	_parametersBuffer->SetVec4BufferUniform("ambientColour", _ambientColour);
+
+	return true;
 }
 }

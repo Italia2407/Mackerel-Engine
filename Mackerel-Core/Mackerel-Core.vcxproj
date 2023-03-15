@@ -32,6 +32,7 @@
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\EntityPool.cpp" />
+    <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\KeyEvents.h" />
     <ClCompile Include="src\KeyHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="src\InputSubReceipt.h" />
     <ClInclude Include="src\KeyHandler.h" />
     <ClInclude Include="src\Keys.h" />
+    <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\LoggingSystem.h" />
     <ClInclude Include="src\Material.h" />

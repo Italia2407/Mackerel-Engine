@@ -1,27 +1,37 @@
 #include "Renderer.h"
 
 #include "UniformBuffer.h"
+#include "FrameBuffer.h"
 
+#include "Material.h"
 #include "Texture.h"
+#include "Mesh.h"
 #include "Shader.h"
 
 #include "Light.h"
 #include "RenderBatch.h"
 
+#include <utility>
+#include <functional>
+
 #define MAX_LIGHTS (32)
 
 namespace MCK::Rendering {
 Renderer::Renderer() :
-	_GBuffer(0), _frameBuffer(0), _lightUniformBuffer(nullptr)
+	_GBuffer(0), _frameBuffer(0), _depthTexture(nullptr)
 {
-	// Initialise Light Uniform Buffer
-	_lightUniformBuffer = new UniformBuffer();
+	// Initialise Geometry & Lighting Frame Buffers
+	_geometryBuffer = new FrameBuffer();
+	_lightingBuffer = new FrameBuffer();
 
 	// Initialise Geometry Buffer Textures
-	for (int i = 0; i < 32; i++)
+	for (int i = 0; i < 31; i++)
 	{
 		_GBufferTextures[i] = new AssetType::Texture();
 	}
+
+	// Initialise the Depth Buffer Texture
+	_depthTexture = new AssetType::Texture();
 }
 Renderer::~Renderer()
 {
@@ -31,10 +41,6 @@ Renderer::~Renderer()
 		if (_GBufferTextures[i])
 			delete _GBufferTextures[i];
 	}
-
-	// Clear & Delete Light Uniform Buffer
-	_lightUniformBuffer->DeleteUniformBufferObject();
-	delete _lightUniformBuffer;
 }
 
 /**
@@ -46,23 +52,26 @@ Renderer::~Renderer()
  */
 bool Renderer::initialiseRenderer(GLuint screenWidth, GLuint screenHeight)
 {
-	if (_GBuffer)
-	{// Geometry Buffer was already Created
+	// Create the Depth Buffer Texture
+	_depthTexture->GenerateFloatTexture(screenWidth, screenHeight);
+
+	// Create the Geometry Frame Buffer
+	if (_geometryBuffer->IsCreated())
+	{// Geometry Frame Buffer was Already Created
 		return false;
 	}
-	if (_lightUniformBuffer->isCreated())
-	{// Lighting Uniform Buffer Object was already Created
+	if (!createGBuffer(screenWidth, screenHeight))
+	{// Geometry Frame Buffer could not be Created
 		return false;
 	}
 
-	// Create the Geometry Buffer
-	if (!createGBuffer(screenWidth, screenHeight))
-	{// Geometry Buffer could not be Created
+	// Create the Lighting Frame Buffer
+	if (_lightingBuffer->IsCreated())
+	{// Lighting Frame Buffer was Already Created
 		return false;
 	}
-	// Create the Lighting Uniform Buffer Object
-	if (!createLightingUniformBuffer())
-	{// Lighting Uniform Buffer Object could not be Created
+	if (!createLightingBuffer(screenWidth, screenHeight))
+	{// Lighting Frame Buffer could not be Created
 		return false;
 	}
 
@@ -78,144 +87,35 @@ bool Renderer::initialiseRenderer(GLuint screenWidth, GLuint screenHeight)
  */
 bool Renderer::createGBuffer(GLuint screenWidth, GLuint screenHeight)
 {
-	// Generate Geometry Buffer
-	glGenFramebuffers(1, &_GBuffer);
+	// Add Colour Attachment Textures
+	_geometryBuffer->AddUIntColourAttachment(screenWidth, screenHeight);
+	for (int i = 1; i < 31; i++)
+		_geometryBuffer->AddFloatColourAttachment(screenWidth, screenHeight);
 
-	std::vector<GLuint> GBufferAttachments;
-	// Generate UInt Texture for First GBuffer Texture
-	{
-		_GBufferTextures[0]->GenerateUIntTexture(screenWidth, screenHeight);
+	// Assign Depth Buffer Texture
+	_geometryBuffer->AssignDepthBufferTexture(_depthBufferTexture);
 
-		glFramebufferTexture2D(_GBuffer, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _GBufferTextures[0]->getTextureID(), 0);
-		GBufferAttachments.push_back(GL_COLOR_ATTACHMENT0);
-	}
-	for (int i = 1; i < 32; i++)
-	{// Generate Float Tetxures for Remaining GBuffer Textures
-		_GBufferTextures[i]->GenerateFloatTexture(screenWidth, screenHeight);
-		GLuint attachementSlot = GL_COLOR_ATTACHMENT0 + i;
-
-		glFramebufferTexture2D(_GBuffer, attachementSlot, GL_TEXTURE_2D, _GBufferTextures[i]->getTextureID(), 0);
-		GBufferAttachments.push_back(attachementSlot);
-	}
-	glDrawBuffers((GLuint)GBufferAttachments.size(), &GBufferAttachments[0]);
-
-	// TODO: Generate Depth Buffer
-
-	return true;
+	// Create Geometry Buffer Object
+	bool result = _geometryBuffer->CreateFrameBuffer();
+	return result;
 }
 /**
- * Creates the Lighting Uniform Buffer Object.
+ * Creates the Lighting Frame Buffer.
  * 
- * \return Whether the Lighting Uniform Buffer Object was Successfully Created
+ * \param screenWidth: The Lighting Frame Buffer's Width
+ * \param screenHeight: The Lighting Frame Buffer's Height
+ * \return Whether the Lighting Frame Buffer was Successfully Created
  */
-bool Renderer::createLightingUniformBuffer()
+bool Renderer::createLightingBuffer(GLuint screenWidth, GLuint screenHeight)
 {
-	// Add Num Lights Uniforms
-	_lightUniformBuffer->AddUInt32BufferUniform("numPointLights", (uint32_t)_pointLights.size());
-	_lightUniformBuffer->AddUInt32BufferUniform("numDirectionLights", (uint32_t)_pointLights.size());
-	_lightUniformBuffer->AddUInt32BufferUniform("numSpotLights", (uint32_t)_pointLights.size());
+	// Add Colour Attachment Texture
+	_lightingBuffer->AddFloatColourAttachment(screenWidth, screenHeight);
 
-	for (int i = 0; i < MAX_LIGHTS; i++)
-	{// Add Buffer Uniforms for Point Lights
-		std::string arrayEntryUniformName = "pointLights[" + std::to_string(i) + "]";
+	// Assign Depth Buffer Texture
+	_lightingBuffer->AssignDepthBufferTexture(_depthBufferTexture);
 
-		std::string diffuseColourUniformName = arrayEntryUniformName + ".diffuseColour";
-		Eigen::Vector4f diffuseColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-		std::string specularColourUniformName = arrayEntryUniformName + ".specularColour";
-		Eigen::Vector4f specularColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-		std::string ambientColourUniformName = arrayEntryUniformName + ".ambientColour";
-		Eigen::Vector4f ambientColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-
-		std::string positionUniformName = arrayEntryUniformName + ".position";
-		Eigen::Vector3f positionUniformValue(0.0f, 0.0f, 0.0f);
-
-		if (i < _pointLights.size())
-		{
-			diffuseColourUniformValue = _pointLights[i]->diffuseColour;
-			specularColourUniformValue = _pointLights[i]->specularColour;
-			ambientColourUniformValue = _pointLights[i]->ambientColour;
-
-			positionUniformValue = _pointLights[i]->position;
-		}
-
-		_lightUniformBuffer->AddVec4BufferUniform(diffuseColourUniformName, diffuseColourUniformValue);
-		_lightUniformBuffer->AddVec4BufferUniform(specularColourUniformName, specularColourUniformValue);
-		_lightUniformBuffer->AddVec4BufferUniform(ambientColourUniformName, ambientColourUniformValue);
-
-		_lightUniformBuffer->AddVec3BufferUniform(positionUniformName, positionUniformValue);
-	}
-	for (int i = 0; i < MAX_LIGHTS; i++)
-	{// Add Buffer Uniforms for Direction Lights
-		std::string arrayEntryUniformName = "directionLights[" + std::to_string(i) + "]";
-
-		std::string diffuseColourUniformName = arrayEntryUniformName + ".diffuseColour";
-		Eigen::Vector4f diffuseColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-		std::string specularColourUniformName = arrayEntryUniformName + ".specularColour";
-		Eigen::Vector4f specularColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-		std::string ambientColourUniformName = arrayEntryUniformName + ".ambientColour";
-		Eigen::Vector4f ambientColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-
-		std::string directionUniformName = arrayEntryUniformName + ".direction";
-		Eigen::Vector3f directionUniformValue(0.0f, 0.0f, 0.0f);
-
-		if (i < _directionLights.size())
-		{
-			diffuseColourUniformValue = _directionLights[i]->diffuseColour;
-			specularColourUniformValue = _directionLights[i]->specularColour;
-			ambientColourUniformValue = _directionLights[i]->ambientColour;
-
-			directionUniformValue = _directionLights[i]->direction;
-		}
-
-		_lightUniformBuffer->AddVec4BufferUniform(diffuseColourUniformName, diffuseColourUniformValue);
-		_lightUniformBuffer->AddVec4BufferUniform(specularColourUniformName, specularColourUniformValue);
-		_lightUniformBuffer->AddVec4BufferUniform(ambientColourUniformName, ambientColourUniformValue);
-
-		_lightUniformBuffer->AddVec3BufferUniform(directionUniformName, directionUniformValue);
-	}
-	for (int i = 0; i < MAX_LIGHTS; i++)
-	{// Add Buffer Uniforms for Spot Lights
-		std::string arrayEntryUniformName = "spotLights[" + std::to_string(i) + "]";
-
-		std::string diffuseColourUniformName = arrayEntryUniformName + ".diffuseColour";
-		Eigen::Vector4f diffuseColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-		std::string specularColourUniformName = arrayEntryUniformName + ".specularColour";
-		Eigen::Vector4f specularColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-		std::string ambientColourUniformName = arrayEntryUniformName + ".ambientColour";
-		Eigen::Vector4f ambientColourUniformValue(0.0f, 0.0f, 0.0f, 0.0f);
-
-		std::string positionUniformName = arrayEntryUniformName + ".position";
-		Eigen::Vector3f positionUniformValue(0.0f, 0.0f, 0.0f);
-		std::string directionUniformName = arrayEntryUniformName + ".direction";
-		Eigen::Vector3f directionUniformValue(0.0f, 0.0f, 0.0f);
-		std::string beamAngleUniformName = arrayEntryUniformName + ".beamAngle";
-		float beamAngleUniformValue = 0.0f;
-
-		if (i < _spotLights.size())
-		{
-			diffuseColourUniformValue = _spotLights[i]->diffuseColour;
-			specularColourUniformValue = _spotLights[i]->specularColour;
-			ambientColourUniformValue = _spotLights[i]->ambientColour;
-
-			positionUniformValue = _spotLights[i]->position;
-			directionUniformValue = _spotLights[i]->direction;
-
-			beamAngleUniformValue = _spotLights[i]->beamAngle;
-		}
-
-		_lightUniformBuffer->AddVec4BufferUniform(diffuseColourUniformName, diffuseColourUniformValue);
-		_lightUniformBuffer->AddVec4BufferUniform(specularColourUniformName, specularColourUniformValue);
-		_lightUniformBuffer->AddVec4BufferUniform(ambientColourUniformName, ambientColourUniformValue);
-
-		_lightUniformBuffer->AddVec3BufferUniform(positionUniformName, positionUniformValue);
-		_lightUniformBuffer->AddVec3BufferUniform(directionUniformName, directionUniformValue);
-
-		_lightUniformBuffer->AddFloatBufferUniform(beamAngleUniformName, beamAngleUniformValue);
-	}
-
-	// Create Lighting Unifrom Buffer Object
-	bool result = _lightUniformBuffer->CreateUniformBufferObject();
-
+	// Create Geometry Buffer Object
+	bool result = _lightingBuffer->CreateFrameBuffer();
 	return result;
 }
 
@@ -225,106 +125,168 @@ bool Renderer::createLightingUniformBuffer()
  */
 void Renderer::renderGBuffer()
 {
-	// Bind Geometry Buffer to Active Frame Buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, _GBuffer);
+	// Use Geometry Frame Buffer
+	_geometryBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Clear the Geometry Buffer
-	glClearColor(0.0, 0.0, 0.0, -1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Render eeach of the Geometry Bathces
-	for (auto geometryBatch : _geometryBatches)
+	// Render each of the Geometry Bathces
+	for (auto [geometryBatchKey, geometryBatch] : _geometryBatches)
 	{
-		geometryBatch->LoadShaderMesh();
+		// Render to G Buffer Textures
+		geometryBatch->LoadMeshShader();
 		geometryBatch->DrawBatchObjects();
 	}
 }
-void Renderer::renderFrameBuffer()
+/** Render the Scene without Transparent Objects */
+void Renderer::renderLightingBuffer()
 {
-	// Generate Frame Buffer
-	glGenFramebuffers(1, &_frameBuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
-
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// Use Lighting Frame Buffer
+	_lightingBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT);
 
 	// Load Geometry Buffer Textures
-	for (int i = 0; i < 32; i++)
+	for (GLuint i = 0; i < _geometryBuffer->GetNumColourAttachments(); i++)
 	{
-		_GBufferTextures[i]->BindTexture(i);
+		_geometryBuffer->GetColourAttachmentTexture(i)->BindTexture(i);
 	}
 
-	// Update Lighting Uniform Buffer Object Data
+	// Point Light Calculations
+	for (auto pointLightShader : _pointLightShaders)
 	{
-		_lightUniformBuffer->SetUInt32BufferUniform("numPointLights", (uint32_t)_pointLights.size());
-		_lightUniformBuffer->SetUInt32BufferUniform("numDirectionLights", (uint32_t)_pointLights.size());
-		_lightUniformBuffer->SetUInt32BufferUniform("numSpotLights", (uint32_t)_pointLights.size());
+		pointLightShader->getProgramID(); // Use Shader
 
-		for (int i = 0; i < _pointLights.size(); i++)
-		{// Update Buffer Uniforms for Point Lights
-			std::string arrayEntryUniformName = "pointLights[" + std::to_string(i) + "]";
+		for (auto pointLight : _pointLights)
+		{
+			pointLight->UseLight();
 
-			std::string diffuseColourUniformName = arrayEntryUniformName + ".diffuseColour";
-			std::string specularColourUniformName = arrayEntryUniformName + ".specularColour";
-			std::string ambientColourUniformName = arrayEntryUniformName + ".ambientColour";
-
-			std::string positionUniformName = arrayEntryUniformName + ".position";
-
-			_lightUniformBuffer->SetVec4BufferUniform(diffuseColourUniformName, _pointLights[i]->diffuseColour);
-			_lightUniformBuffer->SetVec4BufferUniform(specularColourUniformName, _pointLights[i]->specularColour);
-			_lightUniformBuffer->SetVec4BufferUniform(ambientColourUniformName, _pointLights[i]->ambientColour);
-
-			_lightUniformBuffer->SetVec3BufferUniform(positionUniformName, _pointLights[i]->position);
-		}
-		for (int i = 0; i < _directionLights.size(); i++)
-		{// Update Buffer Uniforms for Direction Lights
-			std::string arrayEntryUniformName = "directionLights[" + std::to_string(i) + "]";
-
-			std::string diffuseColourUniformName = arrayEntryUniformName + ".diffuseColour";
-			std::string specularColourUniformName = arrayEntryUniformName + ".specularColour";
-			std::string ambientColourUniformName = arrayEntryUniformName + ".ambientColour";
-
-			std::string directionUniformName = arrayEntryUniformName + ".direction";
-
-			_lightUniformBuffer->SetVec4BufferUniform(diffuseColourUniformName, _directionLights[i]->diffuseColour);
-			_lightUniformBuffer->SetVec4BufferUniform(specularColourUniformName, _directionLights[i]->specularColour);
-			_lightUniformBuffer->SetVec4BufferUniform(ambientColourUniformName, _directionLights[i]->ambientColour);
-
-			_lightUniformBuffer->SetVec3BufferUniform(directionUniformName, _directionLights[i]->direction);
-		}
-		for (int i = 0; i < _spotLights.size(); i++)
-		{// Update Buffer Uniforms for Spot Lights
-			std::string arrayEntryUniformName = "spotLights[" + std::to_string(i) + "]";
-
-			std::string diffuseColourUniformName = arrayEntryUniformName + ".diffuseColour";
-			std::string specularColourUniformName = arrayEntryUniformName + ".specularColour";
-			std::string ambientColourUniformName = arrayEntryUniformName + ".ambientColour";
-
-			std::string positionUniformName = arrayEntryUniformName + ".position";
-			std::string directionUniformName = arrayEntryUniformName + ".direction";
-
-			std::string beamAngleUniformName = arrayEntryUniformName + ".beamAngle";
-
-			_lightUniformBuffer->SetVec4BufferUniform(diffuseColourUniformName, _spotLights[i]->diffuseColour);
-			_lightUniformBuffer->SetVec4BufferUniform(specularColourUniformName, _spotLights[i]->specularColour);
-			_lightUniformBuffer->SetVec4BufferUniform(ambientColourUniformName, _spotLights[i]->ambientColour);
-
-			_lightUniformBuffer->SetVec3BufferUniform(positionUniformName, _spotLights[i]->position);
-			_lightUniformBuffer->SetVec3BufferUniform(directionUniformName, _spotLights[i]->direction);
-
-			_lightUniformBuffer->SetFloatBufferUniform(beamAngleUniformName, _spotLights[i]->beamAngle);
+			// Render Lighitng
+			//DrawQuad();
 		}
 	}
-	// Load Lighting Uniform Buffer into Slot 0
-	_lightUniformBuffer->BindUniformBufferObject(0);
-
-	for (auto lightingShader : _lightingShaders)
+	// Direction Light Calculations
+	for (auto directionLightShader : _directionLightShaders)
 	{
-		lightingShader->getProgramID(); // Use Shader
+		directionLightShader->getProgramID(); // Use Shader
 
-		// Draw Quad Mesh
+		for (auto directionLight : _directionLights)
+		{
+			directionLight->UseLight();
+
+			// Render Lighitng
+			//DrawQuad();
+		}
+	}
+	// Spot Light Calculations
+	for (auto spotLightShader : _spotLightShaders)
+	{
+		spotLightShader->getProgramID(); // Use Shader
+
+		for (auto spotLight : _spotLights)
+		{
+			spotLight->UseLight();
+
+			// Render Lighitng
+			//DrawQuad();
+		}
 	}
 
 	// TODO: Copy Depth Buffer (from Geometry Buffer) to Frame Buffer
+}
+void Renderer::renderShadowMap(Light* light)
+{
+
+}
+
+/**
+ * Queue Mesh Instance to be Rendered for the Frame.
+ * 
+ * \param mesh: The Instance Mesh
+ * \param shader: The Instance Shader
+ * \param material: The Instance Material
+ * \param position: The Instance Position
+ * \param rotation: The Instance Rotation
+ * \param scale: The Instance Scale
+ * \return Whether the Instance was Successfully Added
+ */
+bool Renderer::queueRenderBatchInstance(AssetType::Mesh* mesh, AssetType::Shader* shader, AssetType::Material* material,
+	Eigen::Vector3f position, Eigen::Quaternion<float> rotation, Eigen::Vector3f scale)
+{
+	// Geometry Batch to which the Instance will be Added
+	RenderBatch* geometryBatch = nullptr;
+
+	auto batchKey = std::make_pair(mesh, shader);
+	if (!_geometryBatches.contains(batchKey))
+	{// No Geometry Batch with Mesh & Shader Pair Currently Exists
+		geometryBatch = new RenderBatch(mesh, shader);
+		_geometryBatches[batchKey] = geometryBatch;
+	}
+	else
+	{// Geometry Batch with Mesh & Shader Pair Currently Exists
+		geometryBatch = _geometryBatches[batchKey];
+	}
+
+	if (!geometryBatch)
+	{// No Geometry Batch could be Found or Created
+		return false;
+	}
+
+	geometryBatch->AddBatchInstance(material, position, rotation, scale);
+	return true;
+}
+
+bool Renderer::queuePointLight(PointLight* pointLight)
+{
+	_pointLights.push_back(pointLight);
+	return true;
+}
+bool Renderer::queueDirectionLight(DirectionLight* directionLight)
+{
+	_directionLights.push_back(directionLight);
+	return true;
+}
+bool Renderer::queueSpotLight(SpotLight* spotLight)
+{
+	_spotLights.push_back(spotLight);
+	return true;
+}
+
+/**
+ * Render the Current Frame. 
+ */
+void Renderer::renderFrame()
+{
+	// Render Scene Geometry to the Geometry Buffer
+	renderGBuffer();
+
+	// Render Shadow Maps for all Lights
+	for (auto pointLight : _pointLights)
+	{
+		renderShadowMap(pointLight);
+	}
+	for (auto directionLight : _directionLights)
+	{
+		renderShadowMap(directionLight);
+	}
+	for (auto spotLight : _spotLights)
+	{
+		renderShadowMap(spotLight);
+	}
+
+	// Render Lighting Buffer
+	renderLightingBuffer();
+
+
+	// TODO: Show Frame to Screen
+
+	// Clear Geometry Batches
+	for (auto [geometryBatchKey, geometryBatch] : _geometryBatches)
+	{
+		if (geometryBatch)
+			delete geometryBatch;
+	}
+	_geometryBatches.clear();
+
+	// Clear Lights
+	_pointLights.clear();
+	_directionLights.clear();
+	_spotLights.clear();
 }
 }
