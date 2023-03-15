@@ -51,7 +51,7 @@ namespace MCK::EntitySystem
 
 	/**
 	 * Updates all a scene and all the entities in it.
-	 *
+	 * 
 	 */
 	void Scene::UpdateScene()
 	{
