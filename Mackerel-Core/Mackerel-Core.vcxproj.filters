@@ -201,6 +201,12 @@
     <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>Source Files\AssetTypes\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files\AssetTypes\Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">

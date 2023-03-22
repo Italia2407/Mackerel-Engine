@@ -22,17 +22,9 @@ public:
 	Material();
 	~Material();
 
-	struct UniformState
-	{
-		GLuint texSlots = 0;
-	};
-
 private:
-	UniformBuffer* _uniformBuffer;
-	Texture* _materialTextures[32];
-
-	bool bindUniformBuffer();
-	void bindTextures();
+	UniformBuffer* m_UniformBuffer;
+	Texture* m_MaterialTextures[32];
 
 	bool addUInt08Uniform(std::string name, uint8_t value);
 	bool addUInt16Uniform(std::string name, uint16_t value);

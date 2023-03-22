@@ -18,29 +18,26 @@
 
 namespace MCK::Rendering {
 Renderer::Renderer() :
-	_GBuffer(0), _frameBuffer(0), _depthTexture(nullptr)
+	m_ShaderProgramID(GL_ZERO)
 {
 	// Initialise Geometry & Lighting Frame Buffers
-	_geometryBuffer = new FrameBuffer();
-	_lightingBuffer = new FrameBuffer();
+	m_GeometryBuffer = new FrameBuffer();
+	m_LightingBuffer = new FrameBuffer();
 
-	// Initialise Geometry Buffer Textures
-	for (int i = 0; i < 31; i++)
-	{
-		_GBufferTextures[i] = new AssetType::Texture();
-	}
-
-	// Initialise the Depth Buffer Texture
-	_depthTexture = new AssetType::Texture();
+	// Initialise Depth Buffer Texture
+	m_DepthBufferTexture = new AssetType::Texture();
 }
 Renderer::~Renderer()
 {
-	// Delete all Geometry Buffer Textures
-	for (int i = 0; i < 32; i++)
-	{
-		if (_GBufferTextures[i])
-			delete _GBufferTextures[i];
-	}
+	// Delete Geometry & Lighting Frame Buffers
+	if (m_GeometryBuffer)
+		delete m_GeometryBuffer;
+	if (m_LightingBuffer)
+		delete m_LightingBuffer;
+
+	// Delete Depth Buffer Texture
+	if (m_DepthBufferTexture)
+		delete m_DepthBufferTexture;
 }
 
 /**
@@ -52,183 +49,199 @@ Renderer::~Renderer()
  */
 bool Renderer::initialiseRenderer(GLuint screenWidth, GLuint screenHeight)
 {
+	// Create the Shader Program
+	m_ShaderProgramID = glCreateProgram();
+
 	// Create the Depth Buffer Texture
-	_depthTexture->GenerateFloatTexture(screenWidth, screenHeight);
+	m_DepthBufferTexture->GenerateFloatTexture(screenWidth, screenHeight);
 
 	// Create the Geometry Frame Buffer
-	if (_geometryBuffer->IsCreated())
+	if (m_GeometryBuffer->IsCreated())
 	{// Geometry Frame Buffer was Already Created
 		return false;
 	}
-	if (!createGBuffer(screenWidth, screenHeight))
-	{// Geometry Frame Buffer could not be Created
+
+	// Add Colour Attachment Textures
+	// Texture 0 is The Lighting Shader ID Map
+	m_GeometryBuffer->AddUIntColourAttachment(screenWidth, screenHeight);
+
+	for (int i = 1; i < 31; i++)
+		m_GeometryBuffer->AddFloatColourAttachment(screenWidth, screenHeight);
+	
+	// Assign Depth Buffer Texture
+	m_GeometryBuffer->AssignExternalDepthBufferTexture(m_DepthBufferTexture);
+
+	// Create Geometry Buffer Object
+	if (!m_GeometryBuffer->CreateFrameBuffer())
+	{// Geometry Buffer could not be Created
 		return false;
 	}
 
+
 	// Create the Lighting Frame Buffer
-	if (_lightingBuffer->IsCreated())
+	if (m_LightingBuffer->IsCreated())
 	{// Lighting Frame Buffer was Already Created
 		return false;
 	}
-	if (!createLightingBuffer(screenWidth, screenHeight))
-	{// Lighting Frame Buffer could not be Created
+
+	// Add Colour Attachment Texture & Depth Buffer Texture
+	m_LightingBuffer->AddFloatColourAttachment(screenWidth, screenHeight);
+	m_LightingBuffer->AddDepthBufferTexture(screenWidth, screenHeight);
+
+	// Create Lighting Frame Buffer Object
+	if (!m_LightingBuffer->CreateFrameBuffer())
+	{// Lighitng Frame Buffer could not be Created
 		return false;
 	}
 
 	return true;
 }
 
-/**
- * Creates the Geometry Buffer.
- *
- * \param screenWidth: The Geometry Buffer's Width
- * \param screenHeight: The Geometry Buffer's Height
- * \return Whether the Geometry Buffer was Successfully Created
- */
-bool Renderer::createGBuffer(GLuint screenWidth, GLuint screenHeight)
+bool Renderer::attachShader(AssetType::Shader* a_Shader)
 {
-	// Add Colour Attachment Textures
-	_geometryBuffer->AddUIntColourAttachment(screenWidth, screenHeight);
-	for (int i = 1; i < 31; i++)
-		_geometryBuffer->AddFloatColourAttachment(screenWidth, screenHeight);
+	// Get Currently Attached Shaders
+	GLsizei shaderCount = 2;
+	GLuint shaderIDs[2];
+	glGetAttachedShaders(m_ShaderProgramID, shaderCount, &shaderCount, shaderIDs);
+	
+	// Detach all Shaders with Same Type as Incoming Shader
+	for (auto shaderID : shaderIDs)
+	{
+		GLint shaderType;
+		glGetShaderiv(shaderID, GL_SHADER_TYPE, &shaderType);
 
-	// Assign Depth Buffer Texture
-	_geometryBuffer->AssignDepthBufferTexture(_depthBufferTexture);
+		if (shaderType == a_Shader->ShaderType())
+		{
+			glDetachShader(m_ShaderProgramID, shaderID);
+		}
+	}
 
-	// Create Geometry Buffer Object
-	bool result = _geometryBuffer->CreateFrameBuffer();
-	return result;
-}
-/**
- * Creates the Lighting Frame Buffer.
- * 
- * \param screenWidth: The Lighting Frame Buffer's Width
- * \param screenHeight: The Lighting Frame Buffer's Height
- * \return Whether the Lighting Frame Buffer was Successfully Created
- */
-bool Renderer::createLightingBuffer(GLuint screenWidth, GLuint screenHeight)
-{
-	// Add Colour Attachment Texture
-	_lightingBuffer->AddFloatColourAttachment(screenWidth, screenHeight);
+	// Attach Incoming Shader to Shader Program
+	glAttachShader(m_ShaderProgramID, a_Shader->ShaderID());
 
-	// Assign Depth Buffer Texture
-	_lightingBuffer->AssignDepthBufferTexture(_depthBufferTexture);
-
-	// Create Geometry Buffer Object
-	bool result = _lightingBuffer->CreateFrameBuffer();
-	return result;
+	return true;
 }
 
 /**
  * Render the Geometry Data onto the Geometry Buffer.
  * 
+ * \return Whether the GBuffer could be Rendered
  */
-void Renderer::renderGBuffer()
+bool Renderer::renderGBuffer()
 {
-	// Use Geometry Frame Buffer
-	_geometryBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// Use Geometry Frame Buffer as Render Target
+	m_GeometryBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Render each of the Geometry Bathces
-	for (auto [geometryBatchKey, geometryBatch] : _geometryBatches)
+	for (auto geometryBatch : m_GeometryBatches)
 	{
-		// Render to G Buffer Textures
-		geometryBatch->LoadMeshShader();
+		// Attach Geometry Batch Shader to Shader Program
+		if (!attachShader(geometryBatch->Shader()))
+		{
+			return false;
+		}
+
+		// Render All Batch Instances to GBuffer Textures
 		geometryBatch->DrawBatchObjects();
 	}
+
+	return true;
 }
-/** Render the Scene without Transparent Objects */
-void Renderer::renderLightingBuffer()
+/**
+ * Render the Scene without Transparent Objects.
+ * 
+ * \return 
+ */
+bool Renderer::renderLightingBuffer()
 {
-	// Use Lighting Frame Buffer
-	_lightingBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT);
+	// Use Lighting Frame Buffer as Render Target
+	m_LightingBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT);
 
 	// Load Geometry Buffer Textures
-	for (GLuint i = 0; i < _geometryBuffer->GetNumColourAttachments(); i++)
+	for (GLuint i = 0; i < m_GeometryBuffer->GetNumColourAttachments(); i++)
 	{
-		_geometryBuffer->GetColourAttachmentTexture(i)->BindTexture(i);
+		auto GBufferTexture = m_GeometryBuffer->GetColourAttachmentTexture(i);
+		GBufferTexture->BindTexture(i);
 	}
 
 	// Point Light Calculations
-	for (auto pointLightShader : _pointLightShaders)
+	for (auto lightShader : _pointLightShaders)
 	{
-		pointLightShader->getProgramID(); // Use Shader
+		// Attach Point Light Shader
+		attachShader(lightShader);
 
-		for (auto pointLight : _pointLights)
+		// Render Point Lighting
+		for (auto light : _pointLights)
 		{
-			pointLight->UseLight();
+			light->UseLight();
 
-			// Render Lighitng
 			//DrawQuad();
 		}
 	}
 	// Direction Light Calculations
-	for (auto directionLightShader : _directionLightShaders)
+	for (auto lightShader : _directionLightShaders)
 	{
-		directionLightShader->getProgramID(); // Use Shader
+		// Attach Direction Light Shader
+		attachShader(lightShader);
 
-		for (auto directionLight : _directionLights)
+		// Render Direction Lighting
+		for (auto light : _directionLights)
 		{
-			directionLight->UseLight();
+			light->UseLight();
 
-			// Render Lighitng
 			//DrawQuad();
 		}
 	}
 	// Spot Light Calculations
-	for (auto spotLightShader : _spotLightShaders)
+	for (auto lightShader : _spotLightShaders)
 	{
-		spotLightShader->getProgramID(); // Use Shader
+		// Attach Spot Light Shader
+		attachShader(lightShader);
 
-		for (auto spotLight : _spotLights)
+		// Render Spot Lighting
+		for (auto light : _spotLights)
 		{
-			spotLight->UseLight();
+			light->UseLight();
 
-			// Render Lighitng
 			//DrawQuad();
 		}
 	}
 
-	// TODO: Copy Depth Buffer (from Geometry Buffer) to Frame Buffer
-}
-void Renderer::renderShadowMap(Light* light)
-{
-
+	return true;
 }
 
 /**
  * Queue Mesh Instance to be Rendered for the Frame.
  * 
- * \param mesh: The Instance Mesh
- * \param shader: The Instance Shader
- * \param material: The Instance Material
- * \param position: The Instance Position
- * \param rotation: The Instance Rotation
- * \param scale: The Instance Scale
- * \return Whether the Instance was Successfully Added
+ * \param a_Mesh: The Geometry Instance's Mesh
+ * \param a_Shader: The Geometry Instace's Shader
+ * \param a_Material: The Geometry Instance's Material
+ * \param a_Transform: The Geometry Instance's Transform Matrix
+ * \return Whether the Geometry Instance was Successfully Added
  */
-bool Renderer::queueRenderBatchInstance(AssetType::Mesh* mesh, AssetType::Shader* shader, AssetType::Material* material,
-	Eigen::Vector3f position, Eigen::Quaternion<float> rotation, Eigen::Vector3f scale)
+bool Renderer::queueGeometryBatchInstance(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, Eigen::Matrix4f a_Transform)
 {
-	// Geometry Batch to which the Instance will be Added
 	RenderBatch* geometryBatch = nullptr;
 
-	auto batchKey = std::make_pair(mesh, shader);
-	if (!_geometryBatches.contains(batchKey))
-	{// No Geometry Batch with Mesh & Shader Pair Currently Exists
-		geometryBatch = new RenderBatch(mesh, shader);
-		_geometryBatches[batchKey] = geometryBatch;
-	}
-	else
-	{// Geometry Batch with Mesh & Shader Pair Currently Exists
-		geometryBatch = _geometryBatches[batchKey];
-	}
+	// Find Existing Geometry Batch with Same Mesh & Shader
+	for (auto batch : m_GeometryBatches)
+	{
+		if (batch->Mesh() != a_Mesh)
+			continue;
 
+		if (batch->Shader() != a_Shader)
+			continue;
+
+		geometryBatch = batch;
+		break;
+	}
+	// Create New Geometry Batch if no Match Exists
 	if (!geometryBatch)
-	{// No Geometry Batch could be Found or Created
-		return false;
+	{
+		geometryBatch = new RenderBatch(a_Mesh, a_Shader);
 	}
 
-	geometryBatch->AddBatchInstance(material, position, rotation, scale);
+	// Add Mesh Instance to Geometry Batch
+	geometryBatch->AddBatchInstance(a_Material, a_Transform);
 	return true;
 }
 
@@ -249,44 +262,53 @@ bool Renderer::queueSpotLight(SpotLight* spotLight)
 }
 
 /**
- * Render the Current Frame. 
+ * Render the Current Frame.
+ * 
+ * \return Whether the Frame Could be Rendered 
  */
-void Renderer::renderFrame()
+bool Renderer::renderFrame()
 {
-	// Render Scene Geometry to the Geometry Buffer
-	renderGBuffer();
-
-	// Render Shadow Maps for all Lights
-	for (auto pointLight : _pointLights)
+	// Render Scene to the Geometry Buffer
+	if (!renderGBuffer())
 	{
-		renderShadowMap(pointLight);
-	}
-	for (auto directionLight : _directionLights)
-	{
-		renderShadowMap(directionLight);
-	}
-	for (auto spotLight : _spotLights)
-	{
-		renderShadowMap(spotLight);
+		return false;
 	}
 
-	// Render Lighting Buffer
-	renderLightingBuffer();
+	// TODO:
+	// Render Shadow Map for Lights
 
+	// Render to Lighting Buffer
+	// TODO:
+	// Enable Additive Blending of Overlapping Fragments
+	// Load Passthrough Vertex Shader
 
-	// TODO: Show Frame to Screen
+	if (!renderLightingBuffer())
+	{
+		return false;
+	}
+
+	// TODO:
+	// Disable Additive Blending of Overlapping Fragments
+	// Load Standard Vertex Shader
+
+	// TODO:
+	// Render Transparency Buffer
+
+	// TODO:
+	// Display Frame to Scene
 
 	// Clear Geometry Batches
-	for (auto [geometryBatchKey, geometryBatch] : _geometryBatches)
-	{
+	for (auto geometryBatch : m_GeometryBatches) {
 		if (geometryBatch)
 			delete geometryBatch;
 	}
-	_geometryBatches.clear();
+	m_GeometryBatches.clear();
 
-	// Clear Lights
+	// Clear Scene Lights
 	_pointLights.clear();
 	_directionLights.clear();
 	_spotLights.clear();
+
+	return true;
 }
 }

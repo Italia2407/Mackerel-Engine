@@ -18,6 +18,8 @@ class Light
 public:
 	Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
 
+	AssetType::Texture* ShadowMap() const { return _shadowMap; }
+
 protected:
 	Eigen::Vector4f _diffuseColour;
 	Eigen::Vector4f _specularColour;

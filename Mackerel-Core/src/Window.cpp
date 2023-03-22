@@ -15,6 +15,7 @@
 #include <list>
 #include "Entity.h"
 #include "Scene.h"
+#include "Shader.h"
 
 #include "Input.h"
 
@@ -23,6 +24,10 @@ void InputCallbackTest(MCK::Key key, MCK::KeyEvent keyEvent)
     std::string message = "Key [" + std::to_string(static_cast<int>(key)) + "] did action [" + std::to_string(static_cast<int>(keyEvent)) + "].";
     MCK::Logger::log(message, MCK::Logger::LogLevel::Debug, std::source_location::current());
 }
+
+#include <windows.h>
+#include <string>
+#include <iostream>
 
 void SayHello()
 {
@@ -86,6 +91,16 @@ void SayHello()
     // Setup Dear ImGui style
     ImGui::StyleColorsClassic();
     ImGui::GetStyle().WindowRounding = 8.0f;
+
+    MCK::AssetType::Shader* shader = new MCK::AssetType::Shader();
+    if (!shader->LoadShaderFromSource("test.glsl", 0x8b31))
+    {
+        std::cout << "Shader not Loaded" << std::endl;
+    }
+    else
+    {
+        std::cout << "Shader Loaded" << std::endl;
+    }
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))

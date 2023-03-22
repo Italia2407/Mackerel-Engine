@@ -18,20 +18,19 @@ public:
 	~FrameBuffer();
 
 private:
-	GLuint _frameBufferObject;
-	bool _isCreated;
+	GLuint m_FrameBufferObject;
+	bool m_IsCreated;
 
-	/*GLuint _width;
-	GLuint _height;*/
+	std::vector<AssetType::Texture*> m_ColourAttachmentTextures;
 
-	std::vector<AssetType::Texture*> _colourAttachmentTextures;
-	AssetType::Texture* _depthBufferTexture;
+	bool m_ExternalDepthBufferTexture;
+	AssetType::Texture* m_DepthBufferTexture;
 
 public:
-	bool IsCreated() { return _isCreated; }
+	const bool& IsCreated() const { return m_IsCreated; }
 
-	GLuint GetNumColourAttachments() { return (GLuint)_colourAttachmentTextures.size(); }
-	AssetType::Texture* GetColourAttachmentTexture(GLuint slot) { return _colourAttachmentTextures[slot]; }
+	GLuint GetNumColourAttachments() { return (GLuint)m_ColourAttachmentTextures.size(); }
+	AssetType::Texture* GetColourAttachmentTexture(GLuint slot) { return (slot < 32) ? m_ColourAttachmentTextures[slot] : nullptr; }
 
 public:
 	bool CreateFrameBuffer();
@@ -40,7 +39,8 @@ public:
 	bool AddFloatColourAttachment(GLuint width, GLuint height);
 	bool AddIntColourAttachment(GLuint width, GLuint height);
 	bool AddUIntColourAttachment(GLuint width, GLuint height);
+	bool AddDepthBufferTexture(GLuint a_Width, GLuint a_Height);
 
-	void AssignDepthBufferTexture(AssetType::Texture* depthBufferTexture);
+	bool AssignExternalDepthBufferTexture(AssetType::Texture* depthBufferTexture);
 };
 }

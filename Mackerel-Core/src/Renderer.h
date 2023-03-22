@@ -51,19 +51,14 @@ private:
 		return _instance;
 	}
 
-	FrameBuffer* _geometryBuffer;
-	FrameBuffer* _lightingBuffer;
+	GLuint m_ShaderProgramID;
 
-	AssetType::Texture* _depthBufferTexture;
+	FrameBuffer* m_GeometryBuffer;
+	FrameBuffer* m_LightingBuffer;
 
-	GLuint _GBuffer;
-	GLuint _frameBuffer;
+	AssetType::Texture* m_DepthBufferTexture;
 
-	//std::vector<RenderBatch*> _geometryBatches;
-	std::map<std::pair<AssetType::Mesh*, AssetType::Shader*>, RenderBatch*> _geometryBatches;
-
-	AssetType::Texture* _GBufferTextures[31];
-	AssetType::Texture* _depthTexture;
+	std::vector<RenderBatch*> m_GeometryBatches;
 
 	// Light & Shadow Rendering
 	std::vector<AssetType::Shader*> _pointLightShaders;
@@ -77,23 +72,19 @@ private:
 private:
 	bool initialiseRenderer(GLuint screenWidth, GLuint screenHeight);
 
-	bool createGBuffer(GLuint screenWidth, GLuint screenHeight);
-	bool createLightingBuffer(GLuint screenWidth, GLuint screenHeight);
+	bool attachShader(AssetType::Shader* a_Shader);
 
-	void renderGBuffer();
-	void renderLightingBuffer();
-	void renderShadowMap(Light* light);
+	bool renderGBuffer();
+	bool renderLightingBuffer();
 
 	// Functions to tell the Renderer what needs to be Rendered
+	bool queueGeometryBatchInstance(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, Eigen::Matrix4f a_Transform);
 
 	bool queuePointLight(PointLight* pointLight);
 	bool queueDirectionLight(DirectionLight* directionLight);
 	bool queueSpotLight(SpotLight* spotLight);
 
-	bool queueRenderBatchInstance(AssetType::Mesh* mesh, AssetType::Shader* shader, AssetType::Material* material,
-		Eigen::Vector3f position, Eigen::Quaternion<float> rotation, Eigen::Vector3f scale);
-
-	void renderFrame();
+	bool renderFrame();
 
 public:
 	/**
@@ -112,6 +103,24 @@ public:
 	{
 		if (_instance)
 			delete _instance;
+	}
+
+	/**  */
+	static bool QueueMeshInstance(Eigen::Matrix4f a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, bool a_HasTransparency)
+	{
+		bool result = false;
+		if (!a_HasTransparency)
+		{
+			result = getInstance()->queueGeometryBatchInstance(a_Mesh, a_Shader, a_Material, a_Transform);
+		}
+
+		return result;
+	}
+
+	static bool RenderFrame()
+	{
+		bool result = getInstance()->renderFrame();
+		return result;
 	}
 };
 }
