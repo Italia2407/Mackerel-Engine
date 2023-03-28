@@ -20,5 +20,5 @@ layout(binding = 3) uniform sampler2D gNormal;
 
 void main()
 {
-	oColour = vec4(texture(gAlbedoColour, v2fUV).rgb, 1.0f); 
+	oColour = vec4(vec3(1.0f, 1.0f, 1.0f) - texture(gAlbedoColour, v2fUV).rgb, 1.0f); 
 }

@@ -4,6 +4,7 @@
 #include <Eigen/Eigen.h>
 
 #include <vector>
+#include <string>
 
 // Forward Declarations
 namespace MCK::AssetType {
@@ -14,12 +15,12 @@ namespace MCK {
 class FrameBuffer
 {
 public:
-	FrameBuffer();
+	FrameBuffer(std::string a_FrameBufferName);
 	~FrameBuffer();
 
 private:
 	GLuint m_FrameBufferObject;
-	bool m_IsCreated;
+	std::string m_FrameBufferName;	// Debug Data
 
 	std::vector<AssetType::Texture*> m_ColourAttachmentTextures;
 
@@ -27,10 +28,10 @@ private:
 	AssetType::Texture* m_DepthBufferTexture;
 
 public:
-	const bool& IsCreated() const { return m_IsCreated; }
+	const bool& IsCreated() const { return m_FrameBufferObject != GL_ZERO; }
 
 	GLuint GetNumColourAttachments() { return (GLuint)m_ColourAttachmentTextures.size(); }
-	AssetType::Texture* GetColourAttachmentTexture(GLuint slot) { return (slot < 32) ? m_ColourAttachmentTextures[slot] : nullptr; }
+	AssetType::Texture* GetColourAttachmentTexture(GLuint slot) { return (slot < m_ColourAttachmentTextures.size()) ? m_ColourAttachmentTextures[slot] : nullptr; }
 
 public:
 	bool CreateFrameBuffer();

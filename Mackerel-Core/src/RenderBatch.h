@@ -35,12 +35,11 @@ private:
 	AssetType::Mesh* m_Mesh;
 	AssetType::Shader* m_Shader;
 
-	UniformBuffer* m_TransformsBuffer;
 	std::vector<Instance> m_Instances;
 
 public:
 	bool AddBatchInstance(AssetType::Material* a_Material, Eigen::Matrix4f a_Transform);
 
-	bool DrawBatchObjects();
+	bool DrawBatchObjects(UniformBuffer* a_TransformBuffer);
 };
 }

@@ -44,7 +44,7 @@ public:
 private:
 	Eigen::Vector3f _position;
 
-	Eigen::Matrix4f getMVPMatrix() override;
+	//Eigen::Matrix4f getMVPMatrix() override;
 
 	bool updateLightingParameters() override;
 };
@@ -56,7 +56,7 @@ public:
 private:
 	Eigen::Vector3f _direction;
 
-	Eigen::Matrix4f getMVPMatrix() override;
+	//Eigen::Matrix4f getMVPMatrix() override;
 
 	bool updateLightingParameters() override;
 };
@@ -71,7 +71,7 @@ private:
 
 	float _beamAngle;
 
-	Eigen::Matrix4f getMVPMatrix() override;
+	//Eigen::Matrix4f getMVPMatrix() override;
 
 	bool updateLightingParameters() override;
 };

@@ -7,19 +7,14 @@
 #include "Mesh.h"
 #include "Shader.h"
 
+#include <iostream>
+
 namespace MCK::Rendering {
 RenderBatch::RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader) :
-	m_Mesh(mesh), m_Shader(shader)
-{
-	m_TransformsBuffer = new UniformBuffer();
-}
+	m_Mesh(mesh), m_Shader(shader) {}
 RenderBatch::~RenderBatch()
 {
-	// Clear Transform Buffer Object
-	if (m_TransformsBuffer)
-		delete m_TransformsBuffer;
-
-	// Empty all Instances
+	// Clear all Mesh Instances
 	m_Instances.clear();
 }
 
@@ -35,37 +30,40 @@ bool RenderBatch::AddBatchInstance(AssetType::Material* a_Material, Eigen::Matri
 }
 
 /**  */
-bool RenderBatch::DrawBatchObjects()
+bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
 {
-	// Bind Mesh VAO to GPU
-	if (!m_Mesh->BindVertexArrayObject())
-	{
+	// Ensure Mesh Uniform Buffer is Valid
+	if (!a_TransformBuffer || !a_TransformBuffer->IsCreated()) {
+		std::cout << "ERROR: Cannot Use Invalid Transform Uniform Buffer" << std::endl;
 		return false;
 	}
 
-	// Create Mesh Transform Uniform Buffer Object
-	m_TransformsBuffer->AddMat4BufferUniform("transform", Eigen::Matrix4f::Identity());
-	if (!m_TransformsBuffer->CreateUniformBufferObject())
-	{// Mesh Transform Uniform Buffer Object could not be Created
+	// Bind Mesh's VAO to the GPU
+	if (!m_Mesh->BindVertexArrayObject()) {
+		std::cout << "ERROR: Cannot Bind Mesh's VAO" << std::endl;
 		return false;
 	}
-
-	// Bind Mesh Transform UBO to Slot 0
-	m_TransformsBuffer->BindUniformBufferObject(0);
 
 	// Render All Mesh Instances
-	for (auto instance : m_Instances)
-	{
-		// Load Material Uniforms
-		instance.material->UseMaterial();
+	for (size_t i = 0; i < m_Instances.size(); i++)
+	{	auto instance = m_Instances[i];
 
-		// Load Transform Uniforms
-		m_TransformsBuffer->SetMat4BufferUniform("transform", instance.transform);
+		// Load Instance's Transform Uniforms
+		if (!a_TransformBuffer->SetMat4BufferUniform("transform", instance.transform)) {
+			std::cout << "ERROR: Cannot Set Instance #"  << i << " Transform Uniform in Transform Uniform Buffer" << std::endl;
+			continue;
+		}
 
-		m_Mesh->DrawMeshInstance();
+		// Load Instance's Material Uniforms
+		if (!instance.material || !instance.material->UseMaterial()) {
+			std::cout << "ERROR: Cannot Load Instance #" << i << " Material" << std::endl;
+		}
+
+		// Draw Mesh Instance
+		glDrawElements(GL_TRIANGLES, m_Mesh->NumIndices(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	// Unbind Mesh VAO from GPU
+	// Unbind Mesh's VAO from GPU
 	glBindVertexArray(0);
 
 	return true;

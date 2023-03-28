@@ -12,7 +12,6 @@ public:
 
 private:
 	GLuint m_ShaderID;
-	bool m_IsLoaded;
 
 	std::string m_FilePath;
 	GLuint m_ShaderType;

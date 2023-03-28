@@ -18,6 +18,8 @@
 #include "Shader.h"
 
 #include "Input.h"
+#include "Renderer.h"
+#include "Mesh.h"
 
 void InputCallbackTest(MCK::Key key, MCK::KeyEvent keyEvent)
 {
@@ -79,8 +81,6 @@ void SayHello()
     glfwMakeContextCurrent(window);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-    glClearColor(0.5f, 0.5f, 1.0f, 1.0f);
-
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -92,15 +92,21 @@ void SayHello()
     ImGui::StyleColorsClassic();
     ImGui::GetStyle().WindowRounding = 8.0f;
 
-    MCK::AssetType::Shader* shader = new MCK::AssetType::Shader();
-    if (!shader->LoadShaderFromSource("test.glsl", 0x8b31))
-    {
-        std::cout << "Shader not Loaded" << std::endl;
+    MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
+
+    MCK::AssetType::Shader* testVertShader = new MCK::AssetType::Shader(); {
+        testVertShader->LoadShaderFromSource("../Mackerel-Core/res/Shaders/vert/passthrough.vert", GL_VERTEX_SHADER);
     }
-    else
-    {
-        std::cout << "Shader Loaded" << std::endl;
+    MCK::AssetType::Shader* testFragShader = new MCK::AssetType::Shader(); {
+        testFragShader->LoadShaderFromSource("../Mackerel-Core/res/Shaders/frag/monocolour.glsl", GL_FRAGMENT_SHADER);
     }
+    MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh(); {
+        testMesh->LoadSmallDisplayMesh();
+    }
+    MCK::AssetType::Shader* testFragDefShader = new MCK::AssetType::Shader(); {
+        testFragDefShader->LoadShaderFromSource("../Mackerel-Core/res/Shaders/light/unlit.glsl", GL_FRAGMENT_SHADER);
+    }
+    MCK::Rendering::Renderer::AddUnlitShader(testFragDefShader);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -113,8 +119,11 @@ void SayHello()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // Set Renderer Data
+        MCK::Rendering::Renderer::QueueMeshInstance(Eigen::Matrix4f::Identity(), testMesh, testFragShader, nullptr, false);
+
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        MCK::Rendering::Renderer::RenderFrame(testVertShader);
 
         ImGui::ShowDemoWindow();
         ImGui::Begin("Test");

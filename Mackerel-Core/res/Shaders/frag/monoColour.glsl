@@ -7,13 +7,13 @@ layout(location = 2) in vec2 v2fUV;
 layout(location = 3) in vec3 v2fTint;
 
 // Required Geometry Buffer Parameters
-layout(binding = 0) out uint gLightShaderID;
+layout(location = 1) out uint gLightShaderID;
 
 // Define Here your Geometry Buffer Output Parameters
-layout(binding = 1) out vec3 gAlbedoColour;
+layout(location = 0) out vec4 gAlbedoColour;
 
-layout(binding = 2) out vec3 gPosition;
-layout(binding = 3) out vec3 gNormal;
+layout(location = 2) out vec4 gPosition;
+layout(location = 3) out vec4 gNormal;
 
 layout(std140, binding = 2) uniform MaterialParameters
 {
@@ -23,10 +23,11 @@ layout(std140, binding = 2) uniform MaterialParameters
 
 void main()
 {
-	gLightShaderID = lightShaderID;
+	gLightShaderID = 0; //lightShaderID;
 
-	gAlbedoColour = albedoColour * v2fTint;
+	//gAlbedoColour = albedoColour * v2fTint;
+	gAlbedoColour = vec4(v2fUV, 0.75f, 1.0f);
 
-	gPosition = v2fPosition;
-	gNormal = v2fNormal;
+	gPosition = vec4(v2fPosition, 1.0f);
+	gNormal = vec4(v2fNormal, 1.0f);
 }

@@ -11,14 +11,16 @@
 namespace MCK::AssetType
 {
 Shader::Shader() :
-	m_ShaderID(GL_ZERO), m_IsLoaded(false), m_FilePath(""), m_ShaderType(GL_ZERO) {}
+	m_ShaderID(GL_ZERO), m_FilePath(""), m_ShaderType(GL_ZERO) {}
 Shader::~Shader() {}
 
 bool Shader::LoadShaderFromSource(std::string a_FilePath, GLuint a_ShaderType)
 {
-	if (m_IsLoaded)
-	{// Loaded Shader Cannot be Reloaded
-		Logger::log("ERROR: Loaded Shader cannot be Reloaded", Logger::LogLevel::Error, std::source_location::current());
+	// Ensure Shader is not Already Loaded
+	if (m_ShaderID != GL_ZERO)
+	{
+		std::cout << "ERROR: Shader cannot be Reloaded from Source" << std::endl;
+
 		return false;
 	}
 
@@ -29,7 +31,7 @@ bool Shader::LoadShaderFromSource(std::string a_FilePath, GLuint a_ShaderType)
 	inputFile.open(a_FilePath.c_str(), std::ios::in);
 	if (!inputFile.good())
 	{
-		Logger::log("ERROR: Shader File could not be Loaded!", Logger::LogLevel::Error, std::source_location::current());
+		std::cout << "ERROR: Shader File " << a_FilePath << " could not be Loaded" << std::endl;
 		return false;
 	}
 
@@ -75,16 +77,18 @@ bool Shader::LoadShaderFromSource(std::string a_FilePath, GLuint a_ShaderType)
 		glGetShaderInfoLog(m_ShaderID, errorMsgMaxLength, &errorMsgMaxLength, errorMsg.data());
 
 		// Output Error Message & Delete Shader
-		std::cout << "Shader Didn't Compile" << std::endl;
+		std::cout << "ERROR: Shader did not Compile" << std::endl;
 		std::cout << errorMsg.data() << std::endl;
+
 		glDeleteShader(m_ShaderID);
+		m_ShaderID = GL_ZERO;
 
 		return false;
 	}
 
 	// Shader Compiled Successfully
+	m_FilePath = a_FilePath;
 
-	m_IsLoaded = true;
 	return true;
 }
 }
