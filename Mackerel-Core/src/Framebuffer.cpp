@@ -48,10 +48,18 @@ bool FrameBuffer::CreateFrameBuffer()
 	glGenFramebuffers(1, &m_FrameBufferObject);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
 
+	// Get Maxmimum Number of Colour Attachments
+	GLint maxColourAttachments = 0;
+	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxColourAttachments);
+
+	std::vector<GLenum> colourAttachmentSlots;
 	// Add Colour Attachment Textures
-	std::vector<GLuint> colourAttachmentSlots;
 	for (int i = 0; i < m_ColourAttachmentTextures.size(); i++)
 	{
+		if (i > maxColourAttachments) {
+			std::cout << "ERROR: Cannot Add Colour Attachment " << i << " to Framebuffer." " "
+				"Reached Maximum Number(" << maxColourAttachments << ") of Colour Attachments Supported by Current OpenGL Implementation" << std::endl;
+		}
 		auto colourAttachmentTexture = m_ColourAttachmentTextures[i];
 
 		if (!colourAttachmentTexture || colourAttachmentTexture->getTextureID() == GL_ZERO)
@@ -65,16 +73,15 @@ bool FrameBuffer::CreateFrameBuffer()
 			return false;
 		}
 
-		GLuint colorAttachmentSlot = GL_COLOR_ATTACHMENT0 + i;
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colourAttachmentTexture->getTextureID(), 0);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachmentSlot, GL_TEXTURE_2D, colourAttachmentTexture->getTextureID(), 0);
-		colourAttachmentSlots.push_back(colorAttachmentSlot);
+		colourAttachmentSlots.push_back(GL_COLOR_ATTACHMENT0 + i);
 	}
 
 	// Add Depth Attachment Texture
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthBufferTexture->getTextureID(), 0);
 
-	glDrawBuffers((GLuint)colourAttachmentSlots.size(), colourAttachmentSlots.data());
+	glDrawBuffers(maxColourAttachments, colourAttachmentSlots.data());
 
 	// Check if Framebuffer was Created Properly
 	auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);

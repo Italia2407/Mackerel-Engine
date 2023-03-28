@@ -370,9 +370,6 @@
     <None Include="src\MaterialDiagram.cd">
       <Filter>Class Diagrams</Filter>
     </None>
-    <None Include="res\Shaders\vert\perspective.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="res\Shaders\frag\monoColour.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
@@ -391,11 +388,14 @@
     <None Include="res\Shaders\static\FBDisplayer.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="res\Shaders\static\vertPass.glsl">
+    <None Include="res\Shaders\vert\passthrough.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="res\Shaders\frag\invert.glsl">
-      <Filter>Resource Files\Shaders\Shader Headers</Filter>
+    <None Include="res\Shaders\vert\perspective.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="res\Shaders\light\unlitInvert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

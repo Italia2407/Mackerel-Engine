@@ -10,10 +10,10 @@ layout(location = 3) in vec3 v2fTint;
 layout(location = 0) out vec4 oColour;
 
 // Required Geometry Buffer Parameters
-layout(binding = 1) uniform usampler2D gLightShaderID;
+layout(binding = 0) uniform usampler2D gLightShaderID;
 
 // Define Here your Geometry Buffer Output Parameters
-layout(binding = 0) uniform sampler2D gAlbedoColour;
+layout(binding = 1) uniform sampler2D gAlbedoColour;
 
 layout(binding = 2) uniform sampler2D gPosition;
 layout(binding = 3) uniform sampler2D gNormal;

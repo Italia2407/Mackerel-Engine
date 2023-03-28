@@ -106,14 +106,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\fragmentHeader.glsl" />
-    <None Include="res\Shaders\frag\invert.glsl" />
     <None Include="res\Shaders\frag\monoColour.glsl" />
     <None Include="res\Shaders\lightsHeader.glsl" />
     <None Include="res\Shaders\light\unlit.glsl" />
+    <None Include="res\Shaders\light\unlitInvert.glsl" />
     <None Include="res\Shaders\static\FBDisplayer.glsl" />
-    <None Include="res\Shaders\static\vertPass.glsl" />
     <None Include="res\Shaders\vertexHeader.glsl" />
-    <None Include="res\Shaders\vert\perspective.glsl" />
+    <None Include="res\Shaders\vert\passthrough.vert" />
+    <None Include="res\Shaders\vert\perspective.vert" />
     <None Include="src\MaterialDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
