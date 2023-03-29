@@ -20,10 +20,25 @@
 #include "Input.h"
 #include "Renderer.h"
 #include "Mesh.h"
+#include "TimeManager.h"
 
 void InputCallbackTest(MCK::Key key, MCK::KeyEvent keyEvent)
 {
     std::string message = "Key [" + std::to_string(static_cast<int>(key)) + "] did action [" + std::to_string(static_cast<int>(keyEvent)) + "].";
+    MCK::Logger::log(message, MCK::Logger::LogLevel::Debug, std::source_location::current());
+}
+
+void TimerWentOff()
+{
+    double time = MCK::TimeManager::GetUpTime();
+    std::string message = "Timer went off at: " + std::to_string(static_cast<double>(time));
+    MCK::Logger::log(message, MCK::Logger::LogLevel::Debug, std::source_location::current());
+}
+
+void ScaledTimerWentOff()
+{
+    double time = MCK::TimeManager::GetScaledUpTime();
+    std::string message = "Scaled Timer went off at: " + std::to_string(static_cast<double>(time));
     MCK::Logger::log(message, MCK::Logger::LogLevel::Debug, std::source_location::current());
 }
 
@@ -76,6 +91,46 @@ void SayHello()
     MCK::Input::Subscribe(MCK::Key::__R, MCK::KeyEvent::Held, exampleCallback, receipt);
 
     // End input demo
+
+    // Start timer demo
+
+    // set callback functions
+    std::function<void()> timerCallback = TimerWentOff;
+    std::function<void()> scaledTimerCallback = ScaledTimerWentOff;
+
+    // set a timer
+    double time = 0.1;
+    std::pair<double, std::function<void()>> timer = { time, timerCallback };
+
+    MCK::TimeManager::setTimer(timer);
+    // set a second timer to check that adding and popping works properly
+    MCK::TimeManager::setTimer(timer);
+
+    // set time scale
+    MCK::TimeManager::setTimescale(2.0);
+
+    // set a scaled timer
+    double time2 = 0.2;
+    std::pair<double, std::function<void()>> timer2 = { time2, scaledTimerCallback };
+
+    MCK::TimeManager::setScaledTimer(timer2);
+
+
+    // wait for timer to finish, then call an update to see if the timer has triggered the callback
+    MCK::TimeManager::Update();
+    Sleep(100);
+    MCK::TimeManager::Update();
+
+    // check that frame times work
+    double frameTime = MCK::TimeManager::getFrameTime();
+    std::string message0 = "Frame time: " + std::to_string(static_cast<double>(frameTime));
+    MCK::Logger::log(message0, MCK::Logger::LogLevel::Debug, std::source_location::current());
+
+    double scaledFrameTime = MCK::TimeManager::getScaledFrameTime();
+    std::string message1 = "Scaled Frame time: " + std::to_string(static_cast<double>(scaledFrameTime));
+    MCK::Logger::log(message1, MCK::Logger::LogLevel::Debug, std::source_location::current());
+
+    // End timer demo
 
     // Make Window Current & Load GLAD
     glfwMakeContextCurrent(window);
