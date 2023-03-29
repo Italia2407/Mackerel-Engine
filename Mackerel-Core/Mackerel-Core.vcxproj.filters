@@ -201,6 +201,9 @@
     <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\Component.cpp">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -357,6 +360,9 @@
       <Filter>Source Files\Systems\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComponentState.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClInclude>
   </ItemGroup>

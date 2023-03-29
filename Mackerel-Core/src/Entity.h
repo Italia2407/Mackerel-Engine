@@ -61,7 +61,7 @@ public:
 		* Checks if the entity is queued to be destroyed and deallocates if so TODO make private
 		* 
 		*/
-	void OnFrameEnd();
+	void FrameEnd();
 
 	/**
 		* Invoked before the entity is destroyed. 

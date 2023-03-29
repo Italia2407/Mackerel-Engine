@@ -132,7 +132,7 @@ namespace MCK::EntitySystem
 	 * Checks if the entity is queued to be destroyed and deallocates if so
 	 *
 	 */
-	void Entity::OnFrameEnd()
+	void Entity::FrameEnd()
 	{
 		if (destroying)
 		{

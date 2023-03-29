@@ -28,6 +28,7 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
+    <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentFactory.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\EntityFactory.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\ComponentFactory.h" />
+    <ClInclude Include="src\ComponentState.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
@@ -113,6 +115,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\LoggingSystem.conf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="ext\reactphysics3d\build\reactphysics3d.vcxproj">
+      <Project>{49a8841e-2c77-3ec9-9a3e-e8fd4b1a8051}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -221,7 +228,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
