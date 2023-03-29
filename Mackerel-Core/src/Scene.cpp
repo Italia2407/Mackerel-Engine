@@ -55,9 +55,16 @@ namespace MCK::EntitySystem
 	 */
 	void Scene::UpdateScene()
 	{
+		// Frame start
 		for (unsigned int i = 0; i < entities.size(); ++i)
 		{
 			entities[i]->UpdateEntity();
+		}
+
+		// Frame end
+		for (unsigned int i = 0; i < entities.size(); ++i)
+		{
+			entities[i]->FrameEnd();
 		}
 	}
 
