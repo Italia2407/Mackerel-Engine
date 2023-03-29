@@ -40,78 +40,82 @@ private:
 	Renderer(const Renderer&) = delete;
 	Renderer& operator=(const Renderer&) = delete;
 
-	// Singleton Instance Bookkeeping
-	static Renderer* _instance;
-	static Renderer* getInstance()
-	{
-		// Create New Renderer Instance if not Existing Yet
-		if (!_instance)
-			_instance = new Renderer();
+// Singleton Instance Bookkeeping
+private:
+	static Renderer* k_Instance;
+	static Renderer* getInstance();
 
-		return _instance;
-	}
+	static AssetType::Shader* k_PassThroughVertexShader;
+	static AssetType::Shader* k_FrameBufferDisplayShader;
 
-	FrameBuffer* _geometryBuffer;
-	FrameBuffer* _lightingBuffer;
+	static AssetType::Mesh* k_FrameBufferDisplayMesh;
+	static AssetType::Mesh* k_ScreenDisplayMesh;
 
-	AssetType::Texture* _depthBufferTexture;
+private:
+	GLuint m_ShaderProgramID;
 
-	GLuint _GBuffer;
-	GLuint _frameBuffer;
+	// Permanent Renderer Objects
+	FrameBuffer* m_GeometryBuffer;
+	FrameBuffer* m_DeferredBuffer;
 
-	//std::vector<RenderBatch*> _geometryBatches;
-	std::map<std::pair<AssetType::Mesh*, AssetType::Shader*>, RenderBatch*> _geometryBatches;
+	AssetType::Texture* m_DepthBufferTexture;
 
-	AssetType::Texture* _GBufferTextures[31];
-	AssetType::Texture* _depthTexture;
+	UniformBuffer* m_TransformBuffer;
 
-	// Light & Shadow Rendering
+	std::vector<AssetType::Shader*> m_UnlitShaders;
 	std::vector<AssetType::Shader*> _pointLightShaders;
 	std::vector<AssetType::Shader*> _directionLightShaders;
 	std::vector<AssetType::Shader*> _spotLightShaders;
+
+	// Per Frame Renderer Objects
+	std::vector<RenderBatch*> m_GeometryBatches;
 
 	std::vector<PointLight*> _pointLights;
 	std::vector<DirectionLight*> _directionLights;
 	std::vector<SpotLight*> _spotLights;
 
 private:
-	bool initialiseRenderer(GLuint screenWidth, GLuint screenHeight);
+	bool initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight);
+	void resetRenderer();
+	void resetRendererFrame();
 
-	bool createGBuffer(GLuint screenWidth, GLuint screenHeight);
-	bool createLightingBuffer(GLuint screenWidth, GLuint screenHeight);
+	bool addUnlitShader(AssetType::Shader* a_Shader);
+	bool addPointLightShader(AssetType::Shader* a_Shader);
+	bool addDirectionLightShader(AssetType::Shader* a_Shader);
+	bool addSpotLightShader(AssetType::Shader* a_Shader);
 
-	void renderGBuffer();
-	void renderLightingBuffer();
-	void renderShadowMap(Light* light);
+	bool startShaderProgram(GLuint a_VertShader, GLuint a_FragShader);
+
+	bool renderGBuffer(AssetType::Shader* a_ProjectionShader);
+	bool renderDeferredBuffer();
 
 	// Functions to tell the Renderer what needs to be Rendered
+	bool queueGeometryBatchInstance(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, Eigen::Matrix4f a_Transform);
 
 	bool queuePointLight(PointLight* pointLight);
 	bool queueDirectionLight(DirectionLight* directionLight);
 	bool queueSpotLight(SpotLight* spotLight);
 
-	bool queueRenderBatchInstance(AssetType::Mesh* mesh, AssetType::Shader* shader, AssetType::Material* material,
-		Eigen::Vector3f position, Eigen::Quaternion<float> rotation, Eigen::Vector3f scale);
-
-	void renderFrame();
+	bool renderFrame(AssetType::Shader* a_ProjectionShader);
+	void renderFramebufferDisplayMesh();
 
 public:
-	/**
-	 * Initialises the Renderer.
-	 * 
-	 * \param screenWidth: The Target Screen's Width
-	 * \param screenHeight: The Target Screen's Height
-	 * \return Whether the Renderer was Successfully Initialised
-	 */
-	static bool InitialiseRenderer(GLuint screenWidth, GLuint screenHeight)
-	{
-		bool result = getInstance()->initialiseRenderer(screenWidth, screenHeight);
-		return result;
-	}
-	static void ClearRenderer()
-	{
-		if (_instance)
-			delete _instance;
-	}
+	static bool InitialiseRenderer(GLuint screenWidth, GLuint screenHeight);
+	static void ClearRenderer();
+
+	static bool AddUnlitShader(AssetType::Shader* a_Shader);
+	static bool AddPointLightShader(AssetType::Shader* a_Shader);
+	static bool AddDirectionLightShader(AssetType::Shader* a_Shader);
+	static bool AddSpotLightShader(AssetType::Shader* a_Shader);
+
+	static bool QueueMeshInstance(Eigen::Matrix4f a_Transform,
+		AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material,
+		bool a_HasTransparency);
+
+	static bool QueuePointLight(PointLight* a_PointLight);
+	static bool QueueDirectionLight(DirectionLight* a_DirectionLight);
+	static bool QueueSpotLight(SpotLight* a_SpotLight);
+
+	static bool RenderFrame(AssetType::Shader* a_ProjectionShader);
 };
 }

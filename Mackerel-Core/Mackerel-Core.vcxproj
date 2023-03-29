@@ -41,10 +41,12 @@
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\MaterialLibrary.cpp" />
     <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\ShaderLibrary.cpp" />
     <ClCompile Include="src\TestComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -109,8 +111,11 @@
     <None Include="res\Shaders\frag\monoColour.glsl" />
     <None Include="res\Shaders\lightsHeader.glsl" />
     <None Include="res\Shaders\light\unlit.glsl" />
+    <None Include="res\Shaders\light\unlitInvert.glsl" />
+    <None Include="res\Shaders\static\FBDisplayer.glsl" />
     <None Include="res\Shaders\vertexHeader.glsl" />
-    <None Include="res\Shaders\vert\perspective.glsl" />
+    <None Include="res\Shaders\vert\passthrough.vert" />
+    <None Include="res\Shaders\vert\perspective.vert" />
     <None Include="src\MaterialDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +188,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -206,6 +212,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -232,6 +239,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -257,6 +265,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>

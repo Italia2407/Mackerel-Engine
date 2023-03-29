@@ -21,27 +21,25 @@ public:
 	RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader);
 	~RenderBatch();
 
+	AssetType::Mesh* Mesh() const { return m_Mesh; }
+	AssetType::Shader* Shader() const { return m_Shader; }
+
 private:
 	struct Instance
 	{
 		AssetType::Material* material;
-
-		Eigen::Vector3f position;
-		Eigen::Quaternion<float> rotation;
-		Eigen::Vector3f scale;
+		Eigen::Matrix4f transform;
 	};
 
 private:
-	AssetType::Mesh* _mesh;
-	AssetType::Shader* _shader;
+	AssetType::Mesh* m_Mesh;
+	AssetType::Shader* m_Shader;
 
-	UniformBuffer* _meshTransformBuffer;
-	std::vector<Instance> _instances;
+	std::vector<Instance> m_Instances;
 
 public:
-	bool AddBatchInstance(AssetType::Material* material, Eigen::Vector3f position, Eigen::Quaternion<float> rotation, Eigen::Vector3f scale);
+	bool AddBatchInstance(AssetType::Material* a_Material, Eigen::Matrix4f a_Transform);
 
-	bool LoadMeshShader();
-	void DrawBatchObjects();
+	bool DrawBatchObjects(UniformBuffer* a_TransformBuffer);
 };
 }

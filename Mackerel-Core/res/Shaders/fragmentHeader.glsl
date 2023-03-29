@@ -5,9 +5,9 @@
 //in vec3 fragmentTint;
 //
 //// Required Geometry Buffer Parameters
-//layout(binding = 0) out uint gLightShaderID;
+//layout(location = 0) out uint gLightShaderID;
 //// Define Here your Geometry Buffer Output Parameters
-//layout(binding = 1) out vec3 gAlbedoColour;
+//layout(location = 1) out vec3 gAlbedoColour;
 //
-//layout(binding = 2) out vec3 gPosition;
-//layout(binding = 3) out vec3 gNormal;
+//layout(location = 2) out vec3 gPosition;
+//layout(location = 3) out vec3 gNormal;

@@ -4,6 +4,7 @@
 #include <Eigen/Eigen.h>
 
 #include <vector>
+#include <string>
 
 // Forward Declarations
 namespace MCK::AssetType {
@@ -14,24 +15,23 @@ namespace MCK {
 class FrameBuffer
 {
 public:
-	FrameBuffer();
+	FrameBuffer(std::string a_FrameBufferName);
 	~FrameBuffer();
 
 private:
-	GLuint _frameBufferObject;
-	bool _isCreated;
+	GLuint m_FrameBufferObject;
+	std::string m_FrameBufferName;	// Debug Data
 
-	/*GLuint _width;
-	GLuint _height;*/
+	std::vector<AssetType::Texture*> m_ColourAttachmentTextures;
 
-	std::vector<AssetType::Texture*> _colourAttachmentTextures;
-	AssetType::Texture* _depthBufferTexture;
+	bool m_ExternalDepthBufferTexture;
+	AssetType::Texture* m_DepthBufferTexture;
 
 public:
-	bool IsCreated() { return _isCreated; }
+	const bool& IsCreated() const { return m_FrameBufferObject != GL_ZERO; }
 
-	GLuint GetNumColourAttachments() { return (GLuint)_colourAttachmentTextures.size(); }
-	AssetType::Texture* GetColourAttachmentTexture(GLuint slot) { return _colourAttachmentTextures[slot]; }
+	GLuint GetNumColourAttachments() { return (GLuint)m_ColourAttachmentTextures.size(); }
+	AssetType::Texture* GetColourAttachmentTexture(GLuint slot) { return (slot < m_ColourAttachmentTextures.size()) ? m_ColourAttachmentTextures[slot] : nullptr; }
 
 public:
 	bool CreateFrameBuffer();
@@ -40,7 +40,8 @@ public:
 	bool AddFloatColourAttachment(GLuint width, GLuint height);
 	bool AddIntColourAttachment(GLuint width, GLuint height);
 	bool AddUIntColourAttachment(GLuint width, GLuint height);
+	bool AddDepthBufferTexture(GLuint a_Width, GLuint a_Height);
 
-	void AssignDepthBufferTexture(AssetType::Texture* depthBufferTexture);
+	bool AssignExternalDepthBufferTexture(AssetType::Texture* depthBufferTexture);
 };
 }

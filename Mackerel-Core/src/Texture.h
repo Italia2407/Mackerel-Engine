@@ -15,6 +15,7 @@ public:
 	bool GenerateFloatTexture(GLuint width, GLuint height);
 	bool GenerateIntTexture(GLuint width, GLuint height);
 	bool GenerateUIntTexture(GLuint width, GLuint height);
+	bool GenerateDepthTexture(GLuint a_Width, GLuint a_Height);
 
 	bool ClearTexture();
 

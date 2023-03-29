@@ -6,22 +6,22 @@
 #include <iostream>
 
 namespace MCK::AssetType {
-Material::Material() :
-	_uniformBuffer(nullptr)
+Material::Material()
 {
 	// Initialise Uniform Buffer
-	_uniformBuffer = new UniformBuffer();
+	m_UniformBuffer = new UniformBuffer();
 
+	// Initialise Material Textures References
 	for (int i = 0; i < 32; i++)
-	{// Initialise Material Texture References
-		_materialTextures[i] = nullptr;
+	{
+		m_MaterialTextures[i] = nullptr;
 	}
 }
 Material::~Material()
 {
 	// Delete Uniform Buffer Object
-	_uniformBuffer->DeleteUniformBufferObject();
-	delete _uniformBuffer;
+	if (m_UniformBuffer)
+		delete m_UniformBuffer;
 }
 
 // Uniform Adders
@@ -34,7 +34,7 @@ Material::~Material()
  */
 bool Material::addUInt08Uniform(std::string name, uint8_t value)
 {
-	bool result = _uniformBuffer->AddUInt08BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddUInt08BufferUniform(name, value);
 	return result;
 }
 /**
@@ -46,7 +46,7 @@ bool Material::addUInt08Uniform(std::string name, uint8_t value)
  */
 bool Material::addUInt16Uniform(std::string name, uint16_t value)
 {
-	bool result = _uniformBuffer->AddUInt16BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddUInt16BufferUniform(name, value);
 	return result;
 }
 /**
@@ -58,7 +58,7 @@ bool Material::addUInt16Uniform(std::string name, uint16_t value)
  */
 bool Material::addUInt32Uniform(std::string name, uint32_t value)
 {
-	bool result = _uniformBuffer->AddUInt32BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddUInt32BufferUniform(name, value);
 	return result;
 }
 /**
@@ -70,7 +70,7 @@ bool Material::addUInt32Uniform(std::string name, uint32_t value)
  */
 bool Material::addUInt64Uniform(std::string name, uint64_t value)
 {
-	bool result = _uniformBuffer->AddUInt64BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddUInt64BufferUniform(name, value);
 	return result;
 }
 
@@ -83,7 +83,7 @@ bool Material::addUInt64Uniform(std::string name, uint64_t value)
  */
 bool Material::addInt08Uniform(std::string name, int8_t value)
 {
-	bool result = _uniformBuffer->AddInt08BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddInt08BufferUniform(name, value);
 	return result;
 }
 /**
@@ -95,7 +95,7 @@ bool Material::addInt08Uniform(std::string name, int8_t value)
  */
 bool Material::addInt16Uniform(std::string name, int16_t value)
 {
-	bool result = _uniformBuffer->AddInt16BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddInt16BufferUniform(name, value);
 	return result;
 }
 /**
@@ -107,7 +107,7 @@ bool Material::addInt16Uniform(std::string name, int16_t value)
  */
 bool Material::addInt32Uniform(std::string name, int32_t value)
 {
-	bool result = _uniformBuffer->AddInt32BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddInt32BufferUniform(name, value);
 	return result;
 }
 /**
@@ -119,7 +119,7 @@ bool Material::addInt32Uniform(std::string name, int32_t value)
  */
 bool Material::addInt64Uniform(std::string name, int64_t value)
 {
-	bool result = _uniformBuffer->AddInt64BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddInt64BufferUniform(name, value);
 	return result;
 }
 
@@ -132,7 +132,7 @@ bool Material::addInt64Uniform(std::string name, int64_t value)
  */
 bool Material::addFloatUniform(std::string name, float value)
 {
-	bool result = _uniformBuffer->AddFloatBufferUniform(name, value);
+	bool result = m_UniformBuffer->AddFloatBufferUniform(name, value);
 	return result;
 }
 /**
@@ -144,7 +144,7 @@ bool Material::addFloatUniform(std::string name, float value)
  */
 bool Material::addDoubleUniform(std::string name, double value)
 {
-	bool result = _uniformBuffer->AddDoubleBufferUniform(name, value);
+	bool result = m_UniformBuffer->AddDoubleBufferUniform(name, value);
 	return result;
 }
 
@@ -157,7 +157,7 @@ bool Material::addDoubleUniform(std::string name, double value)
  */
 bool Material::addVec2Uniform(std::string name, Eigen::Vector2f value)
 {
-	bool result = _uniformBuffer->AddVec2BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddVec2BufferUniform(name, value);
 	return result;
 }
 /**
@@ -169,7 +169,7 @@ bool Material::addVec2Uniform(std::string name, Eigen::Vector2f value)
  */
 bool Material::addVec3Uniform(std::string name, Eigen::Vector3f value)
 {
-	bool result = _uniformBuffer->AddVec3BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddVec3BufferUniform(name, value);
 	return result;
 }
 /**
@@ -181,7 +181,7 @@ bool Material::addVec3Uniform(std::string name, Eigen::Vector3f value)
  */
 bool Material::addVec4Uniform(std::string name, Eigen::Vector4f value)
 {
-	bool result = _uniformBuffer->AddVec4BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddVec4BufferUniform(name, value);
 	return result;
 }
 
@@ -194,7 +194,7 @@ bool Material::addVec4Uniform(std::string name, Eigen::Vector4f value)
  */
 bool Material::addUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value)
 {
-	bool result = _uniformBuffer->AddUVec2BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddUVec2BufferUniform(name, value);
 	return result;
 }
 /**
@@ -206,7 +206,7 @@ bool Material::addUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value)
  */
 bool Material::addUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value)
 {
-	bool result = _uniformBuffer->AddUVec3BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddUVec3BufferUniform(name, value);
 	return result;
 }
 /**
@@ -218,7 +218,20 @@ bool Material::addUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value)
  */
 bool Material::addUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value)
 {
-	bool result = _uniformBuffer->AddUVec4BufferUniform(name, value);
+	bool result = m_UniformBuffer->AddUVec4BufferUniform(name, value);
+	return result;
+}
+
+/**
+ * Add a new Mat4 to the Uniform Buffer.
+ *
+ * \param name: The Uniform's Name
+ * \param value: The Uniform's Value
+ * \return Whether the Uniform was Successfully Added
+ */
+bool Material::addMat4Uniform(std::string name, Eigen::Matrix4f value)
+{
+	bool result = m_UniformBuffer->AddMat4BufferUniform(name, value);
 	return result;
 }
 
@@ -231,7 +244,7 @@ bool Material::addUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value)
  */
 std::optional<uint8_t> Material::GetUInt08Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetUInt08BufferUniform(name);
+	auto value = m_UniformBuffer->GetUInt08BufferUniform(name);
 	return value;
 }
 /**
@@ -242,7 +255,7 @@ std::optional<uint8_t> Material::GetUInt08Uniform(std::string name)
  */
 std::optional<uint16_t> Material::GetUInt16Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetUInt16BufferUniform(name);
+	auto value = m_UniformBuffer->GetUInt16BufferUniform(name);
 	return value;
 }
 /**
@@ -253,7 +266,7 @@ std::optional<uint16_t> Material::GetUInt16Uniform(std::string name)
  */
 std::optional<uint32_t> Material::GetUInt32Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetUInt32BufferUniform(name);
+	auto value = m_UniformBuffer->GetUInt32BufferUniform(name);
 	return value;
 }
 /**
@@ -264,7 +277,7 @@ std::optional<uint32_t> Material::GetUInt32Uniform(std::string name)
  */
 std::optional<uint64_t> Material::GetUInt64Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetUInt64BufferUniform(name);
+	auto value = m_UniformBuffer->GetUInt64BufferUniform(name);
 	return value;
 }
 
@@ -276,7 +289,7 @@ std::optional<uint64_t> Material::GetUInt64Uniform(std::string name)
  */
 std::optional<int8_t> Material::GetInt08Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetInt08BufferUniform(name);
+	auto value = m_UniformBuffer->GetInt08BufferUniform(name);
 	return value;
 }
 /**
@@ -287,7 +300,7 @@ std::optional<int8_t> Material::GetInt08Uniform(std::string name)
  */
 std::optional<int16_t> Material::GetInt16Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetInt16BufferUniform(name);
+	auto value = m_UniformBuffer->GetInt16BufferUniform(name);
 	return value;
 }
 /**
@@ -298,7 +311,7 @@ std::optional<int16_t> Material::GetInt16Uniform(std::string name)
  */
 std::optional<int32_t> Material::GetInt32Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetInt32BufferUniform(name);
+	auto value = m_UniformBuffer->GetInt32BufferUniform(name);
 	return value;
 }
 /**
@@ -309,7 +322,7 @@ std::optional<int32_t> Material::GetInt32Uniform(std::string name)
  */
 std::optional<int64_t> Material::GetInt64Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetInt64BufferUniform(name);
+	auto value = m_UniformBuffer->GetInt64BufferUniform(name);
 	return value;
 }
 
@@ -321,7 +334,7 @@ std::optional<int64_t> Material::GetInt64Uniform(std::string name)
  */
 std::optional<float> Material::GetFloatUniform(std::string name)
 {
-	auto value = _uniformBuffer->GetFloatBufferUniform(name);
+	auto value = m_UniformBuffer->GetFloatBufferUniform(name);
 	return value;
 }
 /**
@@ -332,7 +345,7 @@ std::optional<float> Material::GetFloatUniform(std::string name)
  */
 std::optional<double> Material::GetDoubleUniform(std::string name)
 {
-	auto value = _uniformBuffer->GetDoubleBufferUniform(name);
+	auto value = m_UniformBuffer->GetDoubleBufferUniform(name);
 	return value;
 }
 
@@ -344,7 +357,7 @@ std::optional<double> Material::GetDoubleUniform(std::string name)
  */
 std::optional<Eigen::Vector2f> Material::GetVec2Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetVec2BufferUniform(name);
+	auto value = m_UniformBuffer->GetVec2BufferUniform(name);
 	return value;
 }
 /**
@@ -355,7 +368,7 @@ std::optional<Eigen::Vector2f> Material::GetVec2Uniform(std::string name)
  */
 std::optional<Eigen::Vector3f> Material::GetVec3Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetVec3BufferUniform(name);
+	auto value = m_UniformBuffer->GetVec3BufferUniform(name);
 	return value;
 }
 /**
@@ -366,7 +379,7 @@ std::optional<Eigen::Vector3f> Material::GetVec3Uniform(std::string name)
  */
 std::optional<Eigen::Vector4f> Material::GetVec4Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetVec4BufferUniform(name);
+	auto value = m_UniformBuffer->GetVec4BufferUniform(name);
 	return value;
 }
 
@@ -378,7 +391,7 @@ std::optional<Eigen::Vector4f> Material::GetVec4Uniform(std::string name)
  */
 std::optional<Eigen::Vector2<uint32_t>> Material::GetUVec2Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetUVec2BufferUniform(name);
+	auto value = m_UniformBuffer->GetUVec2BufferUniform(name);
 	return value;
 }
 /**
@@ -389,7 +402,7 @@ std::optional<Eigen::Vector2<uint32_t>> Material::GetUVec2Uniform(std::string na
  */
 std::optional<Eigen::Vector3<uint32_t>> Material::GetUVec3Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetUVec3BufferUniform(name);
+	auto value = m_UniformBuffer->GetUVec3BufferUniform(name);
 	return value;
 }
 /**
@@ -400,7 +413,19 @@ std::optional<Eigen::Vector3<uint32_t>> Material::GetUVec3Uniform(std::string na
  */
 std::optional<Eigen::Vector4<uint32_t>> Material::GetUVec4Uniform(std::string name)
 {
-	auto value = _uniformBuffer->GetUVec4BufferUniform(name);
+	auto value = m_UniformBuffer->GetUVec4BufferUniform(name);
+	return value;
+}
+
+/**
+ * Get Mat4 Value from Uniform Buffer.
+ *
+ * \param name: The Uniform's Name
+ * \return The Uniform's Value, if Existent
+ */
+std::optional<Eigen::Matrix4f> Material::GetMat4Uniform(std::string name)
+{
+	auto value = m_UniformBuffer->GetMat4BufferUniform(name);
 	return value;
 }
 
@@ -416,7 +441,7 @@ Texture* Material::GetTexture(GLuint slot)
 	if (slot >= 32)
 		return nullptr;
 
-	return _materialTextures[slot];
+	return m_MaterialTextures[slot];
 }
 
 // Uniform Setters
@@ -429,7 +454,7 @@ Texture* Material::GetTexture(GLuint slot)
  */
 bool Material::SetUInt08Uniform(std::string name, uint8_t value)
 {
-	bool result = _uniformBuffer->SetUInt08BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetUInt08BufferUniform(name, value);
 	return result;
 }
 /**
@@ -441,7 +466,7 @@ bool Material::SetUInt08Uniform(std::string name, uint8_t value)
  */
 bool Material::SetUInt16Uniform(std::string name, uint16_t value)
 {
-	bool result = _uniformBuffer->SetUInt16BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetUInt16BufferUniform(name, value);
 	return result;
 }
 /**
@@ -453,7 +478,7 @@ bool Material::SetUInt16Uniform(std::string name, uint16_t value)
  */
 bool Material::SetUInt32Uniform(std::string name, uint32_t value)
 {
-	bool result = _uniformBuffer->SetUInt32BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetUInt32BufferUniform(name, value);
 	return result;
 }
 /**
@@ -465,7 +490,7 @@ bool Material::SetUInt32Uniform(std::string name, uint32_t value)
  */
 bool Material::SetUInt64Uniform(std::string name, uint64_t value)
 {
-	bool result = _uniformBuffer->SetUInt64BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetUInt64BufferUniform(name, value);
 	return result;
 }
 
@@ -478,7 +503,7 @@ bool Material::SetUInt64Uniform(std::string name, uint64_t value)
  */
 bool Material::SetInt08Uniform(std::string name, int8_t value)
 {
-	bool result = _uniformBuffer->SetInt08BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetInt08BufferUniform(name, value);
 	return result;
 }
 /**
@@ -490,7 +515,7 @@ bool Material::SetInt08Uniform(std::string name, int8_t value)
  */
 bool Material::SetInt16Uniform(std::string name, int16_t value)
 {
-	bool result = _uniformBuffer->SetInt16BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetInt16BufferUniform(name, value);
 	return result;
 }
 /**
@@ -502,7 +527,7 @@ bool Material::SetInt16Uniform(std::string name, int16_t value)
  */
 bool Material::SetInt32Uniform(std::string name, int32_t value)
 {
-	bool result = _uniformBuffer->SetInt32BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetInt32BufferUniform(name, value);
 	return result;
 }
 /**
@@ -514,7 +539,7 @@ bool Material::SetInt32Uniform(std::string name, int32_t value)
  */
 bool Material::SetInt64Uniform(std::string name, int64_t value)
 {
-	bool result = _uniformBuffer->SetInt64BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetInt64BufferUniform(name, value);
 	return result;
 }
 
@@ -527,7 +552,7 @@ bool Material::SetInt64Uniform(std::string name, int64_t value)
  */
 bool Material::SetFloatUniform(std::string name, float value)
 {
-	bool result = _uniformBuffer->SetFloatBufferUniform(name, value);
+	bool result = m_UniformBuffer->SetFloatBufferUniform(name, value);
 	return result;
 }
 /**
@@ -539,7 +564,7 @@ bool Material::SetFloatUniform(std::string name, float value)
  */
 bool Material::SetDoubleUniform(std::string name, double value)
 {
-	bool result = _uniformBuffer->SetDoubleBufferUniform(name, value);
+	bool result = m_UniformBuffer->SetDoubleBufferUniform(name, value);
 	return result;
 }
 
@@ -552,7 +577,7 @@ bool Material::SetDoubleUniform(std::string name, double value)
  */
 bool Material::SetVec2Uniform(std::string name, Eigen::Vector2f value)
 {
-	bool result = _uniformBuffer->SetVec2BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetVec2BufferUniform(name, value);
 	return result;
 }
 /**
@@ -564,7 +589,7 @@ bool Material::SetVec2Uniform(std::string name, Eigen::Vector2f value)
  */
 bool Material::SetVec3Uniform(std::string name, Eigen::Vector3f value)
 {
-	bool result = _uniformBuffer->SetVec3BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetVec3BufferUniform(name, value);
 	return result;
 }
 /**
@@ -576,7 +601,7 @@ bool Material::SetVec3Uniform(std::string name, Eigen::Vector3f value)
  */
 bool Material::SetVec4Uniform(std::string name, Eigen::Vector4f value)
 {
-	bool result = _uniformBuffer->SetVec4BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetVec4BufferUniform(name, value);
 	return result;
 }
 
@@ -589,7 +614,7 @@ bool Material::SetVec4Uniform(std::string name, Eigen::Vector4f value)
  */
 bool Material::SetUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value)
 {
-	bool result = _uniformBuffer->SetUVec2BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetUVec2BufferUniform(name, value);
 	return result;
 }
 /**
@@ -601,7 +626,7 @@ bool Material::SetUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value)
  */
 bool Material::SetUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value)
 {
-	bool result = _uniformBuffer->SetUVec3BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetUVec3BufferUniform(name, value);
 	return result;
 }
 /**
@@ -613,7 +638,20 @@ bool Material::SetUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value)
  */
 bool Material::SetUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value)
 {
-	bool result = _uniformBuffer->SetUVec4BufferUniform(name, value);
+	bool result = m_UniformBuffer->SetUVec4BufferUniform(name, value);
+	return result;
+}
+
+/**
+ * Change Value of Mat4 in Uniform Buffer.
+ *
+ * \param name: The Uniform's Name
+ * \param value: The Uniform's new Value
+ * \return Whether the Uniform's Value was Successfully Changed
+ */
+bool Material::SetMat4Uniform(std::string name, Eigen::Matrix4f value)
+{
+	bool result = m_UniformBuffer->SetMat4BufferUniform(name, value);
 	return result;
 }
 
@@ -625,37 +663,7 @@ bool Material::SetUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value)
  */
 void Material::SetTexture(GLuint slot, Texture* texture)
 {
-	_materialTextures[slot] = texture;
-}
-
-/**
- * Bind the Material's Uniform Buffer.
- * 
- * \return Whether the Uniform Buffer was Successfully Bounded
- */
-bool Material::bindUniformBuffer()
-{
-	if (!_uniformBuffer->IsCreated())
-	{// Create Uniform Buffer Object
-		if (!_uniformBuffer->CreateUniformBufferObject())
-			return false;
-	}
-
-	// Bind Uniform Buffer to Slot 1
-	_uniformBuffer->BindUniformBufferObject(1);
-	return true;
-}
-/**
- * Bind the Material's Textures.
- * 
- */
-void Material::bindTextures()
-{
-	for (int i = 0; i < 32; i++) {
-	if (_materialTextures[i]) {
-		GLuint textureSlotID = GL_TEXTURE0 + i;
-		_materialTextures[i]->BindTexture(textureSlotID);
-	}}
+	m_MaterialTextures[slot] = texture;
 }
 
 /**
@@ -665,12 +673,20 @@ void Material::bindTextures()
  */
 bool Material::UseMaterial()
 {
-	if (!bindUniformBuffer())
-	{// Uniform Buffer Could not be Bound
+	// Create Uniform Buffer Object if Non-Existant
+	if (!m_UniformBuffer->IsCreated()) {
+	if (!m_UniformBuffer->CreateUniformBufferObject())
 		return false;
 	}
 
-	bindTextures();
+	// Bind Uniform Buffer to Slot 1
+	m_UniformBuffer->BindUniformBufferObject(1);
+
+	// Bind Material Textures to their Respective Slots
+	for (int i = 0; i < 32; i++) {
+	if (m_MaterialTextures[i])
+		m_MaterialTextures[i]->BindTexture(GL_TEXTURE0 + i);
+	}
 
 	return true;
 }
@@ -681,12 +697,12 @@ bool Material::UseMaterial()
 void Material::ResetMaterial()
 {
 	// Delete Material's Uniform Buffer Object
-	_uniformBuffer->DeleteUniformBufferObject();
+	m_UniformBuffer->DeleteUniformBufferObject();
 
 	// Clear Reference to all Textures
 	for (int i = 0; i < 32; i++)
 	{
-		_materialTextures[i] = nullptr;
+		m_MaterialTextures[i] = nullptr;
 	}
 }
 }

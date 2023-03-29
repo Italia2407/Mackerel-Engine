@@ -18,6 +18,8 @@ class Light
 public:
 	Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
 
+	AssetType::Texture* ShadowMap() const { return _shadowMap; }
+
 protected:
 	Eigen::Vector4f _diffuseColour;
 	Eigen::Vector4f _specularColour;
@@ -42,7 +44,7 @@ public:
 private:
 	Eigen::Vector3f _position;
 
-	Eigen::Matrix4f getMVPMatrix() override;
+	//Eigen::Matrix4f getMVPMatrix() override;
 
 	bool updateLightingParameters() override;
 };
@@ -54,7 +56,7 @@ public:
 private:
 	Eigen::Vector3f _direction;
 
-	Eigen::Matrix4f getMVPMatrix() override;
+	//Eigen::Matrix4f getMVPMatrix() override;
 
 	bool updateLightingParameters() override;
 };
@@ -69,7 +71,7 @@ private:
 
 	float _beamAngle;
 
-	Eigen::Matrix4f getMVPMatrix() override;
+	//Eigen::Matrix4f getMVPMatrix() override;
 
 	bool updateLightingParameters() override;
 };

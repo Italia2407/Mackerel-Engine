@@ -201,6 +201,12 @@
     <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>Source Files\AssetTypes\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files\AssetTypes\Shader</Filter>
+    </ClCompile>
     <ClCompile Include="src\Component.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
@@ -370,9 +376,6 @@
     <None Include="src\MaterialDiagram.cd">
       <Filter>Class Diagrams</Filter>
     </None>
-    <None Include="res\Shaders\vert\perspective.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="res\Shaders\frag\monoColour.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
@@ -386,6 +389,18 @@
       <Filter>Resource Files\Shaders\Shader Headers</Filter>
     </None>
     <None Include="res\Shaders\light\unlit.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="res\Shaders\static\FBDisplayer.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="res\Shaders\vert\passthrough.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="res\Shaders\vert\perspective.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="res\Shaders\light\unlitInvert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
