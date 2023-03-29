@@ -13,7 +13,7 @@ namespace MCK::EntitySystem
 	* TODO Implement me
 	* 
 	*/
-	Eigen::Matrix4f GetTransformationMatrix()
+	Eigen::Matrix4f TransformComponent::GetTransformationMatrix()
 	{
 		Eigen::Matrix4f mat;
 		mat.Identity();
