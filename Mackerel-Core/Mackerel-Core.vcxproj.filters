@@ -91,6 +91,9 @@
     <Filter Include="Source Files\Systems\Resource Management\Material">
       <UniqueIdentifier>{8ca0dc8c-cfd6-463f-aa7b-0329cebc4b14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\EntitySystem\Components">
+      <UniqueIdentifier>{47ec9567-787d-4a02-b476-31a58bbab107}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -209,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="src\Component.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TransformComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="src\ComponentState.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TransformComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

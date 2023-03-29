@@ -63,5 +63,7 @@ namespace MCK::EntitySystem
 		 * \return True if the component is of the specified type, false otherwise
 		 */
 		template<typename T> bool IsType() { return typeid(T) == GetType(); }
+		
+		friend class Entity;
 	};
 }
