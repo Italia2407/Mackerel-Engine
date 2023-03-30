@@ -231,7 +231,7 @@
     <ClCompile Include="src\PhysicsWorld.cpp">
       <Filter>Source Files\Systems\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="src\JsonHelper.cpp">
+    <ClCompile Include="src\JsonHelpers.cpp">
       <Filter>Source Files\Systems\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -419,7 +419,7 @@
     <ClInclude Include="src\GamepadAxes.h">
       <Filter>Source Files\Systems\Input System\Input Sets</Filter>
     </ClInclude>
-    <ClInclude Include="src\JsonHelper.h">
+    <ClInclude Include="src\JsonHelpers.h">
       <Filter>Source Files\Systems\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
