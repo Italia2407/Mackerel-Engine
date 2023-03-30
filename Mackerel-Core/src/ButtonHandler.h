@@ -7,23 +7,23 @@
 #include <vector>
 
 #include "Keys.h"
-#include "KeyEvents.h"
+#include "ButtonEvents.h"
 #include "InputSubReceipt.h"
 
 namespace MCK::Input
 {
-	class KeyHandler
+	class ButtonHandler
 	{
 		public:
-			KeyHandler(Key key);
-			~KeyHandler();
+			ButtonHandler(int32_t key);
+			~ButtonHandler();
 
 			// no default constructor, needs to be associated with a key.
-			KeyHandler() = delete;
+			ButtonHandler() = delete;
 
 			// no copying
-			KeyHandler(const KeyHandler&) = delete;
-			KeyHandler& operator=(const KeyHandler&) = delete;
+			ButtonHandler(const ButtonHandler&) = delete;
+			ButtonHandler& operator=(const ButtonHandler&) = delete;
 
 			// public member functions
 			/**
@@ -39,9 +39,9 @@ namespace MCK::Input
 			 * 
 			 * \param event: the key event that should envoke the callback.
 			 * \param callback: the callback function to be envoked.
-			 * \param receipt (optional): if not null, the given receipt is appended to instead of returning a new one.
+			 * \param receipt: input receipt to append this callback instance too, used for deregistration.
 			 */
-			InputSubReceipt* Register(KeyEvent event, callbackFunc callback, InputSubReceipt* receipt = nullptr);
+			bool Register(ButtonEvents event, callbackFunc callback, InputSubReceipt* receipt);
 
 			/**
 			 * Deregisters the givencallback.
@@ -65,15 +65,22 @@ namespace MCK::Input
 			void Clear();
 
 		private:
-			Key key;
-			KeyEvent lastState;
+			int32_t key;
+			ButtonEvents lastState;
 			callbackList pressedList;
 			callbackList releasedList;
 			callbackList heldList;
+			
+			std::function<ButtonEvents(GLFWwindow*, int32_t)> inputCheck;
 
 			// private member functions
 			void onPressed();
 			void onReleased();
 			void onHeld();
+
+			ButtonEvents CheckKey(GLFWwindow* window, int32_t key);
+			ButtonEvents CheckGamepadButton(GLFWwindow* window, int32_t key);
+			ButtonEvents CheckMouseButton(GLFWwindow* window, int32_t key);
+			ButtonEvents CheckError(GLFWwindow* window, int32_t key);
 	};
 }

@@ -94,6 +94,8 @@
     <Filter Include="Source Files\Systems\EntitySystem\Components">
       <UniqueIdentifier>{47ec9567-787d-4a02-b476-31a58bbab107}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Input System\Input Sets">
+      <UniqueIdentifier>{15b6880b-10ce-4635-91c6-75ea08d371fa}</UniqueIdentifier>
     <Filter Include="Source Files\Systems\Physics">
       <UniqueIdentifier>{6616f775-a163-4bd1-a640-009233ab2292}</UniqueIdentifier>
     </Filter>
@@ -198,10 +200,10 @@
     <ClCompile Include="src\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\KeyEvents.h">
+    <ClCompile Include="src\ButtonEvents.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClCompile>
-    <ClCompile Include="src\KeyHandler.cpp">
+    <ClCompile Include="src\ButtonHandler.cpp">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClCompile>
     <ClCompile Include="src\Framebuffer.cpp">
@@ -365,10 +367,7 @@
     <ClInclude Include="src\InputManager.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
-    <ClInclude Include="src\Keys.h">
-      <Filter>Source Files\Systems\Input System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\KeyHandler.h">
+    <ClInclude Include="src\ButtonHandler.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
     <ClInclude Include="src\Input.h">
@@ -389,6 +388,23 @@
     <ClInclude Include="src\TransformComponent.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Keys.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GamepadButtons.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InputSetRanges.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MouseButtons.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MouseState.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GamepadAxes.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
     <ClInclude Include="src\RigidbodyComponent.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
