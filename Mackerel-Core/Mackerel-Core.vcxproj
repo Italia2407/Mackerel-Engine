@@ -43,6 +43,7 @@
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
+    <ClCompile Include="src\PhysicsWorld.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Scene.cpp" />
@@ -97,8 +98,10 @@
     <ClInclude Include="src\MeshLibrary.h" />
     <ClInclude Include="src\MouseButtons.h" />
     <ClInclude Include="src\MouseState.h" />
+    <ClInclude Include="src\PhysicsWorld.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RigidbodyComponent.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderEnum.h" />

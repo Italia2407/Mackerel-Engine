@@ -48,6 +48,8 @@ double MCK::TimeManager::privGetScaledUpTime()
 
 void MCK::TimeManager::privSetTimer(std::pair<double, std::function<void()>> timer)
 {
+	timer.first = timer.first + privGetUpTime();
+
 	// iterator for the list
 	std::list<std::pair<double, std::function<void()>>>::iterator it;
 	it = timers.begin();
@@ -69,6 +71,8 @@ void MCK::TimeManager::privSetTimer(std::pair<double, std::function<void()>> tim
 
 void MCK::TimeManager::privSetScaledTimer(std::pair<double, std::function<void()>> timer)
 {
+	timer.first = timer.first + privGetScaledUpTime();
+
 	// iterator for the list
 	std::list<std::pair<double, std::function<void()>>>::iterator it;
 	it = scaledTimers.begin();
