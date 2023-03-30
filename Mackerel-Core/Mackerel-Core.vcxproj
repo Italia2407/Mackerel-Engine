@@ -35,8 +35,6 @@
     <ClCompile Include="src\EntityPool.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\JsonHelpers.cpp" />
-    <ClCompile Include="src\KeyEvents.h" />
-    <ClCompile Include="src\KeyHandler.cpp" />
     <ClCompile Include="src\ButtonEvents.h" />
     <ClCompile Include="src\ButtonHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
@@ -135,11 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\LoggingSystem.conf" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="ext\reactphysics3d\build\reactphysics3d.vcxproj">
-      <Project>{49a8841e-2c77-3ec9-9a3e-e8fd4b1a8051}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
