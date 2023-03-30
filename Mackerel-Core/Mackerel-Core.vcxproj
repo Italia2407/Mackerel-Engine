@@ -35,8 +35,8 @@
     <ClCompile Include="src\EntityPool.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\JsonHelpers.cpp" />
-    <ClCompile Include="src\KeyEvents.h" />
-    <ClCompile Include="src\KeyHandler.cpp" />
+    <ClCompile Include="src\ButtonEvents.h" />
+    <ClCompile Include="src\ButtonHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
@@ -87,7 +87,7 @@
     <ClInclude Include="src\InputSetRanges.h" />
     <ClInclude Include="src\InputSubReceipt.h" />
     <ClInclude Include="src\JsonHelpers.h" />
-    <ClInclude Include="src\KeyHandler.h" />
+    <ClInclude Include="src\ButtonHandler.h" />
     <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\Light.h" />
