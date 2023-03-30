@@ -37,6 +37,8 @@
     <ClCompile Include="src\JsonHelpers.cpp" />
     <ClCompile Include="src\KeyEvents.h" />
     <ClCompile Include="src\KeyHandler.cpp" />
+    <ClCompile Include="src\ButtonEvents.h" />
+    <ClCompile Include="src\ButtonHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
@@ -44,6 +46,7 @@
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
+    <ClCompile Include="src\PhysicsWorld.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Scene.cpp" />
@@ -79,11 +82,15 @@
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
+    <ClInclude Include="src\GamepadAxes.h" />
+    <ClInclude Include="src\GamepadButtons.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\InputSetRanges.h" />
     <ClInclude Include="src\InputSubReceipt.h" />
     <ClInclude Include="src\JsonHelpers.h" />
     <ClInclude Include="src\KeyHandler.h" />
+    <ClInclude Include="src\ButtonHandler.h" />
     <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\Light.h" />
@@ -94,8 +101,12 @@
     <ClInclude Include="src\MaterialLibrary.h" />
     <ClInclude Include="src\MeshEnum.h" />
     <ClInclude Include="src\MeshLibrary.h" />
+    <ClInclude Include="src\MouseButtons.h" />
+    <ClInclude Include="src\MouseState.h" />
+    <ClInclude Include="src\PhysicsWorld.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RigidbodyComponent.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderEnum.h" />

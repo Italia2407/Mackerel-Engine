@@ -6,11 +6,11 @@
 #include <vector>
 
 #include "Keys.h"
-#include "KeyEvents.h"
+#include "ButtonEvents.h"
 
 namespace MCK::Input
 {
-	using callbackFunc = std::function<void(Key, KeyEvent)>;
+	using callbackFunc = std::function<void(int32_t, ButtonEvents)>;
 	using callbackList = std::list<callbackFunc>;
 
 	/**
@@ -23,7 +23,7 @@ namespace MCK::Input
 	{
 		// This is sort of bad form, but I don't want these to be accessable any
 		//     where except the KeyHandler class.
-		friend class KeyHandler;
+		friend class ButtonHandler;
 
 		private:
 			struct IttTriplet
@@ -32,15 +32,15 @@ namespace MCK::Input
 				std::vector<callbackList::iterator> released_iterators;
 				std::vector<callbackList::iterator> held_iterators;
 			};
-			std::map<Key, IttTriplet> data;
+			std::map<int32_t, IttTriplet> data;
 
 		public:
-			bool ContainsKey(Key key)
+			bool ContainsKey(int32_t key)
 			{
 				return data.contains(key);
 			}
 
-			IttTriplet& GetItt(Key key)
+			IttTriplet& GetItt(int32_t key)
 			{
 				return data[key];
 			}
