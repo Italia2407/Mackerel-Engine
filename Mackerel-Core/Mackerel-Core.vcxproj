@@ -134,11 +134,6 @@
   <ItemGroup>
     <Text Include="src\LoggingSystem.conf" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="ext\reactphysics3d\build\reactphysics3d.vcxproj">
-      <Project>{49a8841e-2c77-3ec9-9a3e-e8fd4b1a8051}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
