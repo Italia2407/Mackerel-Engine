@@ -9,6 +9,7 @@
 #include "ButtonHandler.h"
 #include "Keys.h"
 #include "InputSubReceipt.h"
+#include "MouseState.h"
 
 namespace MCK::Input
 {
@@ -36,6 +37,7 @@ namespace MCK::Input
 			// private member variables
 			callbackMap callbacks;
 			GLFWgamepadstate gamepadState{};
+			MouseState mouseState{};
 
 			// private member functions
 			/**
@@ -67,6 +69,7 @@ namespace MCK::Input
 			void privUpdate(GLFWwindow* window);
 
 			const GLFWgamepadstate& privGetGamepadState() const;
+			const MouseState& privGetMouseState() const;
 
 		public:
 			/**
@@ -113,6 +116,16 @@ namespace MCK::Input
 			static const GLFWgamepadstate& GetGamepadState()
 			{
 				return Instance()->privGetGamepadState();
+			}
+
+			/**
+			 * Returns the positional state of the mouse, use a button callback to handle mouse button input.
+			 *
+			 * \return a reference to the current gamepad state.
+			 */
+			static const MouseState& GetMouseState()
+			{
+				return Instance()->privGetMouseState();
 			}
 	};
 }

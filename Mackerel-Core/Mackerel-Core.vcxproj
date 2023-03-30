@@ -78,6 +78,7 @@
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
+    <ClInclude Include="src\GamepadAxes.h" />
     <ClInclude Include="src\GamepadButtons.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\InputManager.h" />
@@ -95,6 +96,7 @@
     <ClInclude Include="src\MeshEnum.h" />
     <ClInclude Include="src\MeshLibrary.h" />
     <ClInclude Include="src\MouseButtons.h" />
+    <ClInclude Include="src\MouseState.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Scene.h" />

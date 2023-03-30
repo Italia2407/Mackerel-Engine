@@ -9,6 +9,7 @@
 #include "ButtonEvents.h"
 #include "InputManager.h"
 #include "InputSubReceipt.h"
+#include "GamepadAxes.h"
 #include "GamepadButtons.h"
 #include "MouseButtons.h"
 
@@ -51,5 +52,25 @@ namespace MCK::Input
 	void Update(GLFWwindow* window)
 	{
 		InputManager::Update(window);
+	}
+
+	/**
+	 * Returns the state of the currently connected gamepad (if there isn't one connected, the axes are zeroed and the buttons are all released).
+	 * 
+	 * \return The gamepad state
+	 */
+	const GLFWgamepadstate& GamepadState()
+	{
+		return InputManager::GetGamepadState();
+	}
+
+	/**
+	 * Returns positional information about the mouse, including the position and frame position delta.
+	 * 
+	 * \return The mouse state
+	 */
+	const MouseState& MousePosition()
+	{
+		return InputManager::GetMouseState();
 	}
 }

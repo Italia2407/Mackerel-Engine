@@ -7,8 +7,8 @@
 namespace MCK
 {
 	/**
-	 * This enum class contains an enum for detectible gamepad buttons; it is
-	 *     based on the GLFW gamepad button constants.
+	 * This enum class contains an enum for detectible gamepad buttons.
+	 * It is based on the GLFW gamepad button constants.
 	 */
 	namespace GamepadButton
 	{

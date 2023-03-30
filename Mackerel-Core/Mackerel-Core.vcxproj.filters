@@ -392,6 +392,12 @@
     <ClInclude Include="src\MouseButtons.h">
       <Filter>Source Files\Systems\Input System\Input Sets</Filter>
     </ClInclude>
+    <ClInclude Include="src\MouseState.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GamepadAxes.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">

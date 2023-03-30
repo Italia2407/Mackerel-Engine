@@ -71,6 +71,14 @@ namespace MCK::Input
 			memset(&gamepadState, 0, sizeof(gamepadState));
 		}
 		
+		// mouse update
+		double mouseX, mouseY;
+		glfwGetCursorPos(window, &mouseX, &mouseY);
+		mouseState.deltaX = static_cast<float>(mouseX) - mouseState.posX;
+		mouseState.deltaY = static_cast<float>(mouseY) - mouseState.posY;
+		mouseState.posX = static_cast<float>(mouseX);
+		mouseState.posY = static_cast<float>(mouseY);
+		
 		// check button handlers
 		for (auto handler : callbacks)
 		{
@@ -81,5 +89,9 @@ namespace MCK::Input
 	const GLFWgamepadstate& InputManager::privGetGamepadState() const
 	{
 		return gamepadState;
+	}
+	const MouseState& InputManager::privGetMouseState() const
+	{
+		return mouseState;
 	}
 }
