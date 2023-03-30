@@ -12,13 +12,19 @@ layout(location = 1) out vec3 v2fNormal;
 layout(location = 2) out vec2 v2fUV;
 layout(location = 3) out vec3 v2fTint;
 
-// Mesh Parameters Uniform Buffer Object
-layout(std140, binding = 0) uniform MeshTransformParameters
+// Vertex Shader Uniform Buffer Object
+layout(std140, binding = 0) uniform VertexShaderParameters
 {
-	mat4 transform;
-} meshTransform;
+	mat4 meshTransformMatrix;
+	mat4 cameraProjectionMatrix;
+};
 
 void main()
 {
+	gl_Position = vec4(vertexPosition, 1.0f);
 
+	v2fPosition = vertexPosition;
+	v2fNormal = vertexNormal;
+	v2fUV = vertexUV;
+	v2fTint = vertexTint;
 }

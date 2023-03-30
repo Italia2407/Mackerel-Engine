@@ -6,7 +6,10 @@
 */
 enum class ShaderEnum
 {
-	__MCK__DEFAULT = -1,
+	__LIGHT_UNLIT = -4,
+	__FRAG_MONOCOLOUR = -3,
+	__MCK_FRAMEBUFFER_DISPLAY = -2,
+	__MCK_DEFAULT = -1,
 	// Negative values are reserved for engine use
 	DummyShdr = 0
 };

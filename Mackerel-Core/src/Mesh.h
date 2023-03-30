@@ -5,15 +5,20 @@
 
 #include <vector>
 #include <array>
+#include <string>
 
 namespace MCK::AssetType {
 class Mesh
 {
 public:
-	Mesh();
+	Mesh(std::string a_Name);
 	~Mesh();
 
+	const GLuint& NumIndices() const { return m_NumIndices; }
+
 private:
+	std::string m_Name;
+
 	// Mesh Properties
 	GLuint m_NumVertices;
 	GLuint m_NumIndices;
@@ -21,14 +26,15 @@ private:
 	// Mesh GPU Data
 	GLuint m_VertexArrayObject;
 
-	GLuint m_VertexBufferObjects[4]{};
+	std::array<GLuint, 4> m_VertexBufferObjects;
 	GLuint m_IndexBufferObject;
 
-public:
-	const GLuint& NumIndices() const { return m_NumIndices; }
+	bool generateVertexObjects(
+		const std::vector<float>& positions, const std::vector<float>& normals, const std::vector<float>& textureCoords, const std::vector<float>& tints,
+		const std::vector<GLuint>& indices);
 
 public:
-	bool LoadFromFile(std::string fileName);
+	bool LoadFromFile(std::string a_FilePath);
 
 	bool BindVertexArrayObject();
 
@@ -54,10 +60,10 @@ public:
 			0.0f, 1.0f
 		};
 		std::vector<float> tints{
-			1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f
+			1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f
 		};
 
 		std::vector<GLuint> indices{
@@ -93,10 +99,10 @@ public:
 			0.0f, 1.0f
 		};
 		std::vector<float> tints{
-			1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f
+			1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f,
+			1.0f, 1.0f, 1.0f
 		};
 
 		std::vector<GLuint> indices{
@@ -111,13 +117,5 @@ public:
 		// Generate the Mesh GPU Data
 		generateVertexObjects(positions, normals, textureCoords, tints, indices);
 	}
-
-private:
-	bool generateVertexObjects(
-		std::vector<float> positions,
-		std::vector<float> normals,
-		std::vector<float> textureCoords,
-		std::vector<float> tints,
-		std::vector<GLuint> indices);
 };
 }

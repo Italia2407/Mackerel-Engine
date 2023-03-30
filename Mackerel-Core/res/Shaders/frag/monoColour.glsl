@@ -26,7 +26,7 @@ void main()
 	gLightShaderID = 0; //lightShaderID;
 
 	//gAlbedoColour = albedoColour * v2fTint;
-	gAlbedoColour = vec4(v2fUV, 0.75f, 1.0f);
+	gAlbedoColour = vec4(v2fTint, 1.0f);
 
 	gPosition = vec4(v2fPosition, 1.0f);
 	gNormal = vec4(v2fNormal, 1.0f);

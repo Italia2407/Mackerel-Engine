@@ -1,101 +1,183 @@
 #include "TextureLibrary.h"
 
-using namespace MCK;
+#include "Texture.h"
 
-TextureLibrary* TextureLibrary::instance = nullptr;
+// Logging Headers
+#include "LoggingSystem.h"
+#include <format>
 
+// Static/Singleton Functions
+namespace MCK {
+TextureLibrary* TextureLibrary::k_Instance = nullptr;
+
+/**
+ * Getter for the TextureLibrary Singleton.
+ *
+ * \return The Singleton Instance
+ */
+TextureLibrary* TextureLibrary::Instance()
+{
+	// Create TextureLibrary Instance if it Doesn't Exist Yet
+	if (!k_Instance)
+	{
+		k_Instance = new TextureLibrary();
+	}
+
+	return k_Instance;
+}
+
+/**
+ * Delete the Texture Library Singleton Instance.
+ * Should only be Called at End of Application Lifetime.
+ * 
+ * \return Whether the Texture Library was Released
+ */
+bool TextureLibrary::ReleaseLibrary()
+{
+	if (!k_Instance)
+	{// Cannot Release Non-Initialised Texture Library
+		Logger::log("Cannot Release Non-Initialised Texture Library", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Delete Texture Library Singleton Instance
+	delete k_Instance;
+	k_Instance = nullptr;
+
+	return true;
+}
+
+/**
+* Attempt to Retrieve Specified Texture from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Texture
+* \param o_Texture: Output Reference to Retrieved Texture
+* \return Whether the Texture could be Retrieved
+*/
+bool TextureLibrary::GetTexture(TextureEnum a_Asset, AssetType::Texture*& o_Texture)
+{
+	return Instance()->getTexture(a_Asset, o_Texture);
+}
+/**
+* Attempt to Load Specified Texture from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Texture
+* \param a_FilePath: File Path to the Texture
+* \return Whether the Texture could be Loaded
+*/
+bool TextureLibrary::LoadTexture(TextureEnum a_Asset, std::string a_FilePath)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	return Instance()->loadTexture(a_Asset, a_FilePath);
+}
+/**
+* Attempt to Relase Specified Texture from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Texture
+* \return Whether the Texture could be Deleted
+*/
+bool TextureLibrary::FreeTexture(TextureEnum a_Asset)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	return Instance()->freeTexture(a_Asset);
+}
+}
+
+namespace MCK {
 TextureLibrary::TextureLibrary()
 {
-	// TODO: Add engine reserved textures to the data here
+	// TODO: Load Engine Reserved Textures to the Data
 
 	/* Example:
 		AssetType::Texture defaultTex(std::string filepath_to_default_texture);
 		data.insert(std::pair<TextureEnum, AssetType::Texture>(TextureEnum::__MCK__DEFAULT, defaultTex));
 	*/
 }
-
 TextureLibrary::~TextureLibrary()
-{}
-
-bool MCK::TextureLibrary::privGet(TextureEnum asset, AssetType::Texture* out)
 {
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
+	// Free all Texture Assets Loaded in Memory
+	for (auto [assetEnum, texture] : m_LibraryData)
 	{
-		// Engine reserved value
-		success = false;
+		freeTexture(assetEnum);
 	}
-	else if (data.contains(asset))
-	{
-		// Hit! (good)
-		out = data[asset];
-		success = true;
-	}
-
-	return success;
 }
 
-bool MCK::TextureLibrary::privLoad(TextureEnum asset, std::string filepath)
+/**
+* Private Implementation of the TextureLibrary::GetTexture() Function.
+* Attempt to Retrieve Specified Texture from Memory.
+* 
+* \param a_Asset: Enum Identifier of Desired Texture
+* \param o_Texture: Output Reference to Retrieved Texture
+* \return Whether the Texture could be Retrieved
+*/
+bool TextureLibrary::getTexture(TextureEnum a_Asset, AssetType::Texture*& o_Texture)
 {
-	(void*)&filepath; // currently unused variable, this line is here to avoid warnings
-
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
-	{
-		// Engine reserved value
-		success = false;
-	}
-	else if (data.contains(asset))
-	{
-		// Hit! (bad)
-		success = false;
-	}
-	else
-	{
-		// Asset isn't loaded, load it
-
-		/* TODO: replace this when a load function is added:
-			AssetType::Texture placeholderTex(std::string filepath);
-			data.insert(std::pair<TextureEnum, AssetType::Texture>(asset, placeholderTex));
-		*/
-		success = true;
+	if (!m_LibraryData.contains(a_Asset))
+	{// Texture Asset does not Exist in Memory
+		return false;
 	}
 
-	return success;
+	// Return Texture Asset
+	o_Texture = m_LibraryData[a_Asset];
+
+	return true;
 }
-
-bool MCK::TextureLibrary::privFree(TextureEnum asset)
+/**
+* Private Implementation of the TextureLibrary::LoadTexture() Function.
+* Attempt to Load Specified Texture from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Texture
+* \param a_FilePath: File Path to the Texture
+* \return Whether the Texture could be Loaded
+*/
+bool TextureLibrary::loadTexture(TextureEnum a_Asset, std::string a_FilePath)
 {
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
-	{
-		// Engine reserved value
-		success = false;
-	}
-	else if (data.contains(asset))
-	{
-		// Hit! (good)
-		data.erase(asset);
-		success = true;
+	if (m_LibraryData.contains(a_Asset))
+	{// Texture Asset already Exists in Memory
+		//Logger::log("Texture ")
+		return false;
 	}
 
-	return success;
+	// Load Texture Asset
+	AssetType::Texture* loadTexture = new AssetType::Texture();
+	if (!loadTexture->LoadFromFile(a_FilePath))
+	{// Texture Failed to Load
+
+		return false;
+	}
+
+	// Add Texture Asset to Memory
+	m_LibraryData[a_Asset] = loadTexture;
+
+	return true;
 }
-
-bool MCK::TextureLibrary::Release()
+/**
+* Private Implementation of the TextureLibrary::FreeTexture() Function.
+* Attempt to Release Specified Texture from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Texture
+* \return Whether the Texture could be Deleted
+*/
+bool TextureLibrary::freeTexture(TextureEnum a_Asset)
 {
-	bool success = false;
-
-	if (instance)
-	{
-		data.clear();
-		delete instance;
-		success = true;
+	if (!m_LibraryData.contains(a_Asset))
+	{// Texture Asset does not Exist in Memory
+		//Logger::log("Texture ")
+		return false;
 	}
 
-	return success;
-}
+	// Unload the Texture Asset
+	delete m_LibraryData[a_Asset];
+	m_LibraryData.erase(a_Asset);
 
+	return true;
+}
+}

@@ -7,20 +7,35 @@ namespace MCK::AssetType {
 class Shader
 {
 public:
-	Shader();
+	Shader(std::string a_Name);
 	~Shader();
 
 private:
-	GLuint m_ShaderID;
+	// Vertex Shaders
+	static GLuint k_ProjectionShaderID;
+	static GLuint k_PassthroughShaderID;
 
-	std::string m_FilePath;
-	GLuint m_ShaderType;
-
-public:
-	const GLuint& ShaderID() const { return m_ShaderID; }
-	const GLuint& ShaderType() const { return m_ShaderType; }
+	static bool loadShaderSource(std::string a_FilePath, GLuint a_ShaderType, GLuint& o_ShaderID);
 
 public:
-	bool LoadShaderFromSource(std::string a_FilePath, GLuint a_ShaderType);
+	static bool LoadVertexShaders();
+	static bool DeleteVertexShaders();
+
+private:
+	std::string m_Name;
+
+	// Shader Program for Each Possible Vertex Shader
+	GLuint m_ProjectionShaderProgramID;
+	GLuint m_PassthroughShaderProgramID;
+
+	void resetShader();
+	
+public:
+	// Asset Management Functions
+	bool LoadFromFile(std::string a_FilePath);
+
+	// Shader Program Binders
+	bool UseProjectionProgram();
+	bool UsePassthroughProgram();
 };
 }

@@ -2,101 +2,182 @@
 
 #include "Material.h"
 
-using namespace MCK;
+// Logging Headers
+#include "LoggingSystem.h"
+#include <format>
 
-MaterialLibrary* MaterialLibrary::instance = nullptr;
+// Static/Singleton Functions
+namespace MCK {
+MaterialLibrary* MaterialLibrary::k_Instance = nullptr;
 
+/**
+ * Getter for the MaterialLibrary Singleton.
+ *
+ * \return The Singleton Instance
+ */
+MaterialLibrary* MaterialLibrary::Instance()
+{
+	// Create MaterialLibrary Instance if it Doesn't Exist Yet
+	if (!k_Instance)
+	{
+		k_Instance = new MaterialLibrary();
+	}
+
+	return k_Instance;
+}
+
+/**
+ * Delete the Material Library Singleton Instance.
+ * Should only be Called at End of Application Lifetime.
+ *
+ * \return Whether the Material Library was Released
+ */
+bool MaterialLibrary::ReleaseLibrary()
+{
+	if (!k_Instance)
+	{// Cannot Release Non-Initialised Material Library
+		Logger::log("Cannot Release Non-Initialised Material Library", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Delete Material Library Singleton Instance
+	delete k_Instance;
+	k_Instance = nullptr;
+
+	return true;
+}
+
+/**
+* Attempt to Retrieve Specified Material from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Material
+* \param o_Material: Output Reference to Retrieved Material
+* \return Whether the Material could be Retrieved
+*/
+bool MaterialLibrary::GetMaterial(MaterialEnum a_Asset, AssetType::Material*& o_Material)
+{
+	return Instance()->getMaterial(a_Asset, o_Material);
+}
+/**
+* Attempt to Load Specified Material from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Material
+* \param a_FilePath: File Path to the Material
+* \return Whether the Material could be Loaded
+*/
+bool MaterialLibrary::LoadMaterial(MaterialEnum a_Asset, std::string a_FilePath)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	return Instance()->loadMaterial(a_Asset, a_FilePath);
+}
+/**
+* Attempt to Relase Specified Material from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Material
+* \return Whether the Material could be Deleted
+*/
+bool MaterialLibrary::FreeMaterial(MaterialEnum a_Asset)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	return Instance()->freeMaterial(a_Asset);
+}
+}
+
+namespace MCK {
 MaterialLibrary::MaterialLibrary()
 {
-	// TODO: Add engine reserved materials to the data here
+	// TODO: Load Engine Reserved Materials to the Data
 
 	/* Example:
-		AssetType::Material defaultMat(std::string filepath_to_default_material);
-		data.insert(std::pair<MaterialEnum, AssetType::Material>(MaterialEnum::__MCK__DEFAULT, defaultMat));
+		AssetType::Material defaultTex(std::string filepath_to_default_texture);
+		data.insert(std::pair<MaterialEnum, AssetType::Material>(MaterialEnum::__MCK__DEFAULT, defaultTex));
 	*/
 }
-
 MaterialLibrary::~MaterialLibrary()
-{}
-
-bool MCK::MaterialLibrary::privGet(MaterialEnum asset, AssetType::Material * out)
 {
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
+	// Free all Material Assets Loaded in Memory
+	for (auto [assetEnum, texture] : m_LibraryData)
 	{
-		// Engine reserved value
-		success = false;
+		freeMaterial(assetEnum);
 	}
-	else if (data.contains(asset))
-	{
-		// Hit! (good)
-		out = data[asset];
-		success = true;
-	}
-
-	return success;
 }
 
-bool MCK::MaterialLibrary::privLoad(MaterialEnum asset, std::string filepath)
+/**
+* Private Implementation of the MaterialLibrary::GetMaterial() Function.
+* Attempt to Retrieve Specified Material from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Material
+* \param o_Material: Output Reference to Retrieved Material
+* \return Whether the Material could be Retrieved
+*/
+bool MaterialLibrary::getMaterial(MaterialEnum a_Asset, AssetType::Material*& o_Material)
 {
-	(void*)&filepath; // currently unused variable, this line is here to avoid warnings
-
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
-	{
-		// Engine reserved value
-		success = false;
-	}
-	else if (data.contains(asset))
-	{
-		// Hit! (bad)
-		success = false;
-	}
-	else
-	{
-		// Asset isn't loaded, load it
-
-		/* TODO: replace this when a load function is added:
-			AssetType::Material placeholderMat(std::string filepath);
-			data.insert(std::pair<MaterialEnum, AssetType::Material>(asset, placeholderMat));
-		*/
-		success = true;
+	if (!m_LibraryData.contains(a_Asset))
+	{// Material Asset does not Exist in Memory
+		return false;
 	}
 
-	return success;
+	// Return Material Asset
+	o_Material = m_LibraryData[a_Asset];
+
+	return true;
 }
-
-bool MCK::MaterialLibrary::privFree(MaterialEnum asset)
+/**
+* Private Implementation of the MaterialLibrary::LoadMaterial() Function.
+* Attempt to Load Specified Material from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Material
+* \param a_FilePath: File Path to the Material
+* \return Whether the Material could be Loaded
+*/
+bool MaterialLibrary::loadMaterial(MaterialEnum a_Asset, std::string a_FilePath)
 {
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
-	{
-		// Engine reserved value
-		success = false;
-	}
-	else if (data.contains(asset))
-	{
-		// Hit! (good)
-		data.erase(asset);
-		success = true;
+	if (m_LibraryData.contains(a_Asset))
+	{// Material Asset already Exists in Memory
+		//Logger::log("Material ")
+		return false;
 	}
 
-	return success;
+	// Load Material Asset
+	AssetType::Material* loadMaterial = new AssetType::Material();
+	if (!loadMaterial->LoadFromFile(a_FilePath))
+	{// Material Failed to Load
+
+		return false;
+	}
+
+	// Add Material Asset to Memory
+	m_LibraryData[a_Asset] = loadMaterial;
+
+	return true;
 }
-
-bool MCK::MaterialLibrary::Release()
+/**
+* Private Implementation of the MaterialLibrary::FreeMaterial() Function.
+* Attempt to Release Specified Material from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Material
+* \return Whether the Material could be Deleted
+*/
+bool MaterialLibrary::freeMaterial(MaterialEnum a_Asset)
 {
-	bool success = false;
-
-	if (instance)
-	{
-		data.clear();
-		delete instance;
-		success = true;
+	if (!m_LibraryData.contains(a_Asset))
+	{// Material Asset does not Exist in Memory
+		//Logger::log("Material ")
+		return false;
 	}
 
-	return success;
+	// Unload the Material Asset
+	delete m_LibraryData[a_Asset];
+	m_LibraryData.erase(a_Asset);
+
+	return true;
+}
 }

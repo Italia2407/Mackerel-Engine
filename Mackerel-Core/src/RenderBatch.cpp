@@ -9,6 +9,10 @@
 
 #include <iostream>
 
+// Logging Headers
+#include "LoggingSystem.h"
+#include <format>
+
 namespace MCK::Rendering {
 RenderBatch::RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader) :
 	m_Mesh(mesh), m_Shader(shader) {}
@@ -34,13 +38,19 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
 {
 	// Ensure Mesh Uniform Buffer is Valid
 	if (!a_TransformBuffer || !a_TransformBuffer->IsCreated()) {
-		std::cout << "ERROR: Cannot Use Invalid Transform Uniform Buffer" << std::endl;
+		Logger::log("Cannot Use Invalid Transform Uniform Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
 	// Bind Mesh's VAO to the GPU
 	if (!m_Mesh->BindVertexArrayObject()) {
-		std::cout << "ERROR: Cannot Bind Mesh's VAO" << std::endl;
+		Logger::log("Cannot Bind Mesh's VAO", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Load Shader Program to GPU
+	if (!m_Shader->UseProjectionProgram()) {
+		Logger::log("Cannot Use Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -50,13 +60,13 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
 
 		// Load Instance's Transform Uniforms
 		if (!a_TransformBuffer->SetMat4BufferUniform("transform", instance.transform)) {
-			std::cout << "ERROR: Cannot Set Instance #"  << i << " Transform Uniform in Transform Uniform Buffer" << std::endl;
+			Logger::log(std::format("Cannot Set Instance #{} Transform in Uniform Buffer", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
 
 		// Load Instance's Material Uniforms
 		if (!instance.material || !instance.material->UseMaterial()) {
-			std::cout << "ERROR: Cannot Load Instance #" << i << " Material" << std::endl;
+			Logger::log(std::format("Cannot Load Instance #{} Material", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		}
 
 		// Draw Mesh Instance

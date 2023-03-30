@@ -1,5 +1,10 @@
 #include "Window.h"
 
+// Asset Headers
+#include "MeshLibrary.h"
+#include "ShaderLibrary.h"
+
+// Logging Headers
 #include "LoggingSystem.h"
 
 #include <iostream>
@@ -20,6 +25,7 @@
 #include "Input.h"
 #include "Renderer.h"
 #include "Mesh.h"
+#include "Material.h"
 
 void InputCallbackTest(MCK::Key key, MCK::KeyEvent keyEvent)
 {
@@ -94,19 +100,17 @@ void SayHello()
 
     MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
 
-    MCK::AssetType::Shader* testVertShader = new MCK::AssetType::Shader(); {
-        testVertShader->LoadShaderFromSource("../Mackerel-Core/res/Shaders/vert/passthrough.vert", GL_VERTEX_SHADER);
-    }
-    MCK::AssetType::Shader* testFragShader = new MCK::AssetType::Shader(); {
-        testFragShader->LoadShaderFromSource("../Mackerel-Core/res/Shaders/frag/monocolour.glsl", GL_FRAGMENT_SHADER);
-    }
-    MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh(); {
-        testMesh->LoadSmallDisplayMesh();
-    }
-    MCK::AssetType::Shader* testFragDefShader = new MCK::AssetType::Shader(); {
-        testFragDefShader->LoadShaderFromSource("../Mackerel-Core/res/Shaders/light/unlit.glsl", GL_FRAGMENT_SHADER);
-    }
-    MCK::Rendering::Renderer::AddUnlitShader(testFragDefShader);
+    MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
+    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.obj");
+    MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
+
+    MCK::AssetType::Shader* unlitShader;
+    MCK::AssetType::Shader* monocolourShader;
+
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT, unlitShader);
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, monocolourShader);
+
+    MCK::Rendering::Renderer::AddUnlitShader(unlitShader);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -120,10 +124,10 @@ void SayHello()
         ImGui::NewFrame();
 
         // Set Renderer Data
-        MCK::Rendering::Renderer::QueueMeshInstance(Eigen::Matrix4f::Identity(), testMesh, testFragShader, nullptr, false);
+        MCK::Rendering::Renderer::QueueMeshInstance(Eigen::Matrix4f::Identity(), testMesh, monocolourShader, testMaterial, false);
 
         /* Render here */
-        MCK::Rendering::Renderer::RenderFrame(testVertShader);
+        MCK::Rendering::Renderer::RenderFrame();
 
         ImGui::ShowDemoWindow();
         ImGui::Begin("Test");

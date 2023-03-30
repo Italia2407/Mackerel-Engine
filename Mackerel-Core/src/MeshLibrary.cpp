@@ -1,100 +1,187 @@
 #include "MeshLibrary.h"
 
-using namespace MCK;
+#include "Mesh.h"
 
-MeshLibrary* MeshLibrary::instance = nullptr;
+// Logging Headers
+#include "LoggingSystem.h"
+#include <format>
 
+// Static/Singleton Functions
+namespace MCK {
+MeshLibrary* MeshLibrary::k_Instance = nullptr;
+
+/**
+ * Getter for the MeshLibrary Singleton.
+ *
+ * \return The Singleton Instance
+ */
+MeshLibrary* MeshLibrary::Instance()
+{
+	// Create MeshLibrary Instance if it Doesn't Exist Yet
+	if (!k_Instance)
+	{
+		k_Instance = new MeshLibrary();
+	}
+
+	return k_Instance;
+}
+
+/**
+ * Delete the Mesh Library Singleton Instance.
+ * Should only be Called at End of Application Lifetime.
+ *
+ * \return Whether the Mesh Library was Released
+ */
+bool MeshLibrary::ReleaseLibrary()
+{
+	if (!k_Instance)
+	{// Cannot Release Non-Initialised Mesh Library
+		Logger::log("Cannot Release Non-Initialised Mesh Library", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Delete Mesh Library Singleton Instance
+	delete k_Instance;
+	k_Instance = nullptr;
+
+	return true;
+}
+
+/**
+* Attempt to Retrieve Specified Mesh from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Mesh
+* \param o_Mesh: Output Reference to Retrieved Mesh
+* \return Whether the Mesh could be Retrieved
+*/
+bool MeshLibrary::GetMesh(MeshEnum a_Asset, AssetType::Mesh*& o_Mesh)
+{
+	return Instance()->getMesh(a_Asset, o_Mesh);
+}
+/**
+* Attempt to Load Specified Mesh from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Mesh
+* \param a_FilePath: File Path to the Mesh
+* \return Whether the Mesh could be Loaded
+*/
+bool MeshLibrary::LoadMesh(MeshEnum a_Asset, std::string a_FilePath)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	return Instance()->loadMesh(a_Asset, a_FilePath);
+}
+/**
+* Attempt to Relase Specified Mesh from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Mesh
+* \return Whether the Mesh could be Deleted
+*/
+bool MeshLibrary::FreeMesh(MeshEnum a_Asset)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	return Instance()->freeMesh(a_Asset);
+}
+}
+
+namespace MCK {
 MeshLibrary::MeshLibrary()
 {
-	// TODO: Add engine reserved meshes to the data here
+	// TODO: Load Engine Reserved Meshes to the Data
+	loadMesh(MeshEnum::__MCK_DISPLAY_SCREEN, "../Mackerel-Core/res/Meshes/DisplayScreen.obj");
 
 	/* Example:
-		AssetType::Mesh defaultMesh(std::string filepath_to_default_mesh);
-		data.insert(std::pair<MeshEnum, AssetType::Mesh>(MeshEnum::__MCK__DEFAULT, defaultMesh));
+		AssetType::Mesh defaultTex(std::string filepath_to_default_texture);
+		data.insert(std::pair<MeshEnum, AssetType::Mesh>(MeshEnum::__MCK__DEFAULT, defaultTex));
 	*/
 }
-
 MeshLibrary::~MeshLibrary()
-{}
-
-bool MCK::MeshLibrary::privGet(MeshEnum asset, AssetType::Mesh * out)
 {
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
+	// Free all Mesh Assets Loaded in Memory
+	for (auto [assetEnum, texture] : m_LibraryData)
 	{
-		// Engine reserved value
-		success = false;
+		freeMesh(assetEnum);
 	}
-	else if (data.contains(asset))
-	{
-		// Hit! (good)
-		out = data[asset];
-		success = true;
-	}
-
-	return success;
 }
 
-bool MCK::MeshLibrary::privLoad(MeshEnum asset, std::string filepath)
+/**
+* Private Implementation of the MeshLibrary::GetMesh() Function.
+* Attempt to Retrieve Specified Mesh from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Mesh
+* \param o_Mesh: Output Reference to Retrieved Mesh
+* \return Whether the Mesh could be Retrieved
+*/
+bool MeshLibrary::getMesh(MeshEnum a_Asset, AssetType::Mesh*& o_Mesh)
 {
-	(void*)&filepath; // currently unused variable, this line is here to avoid warnings
-
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
-	{
-		// Engine reserved value
-		success = false;
-	}
-	else if (data.contains(asset))
-	{
-		// Hit! (bad)
-		success = false;
-	}
-	else
-	{
-		// Asset isn't loaded, load it
-
-		/* TODO: replace this when a load function is added:
-			AssetType::Mesh placeholderMesh(std::string filepath);
-			data.insert(std::pair<MeshEnum, AssetType::Mesh>(asset, placeholderMesh));
-		*/
-		success = true;
+	if (!m_LibraryData.contains(a_Asset))
+	{// Mesh Asset does not Exist in Memory
+		return false;
 	}
 
-	return success;
+	// Return Mesh Asset
+	o_Mesh = m_LibraryData[a_Asset];
+
+	return true;
 }
-
-bool MCK::MeshLibrary::privFree(MeshEnum asset)
+/**
+* Private Implementation of the MeshLibrary::LoadMesh() Function.
+* Attempt to Load Specified Mesh from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Mesh
+* \param a_FilePath: File Path to the Mesh
+* \return Whether the Mesh could be Loaded
+*/
+bool MeshLibrary::loadMesh(MeshEnum a_Asset, std::string a_FilePath)
 {
-	bool success = false;
-
-	if (static_cast<int>(asset) < 0)
-	{
-		// Engine reserved value
-		success = false;
-	}
-	else if (data.contains(asset))
-	{
-		// Hit! (good)
-		data.erase(asset);
-		success = true;
+	if (m_LibraryData.contains(a_Asset))
+	{// Mesh Asset already Exists in Memory
+		//Logger::log("Mesh ")
+		return false;
 	}
 
-	return success;
+	// TODO: Compute Mesh File Name from File Path
+	std::string fileName = a_FilePath;
+
+	// Load Mesh Asset
+	AssetType::Mesh* loadMesh = new AssetType::Mesh(fileName);
+	if (!loadMesh->LoadFromFile(a_FilePath))
+	{// Mesh Failed to Load
+
+		return false;
+	}
+
+	// Add Mesh Asset to Memory
+	m_LibraryData[a_Asset] = loadMesh;
+
+	return true;
 }
-
-bool MCK::MeshLibrary::Release()
+/**
+* Private Implementation of the MeshLibrary::FreeMesh() Function.
+* Attempt to Release Specified Mesh from Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Mesh
+* \return Whether the Mesh could be Deleted
+*/
+bool MeshLibrary::freeMesh(MeshEnum a_Asset)
 {
-	bool success = false;
-
-	if (instance)
-	{
-		data.clear();
-		delete instance;
-		success = true;
+	if (!m_LibraryData.contains(a_Asset))
+	{// Mesh Asset does not Exist in Memory
+		//Logger::log("Mesh ")
+		return false;
 	}
 
-	return success;
+	// Unload the Mesh Asset
+	delete m_LibraryData[a_Asset];
+	m_LibraryData.erase(a_Asset);
+
+	return true;
+}
 }

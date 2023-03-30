@@ -3,11 +3,6 @@
 #include "UniformBuffer.h"
 #include "FrameBuffer.h"
 
-#include "Material.h"
-#include "Texture.h"
-#include "Mesh.h"
-#include "Shader.h"
-
 #include "Light.h"
 #include "RenderBatch.h"
 
@@ -15,15 +10,37 @@
 #include <utility>
 #include <functional>
 
+// Logging Headers
+#include "LoggingSystem.h"
+#include <format>
+
+// Asset Headers
+#include "Mesh.h"
+#include "Shader.h"
+#include "Material.h"
+#include "Texture.h"
+
+#include "MeshLibrary.h"
+#include "ShaderLibrary.h"
+
 // Static Function & Parameters
 namespace MCK::Rendering {
 Renderer* Renderer::k_Instance = nullptr;
 
-AssetType::Shader* Renderer::k_PassThroughVertexShader = nullptr;
-AssetType::Shader* Renderer::k_FrameBufferDisplayShader = nullptr;
+AssetType::Shader* Renderer::k_FramebufferDisplayShader = nullptr;
 
-AssetType::Mesh* Renderer::k_FrameBufferDisplayMesh = nullptr;
-AssetType::Mesh* Renderer::k_ScreenDisplayMesh = nullptr;
+AssetType::Mesh* Renderer::k_DisplayScreen = nullptr;
+
+Renderer* Renderer::Instance()
+{
+	// Create Renderer Instance if it Doesn't Exist Yet
+	if (!k_Instance)
+	{
+		k_Instance = new Renderer();
+	}
+
+	return k_Instance;
+}
 
 /**
 * Initialises the Renderer.
@@ -34,21 +51,31 @@ AssetType::Mesh* Renderer::k_ScreenDisplayMesh = nullptr;
 */
 bool Renderer::InitialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 {
-	bool result = getInstance()->initialiseRenderer(a_ScreenWidth, a_ScreenHeight);
-	return result;
+	// Load Framebuffer Display Shader
+	if (!ShaderLibrary::GetShader(ShaderEnum::__MCK_FRAMEBUFFER_DISPLAY, k_FramebufferDisplayShader)) {
+		Logger::log("Could not Get Framebuffer Display Shader", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Load Framebuffer Display Mesh
+	if (!MeshLibrary::GetMesh(MeshEnum::__MCK_DISPLAY_SCREEN, k_DisplayScreen)) {
+		Logger::log("Could not Get Display Screen Mesh", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	return Instance()->initialiseRenderer(a_ScreenWidth, a_ScreenHeight);;
 }
 /**  */
 void Renderer::ClearRenderer()
 {
 	if (k_Instance)
 	{
-		delete k_Instance; k_Instance = nullptr;
-
-		delete k_PassThroughVertexShader; k_PassThroughVertexShader = nullptr;
-		delete k_FrameBufferDisplayShader; k_FrameBufferDisplayShader = nullptr;
-
-		delete k_FrameBufferDisplayMesh; k_FrameBufferDisplayMesh = nullptr;
+		delete k_Instance;
+		k_Instance = nullptr;
 	}
+
+	k_FramebufferDisplayShader = nullptr;
+	k_DisplayScreen = nullptr;
 }
 
 /**
@@ -59,7 +86,7 @@ void Renderer::ClearRenderer()
  */
 bool Renderer::AddUnlitShader(AssetType::Shader* a_Shader)
 {
-	bool result = getInstance()->addUnlitShader(a_Shader);
+	bool result = Instance()->addUnlitShader(a_Shader);
 	return result;
 }
 /**
@@ -70,7 +97,7 @@ bool Renderer::AddUnlitShader(AssetType::Shader* a_Shader)
  */
 bool Renderer::AddPointLightShader(AssetType::Shader* a_Shader)
 {
-	bool result = getInstance()->addPointLightShader(a_Shader);
+	bool result = Instance()->addPointLightShader(a_Shader);
 	return result;
 }
 /**
@@ -81,7 +108,7 @@ bool Renderer::AddPointLightShader(AssetType::Shader* a_Shader)
  */
 bool Renderer::AddDirectionLightShader(AssetType::Shader* a_Shader)
 {
-	bool result = getInstance()->addDirectionLightShader(a_Shader);
+	bool result = Instance()->addDirectionLightShader(a_Shader);
 	return result;
 }
 /**
@@ -92,7 +119,7 @@ bool Renderer::AddDirectionLightShader(AssetType::Shader* a_Shader)
  */
 bool Renderer::AddSpotLightShader(AssetType::Shader* a_Shader)
 {
-	bool result = getInstance()->addSpotLightShader(a_Shader);
+	bool result = Instance()->addSpotLightShader(a_Shader);
 	return result;
 }
 
@@ -104,17 +131,16 @@ bool Renderer::QueueMeshInstance(Eigen::Matrix4f a_Transform,
 	bool result = false;
 	if (!a_HasTransparency)
 	{
-		result = getInstance()->queueGeometryBatchInstance(a_Mesh, a_Shader, a_Material, a_Transform);
+		result = Instance()->queueGeometryBatchInstance(a_Mesh, a_Shader, a_Material, a_Transform);
 	}
 
 	return result;
 }
 
 /**  */
-bool Renderer::RenderFrame(AssetType::Shader* a_ProjectionShader)
+bool Renderer::RenderFrame()
 {
-	bool result = getInstance()->renderFrame(a_ProjectionShader);
-	return result;
+	return Instance()->renderFrame();
 }
 }
 
@@ -129,31 +155,6 @@ Renderer::~Renderer()
 	resetRenderer();
 }
 
-Renderer* Renderer::getInstance()
-{
-	// Create new Renderer Instance if it Doesn't Exist Yet
-	if (!k_Instance)
-	{
-		k_Instance = new Renderer();
-
-		// Load Static Shaders for the Renderer
-		k_PassThroughVertexShader = new AssetType::Shader();
-		k_PassThroughVertexShader->LoadShaderFromSource("../Mackerel-Core/res/Shaders/vert/passthrough.vert", GL_VERTEX_SHADER);
-
-		k_FrameBufferDisplayShader = new AssetType::Shader();
-		k_FrameBufferDisplayShader->LoadShaderFromSource("../Mackerel-Core/res/Shaders/static/FBDisplayer.glsl", GL_FRAGMENT_SHADER);
-
-		// Load Display Meshes for the Renderer
-		k_FrameBufferDisplayMesh = new AssetType::Mesh();
-		k_FrameBufferDisplayMesh->LoadDisplayMesh();
-
-		k_ScreenDisplayMesh = new AssetType::Mesh();
-		k_ScreenDisplayMesh->LoadSmallDisplayMesh();
-	}
-
-	return k_Instance;
-}
-
 /**
  * Initialises the Renderer Instance.
  * 
@@ -165,19 +166,19 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 {
 	// Ensure Renderer Buffer Objects are not Recreated
 	if (m_GeometryBuffer) {
-		std::cout << "ERROR: Cannot Recreate Geometry Framebuffer" << std::endl;
+		Logger::log("Cannot Recreate Geometry Framebuffer", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	if (m_DeferredBuffer) {
-		std::cout << "ERROR: Cannot Recreate Deferred Framebuffer" << std::endl;
+		Logger::log("Cannot Recreate Deferred Framebuffer", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	if (m_DepthBufferTexture) {
-		std::cout << "ERROR: Cannot Recreate Depth Buffer Texture" << std::endl;
+		Logger::log("Cannot Recreate Depth Buffer Texture", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	if (m_TransformBuffer) {
-		std::cout << "ERROR: Cannot Recreate Transform Uniform Buffer" << std::endl;
+		Logger::log("Cannot Recreate Transform Uniform Buffer", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -188,7 +189,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	if (!m_DepthBufferTexture->GenerateDepthTexture(a_ScreenWidth, a_ScreenHeight)) {
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Generate Depth Buffer Texture" << std::endl;
+		Logger::log("Could not Generate Depth Buffer Texture", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -201,7 +202,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{// ID #0 is Reserved for the Lighting Shader ID Map
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Add Geometry Buffer Colour Attachment Texture #0" << std::endl;
+		Logger::log("Could not Add Geometry Buffer Colour Attachment Texture #0", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	for (int i = 1; i < 31; i++) {
@@ -209,7 +210,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{// Other ID #s are for General Purpose
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Add Geometry Buffer Colour Attachment Texture #" << i << std::endl;
+		Logger::log(std::format("Could not Add Geometry Buffer Colour Attachment Texture #{}", i), Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}}
 
@@ -218,7 +219,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Assign Depth Buffer Texture to Geometry Buffer" << std::endl;
+		Logger::log("Could not Assign Depth Buffer Texture to Geometry Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -227,7 +228,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Create Geometry Frame Buffer Object" << std::endl;
+		Logger::log("Could not Create Geometry Frame Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -240,7 +241,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Add Deferred Buffer Output Colour Attachment Texture" << std::endl;
+		Logger::log("Could not Add Deferred Buffer Output Colour Attachment Texture", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -249,7 +250,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Add Deferred Buffer Depth Buffer Texture" << std::endl;
+		Logger::log("Could not Add Deferred Buffer Depth Buffer Texture", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -258,7 +259,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Create Deferred Frame Buffer Object" << std::endl;
+		Logger::log("Could not Create Deferred Frame Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -271,7 +272,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Add Transform Uniform to Transform Uniform Buffer" << std::endl;
+		Logger::log("Could not Add Transform Uniform to Transform Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -280,7 +281,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	{
 		resetRenderer();
 
-		std::cout << "ERROR: Could not Create Transform Uniform Buffer Object" << std::endl;
+		Logger::log("Could not Create Transform Uniform Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -343,7 +344,7 @@ void Renderer::resetRendererFrame()
 bool Renderer::addUnlitShader(AssetType::Shader* a_Shader)
 {
 	if (!a_Shader) {
-		std::cout << "ERROR: Cannot Add NULLPTR Unlit Shader" << std::endl;
+		Logger::log("Cannot Add NULLPTR Unlit Shader", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -353,7 +354,7 @@ bool Renderer::addUnlitShader(AssetType::Shader* a_Shader)
 bool Renderer::addPointLightShader(AssetType::Shader* a_Shader)
 {
 	if (!a_Shader) {
-		std::cout << "ERROR: Cannot Add NULLPTR Point Light Shader" << std::endl;
+		Logger::log("Cannot Add NULLPTR Point Light Shader", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -363,7 +364,7 @@ bool Renderer::addPointLightShader(AssetType::Shader* a_Shader)
 bool Renderer::addDirectionLightShader(AssetType::Shader* a_Shader)
 {
 	if (!a_Shader) {
-		std::cout << "ERROR: Cannot Add NULLPTR Direction Light Shader" << std::endl;
+		Logger::log("Cannot Add NULLPTR Direction Light Shader", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -373,46 +374,11 @@ bool Renderer::addDirectionLightShader(AssetType::Shader* a_Shader)
 bool Renderer::addSpotLightShader(AssetType::Shader* a_Shader)
 {
 	if (!a_Shader) {
-		std::cout << "ERROR: Cannot Add NULLPTR Spot Light Shader" << std::endl;
+		Logger::log("Cannot Add NULLPTR Spot Light Shader", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
 	_spotLightShaders.push_back(a_Shader);
-	return true;
-}
-
-bool Renderer::startShaderProgram(GLuint a_VertShader, GLuint a_FragShader)
-{
-	// Delete Previous Shader Program
-	if (m_ShaderProgramID != GL_ZERO)
-	{
-		glUseProgram(GL_ZERO);
-		glDeleteShader(m_ShaderProgramID);
-	}
-
-	// Create new Shader Program
-	m_ShaderProgramID = glCreateProgram();
-
-	// Attach & Link Shaders to Shader Program
-	glAttachShader(m_ShaderProgramID, a_VertShader);
-	glAttachShader(m_ShaderProgramID, a_FragShader);
-
-	glLinkProgram(m_ShaderProgramID);
-
-	// Validate Shader Program
-	glValidateProgram(m_ShaderProgramID);
-
-	GLint validationStatus;  glGetProgramiv(m_ShaderProgramID, GL_VALIDATE_STATUS, &validationStatus);
-	if (validationStatus == GL_FALSE)
-	{
-		std::cout << "ERROR: Could not Validate Shader Program" << std::endl;
-
-		return false;
-	}
-
-	// Use Shader Program
-	glUseProgram(m_ShaderProgramID);
-
 	return true;
 }
 
@@ -421,28 +387,20 @@ bool Renderer::startShaderProgram(GLuint a_VertShader, GLuint a_FragShader)
  * 
  * \return Whether the GBuffer could be Rendered
  */
-bool Renderer::renderGBuffer(AssetType::Shader* a_ProjectionShader)
+bool Renderer::renderGBuffer()
 {
 	// Use Geometry Frame Buffer as Render Target
-	if (!m_GeometryBuffer->UseFrameBufferObject(Eigen::Vector4f(1.0f, 0.4f, 0.3f, 1.0f), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)) {
-		std::cout << "ERROR: Could not Use Geometry Buffer as Framebuffer" << std::endl;
+	if (!m_GeometryBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)) {
+		Logger::log("Could not Use Geometry Buffer as Framebuffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
 	// Loop Through and Render each of the Geometry Batches
-	for (auto geometryBatch : m_GeometryBatches)
-	{
-		// Create & Load Geometry Batch Shader Program
-		if (!startShaderProgram(a_ProjectionShader->ShaderID(), geometryBatch->Shader()->ShaderID())) {
-			std::cout << "ERROR: Could not Start Shader Program" << std::endl;
-			continue;
-		}
-
-		// Render All Geometry Batch Instances to GBuffer Textures
-		if (!geometryBatch->DrawBatchObjects(m_TransformBuffer)) {
-			std::cout << "ERROR: Could not Draw Geometry Batch Objects" << std::endl;
-		}
-	}
+	for (auto geometryBatch : m_GeometryBatches) {
+	// Render All Geometry Batch Instances to GBuffer Textures
+	if (!geometryBatch->DrawBatchObjects(m_TransformBuffer)) {
+		Logger::log("Could not Draw Geometry Batch Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+	}}
 
 	return true;
 }
@@ -455,7 +413,7 @@ bool Renderer::renderDeferredBuffer()
 {
 	// Use Deferred Frame Buffer as Render Target
 	if (!m_DeferredBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT)) {
-		std::cout << "ERROR: Could not Use Deferred Buffer as Framebuffer" << std::endl;
+		Logger::log("Could not Use Deferred Buffer as Framebuffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -464,7 +422,7 @@ bool Renderer::renderDeferredBuffer()
 	{	auto GBufferTexture = m_GeometryBuffer->GetColourAttachmentTexture(i);
 
 		if (!GBufferTexture || !GBufferTexture->BindTexture(i)) {
-			std::cout << "ERROR: Could not Bind Geometry Buffer Texture #" << i << std::endl;
+			Logger::log(std::format("Could not Bind Geometry Buffer Texture #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		}
 	}
 
@@ -472,23 +430,23 @@ bool Renderer::renderDeferredBuffer()
 	for (size_t i = 0; i < m_UnlitShaders.size(); i++)
 	{	auto unlitShader = m_UnlitShaders[i];
 
-		// Create & Load Unlit Shader Program
-		if (!unlitShader || !startShaderProgram(k_PassThroughVertexShader->ShaderID(), unlitShader->ShaderID())) {
-			std::cout << "ERROR: Could not Start Unlit Shader Program #" << i << std::endl;
+		// Start Unlit Shader Program
+		if (!unlitShader || !unlitShader->UsePassthroughProgram()) {
+			Logger::log(std::format("Could not Start Unlit Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
 
 		// Draw to Framebuffer Display Mesh
-		renderFramebufferDisplayMesh();
+		renderDisplayMesh();
 	}
 
 	// Point Light Calculations
 	for (size_t i = 0; i < _pointLightShaders.size(); i++)
 	{	auto lightShader = _pointLightShaders[i];
 
-		// Create & Load Point Light Shader Program
-		if (!lightShader || !startShaderProgram(k_PassThroughVertexShader->ShaderID(), lightShader->ShaderID())) {
-			std::cout << "ERROR: Could not Start Point Light Shader Program #" << i << std::endl;
+		// Start Point Light Shader Program
+		if (!lightShader || !lightShader->UsePassthroughProgram()) {
+			Logger::log(std::format("Could not Start Point Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
 
@@ -498,12 +456,12 @@ bool Renderer::renderDeferredBuffer()
 
 			// Load Light Uniforms
 			if (!light || !light->UseLight()) {
-				std::cout << "ERROR: Could not Load Point Light #" << j << std::endl;
+				Logger::log(std::format("Could not Load Point Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
 
 			// Draw to Framebuffer Display Mesh
-			renderFramebufferDisplayMesh();
+			renderDisplayMesh();
 		}
 	}
 	// Direction Light Calculations
@@ -511,9 +469,9 @@ bool Renderer::renderDeferredBuffer()
 	{
 		auto lightShader = _directionLightShaders[i];
 
-		// Create & Load Direction Light Shader Program
-		if (!lightShader || !startShaderProgram(k_PassThroughVertexShader->ShaderID(), lightShader->ShaderID())) {
-			std::cout << "ERROR: Could not Start Direction Light Shader Program #" << i << std::endl;
+		// Start Direction Light Shader Program
+		if (!lightShader || !lightShader->UsePassthroughProgram()) {
+			Logger::log(std::format("Could not Start Direction Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
 
@@ -524,12 +482,12 @@ bool Renderer::renderDeferredBuffer()
 
 			// Load Light Uniforms
 			if (!light || !light->UseLight()) {
-				std::cout << "ERROR: Could not Load Direction Light #" << j << std::endl;
+				Logger::log(std::format("Could not Load Direction Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
 
 			// Draw to Framebuffer Display Mesh
-			renderFramebufferDisplayMesh();
+			renderDisplayMesh();
 		}
 	}
 	// Spot Light Calculations
@@ -537,9 +495,9 @@ bool Renderer::renderDeferredBuffer()
 	{
 		auto lightShader = _spotLightShaders[i];
 
-		// Create & Load Spot Light Shader Program
-		if (!lightShader || !startShaderProgram(k_PassThroughVertexShader->ShaderID(), lightShader->ShaderID())) {
-			std::cout << "ERROR: Could not Start Spot Light Shader Program #" << i << std::endl;
+		// Start Spot Light Shader Program
+		if (!lightShader || !lightShader->UsePassthroughProgram()) {
+			Logger::log(std::format("Could not Start Spot Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
 
@@ -550,12 +508,12 @@ bool Renderer::renderDeferredBuffer()
 
 			// Load Light Uniforms
 			if (!light || !light->UseLight()) {
-				std::cout << "ERROR: Could not Load Spot Light #" << j << std::endl;
+				Logger::log(std::format("Could not Load Spot Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
 
 			// Draw to Framebuffer Display Mesh
-			renderFramebufferDisplayMesh();
+			renderDisplayMesh();
 		}
 	}
 
@@ -620,7 +578,7 @@ bool Renderer::queueSpotLight(SpotLight* spotLight)
  * 
  * \return Whether the Frame Could be Rendered 
  */
-bool Renderer::renderFrame(AssetType::Shader* a_ProjectionShader)
+bool Renderer::renderFrame()
 {
 	// Clear Default Framebuffer Values
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -630,8 +588,8 @@ bool Renderer::renderFrame(AssetType::Shader* a_ProjectionShader)
 
 
 	// Render Scene to the Geometry Buffer
-	if (!m_GeometryBuffer || !renderGBuffer(a_ProjectionShader)) {
-		std::cout << "ERROR: Could not Render to Geometry Buffer" << std::endl;
+	if (!m_GeometryBuffer || !renderGBuffer()) {
+		Logger::log("Could not Render to Geometry Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -646,7 +604,7 @@ bool Renderer::renderFrame(AssetType::Shader* a_ProjectionShader)
 
 	// Render to Deferred Buffer
 	if (!m_DeferredBuffer || !renderDeferredBuffer()) {
-		std::cout << "ERROR: Could not Render to Deferred Buffer" << std::endl;
+		Logger::log("Could not Render to Deferred Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -660,24 +618,21 @@ bool Renderer::renderFrame(AssetType::Shader* a_ProjectionShader)
 
 	// Display Frame to Scene
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	// Load Frame Buffer Display Shader & Output Texture 
-	if (!startShaderProgram(k_PassThroughVertexShader->ShaderID(), k_FrameBufferDisplayShader->ShaderID())) {
-		std::cout << "ERROR: Could not Start Framebuffer Display Shader Program" << std::endl;
-		return false;
-	}
 
+	// Load Framebuffer Output Texture
 	auto FBOutputTexture = m_DeferredBuffer->GetColourAttachmentTexture(0);
 	if (!FBOutputTexture || !FBOutputTexture->BindTexture(0)) {
-		std::cout << "ERROR: Could not Bind Framebuffer Output Texture" << std::endl;
+		Logger::log("Could not Bind Framebuffer Output Texture", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 	}
 
-
-	// Draw to Screen Display Mesh
-	if (!k_ScreenDisplayMesh->BindVertexArrayObject()) {
-		std::cout << "ERROR: Could not Bind Screen Display Mesh's VAO" << std::endl;
+	// Load Frame Buffer Display Shader
+	if (!k_FramebufferDisplayShader->UsePassthroughProgram()) {
+		Logger::log("Could not Start Framebuffer Display Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
-	glDrawElements(GL_TRIANGLES, k_ScreenDisplayMesh->NumIndices(), GL_UNSIGNED_INT, nullptr);
+
+	// Draw Framebuffer Texture to Screen
+	renderDisplayMesh();
 
 
 	// Reset Renderer for Next Frame
@@ -685,13 +640,14 @@ bool Renderer::renderFrame(AssetType::Shader* a_ProjectionShader)
 
 	return true;
 }
-void Renderer::renderFramebufferDisplayMesh()
+void Renderer::renderDisplayMesh()
 {
-	if (!k_FrameBufferDisplayMesh->BindVertexArrayObject())
+	// Bind Display Mesh's VAO to GPU
+	if (!k_DisplayScreen->BindVertexArrayObject())
 	{
-		std::cout << "ERROR: Could not Bind Framebuffer Display Mesh's VAO" << std::endl;
+		Logger::log("Could not Bind Display Mesh's VAO", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return;
 	}
-	glDrawElements(GL_TRIANGLES, k_FrameBufferDisplayMesh->NumIndices(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, k_DisplayScreen->NumIndices(), GL_UNSIGNED_INT, nullptr);
 }
 }

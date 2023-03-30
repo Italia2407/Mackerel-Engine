@@ -6,7 +6,8 @@
 */
 enum class MeshEnum
 {
-	__MCK__DEFAULT = -1,
+	__MCK_DISPLAY_SCREEN = -2,
+	__MCK_DEFAULT = -1,
 	// Negative values are reserved for engine use
 	DummyMesh = 0
 };

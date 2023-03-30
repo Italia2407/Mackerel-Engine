@@ -42,6 +42,7 @@
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
+    <ClCompile Include="src\MeshRendererComponent.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Scene.cpp" />
@@ -52,7 +53,6 @@
     <ClCompile Include="src\TextureLibrary.cpp" />
     <ClCompile Include="src\TimeManager.cpp" />
     <ClCompile Include="src\UniformBuffer.cpp" />
-    <ClCompile Include="src\UniformData.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +89,7 @@
     <ClInclude Include="src\MaterialLibrary.h" />
     <ClInclude Include="src\MeshEnum.h" />
     <ClInclude Include="src\MeshLibrary.h" />
+    <ClInclude Include="src\MeshRendererComponent.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Scene.h" />
@@ -109,11 +110,10 @@
     <None Include="res\Shaders\frag\monoColour.glsl" />
     <None Include="res\Shaders\lightsHeader.glsl" />
     <None Include="res\Shaders\light\unlit.glsl" />
-    <None Include="res\Shaders\light\unlitInvert.glsl" />
     <None Include="res\Shaders\static\FBDisplayer.glsl" />
     <None Include="res\Shaders\vertexHeader.glsl" />
     <None Include="res\Shaders\vert\passthrough.vert" />
-    <None Include="res\Shaders\vert\perspective.vert" />
+    <None Include="res\Shaders\vert\projection.vert" />
     <None Include="src\MaterialDiagram.cd" />
   </ItemGroup>
   <ItemGroup>

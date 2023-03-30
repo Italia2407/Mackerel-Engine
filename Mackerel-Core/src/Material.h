@@ -54,7 +54,7 @@ public:
 	void ResetMaterial();
 
 public:
-	bool LoadMaterialFromFile(std::string fileName);
+	bool LoadFromFile(std::string a_FilePath);
 	
 	std::optional<uint8_t> GetUInt08Uniform(std::string name);
 	bool SetUInt08Uniform(std::string name, uint8_t value);

@@ -36,22 +36,20 @@ private:
 	Renderer();
 	~Renderer();
 
-	// Do Not Copy!
+	// Ensure Inability to Copy
 	Renderer(const Renderer&) = delete;
 	Renderer& operator=(const Renderer&) = delete;
 
-// Singleton Instance Bookkeeping
-private:
+	// Singleton Instance Bookkeeping
 	static Renderer* k_Instance;
-	static Renderer* getInstance();
+	static Renderer* Instance();
 
-	static AssetType::Shader* k_PassThroughVertexShader;
-	static AssetType::Shader* k_FrameBufferDisplayShader;
+	static AssetType::Shader* k_FramebufferDisplayShader;
 
-	static AssetType::Mesh* k_FrameBufferDisplayMesh;
-	static AssetType::Mesh* k_ScreenDisplayMesh;
+	static AssetType::Mesh* k_DisplayScreen;
 
-private:
+// Member Variables
+private:	
 	GLuint m_ShaderProgramID;
 
 	// Permanent Renderer Objects
@@ -74,6 +72,7 @@ private:
 	std::vector<DirectionLight*> _directionLights;
 	std::vector<SpotLight*> _spotLights;
 
+// Member Methods
 private:
 	bool initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight);
 	void resetRenderer();
@@ -84,9 +83,7 @@ private:
 	bool addDirectionLightShader(AssetType::Shader* a_Shader);
 	bool addSpotLightShader(AssetType::Shader* a_Shader);
 
-	bool startShaderProgram(GLuint a_VertShader, GLuint a_FragShader);
-
-	bool renderGBuffer(AssetType::Shader* a_ProjectionShader);
+	bool renderGBuffer();
 	bool renderDeferredBuffer();
 
 	// Functions to tell the Renderer what needs to be Rendered
@@ -96,8 +93,8 @@ private:
 	bool queueDirectionLight(DirectionLight* directionLight);
 	bool queueSpotLight(SpotLight* spotLight);
 
-	bool renderFrame(AssetType::Shader* a_ProjectionShader);
-	void renderFramebufferDisplayMesh();
+	bool renderFrame();
+	void renderDisplayMesh();
 
 public:
 	static bool InitialiseRenderer(GLuint screenWidth, GLuint screenHeight);
@@ -116,6 +113,6 @@ public:
 	static bool QueueDirectionLight(DirectionLight* a_DirectionLight);
 	static bool QueueSpotLight(SpotLight* a_SpotLight);
 
-	static bool RenderFrame(AssetType::Shader* a_ProjectionShader);
+	static bool RenderFrame();
 };
 }

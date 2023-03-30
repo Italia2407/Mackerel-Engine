@@ -91,6 +91,9 @@
     <Filter Include="Source Files\Systems\Resource Management\Material">
       <UniqueIdentifier>{8ca0dc8c-cfd6-463f-aa7b-0329cebc4b14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Vertex Shaders">
+      <UniqueIdentifier>{d29d2f3d-578c-4380-9603-0da39d43be87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -165,9 +168,6 @@
     <ClCompile Include="src\UniformBuffer.cpp">
       <Filter>Source Files\AssetTypes\Material</Filter>
     </ClCompile>
-    <ClCompile Include="src\UniformData.cpp">
-      <Filter>Source Files\AssetTypes\Material</Filter>
-    </ClCompile>
     <ClCompile Include="src\LoggingSystem.cpp">
       <Filter>Source Files\Systems\Logging System</Filter>
     </ClCompile>
@@ -206,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="src\Shader.cpp">
       <Filter>Source Files\AssetTypes\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshRendererComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,6 +368,9 @@
     <ClInclude Include="src\Scene.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClInclude>
+    <ClInclude Include="src\MeshRendererComponent.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
@@ -389,13 +395,10 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="res\Shaders\vert\passthrough.vert">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\Shaders\Vertex Shaders</Filter>
     </None>
-    <None Include="res\Shaders\vert\perspective.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="res\Shaders\light\unlitInvert.glsl">
-      <Filter>Resource Files\Shaders</Filter>
+    <None Include="res\Shaders\vert\projection.vert">
+      <Filter>Resource Files\Shaders\Vertex Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

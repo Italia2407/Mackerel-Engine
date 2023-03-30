@@ -1,6 +1,7 @@
 #pragma once
-
 #include <glad/glad.h>
+
+#include <string>
 
 namespace MCK::AssetType {
 class Texture
@@ -11,6 +12,8 @@ private:
 
 public:
 	GLuint getTextureID() { return _textureID; }
+
+	bool LoadFromFile(std::string a_FilePath);
 
 	bool GenerateFloatTexture(GLuint width, GLuint height);
 	bool GenerateIntTexture(GLuint width, GLuint height);
