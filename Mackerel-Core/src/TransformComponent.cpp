@@ -15,12 +15,24 @@ namespace MCK::EntitySystem
 	*/
 	Eigen::Matrix4f TransformComponent::GetTransformationMatrix()
 	{
+		// Get the parent entity's transformation matrix, if it exists.
+		Eigen::Matrix4f parentMat;
+		parentMat.Identity();
+		if (entity->parent != nullptr)
+			for (Component* component : entity->parent->components)
+				if (component->IsType<TransformComponent>()) {
+					TransformComponent* parentTransform = dynamic_cast<TransformComponent*>(component);
+					parentMat = parentTransform->GetTransformationMatrix();
+				}
+
+		// Matrices for the different possible transformations.
 		Eigen::Matrix4f translateMat;
 		translateMat.Identity();
 		translateMat(0,3) = position.x();
 		translateMat(1,3) = position.y();
 		translateMat(2,3) = position.z();
 
+		// Rotation requires a different for all three axes.
 		Eigen::Matrix4f rotateXMat;
 		rotateXMat.Identity();
 		rotateXMat(1,1) = cos(eulerAngles.x());
@@ -48,6 +60,7 @@ namespace MCK::EntitySystem
 		scaleMat(1,1) = scale.y();
 		scaleMat(2,2) = scale.z();
 
+		// The shear matrix is dependant on which axis it is being sheared along.
 		Eigen::Matrix4f shearMat;
 		shearMat.Identity();
 		if (shear.x() == 0.f) {
@@ -63,6 +76,7 @@ namespace MCK::EntitySystem
 			shearMat(1,2) = shear.z();
 		}
 
+		// The reflect matrix is Boolean.
 		Eigen::Matrix4f reflectMat;
 		reflectMat.Identity();
 		reflectMat(0,0) = (reflect.x() == 1 ? -1.f : 1.f);
@@ -71,7 +85,7 @@ namespace MCK::EntitySystem
 		
 		Eigen::Matrix4f mat;
 		// Order matters, so this multiplication not be correct.
-		mat = translateMat * rotateXMat * rotateYMat * rotateZMat * scaleMat * shearMat * reflectMat;
+		mat = parentMat * translateMat * rotateXMat * rotateYMat * rotateZMat * scaleMat * shearMat * reflectMat;
 
 		return mat;
 	}
