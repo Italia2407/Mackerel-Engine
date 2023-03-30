@@ -12,6 +12,7 @@ namespace MCK::EntitySystem
 		Eigen::Vector3f eulerAngles;
 		Eigen::Vector3f scale;
 		Eigen::Vector3f shear;
+		Eigen::Vector3i reflect;
 
 		Eigen::Matrix4f GetTransformationMatrix();
 
