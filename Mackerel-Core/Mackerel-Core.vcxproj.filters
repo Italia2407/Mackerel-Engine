@@ -94,16 +94,17 @@
     <Filter Include="Source Files\Systems\EntitySystem\Components">
       <UniqueIdentifier>{47ec9567-787d-4a02-b476-31a58bbab107}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems\Input System\Input Sets">
-      <UniqueIdentifier>{15b6880b-10ce-4635-91c6-75ea08d371fa}</UniqueIdentifier>
     <Filter Include="Source Files\Systems\Physics">
       <UniqueIdentifier>{6616f775-a163-4bd1-a640-009233ab2292}</UniqueIdentifier>
     </Filter>
     <Filter Include="External Files\bullet">
       <UniqueIdentifier>{4681943c-c547-4906-90cd-d5d8b4bc441c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Input System\Input Sets">
+      <UniqueIdentifier>{15b6880b-10ce-4635-91c6-75ea08d371fa}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Systems\Helpers">
-      <UniqueIdentifier>{00f2b60c-ebbe-4035-8de1-74f4ab9ba924}</UniqueIdentifier>
+      <UniqueIdentifier>{5948e6f4-c637-4ad0-bcca-1dc0198645a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +395,12 @@
     <ClInclude Include="src\TransformComponent.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\RigidbodyComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicsWorld.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="src\Keys.h">
       <Filter>Source Files\Systems\Input System\Input Sets</Filter>
     </ClInclude>
@@ -411,11 +418,9 @@
     </ClInclude>
     <ClInclude Include="src\GamepadAxes.h">
       <Filter>Source Files\Systems\Input System\Input Sets</Filter>
-    <ClInclude Include="src\RigidbodyComponent.h">
-      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\PhysicsWorld.h">
-      <Filter>Source Files\Systems\Physics</Filter>
+    <ClInclude Include="src\JsonHelpers.h">
+      <Filter>Source Files\Systems\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
