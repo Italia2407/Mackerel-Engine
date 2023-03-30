@@ -63,7 +63,8 @@ namespace MCK
 		/**
 		 * Private implemenetation of the TimeManager::setTimer() function.
 		 * Creates a timer, by correctly adding it to the list of timers
-		 *	based on its end time.
+		 *	based on its end time, which is calculated by adding the given time to
+		 *	the current up time.
 		 *
 		 * \param timer: key-value pair, where the first value is the end time and the
 		 *		second is the callback function
@@ -73,7 +74,8 @@ namespace MCK
 		/**
 		 * Private implemenetation of the TimeManager::setScaledTimer() function.
 		 * Creates a scaled timer, by correctly adding it to the list of scaled
-		 *	timers based on its end time.
+		 *	timers based on its end time, which is calculated by adding the given time to
+		 *	the current scaled up time.
 		 *
 		 * \param timer: key-value pair, where the first value is the end time and the
 		 *		second is the callback function
