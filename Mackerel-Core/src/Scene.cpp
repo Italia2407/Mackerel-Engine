@@ -19,6 +19,7 @@ namespace MCK::EntitySystem
 		Entity* newEntity = entityFactory.Get();
 
 		newEntity->scene = this;
+		newEntity->id = GenerateEntityID();
 
 		entities.push_back(newEntity);
 
@@ -103,5 +104,15 @@ namespace MCK::EntitySystem
 			Entity* newEntity = CreateEntity();
 			newEntity->Deserialise(entityJson);
 		}
+	}
+
+	/**
+	 * Generates a unique ID for an entity.
+	 * 
+	 * \return The id
+	 */
+	entityId Scene::GenerateEntityID()
+	{
+		return idSeed++;
 	}
 }

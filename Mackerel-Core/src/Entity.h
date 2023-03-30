@@ -5,6 +5,8 @@
 #include <string>
 #include "../ext/nlohmann/json.hpp"
 
+typedef long unsigned int entityId;
+
 // Forward Declarations
 namespace MCK::EntitySystem {
 class Scene;
@@ -20,6 +22,7 @@ class Entity
 {
 private:
 public:
+	entityId id;
 
 	Scene* scene;
 
