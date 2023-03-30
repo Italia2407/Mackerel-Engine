@@ -35,8 +35,8 @@
     <ClCompile Include="src\EntityPool.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\JsonHelpers.cpp" />
-    <ClCompile Include="src\ButtonEvents.h" />
-    <ClCompile Include="src\ButtonHandler.cpp" />
+    <ClCompile Include="src\KeyEvents.h" />
+    <ClCompile Include="src\KeyHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
@@ -88,7 +88,6 @@
     <ClInclude Include="src\InputSubReceipt.h" />
     <ClInclude Include="src\JsonHelpers.h" />
     <ClInclude Include="src\KeyHandler.h" />
-    <ClInclude Include="src\ButtonHandler.h" />
     <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\Light.h" />
@@ -99,9 +98,9 @@
     <ClInclude Include="src\MaterialLibrary.h" />
     <ClInclude Include="src\MeshEnum.h" />
     <ClInclude Include="src\MeshLibrary.h" />
+    <ClInclude Include="src\PhysicsWorld.h" />
     <ClInclude Include="src\MouseButtons.h" />
     <ClInclude Include="src\MouseState.h" />
-    <ClInclude Include="src\PhysicsWorld.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\RigidbodyComponent.h" />
@@ -133,6 +132,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\LoggingSystem.conf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="ext\reactphysics3d\build\reactphysics3d.vcxproj">
+      <Project>{49a8841e-2c77-3ec9-9a3e-e8fd4b1a8051}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -206,8 +206,11 @@ void SayHello()
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-        //Input System
+        // Input System
         MCK::Input::Update(window);
+
+        // Time Manager
+        MCK::TimeManager::Update();
 
         //ImGui
         ImGui_ImplOpenGL3_NewFrame();
