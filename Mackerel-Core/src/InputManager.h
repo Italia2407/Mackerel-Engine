@@ -5,8 +5,8 @@
 #include <list>
 #include <map>
 
-#include "KeyEvents.h"
-#include "KeyHandler.h"
+#include "ButtonEvents.h"
+#include "ButtonHandler.h"
 #include "Keys.h"
 #include "InputSubReceipt.h"
 
@@ -14,7 +14,7 @@ namespace MCK::Input
 {
 	class InputManager
 	{
-		using callbackMap = std::map<Key, KeyHandler*>;
+		using callbackMap = std::map<int32_t, ButtonHandler*>;
 
 		private:
 			InputManager();
@@ -35,6 +35,7 @@ namespace MCK::Input
 
 			// private member variables
 			callbackMap callbacks;
+			GLFWgamepadstate gamepadState{};
 
 			// private member functions
 			/**
@@ -44,26 +45,28 @@ namespace MCK::Input
 			 *
 			 * \return the associated key handler.
 			 */
-			KeyHandler* CheckMake(Key key);
+			ButtonHandler* CheckMake(int32_t key);
 			/**
 			 * Deletes the associated key handler if it is empty.
 			 *
 			 * \param key: the associated key.
 			 */
-			void CheckDemake(Key key);
+			void CheckDemake(int32_t key);
 			/**
 			 * Deletes the associated key handler if it is empty, but doesn't check if
 			 *     it exists first.
 			 *
 			 * \param key: the associated key.
 			 */
-			void CheckDemakeUnsafe(Key key);
+			void CheckDemakeUnsafe(int32_t key);
 
 			// private implementations of static functions
-			InputSubReceipt* privSubscribe(Key key, KeyEvent event, callbackFunc& callback, InputSubReceipt* receipt = nullptr);
+			bool privSubscribe(int32_t key, ButtonEvents event, callbackFunc& callback, InputSubReceipt* receipt = nullptr);
 			void privUnsubscribe(InputSubReceipt* receipt);
 
-			void privCheckKeys(GLFWwindow* window);
+			void privUpdate(GLFWwindow* window);
+
+			const GLFWgamepadstate& privGetGamepadState() const;
 
 		public:
 			/**
@@ -73,8 +76,9 @@ namespace MCK::Input
 			 * \param key: the key that should trigger the callback
 			 * \param event: the key event that should trigger the callback
 			 * \param callback: the callback function
+			 * \param receipt: the receipt this callback will be appended to, used for deregistration
 			 */
-			static InputSubReceipt* Subscribe(Key key, KeyEvent event, callbackFunc& callback, InputSubReceipt* receipt = nullptr)
+			static bool Subscribe(int32_t key, ButtonEvents event, callbackFunc& callback, InputSubReceipt* receipt = nullptr)
 			{
 				return Instance()->privSubscribe(key, event, callback, receipt);
 			}
@@ -96,9 +100,19 @@ namespace MCK::Input
 			 * 
 			 * \param window: the glfw window to query the key states from.
 			 */
-			static void CheckKeys(GLFWwindow* window)
+			static void Update(GLFWwindow* window)
 			{
-				Instance()->privCheckKeys(window);
+				Instance()->privUpdate(window);
+			}
+
+			/**
+			 * Returns the state of the gamepad. If there is no gamepad connected every button will return released.
+			 * 
+			 * \return a reference to the current gamepad state.
+			 */
+			static const GLFWgamepadstate& GetGamepadState()
+			{
+				return Instance()->privGetGamepadState();
 			}
 	};
 }

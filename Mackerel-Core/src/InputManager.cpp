@@ -12,15 +12,15 @@ namespace MCK::Input
 	{
 	}
 
-	KeyHandler* InputManager::CheckMake(Key key)
+	ButtonHandler* InputManager::CheckMake(int32_t key)
 	{
 		if (callbacks.contains(key) == false)
-			callbacks.emplace(key, new KeyHandler(key));
+			callbacks.emplace(key, new ButtonHandler(key));
 
 		return callbacks[key];
 	}
 
-	void InputManager::CheckDemake(Key key)
+	void InputManager::CheckDemake(int32_t key)
 	{
 		if (callbacks.contains(key) && callbacks[key]->Empty())
 		{
@@ -29,7 +29,7 @@ namespace MCK::Input
 		}
 	}
 
-	void InputManager::CheckDemakeUnsafe(Key key)
+	void InputManager::CheckDemakeUnsafe(int32_t key)
 	{
 		if (callbacks[key]->Empty())
 		{
@@ -38,10 +38,17 @@ namespace MCK::Input
 		}
 	}
 
-	InputSubReceipt* InputManager::privSubscribe(Key key, KeyEvent event, callbackFunc& callback, InputSubReceipt* receipt)
+	bool InputManager::privSubscribe(int32_t key, ButtonEvents event, callbackFunc& callback, InputSubReceipt* receipt)
 	{
-		KeyHandler* curHandler = CheckMake(key);
-		return curHandler->Register(event, callback, receipt);
+		if (receipt == nullptr)
+		{
+			return false;
+		}
+		else
+		{
+			ButtonHandler* curHandler = CheckMake(key);
+			return curHandler->Register(event, callback, receipt);
+		}
 	}
 
 	void InputManager::privUnsubscribe(InputSubReceipt* receipt)
@@ -52,11 +59,27 @@ namespace MCK::Input
 		}
 	}
 
-	void InputManager::privCheckKeys(GLFWwindow* window)
+	void InputManager::privUpdate(GLFWwindow* window)
 	{
+		// gamepad update
+		if (glfwJoystickPresent(GLFW_JOYSTICK_1) != 0)
+		{
+			glfwGetGamepadState(GLFW_JOYSTICK_1, &gamepadState);
+		}
+		else
+		{
+			memset(&gamepadState, 0, sizeof(gamepadState));
+		}
+		
+		// check button handlers
 		for (auto handler : callbacks)
 		{
 			handler.second->CheckState(window);
 		}
+	}
+
+	const GLFWgamepadstate& InputManager::privGetGamepadState() const
+	{
+		return gamepadState;
 	}
 }
