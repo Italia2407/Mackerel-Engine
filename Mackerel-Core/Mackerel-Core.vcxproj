@@ -28,13 +28,15 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
+    <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentFactory.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\EntityPool.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
-    <ClCompile Include="src\KeyEvents.h" />
-    <ClCompile Include="src\KeyHandler.cpp" />
+    <ClCompile Include="src\JsonHelpers.cpp" />
+    <ClCompile Include="src\ButtonEvents.h" />
+    <ClCompile Include="src\ButtonHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
@@ -42,6 +44,7 @@
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
+    <ClCompile Include="src\PhysicsWorld.cpp" />
     <ClCompile Include="src\MeshRendererComponent.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
@@ -52,6 +55,7 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\TextureLibrary.cpp" />
     <ClCompile Include="src\TimeManager.cpp" />
+    <ClCompile Include="src\TransformComponent.cpp" />
     <ClCompile Include="src\UniformBuffer.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
@@ -72,13 +76,18 @@
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\ComponentFactory.h" />
+    <ClInclude Include="src\ComponentState.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
+    <ClInclude Include="src\GamepadAxes.h" />
+    <ClInclude Include="src\GamepadButtons.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\InputSetRanges.h" />
     <ClInclude Include="src\InputSubReceipt.h" />
-    <ClInclude Include="src\KeyHandler.h" />
+    <ClInclude Include="src\JsonHelpers.h" />
+    <ClInclude Include="src\ButtonHandler.h" />
     <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\Light.h" />
@@ -89,9 +98,13 @@
     <ClInclude Include="src\MaterialLibrary.h" />
     <ClInclude Include="src\MeshEnum.h" />
     <ClInclude Include="src\MeshLibrary.h" />
+    <ClInclude Include="src\PhysicsWorld.h" />
+    <ClInclude Include="src\MouseButtons.h" />
+    <ClInclude Include="src\MouseState.h" />
     <ClInclude Include="src\MeshRendererComponent.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RigidbodyComponent.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderEnum.h" />
@@ -100,6 +113,7 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureEnum.h" />
     <ClInclude Include="src\TextureLibrary.h" />
+    <ClInclude Include="src\TransformComponent.h" />
     <ClInclude Include="src\UniformBuffer.h" />
     <ClInclude Include="src\TimeManager.h" />
     <ClInclude Include="src\UniformData.h" />
@@ -118,6 +132,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\LoggingSystem.conf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="ext\reactphysics3d\build\reactphysics3d.vcxproj">
+      <Project>{49a8841e-2c77-3ec9-9a3e-e8fd4b1a8051}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -228,7 +247,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>D:\Source Code\University\Mackerel-Engine\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\bencl\OneDrive - University of Leeds\University Work\Year 4\Game Engine\Mackerel-Engine\Mackerel-Core\ext\bullet3-3.25\bullet3-3.25\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>

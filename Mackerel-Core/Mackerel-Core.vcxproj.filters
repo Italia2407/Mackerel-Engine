@@ -91,6 +91,21 @@
     <Filter Include="Source Files\Systems\Resource Management\Material">
       <UniqueIdentifier>{8ca0dc8c-cfd6-463f-aa7b-0329cebc4b14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\EntitySystem\Components">
+      <UniqueIdentifier>{47ec9567-787d-4a02-b476-31a58bbab107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Physics">
+      <UniqueIdentifier>{6616f775-a163-4bd1-a640-009233ab2292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Files\bullet">
+      <UniqueIdentifier>{4681943c-c547-4906-90cd-d5d8b4bc441c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Input System\Input Sets">
+      <UniqueIdentifier>{15b6880b-10ce-4635-91c6-75ea08d371fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Helpers">
+      <UniqueIdentifier>{5948e6f4-c637-4ad0-bcca-1dc0198645a4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Resource Files\Shaders\Vertex Shaders">
       <UniqueIdentifier>{d29d2f3d-578c-4380-9603-0da39d43be87}</UniqueIdentifier>
     </Filter>
@@ -189,10 +204,10 @@
     <ClCompile Include="src\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\KeyEvents.h">
+    <ClCompile Include="src\ButtonEvents.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClCompile>
-    <ClCompile Include="src\KeyHandler.cpp">
+    <ClCompile Include="src\ButtonHandler.cpp">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClCompile>
     <ClCompile Include="src\Framebuffer.cpp">
@@ -206,6 +221,18 @@
     </ClCompile>
     <ClCompile Include="src\Shader.cpp">
       <Filter>Source Files\AssetTypes\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component.cpp">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TransformComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicsWorld.cpp">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JsonHelpers.cpp">
+      <Filter>Source Files\Systems\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="src\MeshRendererComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
@@ -350,10 +377,7 @@
     <ClInclude Include="src\InputManager.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
-    <ClInclude Include="src\Keys.h">
-      <Filter>Source Files\Systems\Input System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\KeyHandler.h">
+    <ClInclude Include="src\ButtonHandler.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClInclude>
     <ClInclude Include="src\Input.h">
@@ -367,6 +391,39 @@
     </ClInclude>
     <ClInclude Include="src\Scene.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComponentState.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TransformComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RigidbodyComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicsWorld.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Keys.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GamepadButtons.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InputSetRanges.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MouseButtons.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MouseState.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GamepadAxes.h">
+      <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\JsonHelpers.h">
+      <Filter>Source Files\Systems\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="src\MeshRendererComponent.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>

@@ -117,7 +117,7 @@ namespace MCK::EntitySystem
 
 		for (unsigned int i = 0; i < components.size(); ++i)
 		{
-			components[i]->OnUpdate();
+			components[i]->UpdateComponent();
 		}
 
 		for (unsigned int i = 0; i < childEntities.size(); ++i)
@@ -132,7 +132,7 @@ namespace MCK::EntitySystem
 	 * Checks if the entity is queued to be destroyed and deallocates if so
 	 *
 	 */
-	void Entity::OnFrameEnd()
+	void Entity::FrameEnd()
 	{
 		if (destroying)
 		{

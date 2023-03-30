@@ -5,6 +5,8 @@
 #include <string>
 #include "../ext/nlohmann/json.hpp"
 
+typedef long unsigned int entityId;
+
 // Forward Declarations
 namespace MCK::EntitySystem {
 class Scene;
@@ -20,6 +22,7 @@ class Entity
 {
 private:
 public:
+	entityId id;
 
 	Scene* scene;
 
@@ -61,7 +64,7 @@ public:
 		* Checks if the entity is queued to be destroyed and deallocates if so TODO make private
 		* 
 		*/
-	void OnFrameEnd();
+	void FrameEnd();
 
 	/**
 		* Invoked before the entity is destroyed. 

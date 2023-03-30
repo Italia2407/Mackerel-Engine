@@ -19,6 +19,7 @@ namespace MCK::EntitySystem
 		{
 			return new TestComponent();
 		}
+		
 
 		return nullptr;
 	}

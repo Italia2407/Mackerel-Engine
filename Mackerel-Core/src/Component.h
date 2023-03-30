@@ -1,5 +1,6 @@
 #pragma once
 #include "../ext/nlohmann/json.hpp"
+#include "ComponentState.h"
 
 // Forward Declacrations
 namespace MCK::EntitySystem {
@@ -13,10 +14,15 @@ namespace MCK::EntitySystem
 {
 	class Component
 	{
+	private:
+
+		void UpdateComponent();
 	public:
 		
 		/** A pointer to the entity that holds this component */
 		Entity* entity;
+
+		ComponentState state;
 
 		/**
 		 * Invoked when the entity holding the component is created.
@@ -57,5 +63,7 @@ namespace MCK::EntitySystem
 		 * \return True if the component is of the specified type, false otherwise
 		 */
 		template<typename T> bool IsType() { return typeid(T) == GetType(); }
+		
+		friend class Entity;
 	};
 }

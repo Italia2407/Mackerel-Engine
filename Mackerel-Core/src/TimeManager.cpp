@@ -48,6 +48,8 @@ double MCK::TimeManager::privGetScaledUpTime()
 
 void MCK::TimeManager::privSetTimer(std::pair<double, std::function<void()>> timer)
 {
+	timer.first = timer.first + privGetUpTime();
+
 	// iterator for the list
 	std::list<std::pair<double, std::function<void()>>>::iterator it;
 	it = timers.begin();
@@ -69,6 +71,8 @@ void MCK::TimeManager::privSetTimer(std::pair<double, std::function<void()>> tim
 
 void MCK::TimeManager::privSetScaledTimer(std::pair<double, std::function<void()>> timer)
 {
+	timer.first = timer.first + privGetScaledUpTime();
+
 	// iterator for the list
 	std::list<std::pair<double, std::function<void()>>>::iterator it;
 	it = scaledTimers.begin();
@@ -120,12 +124,11 @@ void MCK::TimeManager::privUpdate()
 	// check unscaled timers
 	// iterator for the list
 	std::list<std::pair<double, std::function<void()>>>::iterator it;
+
 	it = timers.begin();
 
 	while (it != timers.end())
 	{
-		++it;
-
 		if (upTime >= it->first)
 		{
 			// send callback for the timer
@@ -135,15 +138,15 @@ void MCK::TimeManager::privUpdate()
 		}
 		else
 			break;	// no point checking further, as those timers don't need stopped
-	}
+
+		it = timers.begin();
+	}	
 
 	// check scaled timers
 	it = scaledTimers.begin();
 
 	while (it != scaledTimers.end())
 	{
-		++it;
-
 		if (scaledUpTime >= it->first)
 		{
 			// send callback for the timer
@@ -153,5 +156,7 @@ void MCK::TimeManager::privUpdate()
 		}
 		else
 			return;	// no point checking further, as those timers don't need stopped
+
+		it = scaledTimers.begin();
 	}
 }

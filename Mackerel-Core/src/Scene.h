@@ -4,6 +4,8 @@
 #include "EntityFactory.h"
 #include "ComponentFactory.h"
 #include "../ext/nlohmann/json.hpp"
+#include "RigidbodyComponent.h"
+#include "PhysicsWorld.h"
 
 // Forward declarations
 namespace MCK::EntitySystem {
@@ -27,7 +29,16 @@ namespace MCK::EntitySystem
 		EntityFactory entityFactory;
 		ComponentFactory componentFactory;
 
+		entityId idSeed = 0;
+
+		/**
+		 * Generates a unique ID for an entity.
+		 *
+		 * \return The id
+		 */
+		entityId GenerateEntityID();
 	public:
+
 		/**
 		 * Creates a blank entity and adds it to the scene.
 		 * 
@@ -121,5 +132,6 @@ namespace MCK::EntitySystem
 		
 			return scene;
 		}
-	};
+
+		};
 }
