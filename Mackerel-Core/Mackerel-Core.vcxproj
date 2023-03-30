@@ -34,6 +34,7 @@
     <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\EntityPool.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
+    <ClCompile Include="src\JsonHelpers.cpp" />
     <ClCompile Include="src\KeyEvents.h" />
     <ClCompile Include="src\KeyHandler.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\InputManager.h" />
     <ClInclude Include="src\InputSubReceipt.h" />
+    <ClInclude Include="src\JsonHelpers.h" />
     <ClInclude Include="src\KeyHandler.h" />
     <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\FrameBuffer.h" />

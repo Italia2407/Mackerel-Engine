@@ -94,6 +94,9 @@
     <Filter Include="Source Files\Systems\EntitySystem\Components">
       <UniqueIdentifier>{47ec9567-787d-4a02-b476-31a58bbab107}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Helpers">
+      <UniqueIdentifier>{00f2b60c-ebbe-4035-8de1-74f4ab9ba924}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -215,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="src\TransformComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JsonHelpers.cpp">
+      <Filter>Source Files\Systems\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="src\TransformComponent.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\JsonHelpers.h">
+      <Filter>Source Files\Systems\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

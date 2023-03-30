@@ -21,6 +21,7 @@
 #include "Renderer.h"
 #include "Mesh.h"
 #include "TimeManager.h"
+#include "JsonHelpers.h"
 
 void InputCallbackTest(MCK::Key key, MCK::KeyEvent keyEvent)
 {
@@ -131,6 +132,15 @@ void SayHello()
     MCK::Logger::log(message1, MCK::Logger::LogLevel::Debug, std::source_location::current());
 
     // End timer demo
+
+    // Start json helper demo
+    //json test = MCK::Helpers::getJsonObject("../../test.txt");
+    //json sample = MCK::Helpers::getJsonObject("../../sample1.json");
+    //std::string messageJson = "Json output: " + sample.dump();
+    //MCK::Logger::log(messageJson, MCK::Logger::LogLevel::Debug, std::source_location::current());
+    //std::string messageJson1 = "Json output: " + test.dump();
+    //MCK::Logger::log(messageJson1, MCK::Logger::LogLevel::Debug, std::source_location::current());
+    // End json helper demo
 
     // Make Window Current & Load GLAD
     glfwMakeContextCurrent(window);
