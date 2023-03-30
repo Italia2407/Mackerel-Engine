@@ -103,6 +103,9 @@
     <Filter Include="Source Files\Systems\Input System\Input Sets">
       <UniqueIdentifier>{15b6880b-10ce-4635-91c6-75ea08d371fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Helpers">
+      <UniqueIdentifier>{5948e6f4-c637-4ad0-bcca-1dc0198645a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -227,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="src\PhysicsWorld.cpp">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JsonHelper.cpp">
+      <Filter>Source Files\Systems\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -412,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="src\GamepadAxes.h">
       <Filter>Source Files\Systems\Input System\Input Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\JsonHelper.h">
+      <Filter>Source Files\Systems\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

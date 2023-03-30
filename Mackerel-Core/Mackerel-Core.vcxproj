@@ -36,6 +36,7 @@
     <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\ButtonEvents.h" />
     <ClCompile Include="src\ButtonHandler.cpp" />
+    <ClCompile Include="src\JsonHelper.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="src\EntityPool.h" />
     <ClInclude Include="src\GamepadAxes.h" />
     <ClInclude Include="src\GamepadButtons.h" />
+    <ClInclude Include="src\JsonHelper.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\InputManager.h" />
     <ClInclude Include="src\InputSetRanges.h" />
