@@ -58,7 +58,8 @@ private:
 
 	AssetType::Texture* m_DepthBufferTexture;
 
-	UniformBuffer* m_TransformBuffer;
+	UniformBuffer* m_CameraBuffer;
+	UniformBuffer* m_MeshTransformBuffer;
 
 	std::vector<AssetType::Shader*> m_UnlitShaders;
 	std::vector<AssetType::Shader*> _pointLightShaders;

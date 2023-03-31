@@ -59,8 +59,8 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
 	{	auto instance = m_Instances[i];
 
 		// Load Instance's Transform Uniforms
-		if (!a_TransformBuffer->SetMat4BufferUniform("transform", instance.transform)) {
-			Logger::log(std::format("Cannot Set Instance #{} Transform in Uniform Buffer", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		if (!a_TransformBuffer->SetMat4BufferUniform("transformMatrix", instance.transform)) {
+			Logger::log(std::format("Cannot Set Instance #{} Transform Matrix in Uniform Buffer", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
 

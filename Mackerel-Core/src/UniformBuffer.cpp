@@ -3,19 +3,20 @@
 #include "UniformData.h"
 
 namespace MCK {
-UniformBuffer::UniformBuffer() :
-	_uniformBufferObject(0), _bufferByteSize(0), _isCreated(false) {}
+UniformBuffer::UniformBuffer(std::string a_UniformBufferName) :
+	m_UniformBufferObject(GL_ZERO), m_UnifromBufferName(a_UniformBufferName),
+	m_BufferByteSize(0) {}
 UniformBuffer::~UniformBuffer()
 {
 	DeleteUniformBufferObject();
 
 	// Delete all Buffer Uniforms
-	for (auto [BUName, BUData] : _bufferUniforms)
+	for (auto [BUName, BUData] : m_BufferUniforms)
 	{
 		if (BUData)
 			delete BUData;
 	}
-	_bufferUniforms.clear();
+	m_BufferUniforms.clear();
 }
 
 /**
@@ -25,25 +26,27 @@ UniformBuffer::~UniformBuffer()
  */
 bool UniformBuffer::CreateUniformBufferObject()
 {
-	if (_isCreated)
+	if (IsCreated())
 		return false;
 
 	// Create the Uniform Buffer Object Handle
-	glGenBuffers(1, &_uniformBufferObject);
+	glGenBuffers(1, &m_UniformBufferObject);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
 
 	GLuint uboSize = 0;
-	for (auto [BUName, BUData] : _bufferUniforms)
+	for (auto [BUName, BUData] : m_BufferUniforms)
 	{
 		uboSize += BUData->getUniformSize();
 	}
-	glBufferData(_uniformBufferObject, uboSize, 0, GL_STATIC_DRAW);
-	_isCreated = true;
+	glBufferData(GL_UNIFORM_BUFFER, uboSize, nullptr, GL_DYNAMIC_DRAW);
 
 	// Attach Buffer Uniform Values to Uniform Buffer Object
-	for (auto [BUName, BUData] : _bufferUniforms)
+	for (auto [BUName, BUData] : m_BufferUniforms)
 	{
-		glBufferSubData(_uniformBufferObject, BUData->uniformOffset, BUData->getUniformSize(), BUData->getUniformValue());
+		glBufferSubData(GL_UNIFORM_BUFFER, BUData->uniformOffset, BUData->getUniformSize(), BUData->getUniformValue());
 	}
+
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -63,12 +66,13 @@ bool UniformBuffer::DeleteUniformBufferObject()
  * \param bindingSlot: The Slot to which teh UBO is Bounded
  * \return Whether the UBO was Successfully Bounded
  */
-bool UniformBuffer::BindUniformBufferObject(GLuint bindingSlot)
+bool UniformBuffer::BindUniformBufferObject(GLuint a_BindingSlot)
 {
-	if (!_isCreated)
+	if (!IsCreated())
 		return false;
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, bindingSlot, _uniformBufferObject);
+	// Bind Uniform Buffer to Slot
+	glBindBufferBase(GL_UNIFORM_BUFFER, a_BindingSlot, m_UniformBufferObject);
 	return true;
 }
 
@@ -83,20 +87,20 @@ bool UniformBuffer::BindUniformBufferObject(GLuint bindingSlot)
  */
 bool UniformBuffer::AddUInt08BufferUniform(std::string name, uint8_t value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	UInt08Uniform* bufferUniform = new UInt08Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -107,11 +111,11 @@ bool UniformBuffer::AddUInt08BufferUniform(std::string name, uint8_t value)
  */
 std::optional<uint8_t> UniformBuffer::GetUInt08BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	UInt08Uniform* castBufferUniform = dynamic_cast<UInt08Uniform*>(_bufferUniforms[name]);
+	UInt08Uniform* castBufferUniform = dynamic_cast<UInt08Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UInt08 Type
 		return {};
@@ -128,11 +132,11 @@ std::optional<uint8_t> UniformBuffer::GetUInt08BufferUniform(std::string name)
  */
 bool UniformBuffer::SetUInt08BufferUniform(std::string name, uint8_t value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	UInt08Uniform* castBufferUniform = dynamic_cast<UInt08Uniform*>(_bufferUniforms[name]);
+	UInt08Uniform* castBufferUniform = dynamic_cast<UInt08Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UInt08 Type
 		return false;
@@ -140,8 +144,11 @@ bool UniformBuffer::SetUInt08BufferUniform(std::string name, uint8_t value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -156,20 +163,20 @@ bool UniformBuffer::SetUInt08BufferUniform(std::string name, uint8_t value)
  */
 bool UniformBuffer::AddUInt16BufferUniform(std::string name, uint16_t value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	UInt16Uniform* bufferUniform = new UInt16Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -180,11 +187,11 @@ bool UniformBuffer::AddUInt16BufferUniform(std::string name, uint16_t value)
  */
 std::optional<uint16_t> UniformBuffer::GetUInt16BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	UInt16Uniform* castBufferUniform = dynamic_cast<UInt16Uniform*>(_bufferUniforms[name]);
+	UInt16Uniform* castBufferUniform = dynamic_cast<UInt16Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UInt16 Type
 		return {};
@@ -201,11 +208,11 @@ std::optional<uint16_t> UniformBuffer::GetUInt16BufferUniform(std::string name)
  */
 bool UniformBuffer::SetUInt16BufferUniform(std::string name, uint16_t value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	UInt16Uniform* castBufferUniform = dynamic_cast<UInt16Uniform*>(_bufferUniforms[name]);
+	UInt16Uniform* castBufferUniform = dynamic_cast<UInt16Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UInt16 Type
 		return false;
@@ -213,8 +220,11 @@ bool UniformBuffer::SetUInt16BufferUniform(std::string name, uint16_t value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -229,20 +239,20 @@ bool UniformBuffer::SetUInt16BufferUniform(std::string name, uint16_t value)
  */
 bool UniformBuffer::AddUInt32BufferUniform(std::string name, uint32_t value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	UInt32Uniform* bufferUniform = new UInt32Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -253,11 +263,11 @@ bool UniformBuffer::AddUInt32BufferUniform(std::string name, uint32_t value)
  */
 std::optional<uint32_t> UniformBuffer::GetUInt32BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	UInt32Uniform* castBufferUniform = dynamic_cast<UInt32Uniform*>(_bufferUniforms[name]);
+	UInt32Uniform* castBufferUniform = dynamic_cast<UInt32Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UInt32 Type
 		return {};
@@ -274,11 +284,11 @@ std::optional<uint32_t> UniformBuffer::GetUInt32BufferUniform(std::string name)
  */
 bool UniformBuffer::SetUInt32BufferUniform(std::string name, uint32_t value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	UInt32Uniform* castBufferUniform = dynamic_cast<UInt32Uniform*>(_bufferUniforms[name]);
+	UInt32Uniform* castBufferUniform = dynamic_cast<UInt32Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UInt32 Type
 		return false;
@@ -286,8 +296,11 @@ bool UniformBuffer::SetUInt32BufferUniform(std::string name, uint32_t value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -302,20 +315,20 @@ bool UniformBuffer::SetUInt32BufferUniform(std::string name, uint32_t value)
  */
 bool UniformBuffer::AddUInt64BufferUniform(std::string name, uint64_t value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	UInt64Uniform* bufferUniform = new UInt64Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -326,11 +339,11 @@ bool UniformBuffer::AddUInt64BufferUniform(std::string name, uint64_t value)
  */
 std::optional<uint64_t> UniformBuffer::GetUInt64BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	UInt64Uniform* castBufferUniform = dynamic_cast<UInt64Uniform*>(_bufferUniforms[name]);
+	UInt64Uniform* castBufferUniform = dynamic_cast<UInt64Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UInt64 Type
 		return {};
@@ -347,11 +360,11 @@ std::optional<uint64_t> UniformBuffer::GetUInt64BufferUniform(std::string name)
  */
 bool UniformBuffer::SetUInt64BufferUniform(std::string name, uint64_t value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	UInt64Uniform* castBufferUniform = dynamic_cast<UInt64Uniform*>(_bufferUniforms[name]);
+	UInt64Uniform* castBufferUniform = dynamic_cast<UInt64Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UInt64 Type
 		return false;
@@ -359,8 +372,11 @@ bool UniformBuffer::SetUInt64BufferUniform(std::string name, uint64_t value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -376,20 +392,20 @@ bool UniformBuffer::SetUInt64BufferUniform(std::string name, uint64_t value)
  */
 bool UniformBuffer::AddInt08BufferUniform(std::string name, int8_t value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	Int08Uniform* bufferUniform = new Int08Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -400,11 +416,11 @@ bool UniformBuffer::AddInt08BufferUniform(std::string name, int8_t value)
  */
 std::optional<int8_t> UniformBuffer::GetInt08BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	Int08Uniform* castBufferUniform = dynamic_cast<Int08Uniform*>(_bufferUniforms[name]);
+	Int08Uniform* castBufferUniform = dynamic_cast<Int08Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Int08 Type
 		return {};
@@ -421,11 +437,11 @@ std::optional<int8_t> UniformBuffer::GetInt08BufferUniform(std::string name)
  */
 bool UniformBuffer::SetInt08BufferUniform(std::string name, int8_t value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	Int08Uniform* castBufferUniform = dynamic_cast<Int08Uniform*>(_bufferUniforms[name]);
+	Int08Uniform* castBufferUniform = dynamic_cast<Int08Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Int08 Type
 		return false;
@@ -433,8 +449,11 @@ bool UniformBuffer::SetInt08BufferUniform(std::string name, int8_t value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -449,20 +468,20 @@ bool UniformBuffer::SetInt08BufferUniform(std::string name, int8_t value)
  */
 bool UniformBuffer::AddInt16BufferUniform(std::string name, int16_t value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	Int16Uniform* bufferUniform = new Int16Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -473,11 +492,11 @@ bool UniformBuffer::AddInt16BufferUniform(std::string name, int16_t value)
  */
 std::optional<int16_t> UniformBuffer::GetInt16BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	Int16Uniform* castBufferUniform = dynamic_cast<Int16Uniform*>(_bufferUniforms[name]);
+	Int16Uniform* castBufferUniform = dynamic_cast<Int16Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Int16 Type
 		return {};
@@ -494,11 +513,11 @@ std::optional<int16_t> UniformBuffer::GetInt16BufferUniform(std::string name)
  */
 bool UniformBuffer::SetInt16BufferUniform(std::string name, int16_t value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	Int16Uniform* castBufferUniform = dynamic_cast<Int16Uniform*>(_bufferUniforms[name]);
+	Int16Uniform* castBufferUniform = dynamic_cast<Int16Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Int16 Type
 		return false;
@@ -506,8 +525,11 @@ bool UniformBuffer::SetInt16BufferUniform(std::string name, int16_t value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -522,20 +544,20 @@ bool UniformBuffer::SetInt16BufferUniform(std::string name, int16_t value)
  */
 bool UniformBuffer::AddInt32BufferUniform(std::string name, int32_t value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	Int32Uniform* bufferUniform = new Int32Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -546,11 +568,11 @@ bool UniformBuffer::AddInt32BufferUniform(std::string name, int32_t value)
  */
 std::optional<int32_t> UniformBuffer::GetInt32BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	Int32Uniform* castBufferUniform = dynamic_cast<Int32Uniform*>(_bufferUniforms[name]);
+	Int32Uniform* castBufferUniform = dynamic_cast<Int32Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Int32 Type
 		return {};
@@ -567,11 +589,11 @@ std::optional<int32_t> UniformBuffer::GetInt32BufferUniform(std::string name)
  */
 bool UniformBuffer::SetInt32BufferUniform(std::string name, int32_t value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	Int32Uniform* castBufferUniform = dynamic_cast<Int32Uniform*>(_bufferUniforms[name]);
+	Int32Uniform* castBufferUniform = dynamic_cast<Int32Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Int32 Type
 		return false;
@@ -579,8 +601,11 @@ bool UniformBuffer::SetInt32BufferUniform(std::string name, int32_t value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -595,20 +620,20 @@ bool UniformBuffer::SetInt32BufferUniform(std::string name, int32_t value)
  */
 bool UniformBuffer::AddInt64BufferUniform(std::string name, int64_t value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	Int64Uniform* bufferUniform = new Int64Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -619,11 +644,11 @@ bool UniformBuffer::AddInt64BufferUniform(std::string name, int64_t value)
  */
 std::optional<int64_t> UniformBuffer::GetInt64BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	Int64Uniform* castBufferUniform = dynamic_cast<Int64Uniform*>(_bufferUniforms[name]);
+	Int64Uniform* castBufferUniform = dynamic_cast<Int64Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Int64 Type
 		return {};
@@ -640,11 +665,11 @@ std::optional<int64_t> UniformBuffer::GetInt64BufferUniform(std::string name)
  */
 bool UniformBuffer::SetInt64BufferUniform(std::string name, int64_t value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	Int64Uniform* castBufferUniform = dynamic_cast<Int64Uniform*>(_bufferUniforms[name]);
+	Int64Uniform* castBufferUniform = dynamic_cast<Int64Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Int64 Type
 		return false;
@@ -652,8 +677,11 @@ bool UniformBuffer::SetInt64BufferUniform(std::string name, int64_t value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -669,20 +697,20 @@ bool UniformBuffer::SetInt64BufferUniform(std::string name, int64_t value)
  */
 bool UniformBuffer::AddFloatBufferUniform(std::string name, float value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	FloatUniform* bufferUniform = new FloatUniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -693,11 +721,11 @@ bool UniformBuffer::AddFloatBufferUniform(std::string name, float value)
  */
 std::optional<float> UniformBuffer::GetFloatBufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	FloatUniform* castBufferUniform = dynamic_cast<FloatUniform*>(_bufferUniforms[name]);
+	FloatUniform* castBufferUniform = dynamic_cast<FloatUniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Float Type
 		return {};
@@ -714,11 +742,11 @@ std::optional<float> UniformBuffer::GetFloatBufferUniform(std::string name)
  */
 bool UniformBuffer::SetFloatBufferUniform(std::string name, float value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	FloatUniform* castBufferUniform = dynamic_cast<FloatUniform*>(_bufferUniforms[name]);
+	FloatUniform* castBufferUniform = dynamic_cast<FloatUniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Float Type
 		return false;
@@ -726,8 +754,11 @@ bool UniformBuffer::SetFloatBufferUniform(std::string name, float value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -742,20 +773,20 @@ bool UniformBuffer::SetFloatBufferUniform(std::string name, float value)
  */
 bool UniformBuffer::AddDoubleBufferUniform(std::string name, double value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	DoubleUniform* bufferUniform = new DoubleUniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -766,11 +797,11 @@ bool UniformBuffer::AddDoubleBufferUniform(std::string name, double value)
  */
 std::optional<double> UniformBuffer::GetDoubleBufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	DoubleUniform* castBufferUniform = dynamic_cast<DoubleUniform*>(_bufferUniforms[name]);
+	DoubleUniform* castBufferUniform = dynamic_cast<DoubleUniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Double Type
 		return {};
@@ -787,11 +818,11 @@ std::optional<double> UniformBuffer::GetDoubleBufferUniform(std::string name)
  */
 bool UniformBuffer::SetDoubleBufferUniform(std::string name, double value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	DoubleUniform* castBufferUniform = dynamic_cast<DoubleUniform*>(_bufferUniforms[name]);
+	DoubleUniform* castBufferUniform = dynamic_cast<DoubleUniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Double Type
 		return false;
@@ -799,8 +830,11 @@ bool UniformBuffer::SetDoubleBufferUniform(std::string name, double value)
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -816,20 +850,20 @@ bool UniformBuffer::SetDoubleBufferUniform(std::string name, double value)
  */
 bool UniformBuffer::AddVec2BufferUniform(std::string name, Eigen::Vector2f value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	Vec2Uniform* bufferUniform = new Vec2Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -840,11 +874,11 @@ bool UniformBuffer::AddVec2BufferUniform(std::string name, Eigen::Vector2f value
  */
 std::optional<Eigen::Vector2f> UniformBuffer::GetVec2BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	Vec2Uniform* castBufferUniform = dynamic_cast<Vec2Uniform*>(_bufferUniforms[name]);
+	Vec2Uniform* castBufferUniform = dynamic_cast<Vec2Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Vec2 Type
 		return {};
@@ -861,11 +895,11 @@ std::optional<Eigen::Vector2f> UniformBuffer::GetVec2BufferUniform(std::string n
  */
 bool UniformBuffer::SetVec2BufferUniform(std::string name, Eigen::Vector2f value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	Vec2Uniform* castBufferUniform = dynamic_cast<Vec2Uniform*>(_bufferUniforms[name]);
+	Vec2Uniform* castBufferUniform = dynamic_cast<Vec2Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Vec2 Type
 		return false;
@@ -873,8 +907,11 @@ bool UniformBuffer::SetVec2BufferUniform(std::string name, Eigen::Vector2f value
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -889,20 +926,20 @@ bool UniformBuffer::SetVec2BufferUniform(std::string name, Eigen::Vector2f value
  */
 bool UniformBuffer::AddVec3BufferUniform(std::string name, Eigen::Vector3f value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	Vec3Uniform* bufferUniform = new Vec3Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -913,11 +950,11 @@ bool UniformBuffer::AddVec3BufferUniform(std::string name, Eigen::Vector3f value
  */
 std::optional<Eigen::Vector3f> UniformBuffer::GetVec3BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	Vec3Uniform* castBufferUniform = dynamic_cast<Vec3Uniform*>(_bufferUniforms[name]);
+	Vec3Uniform* castBufferUniform = dynamic_cast<Vec3Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Vec3 Type
 		return {};
@@ -934,11 +971,11 @@ std::optional<Eigen::Vector3f> UniformBuffer::GetVec3BufferUniform(std::string n
  */
 bool UniformBuffer::SetVec3BufferUniform(std::string name, Eigen::Vector3f value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	Vec3Uniform* castBufferUniform = dynamic_cast<Vec3Uniform*>(_bufferUniforms[name]);
+	Vec3Uniform* castBufferUniform = dynamic_cast<Vec3Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Vec3 Type
 		return false;
@@ -946,8 +983,11 @@ bool UniformBuffer::SetVec3BufferUniform(std::string name, Eigen::Vector3f value
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -962,20 +1002,20 @@ bool UniformBuffer::SetVec3BufferUniform(std::string name, Eigen::Vector3f value
  */
 bool UniformBuffer::AddVec4BufferUniform(std::string name, Eigen::Vector4f value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	Vec4Uniform* bufferUniform = new Vec4Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -986,11 +1026,11 @@ bool UniformBuffer::AddVec4BufferUniform(std::string name, Eigen::Vector4f value
  */
 std::optional<Eigen::Vector4f> UniformBuffer::GetVec4BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	Vec4Uniform* castBufferUniform = dynamic_cast<Vec4Uniform*>(_bufferUniforms[name]);
+	Vec4Uniform* castBufferUniform = dynamic_cast<Vec4Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Vec4 Type
 		return {};
@@ -1007,11 +1047,11 @@ std::optional<Eigen::Vector4f> UniformBuffer::GetVec4BufferUniform(std::string n
  */
 bool UniformBuffer::SetVec4BufferUniform(std::string name, Eigen::Vector4f value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	Vec4Uniform* castBufferUniform = dynamic_cast<Vec4Uniform*>(_bufferUniforms[name]);
+	Vec4Uniform* castBufferUniform = dynamic_cast<Vec4Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Vec4 Type
 		return false;
@@ -1019,8 +1059,11 @@ bool UniformBuffer::SetVec4BufferUniform(std::string name, Eigen::Vector4f value
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -1036,20 +1079,20 @@ bool UniformBuffer::SetVec4BufferUniform(std::string name, Eigen::Vector4f value
  */
 bool UniformBuffer::AddUVec2BufferUniform(std::string name, Eigen::Vector2<uint32_t> value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	UVec2Uniform* bufferUniform = new UVec2Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1060,11 +1103,11 @@ bool UniformBuffer::AddUVec2BufferUniform(std::string name, Eigen::Vector2<uint3
  */
 std::optional<Eigen::Vector2<uint32_t>> UniformBuffer::GetUVec2BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	UVec2Uniform* castBufferUniform = dynamic_cast<UVec2Uniform*>(_bufferUniforms[name]);
+	UVec2Uniform* castBufferUniform = dynamic_cast<UVec2Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UVec2 Type
 		return {};
@@ -1081,11 +1124,11 @@ std::optional<Eigen::Vector2<uint32_t>> UniformBuffer::GetUVec2BufferUniform(std
  */
 bool UniformBuffer::SetUVec2BufferUniform(std::string name, Eigen::Vector2<uint32_t> value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	UVec2Uniform* castBufferUniform = dynamic_cast<UVec2Uniform*>(_bufferUniforms[name]);
+	UVec2Uniform* castBufferUniform = dynamic_cast<UVec2Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UVec2 Type
 		return false;
@@ -1093,8 +1136,11 @@ bool UniformBuffer::SetUVec2BufferUniform(std::string name, Eigen::Vector2<uint3
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -1109,20 +1155,20 @@ bool UniformBuffer::SetUVec2BufferUniform(std::string name, Eigen::Vector2<uint3
  */
 bool UniformBuffer::AddUVec3BufferUniform(std::string name, Eigen::Vector3<uint32_t> value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	UVec3Uniform* bufferUniform = new UVec3Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1133,11 +1179,11 @@ bool UniformBuffer::AddUVec3BufferUniform(std::string name, Eigen::Vector3<uint3
  */
 std::optional<Eigen::Vector3<uint32_t>> UniformBuffer::GetUVec3BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	UVec3Uniform* castBufferUniform = dynamic_cast<UVec3Uniform*>(_bufferUniforms[name]);
+	UVec3Uniform* castBufferUniform = dynamic_cast<UVec3Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UVec3 Type
 		return {};
@@ -1154,11 +1200,11 @@ std::optional<Eigen::Vector3<uint32_t>> UniformBuffer::GetUVec3BufferUniform(std
  */
 bool UniformBuffer::SetUVec3BufferUniform(std::string name, Eigen::Vector3<uint32_t> value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	UVec3Uniform* castBufferUniform = dynamic_cast<UVec3Uniform*>(_bufferUniforms[name]);
+	UVec3Uniform* castBufferUniform = dynamic_cast<UVec3Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UVec3 Type
 		return false;
@@ -1166,8 +1212,11 @@ bool UniformBuffer::SetUVec3BufferUniform(std::string name, Eigen::Vector3<uint3
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -1182,20 +1231,20 @@ bool UniformBuffer::SetUVec3BufferUniform(std::string name, Eigen::Vector3<uint3
  */
 bool UniformBuffer::AddUVec4BufferUniform(std::string name, Eigen::Vector4<uint32_t> value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	UVec4Uniform* bufferUniform = new UVec4Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1206,11 +1255,11 @@ bool UniformBuffer::AddUVec4BufferUniform(std::string name, Eigen::Vector4<uint3
  */
 std::optional<Eigen::Vector4<uint32_t>> UniformBuffer::GetUVec4BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	UVec4Uniform* castBufferUniform = dynamic_cast<UVec4Uniform*>(_bufferUniforms[name]);
+	UVec4Uniform* castBufferUniform = dynamic_cast<UVec4Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UVec4 Type
 		return {};
@@ -1227,11 +1276,11 @@ std::optional<Eigen::Vector4<uint32_t>> UniformBuffer::GetUVec4BufferUniform(std
  */
 bool UniformBuffer::SetUVec4BufferUniform(std::string name, Eigen::Vector4<uint32_t> value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	UVec4Uniform* castBufferUniform = dynamic_cast<UVec4Uniform*>(_bufferUniforms[name]);
+	UVec4Uniform* castBufferUniform = dynamic_cast<UVec4Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't UVec4 Type
 		return false;
@@ -1239,8 +1288,11 @@ bool UniformBuffer::SetUVec4BufferUniform(std::string name, Eigen::Vector4<uint3
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }
@@ -1255,20 +1307,20 @@ bool UniformBuffer::SetUVec4BufferUniform(std::string name, Eigen::Vector4<uint3
  */
 bool UniformBuffer::AddMat4BufferUniform(std::string name, Eigen::Matrix4f value)
 {
-	if (_isCreated)
+	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
 		return false;
 	}
-	if (_bufferUniforms.contains(name))
+	if (m_BufferUniforms.contains(name))
 	{// Buffer Uniform already Exists with the Given Name
 		return false;
 	}
 
 	Mat4Uniform* bufferUniform = new Mat4Uniform(value);
-	bufferUniform->uniformOffset = _bufferByteSize;
-	_bufferByteSize += bufferUniform->getUniformSize();
+	bufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += bufferUniform->getUniformSize();
 
-	_bufferUniforms[name] = bufferUniform;
+	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1279,11 +1331,11 @@ bool UniformBuffer::AddMat4BufferUniform(std::string name, Eigen::Matrix4f value
  */
 std::optional<Eigen::Matrix4f> UniformBuffer::GetMat4BufferUniform(std::string name)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return {};
 	}
-	Mat4Uniform* castBufferUniform = dynamic_cast<Mat4Uniform*>(_bufferUniforms[name]);
+	Mat4Uniform* castBufferUniform = dynamic_cast<Mat4Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Mat4 Type
 		return {};
@@ -1300,11 +1352,11 @@ std::optional<Eigen::Matrix4f> UniformBuffer::GetMat4BufferUniform(std::string n
  */
 bool UniformBuffer::SetMat4BufferUniform(std::string name, Eigen::Matrix4f value)
 {
-	if (!_bufferUniforms.contains(name))
+	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
 		return false;
 	}
-	Mat4Uniform* castBufferUniform = dynamic_cast<Mat4Uniform*>(_bufferUniforms[name]);
+	Mat4Uniform* castBufferUniform = dynamic_cast<Mat4Uniform*>(m_BufferUniforms[name]);
 	if (!castBufferUniform)
 	{// Buffer Uniform isn't Mat4 Type
 		return false;
@@ -1312,8 +1364,11 @@ bool UniformBuffer::SetMat4BufferUniform(std::string name, Eigen::Matrix4f value
 
 	// Update Buffer Uniform Data
 	castBufferUniform->value = value;
+
 	// Update Uniform Buffer Object Data
-	glBufferSubData(_uniformBufferObject, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
+	glBufferSubData(GL_UNIFORM_BUFFER, castBufferUniform->uniformOffset, castBufferUniform->getUniformSize(), castBufferUniform->getUniformValue());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	return true;
 }

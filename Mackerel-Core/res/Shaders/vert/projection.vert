@@ -12,12 +12,26 @@ layout(location = 1) out vec3 v2fNormal;
 layout(location = 2) out vec2 v2fUV;
 layout(location = 3) out vec3 v2fTint;
 
-// Vertex Shader Uniform Buffer Object
-layout(std140, binding = 0) uniform VertexShaderParameters
+// Camera Uniform Buffer Object
+layout(std140, binding = 0) uniform Camera
 {
-	mat4 meshTransformMatrix;
+	vec3 position;
+
+	vec3 front;
+	vec3 up;
+
 	mat4 cameraProjectionMatrix;
-};
+} camera;
+
+// Vertex Shader Uniform Buffer Object
+layout(std140, binding = 1) uniform MeshTransform
+{
+	vec3 position;
+	vec3 rotation;
+	vec3 scale;
+
+	mat4 transformMatrix;
+} mesh;
 
 void main()
 {
@@ -26,5 +40,6 @@ void main()
 	v2fPosition = vertexPosition;
 	v2fNormal = vertexNormal;
 	v2fUV = vertexUV;
-	v2fTint = vertexTint;
+	v2fTint = (camera.up + mesh.scale) * 0.5f;
+	//v2fTint = vertexTint;
 }

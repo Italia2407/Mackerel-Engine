@@ -16,26 +16,25 @@ namespace MCK {
 class UniformBuffer
 {
 public:
-	UniformBuffer();
+	UniformBuffer(std::string a_UniformBufferName = "UniformBuffer");
 	~UniformBuffer();
 
 private:
-	GLuint _uniformBufferObject;
+	GLuint m_UniformBufferObject;
+	std::string m_UnifromBufferName;
 
-	GLuint _bufferByteSize;
-	std::map<std::string, UniformData*> _bufferUniforms;
-
-	bool _isCreated;
+	GLuint m_BufferByteSize;
+	std::map<std::string, UniformData*> m_BufferUniforms;
 
 public:
-	GLuint getBufferByteSize() { return _bufferByteSize; }
-	bool IsCreated() { return _isCreated; }
+	GLuint getBufferByteSize() { return m_BufferByteSize; }
+	bool IsCreated() { return m_UniformBufferObject != GL_ZERO; }
 
 public:
 	bool CreateUniformBufferObject();
 	bool DeleteUniformBufferObject();
 
-	bool BindUniformBufferObject(GLuint bindingSlot);
+	bool BindUniformBufferObject(GLuint a_BindingSlot);
 
 public:
 	// UInt08

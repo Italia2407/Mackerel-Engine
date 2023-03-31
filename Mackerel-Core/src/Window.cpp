@@ -29,10 +29,13 @@
 #include "JsonHelpers.h"
 #include "Material.h"
 
+Eigen::Matrix4f testTransform = Eigen::Matrix4f::Identity();
+
 void InputCallbackTest(int32_t key, MCK::ButtonEvents ButtonEvents)
 {
     std::string message = "Key [" + std::to_string(static_cast<int>(key)) + "] did action [" + std::to_string(static_cast<int>(ButtonEvents)) + "].";
     MCK::Logger::log(message, MCK::Logger::LogLevel::Debug, std::source_location::current());
+    testTransform.coeffRef(0, 0) = 0.4f;
 }
 
 void MouseCallbacktest(int32_t key, MCK::ButtonEvents ButtonEvents)
@@ -222,7 +225,7 @@ void SayHello()
         ImGui::NewFrame();
 
         // Set Renderer Data
-        MCK::Rendering::Renderer::QueueMeshInstance(Eigen::Matrix4f::Identity(), testMesh, monocolourShader, testMaterial, false);
+        MCK::Rendering::Renderer::QueueMeshInstance(testTransform, testMesh, monocolourShader, testMaterial, false);
 
         /* Render here */
         MCK::Rendering::Renderer::RenderFrame();
