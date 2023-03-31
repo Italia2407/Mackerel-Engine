@@ -18,12 +18,11 @@ namespace MCK::EntitySystem
 		// Get the parent entity's transformation matrix, if it exists.
 		Eigen::Matrix4f parentMat;
 		parentMat.Identity();
-		if (entity->parent != nullptr)
-			for (Component* component : entity->parent->components)
-				if (component->IsType<TransformComponent>()) {
-					TransformComponent* parentTransform = dynamic_cast<TransformComponent*>(component);
-					parentMat = parentTransform->GetTransformationMatrix();
-				}
+		if (entity->parent != nullptr) {
+			TransformComponent* parentTransform = entity->parent->GetComponent<TransformComponent>();
+			if (parentTransform != nullptr)
+				parentMat = parentTransform->GetTransformationMatrix();
+		}
 
 		// Matrices for the different possible transformations.
 		Eigen::Matrix4f translateMat;
@@ -32,7 +31,7 @@ namespace MCK::EntitySystem
 		translateMat(1,3) = position.y();
 		translateMat(2,3) = position.z();
 
-		// Rotation requires a different for all three axes.
+		// Rotation requires a different matrix for all three axes.
 		Eigen::Matrix4f rotateXMat;
 		rotateXMat.Identity();
 		rotateXMat(1,1) = cos(eulerAngles.x());
@@ -130,6 +129,8 @@ namespace MCK::EntitySystem
 	bool TransformComponent::Deserialise(json data)
 	{
 		// Get the entitiy's transform component data.
+		data = data["data"];
+
 		// position is simply the amount by which the object translates.
 		position.x() = data["positionX"];
 		position.y() = data["positionY"];
