@@ -679,8 +679,8 @@ bool Material::UseMaterial()
 		return false;
 	}
 
-	// Bind Uniform Buffer to Slot 1
-	m_UniformBuffer->BindUniformBufferObject(1);
+	// Bind Uniform Buffer to Slot 2
+	m_UniformBuffer->BindUniformBufferObject(2);
 
 	// Bind Material Textures to their Respective Slots
 	for (int i = 0; i < 32; i++) {

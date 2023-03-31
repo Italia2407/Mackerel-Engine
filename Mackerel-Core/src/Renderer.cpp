@@ -198,7 +198,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	m_GeometryBuffer = new FrameBuffer("Geometry Buffer");
 
 	// Add Geometry Buffer Colour Attachments
-	if (!m_GeometryBuffer->AddFloatColourAttachment(a_ScreenWidth, a_ScreenHeight))
+	if (!m_GeometryBuffer->AddUIntColourAttachment(a_ScreenWidth, a_ScreenHeight))
 	{// ID #0 is Reserved for the Lighting Shader ID Map
 		resetRenderer();
 
@@ -652,7 +652,6 @@ bool Renderer::renderFrame()
 
 	m_CameraBuffer->BindUniformBufferObject(0);
 	m_MeshTransformBuffer->BindUniformBufferObject(1);
-	std::cout << *m_MeshTransformBuffer->GetVec3BufferUniform("scale") << std::endl;
 
 	// Render Scene to the Geometry Buffer
 	if (!m_GeometryBuffer || !renderGBuffer()) {

@@ -202,16 +202,6 @@ bool Shader::LoadFromFile(std::string a_FilePath)
 			Logger::log(std::format("Could not Validate {} Shader Projection Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
 		}
-
-		// Bind Camera Uniform Block to Slot 0
-		GLuint cameraUniformBlock = glGetUniformBlockIndex(m_ProjectionShaderProgramID, "Camera");
-		glUniformBlockBinding(m_ProjectionShaderProgramID, cameraUniformBlock, 0);
-		// Bind Mesh Transform Uniform Block to Slot 1
-		GLuint meshTransformBlock = glGetUniformBlockIndex(m_ProjectionShaderProgramID, "MeshTransform");
-		glUniformBlockBinding(m_ProjectionShaderProgramID, meshTransformBlock, 1);
-		// Bind Material Properties Uniform Block to Slot 2
-		GLuint materialPropertiesBlock = glGetUniformBlockIndex(m_ProjectionShaderProgramID, "MaterialProperties");
-		glUniformBlockBinding(m_ProjectionShaderProgramID, materialPropertiesBlock, 2);
 	}
 	glValidateProgram(m_PassthroughShaderProgramID); {
 		GLint validationStatus = GL_FALSE;
@@ -223,16 +213,6 @@ bool Shader::LoadFromFile(std::string a_FilePath)
 			Logger::log(std::format("Could not Validate {} Shader Passthrough Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
 		}
-
-		// Bind Camera Uniform Block to Slot 0
-		GLuint cameraUniformBlock = glGetUniformBlockIndex(m_PassthroughShaderProgramID, "Camera");
-		glUniformBlockBinding(m_PassthroughShaderProgramID, cameraUniformBlock, 0);
-		// Bind Mesh Transform Uniform Block to Slot 1
-		GLuint meshTransformBlock = glGetUniformBlockIndex(m_PassthroughShaderProgramID, "MeshTransform");
-		glUniformBlockBinding(m_PassthroughShaderProgramID, meshTransformBlock, 1);
-		// Bind Material Properties Uniform Block to Slot 2
-		GLuint materialPropertiesBlock = glGetUniformBlockIndex(m_PassthroughShaderProgramID, "MaterialProperties");
-		glUniformBlockBinding(m_PassthroughShaderProgramID, materialPropertiesBlock, 2);
 	}
 
 	return true;

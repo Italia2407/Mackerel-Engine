@@ -23,7 +23,7 @@ struct UInt08Uniform : UniformData
 	uint8_t value;
 
 	void* getUniformValue() override { return &value; }
-	GLuint getUniformSize() override { return 4; }
+	GLuint getUniformSize() override { return 1; }
 };
 struct UInt16Uniform : UniformData
 {
@@ -33,7 +33,7 @@ struct UInt16Uniform : UniformData
 	uint16_t value;
 
 	void* getUniformValue() override { return &value; }
-	GLuint getUniformSize() override { return 4; }
+	GLuint getUniformSize() override { return 2; }
 };
 struct UInt32Uniform : UniformData
 {
@@ -53,7 +53,7 @@ struct UInt64Uniform : UniformData
 	uint64_t value;
 
 	void* getUniformValue() override { return &value; }
-	GLuint getUniformSize() override { return 4; }
+	GLuint getUniformSize() override { return 8; }
 };
 
 struct Int08Uniform : UniformData
@@ -64,7 +64,7 @@ struct Int08Uniform : UniformData
 	int8_t value;
 
 	void* getUniformValue() override { return &value; }
-	GLuint getUniformSize() override { return 4; }
+	GLuint getUniformSize() override { return 1; }
 };
 struct Int16Uniform : UniformData
 {
@@ -74,7 +74,7 @@ struct Int16Uniform : UniformData
 	int16_t value;
 
 	void* getUniformValue() override { return &value; }
-	GLuint getUniformSize() override { return 4; }
+	GLuint getUniformSize() override { return 2; }
 };
 struct Int32Uniform : UniformData
 {

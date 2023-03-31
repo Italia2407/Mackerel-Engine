@@ -22,7 +22,7 @@ public:
 	Material();
 	~Material();
 
-private:
+public:
 	UniformBuffer* m_UniformBuffer;
 	Texture* m_MaterialTextures[32];
 

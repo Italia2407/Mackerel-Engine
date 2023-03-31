@@ -33,12 +33,7 @@ bool UniformBuffer::CreateUniformBufferObject()
 	glGenBuffers(1, &m_UniformBufferObject);
 	glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferObject);
 
-	GLuint uboSize = 0;
-	for (auto [BUName, BUData] : m_BufferUniforms)
-	{
-		uboSize += BUData->getUniformSize();
-	}
-	glBufferData(GL_UNIFORM_BUFFER, uboSize, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, m_BufferByteSize, nullptr, GL_DYNAMIC_DRAW);
 
 	// Attach Buffer Uniform Values to Uniform Buffer Object
 	for (auto [BUName, BUData] : m_BufferUniforms)
@@ -72,8 +67,21 @@ bool UniformBuffer::BindUniformBufferObject(GLuint a_BindingSlot)
 		return false;
 
 	// Bind Uniform Buffer to Slot
-	glBindBufferBase(GL_UNIFORM_BUFFER, a_BindingSlot, m_UniformBufferObject);
+	glBindBufferRange(GL_UNIFORM_BUFFER, a_BindingSlot, m_UniformBufferObject, 0, m_BufferByteSize);
 	return true;
+}
+
+void UniformBuffer::addBufferUniform(std::string a_Name, UniformData* a_BufferUniform)
+{
+	// Add Padding if New Buffer Uniform Removes 16 Bytes Allignment
+	if (getPaddingSize() < a_BufferUniform->getUniformSize())
+		m_BufferByteSize += getPaddingSize();
+
+	// Save & Set Buffer Uniform Parameters
+	a_BufferUniform->uniformOffset = m_BufferByteSize;
+	m_BufferByteSize += a_BufferUniform->getUniformSize();
+
+	m_BufferUniforms[a_Name] = a_BufferUniform;
 }
 
 
@@ -97,10 +105,8 @@ bool UniformBuffer::AddUInt08BufferUniform(std::string name, uint8_t value)
 	}
 
 	UInt08Uniform* bufferUniform = new UInt08Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
-
-	m_BufferUniforms[name] = bufferUniform;
+	addBufferUniform(name, bufferUniform);
+	
 	return true;
 }
 /**
@@ -173,10 +179,8 @@ bool UniformBuffer::AddUInt16BufferUniform(std::string name, uint16_t value)
 	}
 
 	UInt16Uniform* bufferUniform = new UInt16Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -249,10 +253,8 @@ bool UniformBuffer::AddUInt32BufferUniform(std::string name, uint32_t value)
 	}
 
 	UInt32Uniform* bufferUniform = new UInt32Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -325,10 +327,8 @@ bool UniformBuffer::AddUInt64BufferUniform(std::string name, uint64_t value)
 	}
 
 	UInt64Uniform* bufferUniform = new UInt64Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -402,10 +402,8 @@ bool UniformBuffer::AddInt08BufferUniform(std::string name, int8_t value)
 	}
 
 	Int08Uniform* bufferUniform = new Int08Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -478,10 +476,8 @@ bool UniformBuffer::AddInt16BufferUniform(std::string name, int16_t value)
 	}
 
 	Int16Uniform* bufferUniform = new Int16Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -554,10 +550,8 @@ bool UniformBuffer::AddInt32BufferUniform(std::string name, int32_t value)
 	}
 
 	Int32Uniform* bufferUniform = new Int32Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -630,10 +624,8 @@ bool UniformBuffer::AddInt64BufferUniform(std::string name, int64_t value)
 	}
 
 	Int64Uniform* bufferUniform = new Int64Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -707,10 +699,8 @@ bool UniformBuffer::AddFloatBufferUniform(std::string name, float value)
 	}
 
 	FloatUniform* bufferUniform = new FloatUniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -783,10 +773,8 @@ bool UniformBuffer::AddDoubleBufferUniform(std::string name, double value)
 	}
 
 	DoubleUniform* bufferUniform = new DoubleUniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -860,10 +848,8 @@ bool UniformBuffer::AddVec2BufferUniform(std::string name, Eigen::Vector2f value
 	}
 
 	Vec2Uniform* bufferUniform = new Vec2Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -936,10 +922,8 @@ bool UniformBuffer::AddVec3BufferUniform(std::string name, Eigen::Vector3f value
 	}
 
 	Vec3Uniform* bufferUniform = new Vec3Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1012,10 +996,8 @@ bool UniformBuffer::AddVec4BufferUniform(std::string name, Eigen::Vector4f value
 	}
 
 	Vec4Uniform* bufferUniform = new Vec4Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1089,10 +1071,8 @@ bool UniformBuffer::AddUVec2BufferUniform(std::string name, Eigen::Vector2<uint3
 	}
 
 	UVec2Uniform* bufferUniform = new UVec2Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1165,10 +1145,8 @@ bool UniformBuffer::AddUVec3BufferUniform(std::string name, Eigen::Vector3<uint3
 	}
 
 	UVec3Uniform* bufferUniform = new UVec3Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1241,10 +1219,8 @@ bool UniformBuffer::AddUVec4BufferUniform(std::string name, Eigen::Vector4<uint3
 	}
 
 	UVec4Uniform* bufferUniform = new UVec4Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**
@@ -1317,10 +1293,8 @@ bool UniformBuffer::AddMat4BufferUniform(std::string name, Eigen::Matrix4f value
 	}
 
 	Mat4Uniform* bufferUniform = new Mat4Uniform(value);
-	bufferUniform->uniformOffset = m_BufferByteSize;
-	m_BufferByteSize += bufferUniform->getUniformSize();
+	addBufferUniform(name, bufferUniform);
 
-	m_BufferUniforms[name] = bufferUniform;
 	return true;
 }
 /**

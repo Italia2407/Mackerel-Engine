@@ -28,6 +28,7 @@ private:
 
 public:
 	GLuint getBufferByteSize() { return m_BufferByteSize; }
+	GLuint getPaddingSize() { return 16 - (m_BufferByteSize % 16); }
 	bool IsCreated() { return m_UniformBufferObject != GL_ZERO; }
 
 public:
@@ -35,6 +36,9 @@ public:
 	bool DeleteUniformBufferObject();
 
 	bool BindUniformBufferObject(GLuint a_BindingSlot);
+
+private:
+	void addBufferUniform(std::string a_Name, UniformData* a_BufferUniform);
 
 public:
 	// UInt08

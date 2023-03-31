@@ -40,6 +40,5 @@ void main()
 	v2fPosition = vertexPosition;
 	v2fNormal = vertexNormal;
 	v2fUV = vertexUV;
-	v2fTint = (camera.up + mesh.scale) * 0.5f;
-	//v2fTint = vertexTint;
+	v2fTint = vertexTint;
 }

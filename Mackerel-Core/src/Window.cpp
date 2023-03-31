@@ -201,6 +201,8 @@ void SayHello()
     MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
     testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.obj");
     MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
+    testMaterial->addUInt16Uniform("lightShaderID", 0);
+    testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
 
     MCK::AssetType::Shader* unlitShader;
     MCK::AssetType::Shader* monocolourShader;
