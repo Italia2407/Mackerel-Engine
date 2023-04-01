@@ -1,16 +1,18 @@
 #pragma once
 
+
 #include <vector>
 #include <iostream>
 #include <string>
 #include "../ext/nlohmann/json.hpp"
+
+#include "Component.h"
 
 typedef long unsigned int entityId;
 
 // Forward Declarations
 namespace MCK::EntitySystem {
 class Scene;
-class Component;
 class ComponentFactory;
 }
 
@@ -88,13 +90,23 @@ public:
 		*/
 	void AddComponent(std::string componentKey, json data);
 
-
 	/**
-		* Returns a component of a given type.
-		* 
-		* \return A pointer to the requested component. Returns nullptr if none found.
-		*/
-	template<typename T> T* GetComponent();
+	 * Returns a component of a given type.
+	 *
+	 * \return A pointer to the requested component. Returns nullptr if none found.
+	 */
+	template<typename T> T* GetComponent()
+	{
+		for (unsigned int i = 0; i < components.size(); ++i)
+		{
+			if (components[i]->IsType<T>())
+			{
+				return (T*)components[i];
+			}
+		}
+
+		return nullptr;
+	}
 
 	/**
 		* Removes an instance of a component.

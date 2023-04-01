@@ -81,22 +81,6 @@ namespace MCK::EntitySystem
 	}
 
 	/**
-	 * Returns a component of a given type.
-	 *
-	 * \return A pointer to the requested component. Returns nullptr if none found.
-	 */
-	template<typename T> T* Entity::GetComponent()
-	{
-		for (unsigned int i = 0; i < components.size(); ++i)
-		{
-			if (components[i]->IsType<T>())
-			{
-				return (T*)components[i];
-			}
-		}
-	}
-
-	/**
 	 * Invoked when the entity is created.
 	 * Invokes OnCreate on all attached components
 	 */

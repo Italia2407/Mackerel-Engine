@@ -17,12 +17,12 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 	Eigen::Matrix4f parentMatrix = Eigen::Matrix4f::Identity();
 
 	if (entity->parent != nullptr) {
-		//TransformComponent* parentTransform = entity->parent->GetComponent<TransformComponent>();
-		//if (parentTransform != nullptr)
-			//parentMatrix = parentTransform->GetTransformationMatrix();
+		TransformComponent* parentTransform = entity->parent->GetComponent<TransformComponent>();
+		if (parentTransform != nullptr)
+			parentMatrix = parentTransform->GetTransformationMatrix();
 	}
 
-	//std::cout << "Matrix " << m_Transform.Matrix() << std::endl;
+	std::cout << "Matrix " << m_Transform.Matrix() << std::endl;
 
 	return parentMatrix * m_Transform.Matrix();
 }
