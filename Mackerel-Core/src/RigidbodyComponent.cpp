@@ -10,7 +10,7 @@ namespace MCK::Physics
 	*
 	* 
 	*/
-	void AddForce()
+	void RigidbodyComponent::AddForce()
 	{
 
 	}
@@ -20,7 +20,7 @@ namespace MCK::Physics
 	*
 	*
 	*/
-	void AddTorque()
+	void RigidbodyComponent::AddTorque()
 	{
 
 	}
@@ -30,7 +30,7 @@ namespace MCK::Physics
 	*
 	*
 	*/
-	void SetVelocity()
+	void RigidbodyComponent::SetVelocity()
 	{
 
 	}
@@ -40,7 +40,7 @@ namespace MCK::Physics
 	*
 	*
 	*/
-	void SetPosition()
+	void RigidbodyComponent::SetPosition()
 	{
 
 	}
@@ -50,9 +50,9 @@ namespace MCK::Physics
 	*
 	*
 	*/
-	Eigen::Vector3f GetVelocity()
+	Eigen::Vector3f RigidbodyComponent::GetVelocity()
 	{
-
+		return Eigen::Vector3f(0.0f, 0.0f, 0.0f);
 	}
 
 	/**
@@ -60,9 +60,9 @@ namespace MCK::Physics
 	*
 	*
 	*/
-	Eigen::Vector3f GetPosition()
+	Eigen::Vector3f RigidbodyComponent::GetPosition()
 	{
-
+		return Eigen::Vector3f();
 	}
 
     /**
