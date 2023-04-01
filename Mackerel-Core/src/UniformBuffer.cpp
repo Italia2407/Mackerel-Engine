@@ -74,7 +74,7 @@ bool UniformBuffer::BindUniformBufferObject(GLuint a_BindingSlot)
 void UniformBuffer::addBufferUniform(std::string a_Name, UniformData* a_BufferUniform)
 {
 	// Add Padding if New Buffer Uniform Removes 16 Bytes Allignment
-	if (getPaddingSize() < a_BufferUniform->getUniformSize())
+	if (getPaddingSize() != 16 && getPaddingSize() < a_BufferUniform->getUniformSize())
 		m_BufferByteSize += getPaddingSize();
 
 	// Save & Set Buffer Uniform Parameters

@@ -3,31 +3,27 @@
 #include "Eigen/Eigen.h"
 #include "Component.h"
 
+#include "Transform.h"
+
 namespace MCK::EntitySystem
 {
 class TransformComponent : public Component
 {
 private:
-	Eigen::Vector3f m_Position;
-	Eigen::Quaternion<float> m_Rotation;
-	Eigen::Vector3f m_Scale;
-
-	Eigen::Vector2f m_YZPlaneShear;
-	Eigen::Vector2f m_XZPlaneShear;
-	Eigen::Vector2f m_XYPlaneShear;
+	Transform m_Transform;
 
 public:
-	Eigen::Matrix4f GetTransformationMatrix();
+	Eigen::Vector3f& Position() { return m_Transform.Position; }
+	Eigen::Quaternion<float>& Rotation() { return m_Transform.Rotation; }
+	Eigen::Vector3f& Scale() { return m_Transform.Scale; }
 
-	Eigen::Vector3f& Position() { return m_Position; }
-	Eigen::Quaternion<float>& Rotation() { return m_Rotation; }
-	Eigen::Vector3f& Scale() { return m_Scale; }
-
-	Eigen::Vector2f& XAxisShear() { return m_YZPlaneShear; }
-	Eigen::Vector2f& YAxisShear() { return m_XZPlaneShear; }
-	Eigen::Vector2f& ZAxisShear() { return m_XYPlaneShear; }
+	Eigen::Vector2f& YZPlaneShear() { return m_Transform.YZPlaneShear; }
+	Eigen::Vector2f& XZPlaneShear() { return m_Transform.XZPlaneShear; }
+	Eigen::Vector2f& XYPlaneShear() { return m_Transform.XYPlaneShear; }
 
 public:
+	Eigen::Matrix4f GetTransformationMatrix() const;
+
 	void OnCreate() override;
 	void OnUpdate() override;
 	void OnDestroy() override;

@@ -13,6 +13,9 @@ class Material;
 class Mesh;
 class Shader;
 }
+namespace MCK::EntitySystem {
+class TransformComponent;
+}
 
 namespace MCK::Rendering {
 class RenderBatch
@@ -27,8 +30,8 @@ public:
 private:
 	struct Instance
 	{
+		Eigen::Matrix4f transformMatrix;
 		AssetType::Material* material;
-		Eigen::Matrix4f transform;
 	};
 
 private:
@@ -38,7 +41,7 @@ private:
 	std::vector<Instance> m_Instances;
 
 public:
-	bool AddBatchInstance(AssetType::Material* a_Material, Eigen::Matrix4f a_Transform);
+	bool AddBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Material* a_Material);
 
 	bool DrawBatchObjects(UniformBuffer* a_TransformBuffer);
 };

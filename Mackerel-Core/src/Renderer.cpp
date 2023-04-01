@@ -124,14 +124,14 @@ bool Renderer::AddSpotLightShader(AssetType::Shader* a_Shader)
 }
 
 /**  */
-bool Renderer::QueueMeshInstance(Eigen::Matrix4f a_Transform,
+bool Renderer::QueueMeshInstance(const EntitySystem::TransformComponent& a_Transform,
 	AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material,
 	bool a_HasTransparency)
 {
 	bool result = false;
 	if (!a_HasTransparency)
 	{
-		result = Instance()->queueGeometryBatchInstance(a_Mesh, a_Shader, a_Material, a_Transform);
+		result = Instance()->queueGeometryBatchInstance(a_Transform, a_Mesh, a_Shader, a_Material);
 	}
 
 	return result;
@@ -307,27 +307,6 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Create the Transform Uniform Buffer
 	m_MeshTransformBuffer = new UniformBuffer();
 
-	// Add Position to Mesh Transform Uniform Buffer
-	if (!m_MeshTransformBuffer->AddVec3BufferUniform("position", Eigen::Vector3f::Zero())) {
-		resetRenderer();
-
-		Logger::log("Could not Add Position to Mesh Transform Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
-		return false;
-	}
-	// Add Rotation to Mesh Transform Uniform Buffer
-	if (!m_MeshTransformBuffer->AddVec3BufferUniform("rotation", Eigen::Vector3f::Zero())) {
-		resetRenderer();
-
-		Logger::log("Could not Add Rotation to Mesh Transform Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
-		return false;
-	}
-	// Add Scale to Mesh Transform Uniform Buffer
-	if (!m_MeshTransformBuffer->AddVec3BufferUniform("scale", Eigen::Vector3f::Ones())) {
-		resetRenderer();
-
-		Logger::log("Could not Add Scale to Mesh Transform Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
-		return false;
-	}
 	// Add Transform Matrix to Mesh Transform Uniform Buffer
 	if (!m_MeshTransformBuffer->AddMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity())) {
 		resetRenderer();
@@ -593,7 +572,7 @@ bool Renderer::renderDeferredBuffer()
  * \param a_Transform: The Geometry Instance's Transform Matrix
  * \return Whether the Geometry Instance was Successfully Added
  */
-bool Renderer::queueGeometryBatchInstance(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, Eigen::Matrix4f a_Transform)
+bool Renderer::queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material)
 {
 	RenderBatch* geometryBatch = nullptr;
 
@@ -617,7 +596,7 @@ bool Renderer::queueGeometryBatchInstance(AssetType::Mesh* a_Mesh, AssetType::Sh
 	}
 
 	// Add Mesh Instance to Geometry Batch
-	geometryBatch->AddBatchInstance(a_Material, a_Transform);
+	geometryBatch->AddBatchInstance(a_Transform, a_Material);
 	return true;
 }
 

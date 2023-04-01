@@ -29,13 +29,13 @@
 #include "JsonHelpers.h"
 #include "Material.h"
 
-Eigen::Matrix4f testTransform = Eigen::Matrix4f::Identity();
+#include "TransformComponent.h"
+MCK::EntitySystem::TransformComponent testTransform;
 
 void InputCallbackTest(int32_t key, MCK::ButtonEvents ButtonEvents)
 {
     std::string message = "Key [" + std::to_string(static_cast<int>(key)) + "] did action [" + std::to_string(static_cast<int>(ButtonEvents)) + "].";
     MCK::Logger::log(message, MCK::Logger::LogLevel::Debug, std::source_location::current());
-    testTransform.coeffRef(0, 0) = 0.4f;
 }
 
 void MouseCallbacktest(int32_t key, MCK::ButtonEvents ButtonEvents)

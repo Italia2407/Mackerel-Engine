@@ -26,16 +26,12 @@ layout(std140, binding = 0) uniform Camera
 // Vertex Shader Uniform Buffer Object
 layout(std140, binding = 1) uniform MeshTransform
 {
-	vec3 position;
-	vec3 rotation;
-	vec3 scale;
-
 	mat4 transformMatrix;
 } mesh;
 
 void main()
 {
-	gl_Position = vec4(vertexPosition, 1.0f);
+	gl_Position = mesh.transformMatrix * vec4(vertexPosition, 1.0f);
 
 	v2fPosition = vertexPosition;
 	v2fNormal = vertexNormal;

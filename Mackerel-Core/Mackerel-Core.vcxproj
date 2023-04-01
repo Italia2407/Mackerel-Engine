@@ -113,6 +113,7 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureEnum.h" />
     <ClInclude Include="src\TextureLibrary.h" />
+    <ClInclude Include="src\Transform.h" />
     <ClInclude Include="src\TransformComponent.h" />
     <ClInclude Include="src\UniformBuffer.h" />
     <ClInclude Include="src\TimeManager.h" />
