@@ -1,26 +1,34 @@
 #pragma once
 
-#include "Eigen/Core.h"
+#include "Eigen/Eigen.h"
 #include "Component.h"
+
+#include "Transform.h"
 
 namespace MCK::EntitySystem
 {
-	class TransformComponent : public Component
-	{
-	public:
-		Eigen::Vector3f position;
-		Eigen::Vector3f eulerAngles;
-		Eigen::Vector3f scale;
-		Eigen::Vector3f shear;
-		Eigen::Vector3i reflect;
+class TransformComponent : public Component
+{
+private:
+	Transform m_Transform;
 
-		Eigen::Matrix4f GetTransformationMatrix();
+public:
+	Eigen::Vector3f& Position() { return m_Transform.Position; }
+	Eigen::Quaternion<float>& Rotation() { return m_Transform.Rotation; }
+	Eigen::Vector3f& Scale() { return m_Transform.Scale; }
 
-		void OnCreate();
-		void OnUpdate();
-		void OnDestroy();
-		bool Deserialise(json data);
+	Eigen::Vector2f& YZPlaneShear() { return m_Transform.YZPlaneShear; }
+	Eigen::Vector2f& XZPlaneShear() { return m_Transform.XZPlaneShear; }
+	Eigen::Vector2f& XYPlaneShear() { return m_Transform.XYPlaneShear; }
 
-		TypeInfoRef GetType();
-	};
+public:
+	Eigen::Matrix4f GetTransformationMatrix() const;
+
+	void OnCreate() override;
+	void OnUpdate() override;
+	void OnDestroy() override;
+	bool Deserialise(json data) override;
+
+	TypeInfoRef GetType() override;
+};
 }

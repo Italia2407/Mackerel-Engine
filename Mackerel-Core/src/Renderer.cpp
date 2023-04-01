@@ -124,14 +124,14 @@ bool Renderer::AddSpotLightShader(AssetType::Shader* a_Shader)
 }
 
 /**  */
-bool Renderer::QueueMeshInstance(Eigen::Matrix4f a_Transform,
+bool Renderer::QueueMeshInstance(const EntitySystem::TransformComponent& a_Transform,
 	AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material,
 	bool a_HasTransparency)
 {
 	bool result = false;
 	if (!a_HasTransparency)
 	{
-		result = Instance()->queueGeometryBatchInstance(a_Mesh, a_Shader, a_Material, a_Transform);
+		result = Instance()->queueGeometryBatchInstance(a_Transform, a_Mesh, a_Shader, a_Material);
 	}
 
 	return result;
@@ -149,7 +149,7 @@ Renderer::Renderer() :
 	m_ShaderProgramID(GL_ZERO),
 	m_GeometryBuffer(nullptr), m_DeferredBuffer(nullptr),
 	m_DepthBufferTexture(nullptr),
-	m_TransformBuffer(nullptr) {}
+	m_MeshTransformBuffer(nullptr), m_CameraBuffer(nullptr) {}
 Renderer::~Renderer()
 {
 	resetRenderer();
@@ -177,7 +177,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 		Logger::log("Cannot Recreate Depth Buffer Texture", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
-	if (m_TransformBuffer) {
+	if (m_MeshTransformBuffer) {
 		Logger::log("Cannot Recreate Transform Uniform Buffer", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
@@ -198,7 +198,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	m_GeometryBuffer = new FrameBuffer("Geometry Buffer");
 
 	// Add Geometry Buffer Colour Attachments
-	if (!m_GeometryBuffer->AddFloatColourAttachment(a_ScreenWidth, a_ScreenHeight))
+	if (!m_GeometryBuffer->AddUIntColourAttachment(a_ScreenWidth, a_ScreenHeight))
 	{// ID #0 is Reserved for the Lighting Shader ID Map
 		resetRenderer();
 
@@ -263,21 +263,60 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 		return false;
 	}
 
+	// Create the Camera Uniform Buffer
+	m_CameraBuffer = new UniformBuffer();
+	
+	// Add Position to Camera Uniform Buffer
+	if (!m_CameraBuffer->AddVec3BufferUniform("position", Eigen::Vector3f::Zero())) {
+		resetRenderer();
 
-	// Create the Transform Uniform Buffer
-	m_TransformBuffer = new UniformBuffer();
+		Logger::log("Could not Add Position to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	// Add Front to Camera Uniform Buffer
+	if (!m_CameraBuffer->AddVec3BufferUniform("front", Eigen::Vector3f(0.0f, 0.0f, -1.0f))) {
+		resetRenderer();
 
-	// Add Transform Uniform to Uniform Buffer
-	if (!m_TransformBuffer->AddMat4BufferUniform("transform", Eigen::Matrix4f::Identity()))
+		Logger::log("Could not Add Front to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	// Add Up to Camera Uniform Buffer
+	if (!m_CameraBuffer->AddVec3BufferUniform("up", Eigen::Vector3f(0.0f, 1.0f, 0.0f))) {
+		resetRenderer();
+
+		Logger::log("Could not Add Up to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	// Add Camera Projection Matrix to Camera Uniform Buffer
+	if (!m_CameraBuffer->AddMat4BufferUniform("cameraProjectionMatrix", Eigen::Matrix4f::Identity())) {
+		resetRenderer();
+
+		Logger::log("Could not Add Camera Projection Matrix to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Create Camera Uniform Buffer Object
+	if (!m_CameraBuffer->CreateUniformBufferObject())
 	{
 		resetRenderer();
 
-		Logger::log("Could not Add Transform Uniform to Transform Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		Logger::log("Could not Create Camera Uniform Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Create the Transform Uniform Buffer
+	m_MeshTransformBuffer = new UniformBuffer();
+
+	// Add Transform Matrix to Mesh Transform Uniform Buffer
+	if (!m_MeshTransformBuffer->AddMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity())) {
+		resetRenderer();
+
+		Logger::log("Could not Add Transform Matrix to Mesh Transform Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
 	// Create Transform Uniform Buffer Object
-	if (!m_TransformBuffer->CreateUniformBufferObject())
+	if (!m_MeshTransformBuffer->CreateUniformBufferObject())
 	{
 		resetRenderer();
 
@@ -307,9 +346,13 @@ void Renderer::resetRenderer()
 		delete m_DepthBufferTexture;
 		m_DepthBufferTexture = nullptr;
 	}
-	if (m_TransformBuffer) {
-		delete m_TransformBuffer;
-		m_TransformBuffer = nullptr;
+	if (m_CameraBuffer) {
+		delete m_CameraBuffer;
+		m_CameraBuffer = nullptr;
+	}
+	if (m_MeshTransformBuffer) {
+		delete m_MeshTransformBuffer;
+		m_MeshTransformBuffer = nullptr;
 	}
 
 	// Clear all Per Frame Objects
@@ -398,7 +441,7 @@ bool Renderer::renderGBuffer()
 	// Loop Through and Render each of the Geometry Batches
 	for (auto geometryBatch : m_GeometryBatches) {
 	// Render All Geometry Batch Instances to GBuffer Textures
-	if (!geometryBatch->DrawBatchObjects(m_TransformBuffer)) {
+	if (!geometryBatch->DrawBatchObjects(m_MeshTransformBuffer)) {
 		Logger::log("Could not Draw Geometry Batch Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 	}}
 
@@ -529,7 +572,7 @@ bool Renderer::renderDeferredBuffer()
  * \param a_Transform: The Geometry Instance's Transform Matrix
  * \return Whether the Geometry Instance was Successfully Added
  */
-bool Renderer::queueGeometryBatchInstance(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, Eigen::Matrix4f a_Transform)
+bool Renderer::queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material)
 {
 	RenderBatch* geometryBatch = nullptr;
 
@@ -553,7 +596,7 @@ bool Renderer::queueGeometryBatchInstance(AssetType::Mesh* a_Mesh, AssetType::Sh
 	}
 
 	// Add Mesh Instance to Geometry Batch
-	geometryBatch->AddBatchInstance(a_Material, a_Transform);
+	geometryBatch->AddBatchInstance(a_Transform, a_Material);
 	return true;
 }
 
@@ -586,6 +629,8 @@ bool Renderer::renderFrame()
 	glClearColor(0.5f, 0.4f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	m_CameraBuffer->BindUniformBufferObject(0);
+	m_MeshTransformBuffer->BindUniformBufferObject(1);
 
 	// Render Scene to the Geometry Buffer
 	if (!m_GeometryBuffer || !renderGBuffer()) {

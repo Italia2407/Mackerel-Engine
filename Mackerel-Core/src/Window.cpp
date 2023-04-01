@@ -29,6 +29,9 @@
 #include "JsonHelpers.h"
 #include "Material.h"
 
+#include "TransformComponent.h"
+MCK::EntitySystem::TransformComponent testTransform;
+
 void InputCallbackTest(int32_t key, MCK::ButtonEvents ButtonEvents)
 {
     std::string message = "Key [" + std::to_string(static_cast<int>(key)) + "] did action [" + std::to_string(static_cast<int>(ButtonEvents)) + "].";
@@ -198,6 +201,8 @@ void SayHello()
     MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
     testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.obj");
     MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
+    testMaterial->addUInt16Uniform("lightShaderID", 0);
+    testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
 
     MCK::AssetType::Shader* unlitShader;
     MCK::AssetType::Shader* monocolourShader;
@@ -222,7 +227,7 @@ void SayHello()
         ImGui::NewFrame();
 
         // Set Renderer Data
-        MCK::Rendering::Renderer::QueueMeshInstance(Eigen::Matrix4f::Identity(), testMesh, monocolourShader, testMaterial, false);
+        MCK::Rendering::Renderer::QueueMeshInstance(testTransform, testMesh, monocolourShader, testMaterial, false);
 
         /* Render here */
         MCK::Rendering::Renderer::RenderFrame();

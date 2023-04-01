@@ -23,10 +23,10 @@ layout(std140, binding = 2) uniform MaterialParameters
 
 void main()
 {
-	gLightShaderID = 0; //lightShaderID;
+	gLightShaderID = lightShaderID; //lightShaderID;
 
-	//gAlbedoColour = albedoColour * v2fTint;
-	gAlbedoColour = vec4(v2fTint, 1.0f);
+	vec3 colour = albedoColour * v2fTint;
+	gAlbedoColour = vec4(colour, 1.0f);
 
 	gPosition = vec4(v2fPosition, 1.0f);
 	gNormal = vec4(v2fNormal, 1.0f);

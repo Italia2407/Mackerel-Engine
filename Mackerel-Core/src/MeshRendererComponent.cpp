@@ -16,6 +16,10 @@
 #include "ShaderLibrary.h"
 #include "MaterialLibrary.h"
 
+// Component System Headers
+#include "Entity.h"
+#include "TransformComponent.h"
+
 
 namespace MCK::EntitySystem {
 MeshRendererComponent::MeshRendererComponent(MeshEnum a_MeshEnum, ShaderEnum a_ShaderEnum, MaterialEnum a_MaterialEnum) :
@@ -37,12 +41,15 @@ void MeshRendererComponent::OnCreate()
 
 	uint32_t tempID = 42;
 	std::string tempName = "Answer to the Universe";
-	// TODO: Load Transform Component from Entity
 
-	// TODO: Check if Entity Transform Component is Valid
-	if (true)
+	// Load Transform Component from Entity
+	m_EntityTransformComponent = entity->GetComponent<TransformComponent>();
+
+	// Check if Entity Transform Component is Valid
+	if (!m_EntityTransformComponent)
 	{
-		auto errorMsg = std::format("Entity #{} ({}) Mesh Renderer Component Requires an Assigned Transform Component.", tempID, tempName);
+		Logger::log(std::format("Entity #{} ({}) Mesh Renderer Component Requires an Assigned Transform Component.", tempID, tempName),
+			Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 	}
 }
 void MeshRendererComponent::OnDestroy()
@@ -51,10 +58,14 @@ void MeshRendererComponent::OnDestroy()
 }
 void MeshRendererComponent::OnUpdate()
 {
-	Eigen::Matrix4f tempTransform = Eigen::Matrix4f::Identity();
+	// Ensure Entity has Assigned Transform Component
+	if (!m_EntityTransformComponent)
+	{
+		return;
+	}
 
 	// Queue the Data for the Rendering
-	Rendering::Renderer::QueueMeshInstance(tempTransform, m_Mesh, m_Shader, m_Material, false);
+	Rendering::Renderer::QueueMeshInstance(*m_EntityTransformComponent, m_Mesh, m_Shader, m_Material, false);
 }
 
 bool MeshRendererComponent::Deserialise(json a_Data)

@@ -12,6 +12,10 @@ class Material;
 }
 
 namespace MCK::EntitySystem {
+class TransformComponent;
+}
+
+namespace MCK::EntitySystem {
 class MeshRendererComponent : public Component
 {
 public:
@@ -19,7 +23,8 @@ public:
 	~MeshRendererComponent();
 
 private:
-	// TODO: Reference to Entity Transform Component
+	// Reference to Entity Transform Component
+	TransformComponent* m_EntityTransformComponent;
 
 	// Asset References
 	MeshEnum m_MeshEnum;

@@ -235,7 +235,7 @@
       <Filter>Source Files\Systems\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="src\MeshRendererComponent.cpp">
-      <Filter>Source Files\Systems\EntitySystem</Filter>
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -426,7 +426,10 @@
       <Filter>Source Files\Systems\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="src\MeshRendererComponent.h">
-      <Filter>Source Files\Systems\EntitySystem</Filter>
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Transform.h">
+      <Filter>Source Files\AssetTypes\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

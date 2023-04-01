@@ -53,7 +53,7 @@ struct UInt64Uniform : UniformData
 	uint64_t value;
 
 	void* getUniformValue() override { return &value; }
-	GLuint getUniformSize() override { return 4; }
+	GLuint getUniformSize() override { return 8; }
 };
 
 struct Int08Uniform : UniformData

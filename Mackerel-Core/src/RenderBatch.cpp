@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+#include "TransformComponent.h"
+
 // Logging Headers
 #include "LoggingSystem.h"
 #include <format>
@@ -22,11 +24,11 @@ RenderBatch::~RenderBatch()
 	m_Instances.clear();
 }
 
-bool RenderBatch::AddBatchInstance(AssetType::Material* a_Material, Eigen::Matrix4f a_Transform)
+bool RenderBatch::AddBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Material* a_Material)
 {
 	Instance batchInstance{}; {
 		batchInstance.material = a_Material;
-		batchInstance.transform = a_Transform;
+		batchInstance.transformMatrix = a_Transform.GetTransformationMatrix();
 	}
 
 	m_Instances.push_back(batchInstance);
@@ -59,8 +61,8 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
 	{	auto instance = m_Instances[i];
 
 		// Load Instance's Transform Uniforms
-		if (!a_TransformBuffer->SetMat4BufferUniform("transform", instance.transform)) {
-			Logger::log(std::format("Cannot Set Instance #{} Transform in Uniform Buffer", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		if (!a_TransformBuffer->SetMat4BufferUniform("transformMatrix", instance.transformMatrix)) {
+			Logger::log(std::format("Cannot Set Instance #{} Transform Matrix in Uniform Buffer", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
 

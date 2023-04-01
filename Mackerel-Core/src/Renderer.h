@@ -27,6 +27,9 @@ class SpotLight;
 
 class RenderBatch;
 }
+namespace MCK::EntitySystem {
+class TransformComponent;
+}
 
 namespace MCK::Rendering {
 class Renderer
@@ -58,7 +61,8 @@ private:
 
 	AssetType::Texture* m_DepthBufferTexture;
 
-	UniformBuffer* m_TransformBuffer;
+	UniformBuffer* m_CameraBuffer;
+	UniformBuffer* m_MeshTransformBuffer;
 
 	std::vector<AssetType::Shader*> m_UnlitShaders;
 	std::vector<AssetType::Shader*> _pointLightShaders;
@@ -87,7 +91,7 @@ private:
 	bool renderDeferredBuffer();
 
 	// Functions to tell the Renderer what needs to be Rendered
-	bool queueGeometryBatchInstance(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, Eigen::Matrix4f a_Transform);
+	bool queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material);
 
 	bool queuePointLight(PointLight* pointLight);
 	bool queueDirectionLight(DirectionLight* directionLight);
@@ -105,7 +109,7 @@ public:
 	static bool AddDirectionLightShader(AssetType::Shader* a_Shader);
 	static bool AddSpotLightShader(AssetType::Shader* a_Shader);
 
-	static bool QueueMeshInstance(Eigen::Matrix4f a_Transform,
+	static bool QueueMeshInstance(const EntitySystem::TransformComponent& a_Transform,
 		AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material,
 		bool a_HasTransparency);
 
