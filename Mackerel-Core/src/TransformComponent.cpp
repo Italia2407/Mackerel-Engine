@@ -22,8 +22,6 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 			parentMatrix = parentTransform->GetTransformationMatrix();
 	}
 
-	std::cout << "Matrix " << m_Transform.Matrix() << std::endl;
-
 	return parentMatrix * m_Transform.Matrix();
 }
 

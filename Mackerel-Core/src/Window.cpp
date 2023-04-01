@@ -31,6 +31,7 @@
 
 #include "TransformComponent.h"
 MCK::EntitySystem::TransformComponent testTransform;
+MCK::EntitySystem::TransformComponent par;
 
 void InputCallbackTest(int32_t key, MCK::ButtonEvents ButtonEvents)
 {
@@ -84,6 +85,17 @@ void SayHello()
 {
     MCK::EntitySystem::Scene scene;
     scene.Deserialise(scene.TestSceneJson());
+
+    MCK::EntitySystem::Entity* e1 = new MCK::EntitySystem::Entity();
+    MCK::EntitySystem::Entity* e2 = new MCK::EntitySystem::Entity();
+
+    e1->AddComponent(&testTransform);
+    e2->AddComponent(&par);
+
+    e1->parent = e2;
+
+    testTransform.Position().x() = 0.3f;
+    par.Position().y() = 0.3f;
 
 	// Initialise GLFW
     if (!glfwInit())
