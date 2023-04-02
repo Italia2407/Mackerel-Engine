@@ -2,10 +2,10 @@
 #include "../bullet3-master/src/btBulletDynamicsCommon.h"
 #include "Eigen/Core.h"
 #include "Component.h"
+#include "TransformComponent.h"
 
 namespace MCK::Physics
 {
-	// MISSING EVERYTHING - IMPLEMENT ME
 	class RigidbodyComponent : public MCK::EntitySystem::Component
 	{
 	private:
@@ -21,6 +21,7 @@ namespace MCK::Physics
 		Eigen::Vector3f GetLinearVelocity();
 		Eigen::Vector3f GetAngularVelocity();
 		Eigen::Vector3f GetPosition();
+		void applyToTransformComponent(MCK::EntitySystem::TransformComponent& transformComponent);
 
 		void OnCreate();
 		void OnUpdate();

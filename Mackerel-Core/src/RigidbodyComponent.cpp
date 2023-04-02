@@ -1,4 +1,5 @@
 #include "RigidbodyComponent.h"
+#include "Entity.h"
 
 #include <typeinfo>
 #include <iostream>
@@ -98,6 +99,20 @@ namespace MCK::Physics
 		return Eigen::Vector3f(pos.x(), pos.y(), pos.z());
 	}
 
+	/**
+	* Applies the transformation of the given TransformComponent to the rigidbody.
+	*
+	*/
+	void RigidbodyComponent::applyToTransformComponent(MCK::EntitySystem::TransformComponent& transformComponent)
+	{
+		btTransform rbTransform = rigidbody->getCenterOfMassTransform();
+		btVector3 pos = rigidbody->getCenterOfMassPosition();
+		btQuaternion rot = rbTransform.getRotation();
+		
+		transformComponent.Position() = Eigen::Vector3f(pos.x(), pos.y(), pos.z());
+		transformComponent.Rotation() = Eigen::Quaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+	}
+
     /**
     * Returns the type id of this component
     *
@@ -110,10 +125,13 @@ namespace MCK::Physics
 
 	/**
 	 * Invoked when the entity holding the component is created.
+	 * The transform component of the entity rigidbody is part of is retrieved 
+	 * so it can be set by rigidbody's properties.
 	 *
 	 */
 	void RigidbodyComponent::OnCreate()
 	{
+		MCK::EntitySystem::TransformComponent* transform = entity->GetComponent<MCK::EntitySystem::TransformComponent>();
 		std::cout << "I was created" << std::endl;
 	}
 
