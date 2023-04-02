@@ -12,11 +12,14 @@ namespace MCK::Physics
 		btRigidBody* rigidbody;
 
 	public:
-		void AddForce();
-		void AddTorque();
-		void SetVelocity();
-		void SetPosition();
-		Eigen::Vector3f GetVelocity();
+		void AddCentralForce(const Eigen::Vector3f force);
+		void AddTorque(const Eigen::Vector3f torque);
+		void AddForce(const Eigen::Vector3f force, const Eigen::Vector3f rel_pos);
+		void SetLinearVelocity(const Eigen::Vector3f linearVel);
+		void SetAngularVelocity(const Eigen::Vector3f angularVel);
+		void SetPosition(const Eigen::Vector3f position);
+		Eigen::Vector3f GetLinearVelocity();
+		Eigen::Vector3f GetAngularVelocity();
 		Eigen::Vector3f GetPosition();
 
 		void OnCreate();
