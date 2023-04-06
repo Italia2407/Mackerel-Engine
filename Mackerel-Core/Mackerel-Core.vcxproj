@@ -136,8 +136,26 @@
     <Text Include="src\LoggingSystem.conf" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="ext\reactphysics3d\build\reactphysics3d.vcxproj">
-      <Project>{49a8841e-2c77-3ec9-9a3e-e8fd4b1a8051}</Project>
+    <ProjectReference Include="ext\bullet3-master\build3\vs2010\Bullet3Collision.vcxproj">
+      <Project>{ec30bef4-d829-dd46-015c-c2cbedb3bc52}</Project>
+    </ProjectReference>
+    <ProjectReference Include="ext\bullet3-master\build3\vs2010\Bullet3Common.vcxproj">
+      <Project>{a9326e37-15f3-e96d-de2d-33eb4aad2e4a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="ext\bullet3-master\build3\vs2010\Bullet3Dynamics.vcxproj">
+      <Project>{189748bb-8422-b67f-8d33-3974f93d1280}</Project>
+    </ProjectReference>
+    <ProjectReference Include="ext\bullet3-master\build3\vs2010\Bullet3Geometry.vcxproj">
+      <Project>{0c73ab7f-78fe-1844-810f-9c38ed197544}</Project>
+    </ProjectReference>
+    <ProjectReference Include="ext\bullet3-master\build3\vs2010\BulletCollision.vcxproj">
+      <Project>{b91153c5-259d-c089-2eae-437e9ab81c8a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="ext\bullet3-master\build3\vs2010\BulletDynamics.vcxproj">
+      <Project>{45122e0f-31e0-2115-1a74-923b06e1fd79}</Project>
+    </ProjectReference>
+    <ProjectReference Include="ext\bullet3-master\build3\vs2010\LinearMath.vcxproj">
+      <Project>{eaf25dfd-d6aa-9f4a-3fb2-78a62b893a3b}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">

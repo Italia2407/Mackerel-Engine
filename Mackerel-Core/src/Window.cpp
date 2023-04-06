@@ -29,6 +29,7 @@
 #include "JsonHelpers.h"
 #include "Material.h"
 
+#include "TestComponent.h"
 #include "TransformComponent.h"
 MCK::EntitySystem::TransformComponent testTransform;
 MCK::EntitySystem::TransformComponent par;
@@ -211,7 +212,7 @@ void SayHello()
     MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
 
     MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
-    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.obj");
+    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.msh");
     MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
     testMaterial->addUInt16Uniform("lightShaderID", 0);
     testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
@@ -269,4 +270,65 @@ void SayHello()
     std::stringstream ss;
     ss << "Hello World! " << "Dot Result = " << vecA.dot(vecB);
     MCK::Logger::log(ss.str(), MCK::Logger::LogLevel::Basic, std::source_location::current());
+}
+
+void SayHello2()
+{
+    MCK::EntitySystem::Scene scene;
+
+    MCK::EntitySystem::Entity* entity = scene.CreateEntity();
+
+    MCK::EntitySystem::TransformComponent transformComp;
+    MCK::EntitySystem::TestComponent testComp;
+
+    entity->AddComponent(&transformComp);
+    entity->AddComponent(&testComp);
+
+    // Initialise GLFW
+    if (!glfwInit())
+    {
+        return;
+    }
+
+    MCK::Logger::initialize();
+
+    // Make Window Current & Load GLAD
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Test", nullptr, nullptr);
+
+    glfwMakeContextCurrent(window);
+    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+    MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
+
+    MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
+    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.msh");
+    MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
+    testMaterial->addUInt16Uniform("lightShaderID", 0);
+    testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
+
+    MCK::AssetType::Shader* unlitShader;
+    MCK::AssetType::Shader* monocolourShader;
+
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT, unlitShader);
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, monocolourShader);
+
+    /* Loop until the user closes the window */
+    while (!glfwWindowShouldClose(window))
+    {
+        scene.UpdateScene();
+
+        // Set Renderer Data
+        MCK::Rendering::Renderer::QueueMeshInstance(transformComp, testMesh, monocolourShader, testMaterial, false);
+
+        /* Render here */
+        MCK::Rendering::Renderer::RenderFrame();
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
 }

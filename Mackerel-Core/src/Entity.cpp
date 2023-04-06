@@ -26,6 +26,7 @@ namespace MCK::EntitySystem
 	{
 		components.push_back(component);
 		component->entity = this;
+		component->state = ComponentState::DISABLED;
 	}
 
 	/**

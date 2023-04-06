@@ -9,6 +9,11 @@ using json = nlohmann::json;
 
 namespace MCK::EntitySystem
 {
+	void Scene::InitialiseScene()
+	{
+		physicsWorld.InitialiseWorld();
+	}
+
 	/**
 	 * Creates a blank entity and adds it to the scene.
 	 *
@@ -104,6 +109,11 @@ namespace MCK::EntitySystem
 			Entity* newEntity = CreateEntity();
 			newEntity->Deserialise(entityJson);
 		}
+	}
+
+	void Scene::UnloadScene()
+	{
+		physicsWorld.TeardownWorld();
 	}
 
 	/**

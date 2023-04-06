@@ -6,5 +6,5 @@
 
 int main()
 {
-	SayHello();
+	SayHello2();
 }

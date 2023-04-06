@@ -11,11 +11,21 @@ namespace MCK::Physics
 	{
 	private:
 		std::map<entityId, RigidbodyComponent*> sceneBodies;
+
+		btDefaultCollisionConfiguration* collisionConfiguration;
+		btCollisionDispatcher* dispatcher;
+		btBroadphaseInterface* overlappingPairCache;
+		btSequentialImpulseConstraintSolver* solver;
+		btDiscreteDynamicsWorld* dynamicsWorld;
 	public:
+
+		void InitialiseWorld();
 
 		void AddRigidbody(entityId id, RigidbodyComponent* rigidbody);
 
 		void RemoveRigidbody(entityId id);
+
+		void TeardownWorld();
 	};
 }
 

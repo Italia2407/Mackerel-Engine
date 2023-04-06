@@ -4,6 +4,7 @@
 
 #include <typeinfo>
 #include <iostream>
+#include <math.h>
 
 namespace MCK::EntitySystem
 {
@@ -24,6 +25,8 @@ namespace MCK::EntitySystem
 	void TestComponent::OnCreate() 
 	{
 		std::cout << "I was created" << std::endl;
+		transform = entity->GetComponent<TransformComponent>();
+		transform->Position().z() = 10;
 	}
 
 	/**
@@ -32,7 +35,9 @@ namespace MCK::EntitySystem
 	*/
 	void TestComponent::OnUpdate() 
 	{
-		std::cout << "I am being updated" << std::endl;
+		std::cout << "I am being updated. Pos " << transform->Position() << std::endl;
+		t += 0.01f;
+		transform->Position().y() = sinf(t);
 	}
 
 	/**

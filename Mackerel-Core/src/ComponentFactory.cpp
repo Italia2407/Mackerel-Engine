@@ -6,6 +6,7 @@
 namespace MCK::EntitySystem
 {
 	const std::string TESTCOMPONENT_KEY = "TestComponent";
+	const std::string TRANSFORM_COMP_KEY = "TransformComponent";
 
 	/**
 	 * Create a component.
