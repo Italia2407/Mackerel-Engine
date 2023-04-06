@@ -51,7 +51,7 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
 	}
 
 	// Load Shader Program to GPU
-	if (!m_Shader->UseProjectionProgram()) {
+	if (!m_Shader->UseShaderProgram()) {
 		Logger::log("Cannot Use Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}

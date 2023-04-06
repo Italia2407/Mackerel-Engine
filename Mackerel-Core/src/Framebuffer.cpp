@@ -200,6 +200,23 @@ bool FrameBuffer::AddDepthBufferTexture(GLuint a_Width, GLuint a_Height)
 	return true;
 }
 
+bool FrameBuffer::ResizeFramebuffer(GLuint width, GLuint height)
+{
+	// Resize all Colour Attachment Textures
+	for (auto texture : m_ColourAttachmentTextures)
+	{
+		texture->ResizeTexture(width, height);
+	}
+
+	// Resize Depth Buffer Texture, if not Assigned Externally
+	if (!m_ExternalDepthBufferTexture)
+	{
+		m_DepthBufferTexture->ResizeTexture(width, height);
+	}
+
+	return true;
+}
+
 bool FrameBuffer::AssignExternalDepthBufferTexture(AssetType::Texture* depthBufferTexture)
 {
 	if (m_DepthBufferTexture != nullptr)

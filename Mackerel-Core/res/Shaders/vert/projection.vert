@@ -31,7 +31,7 @@ layout(std140, binding = 1) uniform MeshTransform
 
 void main()
 {
-	gl_Position = mesh.transformMatrix * vec4(vertexPosition, 1.0f);
+	gl_Position = camera.cameraProjectionMatrix * mesh.transformMatrix * vec4(vertexPosition, 1.0f);
 
 	v2fPosition = vertexPosition;
 	v2fNormal = vertexNormal;

@@ -42,6 +42,8 @@ public:
 	bool AddUIntColourAttachment(GLuint width, GLuint height);
 	bool AddDepthBufferTexture(GLuint a_Width, GLuint a_Height);
 
+	bool ResizeFramebuffer(GLuint width, GLuint height);
+
 	bool AssignExternalDepthBufferTexture(AssetType::Texture* depthBufferTexture);
 };
 }

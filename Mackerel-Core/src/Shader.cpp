@@ -12,7 +12,6 @@
 
 namespace MCK::AssetType {
 GLuint Shader::k_ProjectionShaderID = GL_ZERO;
-GLuint Shader::k_PassthroughShaderID = GL_ZERO;
 
 /**
  * Load & Compile OpenGL Shader from Source File.
@@ -93,19 +92,14 @@ bool Shader::loadShaderSource(std::string a_FilePath, GLuint a_ShaderType, GLuin
 bool Shader::LoadVertexShaders()
 {
 	// Ensure Vertex Shaders aren't already Loaded
-	if (k_ProjectionShaderID != GL_ZERO || k_PassthroughShaderID != GL_ZERO) {
-		Logger::log("Cannot Reload Vertex Shaders", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+	if (k_ProjectionShaderID != GL_ZERO) {
+		Logger::log("Cannot Reload Vertex Shader", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
 	// Load Projection Vertex Shader
 	if (!loadShaderSource("../Mackerel-Core/res/Shaders/vert/projection.vert", GL_VERTEX_SHADER, k_ProjectionShaderID)) {
 		Logger::log("Could not Load Projection Vertex Shader", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
-		return false;
-	}
-	// Load Passthrough Vertex Shader
-	if (!loadShaderSource("../Mackerel-Core/res/Shaders/vert/passthrough.vert", GL_VERTEX_SHADER, k_PassthroughShaderID)) {
-		Logger::log("Could not Load Passthrough Vertex Shader", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -118,11 +112,6 @@ bool Shader::DeleteVertexShaders()
 		glDeleteShader(k_ProjectionShaderID);
 		k_ProjectionShaderID = GL_ZERO;
 	}
-	if (k_PassthroughShaderID != GL_ZERO)
-	{
-		glDeleteShader(k_PassthroughShaderID);
-		k_PassthroughShaderID = GL_ZERO;
-	}
 
 	return true;
 }
@@ -132,23 +121,18 @@ namespace MCK::AssetType
 {
 Shader::Shader(std::string a_Name = "") :
 	m_Name(a_Name),
-	m_ProjectionShaderProgramID(GL_ZERO), m_PassthroughShaderProgramID(GL_ZERO)
+	m_ShaderProgramID(GL_ZERO)
 {}
 Shader::~Shader()
 {}
 
 void Shader::resetShader()
 {
-	// Delete Shader Programs
-	if (m_ProjectionShaderProgramID != GL_ZERO)
+	// Delete Shader Program
+	if (m_ShaderProgramID != GL_ZERO)
 	{
-		glDeleteProgram(m_ProjectionShaderProgramID);
-		m_ProjectionShaderProgramID = GL_ZERO;
-	}
-	if (m_PassthroughShaderProgramID != GL_ZERO)
-	{
-		glDeleteProgram(m_PassthroughShaderProgramID);
-		m_PassthroughShaderProgramID = GL_ZERO;
+		glDeleteProgram(m_ShaderProgramID);
+		m_ShaderProgramID = GL_ZERO;
 	}
 }
 
@@ -160,8 +144,8 @@ void Shader::resetShader()
  */
 bool Shader::LoadFromFile(std::string a_FilePath)
 {
-	// Ensure Shader Programs weren't already Loaded
-	if (m_ProjectionShaderProgramID != GL_ZERO || m_PassthroughShaderProgramID != GL_ZERO) {
+	// Ensure Shader Program isn't already Loaded
+	if (m_ShaderProgramID != GL_ZERO) {
 		Logger::log(std::format("Cannot Reload {} Shader", m_Name), Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
@@ -173,44 +157,26 @@ bool Shader::LoadFromFile(std::string a_FilePath)
 		return false;
 	}
 
-	// Create Projection Shader Program
-	m_ProjectionShaderProgramID = glCreateProgram(); {
-		glAttachShader(m_ProjectionShaderProgramID, k_ProjectionShaderID);
-		glAttachShader(m_ProjectionShaderProgramID, shaderID);
+	// Create Shader Program
+	m_ShaderProgramID = glCreateProgram(); {
+		glAttachShader(m_ShaderProgramID, k_ProjectionShaderID);
+		glAttachShader(m_ShaderProgramID, shaderID);
 
-		glLinkProgram(m_ProjectionShaderProgramID);
-	}
-	// Create Passthrough Shader Program
-	m_PassthroughShaderProgramID = glCreateProgram(); {
-		glAttachShader(m_PassthroughShaderProgramID, k_PassthroughShaderID);
-		glAttachShader(m_PassthroughShaderProgramID, shaderID);
-
-		glLinkProgram(m_PassthroughShaderProgramID);
+		glLinkProgram(m_ShaderProgramID);
 	}
 
 	// Delete OpenGL Shader
 	glDeleteShader(shaderID);
 
-	// Validate Projection Shader Program
-	glValidateProgram(m_ProjectionShaderProgramID); {
+	// Validate Shader Program
+	glValidateProgram(m_ShaderProgramID); {
 		GLint validationStatus = GL_FALSE;
-		glGetProgramiv(m_ProjectionShaderProgramID, GL_VALIDATE_STATUS, &validationStatus);
+		glGetProgramiv(m_ShaderProgramID, GL_VALIDATE_STATUS, &validationStatus);
 		if (validationStatus == GL_FALSE) {
 			// Delete Shader Programs
 			resetShader();
 
-			Logger::log(std::format("Could not Validate {} Shader Projection Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-			return false;
-		}
-	}
-	glValidateProgram(m_PassthroughShaderProgramID); {
-		GLint validationStatus = GL_FALSE;
-		glGetProgramiv(m_PassthroughShaderProgramID, GL_VALIDATE_STATUS, &validationStatus);
-		if (validationStatus == GL_FALSE) {
-			// Delete Shader Programs
-			resetShader();
-
-			Logger::log(std::format("Could not Validate {} Shader Passthrough Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			Logger::log(std::format("Could not Validate {} Shader Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
 		}
 	}
@@ -218,26 +184,15 @@ bool Shader::LoadFromFile(std::string a_FilePath)
 	return true;
 }
 
-bool Shader::UseProjectionProgram()
+bool Shader::UseShaderProgram()
 {
-	if (m_ProjectionShaderProgramID == GL_ZERO)
+	if (m_ShaderProgramID == GL_ZERO)
 	{
-		Logger::log(std::format("Cannot Use Unexistant {} Projection Shader Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		Logger::log(std::format("Cannot Use Unexistant {} Shader Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
-	glUseProgram(m_ProjectionShaderProgramID);
-	return true;
-}
-bool Shader::UsePassthroughProgram()
-{
-	if (m_PassthroughShaderProgramID == GL_ZERO)
-	{
-		Logger::log(std::format("Cannot Use Unexistant {} Passthrough Shader Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-		return false;
-	}
-
-	glUseProgram(m_PassthroughShaderProgramID);
+	glUseProgram(m_ShaderProgramID);
 	return true;
 }
 }
