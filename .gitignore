@@ -362,3 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Mackerel-Demo/imgui.ini
+/Mackerel-Core/Mackerel-Core-LAPTOP-NF8ALRTJ.vcxproj
+/Mackerel-Core/Mackerel-Core.vcxproj-LAPTOP-NF8ALRTJ.filters
+/Mackerel-Core/src/TimeManager-LAPTOP-NF8ALRTJ.cpp
+/Mackerel-Core/src/TimeManager-LAPTOP-NF8ALRTJ.h
+/Mackerel-Core/src/Window-LAPTOP-NF8ALRTJ.cpp
