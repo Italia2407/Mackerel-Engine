@@ -227,7 +227,7 @@ void SayHello()
     MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
 
     MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
-    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.obj");
+    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
     MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
     testMaterial->addUInt16Uniform("lightShaderID", 0);
     testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
@@ -241,6 +241,7 @@ void SayHello()
     MCK::Rendering::Renderer::AddUnlitShader(unlitShader);
 
     camera = new MCK::EntitySystem::ProjectionCamera(1280.0f / 720.0f);
+    camera->Position() = Eigen::Vector3f(0.0f, 0.0f, -3.0f);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))

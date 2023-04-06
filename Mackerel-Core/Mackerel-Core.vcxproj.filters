@@ -484,6 +484,9 @@
     <None Include="res\Meshes\TestMesh.obj">
       <Filter>Resource Files\Meshes</Filter>
     </None>
+    <None Include="res\Meshes\Suzanne.obj">
+      <Filter>Resource Files\Meshes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\LoggingSystem.conf">
