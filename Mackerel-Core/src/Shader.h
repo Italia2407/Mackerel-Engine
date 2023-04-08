@@ -11,9 +11,8 @@ public:
 	~Shader();
 
 private:
-	// Vertex Shaders
+	// Vertex Shader
 	static GLuint k_ProjectionShaderID;
-	static GLuint k_PassthroughShaderID;
 
 	static bool loadShaderSource(std::string a_FilePath, GLuint a_ShaderType, GLuint& o_ShaderID);
 
@@ -24,9 +23,7 @@ public:
 private:
 	std::string m_Name;
 
-	// Shader Program for Each Possible Vertex Shader
-	GLuint m_ProjectionShaderProgramID;
-	GLuint m_PassthroughShaderProgramID;
+	GLuint m_ShaderProgramID;
 
 	void resetShader();
 	
@@ -35,7 +32,6 @@ public:
 	bool LoadFromFile(std::string a_FilePath);
 
 	// Shader Program Binders
-	bool UseProjectionProgram();
-	bool UsePassthroughProgram();
+	bool UseShaderProgram();
 };
 }

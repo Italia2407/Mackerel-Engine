@@ -23,13 +23,17 @@
 #include "MeshLibrary.h"
 #include "ShaderLibrary.h"
 
+// Entity Headers
+#include "CameraComponent.h"
+
 // Static Function & Parameters
 namespace MCK::Rendering {
 Renderer* Renderer::k_Instance = nullptr;
 
-AssetType::Shader* Renderer::k_FramebufferDisplayShader = nullptr;
+AssetType::Mesh* Renderer::k_DisplayScreenMesh = nullptr;
+AssetType::Shader* Renderer::k_DisplayScreenShader = nullptr;
 
-AssetType::Mesh* Renderer::k_DisplayScreen = nullptr;
+UniformBuffer* Renderer::k_DisplayScreenUniforms = nullptr;
 
 Renderer* Renderer::Instance()
 {
@@ -51,19 +55,54 @@ Renderer* Renderer::Instance()
 */
 bool Renderer::InitialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 {
-	// Load Framebuffer Display Shader
-	if (!ShaderLibrary::GetShader(ShaderEnum::__MCK_FRAMEBUFFER_DISPLAY, k_FramebufferDisplayShader)) {
-		Logger::log("Could not Get Framebuffer Display Shader", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
-		return false;
-	}
-
-	// Load Framebuffer Display Mesh
-	if (!MeshLibrary::GetMesh(MeshEnum::__MCK_DISPLAY_SCREEN, k_DisplayScreen)) {
+	// Load Display Screen Mesh
+	if (!MeshLibrary::GetMesh(MeshEnum::__MCK_DISPLAY_SCREEN, k_DisplayScreenMesh)) {
 		Logger::log("Could not Get Display Screen Mesh", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
+	// Load Display Screen Shader
+	if (!ShaderLibrary::GetShader(ShaderEnum::__MCK_FRAMEBUFFER_DISPLAY, k_DisplayScreenShader)) {
+		Logger::log("Could not Get Display Screen Shader", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Create Display Screen Uniform Buffer
+	k_DisplayScreenUniforms = new UniformBuffer();
+
+	// Add Position to Display Screen Uniform Buffer
+	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("position", Eigen::Vector3f::Zero())) {
+		Logger::log("Could not Add Position to Display Screen Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	// Add Front to Display Screen Uniform Buffer
+	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("front", Eigen::Vector3f(0.0f, 0.0f, -1.0f))) {
+		Logger::log("Could not Add Front to Display Screen Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	// Add Up to Display Screen Uniform Buffer
+	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("up", Eigen::Vector3f(0.0f, 1.0f, 0.0f))) {
+		Logger::log("Could not Add Up to Display Screen Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	// Add Camera Projection Matrix to Display Screen Uniform Buffer
+	if (!k_DisplayScreenUniforms->AddMat4BufferUniform("cameraProjectionMatrix", Eigen::Matrix4f::Identity())) {
+		Logger::log("Could not Add Camera Projection Matrix to Display Screen Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	// Create Display Screen Uniform Buffer Object
+	if (!k_DisplayScreenUniforms->CreateUniformBufferObject())
+	{
+		Logger::log("Could not Create Display Screen Uniform Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
 	return Instance()->initialiseRenderer(a_ScreenWidth, a_ScreenHeight);;
+}
+bool Renderer::ResizeRenderer(GLuint screenWidth, GLuint screenHeight)
+{
+	return Instance()->resizeRenderer(screenWidth, screenHeight);
 }
 /**  */
 void Renderer::ClearRenderer()
@@ -74,8 +113,13 @@ void Renderer::ClearRenderer()
 		k_Instance = nullptr;
 	}
 
-	k_FramebufferDisplayShader = nullptr;
-	k_DisplayScreen = nullptr;
+	k_DisplayScreenMesh = nullptr;
+	k_DisplayScreenShader = nullptr;
+
+	if (k_DisplayScreenUniforms)
+	{
+		delete k_DisplayScreenUniforms;
+	}
 }
 
 /**
@@ -137,6 +181,11 @@ bool Renderer::QueueMeshInstance(const EntitySystem::TransformComponent& a_Trans
 	return result;
 }
 
+bool Renderer::UseCamera(const EntitySystem::CameraComponent& a_Camera)
+{
+	return Instance()->useCamera(a_Camera);
+}
+
 /**  */
 bool Renderer::RenderFrame()
 {
@@ -175,6 +224,10 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	}
 	if (m_DepthBufferTexture) {
 		Logger::log("Cannot Recreate Depth Buffer Texture", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	if (m_CameraBuffer) {
+		Logger::log("Cannot Recreate Camera Uniform Buffer", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	if (m_MeshTransformBuffer) {
@@ -327,6 +380,18 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 
 	return true;
 }
+bool Renderer::resizeRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
+{
+	// Resize Depth Buffer Texture
+	m_DepthBufferTexture->ResizeTexture(a_ScreenWidth, a_ScreenHeight);
+
+	// Resize Geometry Buffer
+	m_GeometryBuffer->ResizeFramebuffer(a_ScreenWidth, a_ScreenHeight);
+	// Resize Deferred Buffer
+	m_DeferredBuffer->ResizeFramebuffer(a_ScreenWidth, a_ScreenHeight);
+
+	return true;
+}
 /**
  * Resets the Renderer & Deletes all Objects.
  * 
@@ -474,13 +539,13 @@ bool Renderer::renderDeferredBuffer()
 	{	auto unlitShader = m_UnlitShaders[i];
 
 		// Start Unlit Shader Program
-		if (!unlitShader || !unlitShader->UsePassthroughProgram()) {
+		if (!unlitShader || !unlitShader->UseShaderProgram()) {
 			Logger::log(std::format("Could not Start Unlit Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
 
 		// Draw to Framebuffer Display Mesh
-		renderDisplayMesh();
+		renderDisplayScreen();
 	}
 
 	// Point Light Calculations
@@ -488,7 +553,7 @@ bool Renderer::renderDeferredBuffer()
 	{	auto lightShader = _pointLightShaders[i];
 
 		// Start Point Light Shader Program
-		if (!lightShader || !lightShader->UsePassthroughProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram()) {
 			Logger::log(std::format("Could not Start Point Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -504,7 +569,7 @@ bool Renderer::renderDeferredBuffer()
 			}
 
 			// Draw to Framebuffer Display Mesh
-			renderDisplayMesh();
+			renderDisplayScreen();
 		}
 	}
 	// Direction Light Calculations
@@ -513,7 +578,7 @@ bool Renderer::renderDeferredBuffer()
 		auto lightShader = _directionLightShaders[i];
 
 		// Start Direction Light Shader Program
-		if (!lightShader || !lightShader->UsePassthroughProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram()) {
 			Logger::log(std::format("Could not Start Direction Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -530,7 +595,7 @@ bool Renderer::renderDeferredBuffer()
 			}
 
 			// Draw to Framebuffer Display Mesh
-			renderDisplayMesh();
+			renderDisplayScreen();
 		}
 	}
 	// Spot Light Calculations
@@ -539,7 +604,7 @@ bool Renderer::renderDeferredBuffer()
 		auto lightShader = _spotLightShaders[i];
 
 		// Start Spot Light Shader Program
-		if (!lightShader || !lightShader->UsePassthroughProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram()) {
 			Logger::log(std::format("Could not Start Spot Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -556,7 +621,7 @@ bool Renderer::renderDeferredBuffer()
 			}
 
 			// Draw to Framebuffer Display Mesh
-			renderDisplayMesh();
+			renderDisplayScreen();
 		}
 	}
 
@@ -616,6 +681,33 @@ bool Renderer::queueSpotLight(SpotLight* spotLight)
 	return true;
 }
 
+/**  */
+bool Renderer::useCamera(const EntitySystem::CameraComponent& a_Camera)
+{
+	// Compute Camera ViewProjection Matrix
+	Eigen::Matrix4f cameraViewProjectionMatrix = a_Camera.GetProjectionMatrix() * a_Camera.GetCameraViewMatrix();
+
+	// Set Camera Uniform Buffer Values
+	if (!m_CameraBuffer->SetVec3BufferUniform("position", a_Camera.Position())) {
+		Logger::log("Could not Set Value for Camera Position", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	if (!m_CameraBuffer->SetVec3BufferUniform("front", a_Camera.FrontDirection())) {
+		Logger::log("Could not Set Value for Camera Front Direction", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	if (!m_CameraBuffer->SetVec3BufferUniform("up", a_Camera.UpDirection())) {
+		Logger::log("Could not Set Value for Camera Up Direction", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	if (!m_CameraBuffer->SetMat4BufferUniform("cameraProjectionMatrix", cameraViewProjectionMatrix)) {
+		Logger::log("Could not Set Value for Camera ViewProjection Matrix", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	return true;
+}
+
 /**
  * Render the Current Frame.
  * 
@@ -647,6 +739,9 @@ bool Renderer::renderFrame()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 
+	k_DisplayScreenUniforms->BindUniformBufferObject(0);
+	m_MeshTransformBuffer->SetMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity());
+
 	// Render to Deferred Buffer
 	if (!m_DeferredBuffer || !renderDeferredBuffer()) {
 		Logger::log("Could not Render to Deferred Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
@@ -658,26 +753,32 @@ bool Renderer::renderFrame()
 
 
 	// TODO:
+	m_CameraBuffer->BindUniformBufferObject(0);
+	
 	// Render Transparency Buffer
 
 
 	// Display Frame to Scene
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	k_DisplayScreenUniforms->BindUniformBufferObject(0);
+	m_MeshTransformBuffer->SetMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity());
+
 	// Load Framebuffer Output Texture
+	//auto FBOutputTexture = m_GeometryBuffer->GetColourAttachmentTexture(4);
 	auto FBOutputTexture = m_DeferredBuffer->GetColourAttachmentTexture(0);
 	if (!FBOutputTexture || !FBOutputTexture->BindTexture(0)) {
 		Logger::log("Could not Bind Framebuffer Output Texture", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 	}
 
 	// Load Frame Buffer Display Shader
-	if (!k_FramebufferDisplayShader->UsePassthroughProgram()) {
+	if (!k_DisplayScreenShader->UseShaderProgram()) {
 		Logger::log("Could not Start Framebuffer Display Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
 	// Draw Framebuffer Texture to Screen
-	renderDisplayMesh();
+	renderDisplayScreen();
 
 
 	// Reset Renderer for Next Frame
@@ -685,14 +786,13 @@ bool Renderer::renderFrame()
 
 	return true;
 }
-void Renderer::renderDisplayMesh()
+void Renderer::renderDisplayScreen()
 {
-	// Bind Display Mesh's VAO to GPU
-	if (!k_DisplayScreen->BindVertexArrayObject())
-	{
-		Logger::log("Could not Bind Display Mesh's VAO", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+	// Bind Display Screen Mesh's VAO to GPU
+	if (!k_DisplayScreenMesh->BindVertexArrayObject()) {
+		Logger::log("Could not Bind Display Screen Mesh's VAO", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return;
 	}
-	glDrawElements(GL_TRIANGLES, k_DisplayScreen->NumIndices(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, k_DisplayScreenMesh->NumIndices(), GL_UNSIGNED_INT, nullptr);
 }
 }

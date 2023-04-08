@@ -109,6 +109,9 @@
     <Filter Include="Resource Files\Shaders\Vertex Shaders">
       <UniqueIdentifier>{d29d2f3d-578c-4380-9603-0da39d43be87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Meshes">
+      <UniqueIdentifier>{ebdb721f-8d1c-4e93-a4ed-c61b44fa2264}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -238,6 +241,12 @@
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\RigidbodyComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RigidbodyComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CameraComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -434,6 +443,15 @@
     <ClInclude Include="src\Transform.h">
       <Filter>Source Files\AssetTypes\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="src\CameraComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectionCamera.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrthographicCamera.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
@@ -457,11 +475,17 @@
     <None Include="res\Shaders\static\FBDisplayer.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="res\Shaders\vert\passthrough.vert">
-      <Filter>Resource Files\Shaders\Vertex Shaders</Filter>
-    </None>
     <None Include="res\Shaders\vert\projection.vert">
       <Filter>Resource Files\Shaders\Vertex Shaders</Filter>
+    </None>
+    <None Include="res\Meshes\DisplayScreen.obj">
+      <Filter>Resource Files\Meshes</Filter>
+    </None>
+    <None Include="res\Meshes\TestMesh.obj">
+      <Filter>Resource Files\Meshes</Filter>
+    </None>
+    <None Include="res\Meshes\Suzanne.obj">
+      <Filter>Resource Files\Meshes</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

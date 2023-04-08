@@ -31,8 +31,21 @@
 
 #include "TestComponent.h"
 #include "TransformComponent.h"
+#include "OrthographicCamera.h"
+#include "ProjectionCamera.h"
+
 MCK::EntitySystem::TransformComponent testTransform;
 MCK::EntitySystem::TransformComponent par;
+
+MCK::EntitySystem::ProjectionCamera* camera;
+
+void FramebufferResizeCallback(GLFWwindow* window, int screenWidth, int screenHeight)
+{
+    MCK::Rendering::Renderer::ResizeRenderer((GLuint)screenWidth, (GLuint)screenHeight);
+    camera->AspectRatio() = (float)screenWidth / (float)screenHeight;
+
+    glViewport(0, 0, screenWidth, screenHeight);
+}
 
 void InputCallbackTest(int32_t key, MCK::ButtonEvents ButtonEvents)
 {
@@ -95,8 +108,8 @@ void SayHello()
 
     e1->parent = e2;
 
-    testTransform.Position().x() = 0.3f;
-    par.Position().y() = 0.3f;
+    testTransform.Position().x() = 0.0f;
+    par.Position().y() = 0.0f;
 
 	// Initialise GLFW
     if (!glfwInit())
@@ -150,6 +163,9 @@ void SayHello()
     // set callback functions
     std::function<void()> timerCallback = TimerWentOff;
     std::function<void()> scaledTimerCallback = ScaledTimerWentOff;
+    std::function<void(GLFWwindow*, int, int)> framebufferResizeCallback = FramebufferResizeCallback;
+
+    glfwSetFramebufferSizeCallback(window, FramebufferResizeCallback);
 
     // set a timer
     double time = 0.1;
@@ -212,7 +228,7 @@ void SayHello()
     MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
 
     MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
-    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.msh");
+    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
     MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
     testMaterial->addUInt16Uniform("lightShaderID", 0);
     testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
@@ -224,6 +240,9 @@ void SayHello()
     MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, monocolourShader);
 
     MCK::Rendering::Renderer::AddUnlitShader(unlitShader);
+
+    camera = new MCK::EntitySystem::ProjectionCamera(1280.0f / 720.0f);
+    camera->Position() = Eigen::Vector3f(0.0f, 0.0f, -3.0f);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -239,8 +258,11 @@ void SayHello()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        camera->Position() += Eigen::Vector3f(0.0f, 0.0f, -0.001f);
+
         // Set Renderer Data
         MCK::Rendering::Renderer::QueueMeshInstance(testTransform, testMesh, monocolourShader, testMaterial, false);
+        MCK::Rendering::Renderer::UseCamera(*camera);
 
         /* Render here */
         MCK::Rendering::Renderer::RenderFrame();

@@ -28,6 +28,7 @@ class SpotLight;
 class RenderBatch;
 }
 namespace MCK::EntitySystem {
+class CameraComponent;
 class TransformComponent;
 }
 
@@ -47,9 +48,9 @@ private:
 	static Renderer* k_Instance;
 	static Renderer* Instance();
 
-	static AssetType::Shader* k_FramebufferDisplayShader;
-
-	static AssetType::Mesh* k_DisplayScreen;
+	static AssetType::Mesh* k_DisplayScreenMesh;
+	static AssetType::Shader* k_DisplayScreenShader;
+	static UniformBuffer* k_DisplayScreenUniforms;
 
 // Member Variables
 private:	
@@ -79,6 +80,7 @@ private:
 // Member Methods
 private:
 	bool initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight);
+	bool resizeRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight);
 	void resetRenderer();
 	void resetRendererFrame();
 
@@ -97,11 +99,14 @@ private:
 	bool queueDirectionLight(DirectionLight* directionLight);
 	bool queueSpotLight(SpotLight* spotLight);
 
+	bool useCamera(const EntitySystem::CameraComponent& a_Camera);
+
 	bool renderFrame();
-	void renderDisplayMesh();
+	void renderDisplayScreen();
 
 public:
 	static bool InitialiseRenderer(GLuint screenWidth, GLuint screenHeight);
+	static bool ResizeRenderer(GLuint screenWidth, GLuint screenHeight);
 	static void ClearRenderer();
 
 	static bool AddUnlitShader(AssetType::Shader* a_Shader);
@@ -116,6 +121,8 @@ public:
 	static bool QueuePointLight(PointLight* a_PointLight);
 	static bool QueueDirectionLight(DirectionLight* a_DirectionLight);
 	static bool QueueSpotLight(SpotLight* a_SpotLight);
+
+	static bool UseCamera(const EntitySystem::CameraComponent& a_Camera);
 
 	static bool RenderFrame();
 };
