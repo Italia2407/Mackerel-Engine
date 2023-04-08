@@ -167,6 +167,7 @@ namespace MCK::Physics
 		info.m_startWorldTransform = initialTransformation;
 
 		rigidbody = new btRigidBody(info);
+		rigidbody->setUserPointer(static_cast<void*>(entity));
 		//rigidbody->setLinearFactor()
 
 		// Add rigidbody
