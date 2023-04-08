@@ -3,15 +3,19 @@
 #include "Eigen/Core.h"
 #include "Component.h"
 #include "TransformComponent.h"
+#include "CreateCollisionShapeInfo.h"
 
 namespace MCK::Physics
 {
 	class RigidbodyComponent : public MCK::EntitySystem::Component
 	{
 	private:
-		btRigidBody* rigidbody;
-
+		
+		MCK::EntitySystem::TransformComponent* transform;
 	public:
+		btRigidBody* rigidbody;
+		btCollisionShape* collisionShape;
+
 		void AddCentralForce(const Eigen::Vector3f force);
 		void AddTorque(const Eigen::Vector3f torque);
 		void AddForce(const Eigen::Vector3f force, const Eigen::Vector3f rel_pos);
@@ -21,11 +25,13 @@ namespace MCK::Physics
 		Eigen::Vector3f GetLinearVelocity();
 		Eigen::Vector3f GetAngularVelocity();
 		Eigen::Vector3f GetPosition();
-		void applyToTransformComponent(MCK::EntitySystem::TransformComponent& transformComponent);
+		void ApplyToTransformComponent();
 
 		void OnCreate();
 		void OnUpdate();
 		void OnDestroy();
+
+		bool Deserialise(json data) override;
 
 		TypeInfoRef GetType();
 	};

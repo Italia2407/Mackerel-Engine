@@ -22,11 +22,43 @@ namespace MCK::Physics
 	void PhysicsWorld::AddRigidbody(entityId id, RigidbodyComponent* rigidbody)
 	{
 		sceneBodies.emplace(id, rigidbody);
+		dynamicsWorld->addRigidBody(rigidbody->rigidbody);
 	}
 
 	void PhysicsWorld::RemoveRigidbody(entityId id)
 	{
+		RigidbodyComponent* rigidbody = sceneBodies[id];
+		dynamicsWorld->removeRigidBody(rigidbody->rigidbody);
+
 		sceneBodies.erase(id);
+	}
+
+	void PhysicsWorld::AddCollider(entityId id, CollisionComponent* collision)
+	{
+		sceneColliders.emplace(id, collision);
+		dynamicsWorld->addCollisionObject(collision->collider);
+	}
+
+	void PhysicsWorld::RemoveCollider(entityId id)
+	{
+		CollisionComponent* collision = sceneColliders[id];
+		dynamicsWorld->removeCollisionObject(collision->collider);
+
+		sceneColliders.erase(id);
+	}
+
+	void PhysicsWorld::ApplySimulation(double delta)
+	{
+		// Step
+		dynamicsWorld->applyGravity();
+		dynamicsWorld->stepSimulation(static_cast<btScalar>(delta));
+
+		for (const auto& body : sceneBodies)
+		{
+			RigidbodyComponent* rb = body.second;
+
+			rb->ApplyToTransformComponent();
+		}
 	}
 
 	void PhysicsWorld::TeardownWorld()

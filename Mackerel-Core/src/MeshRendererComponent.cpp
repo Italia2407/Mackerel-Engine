@@ -23,7 +23,14 @@
 
 namespace MCK::EntitySystem {
 MeshRendererComponent::MeshRendererComponent(MeshEnum a_MeshEnum, ShaderEnum a_ShaderEnum, MaterialEnum a_MaterialEnum) :
-	m_MeshEnum(a_MeshEnum), m_ShaderEnum(a_ShaderEnum), m_MaterialEnum(a_MaterialEnum), m_Mesh(nullptr), m_Shader(nullptr), m_Material(nullptr) {}
+	m_MeshEnum(a_MeshEnum), m_ShaderEnum(a_ShaderEnum), m_MaterialEnum(a_MaterialEnum), 
+	m_Mesh(nullptr), m_Shader(nullptr), m_Material(nullptr),
+	m_EntityTransformComponent(nullptr) {}
+
+MeshRendererComponent::MeshRendererComponent(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material) :
+	m_Mesh(a_Mesh), m_Material(a_Material), m_Shader(a_Shader), m_EntityTransformComponent(nullptr),
+	m_MeshEnum((MeshEnum)0), m_ShaderEnum((ShaderEnum)0), m_MaterialEnum((MaterialEnum)0) {}
+
 MeshRendererComponent::~MeshRendererComponent()
 {}
 

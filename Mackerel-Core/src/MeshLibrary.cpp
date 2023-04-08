@@ -95,8 +95,8 @@ namespace MCK {
 MeshLibrary::MeshLibrary()
 {
 	// TODO: Load Engine Reserved Meshes to the Data
-	loadMesh(MeshEnum::__MCK_DISPLAY_SCREEN, "../Mackerel-Core/res/Meshes/DisplayScreen.msh");
-
+	loadMesh(MeshEnum::__MCK_DISPLAY_SCREEN, "../Mackerel-Core/res/Meshes/DisplayScreen.obj");
+	loadMesh(MeshEnum::Suzanne, "../Mackerel-Core/res/Meshes/Suzanne.obj");
 	/* Example:
 		AssetType::Mesh defaultTex(std::string filepath_to_default_texture);
 		data.insert(std::pair<MeshEnum, AssetType::Mesh>(MeshEnum::__MCK__DEFAULT, defaultTex));

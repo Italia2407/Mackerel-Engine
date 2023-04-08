@@ -112,6 +112,9 @@
     <Filter Include="Resource Files\Meshes">
       <UniqueIdentifier>{ebdb721f-8d1c-4e93-a4ed-c61b44fa2264}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Meshes\Primitives">
+      <UniqueIdentifier>{26d88939-af10-4ad8-b778-72887ab27b6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -248,6 +251,12 @@
     </ClCompile>
     <ClCompile Include="src\CameraComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicsHelpers.cpp">
+      <Filter>Source Files\Systems\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -452,6 +461,18 @@
     <ClInclude Include="src\OrthographicCamera.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\CollisionComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicsHelpers.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ColliderTypes.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CreateCollisionShapeInfo.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
@@ -492,5 +513,10 @@
     <Text Include="src\LoggingSystem.conf">
       <Filter>Resource Files\Configs</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\Meshes\Primitives\cube.obj">
+      <Filter>Resource Files\Meshes\Primitives</Filter>
+    </Resource>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #include "RigidbodyComponent.h"
+#include "Scene.h"
 #include "Entity.h"
 
 #include <typeinfo>
@@ -32,7 +33,8 @@ namespace MCK::Physics
 	*/
 	void RigidbodyComponent::AddForce(const Eigen::Vector3f force, const Eigen::Vector3f rel_pos)
 	{
-		rigidbody->applyForce(btVector3(force.x(), force.y(), force.z()), btVector3(rel_pos.x(), rel_pos.y(), rel_pos.z()));
+		rigidbody->applyCentralForce(btVector3(force.x(), force.y(), force.z()));
+		//rigidbody->applyForce(btVector3(force.x(), force.y(), force.z()), btVector3(rel_pos.x(), rel_pos.y(), rel_pos.z()));
 	}
 
 	/**
@@ -103,14 +105,14 @@ namespace MCK::Physics
 	* Applies the transformation of the given TransformComponent to the rigidbody.
 	*
 	*/
-	void RigidbodyComponent::applyToTransformComponent(MCK::EntitySystem::TransformComponent& transformComponent)
+	void RigidbodyComponent::ApplyToTransformComponent()
 	{
 		btTransform rbTransform = rigidbody->getCenterOfMassTransform();
 		btVector3 pos = rigidbody->getCenterOfMassPosition();
 		btQuaternion rot = rbTransform.getRotation();
 		
-		transformComponent.Position() = Eigen::Vector3f(pos.x(), pos.y(), pos.z());
-		transformComponent.Rotation() = Eigen::Quaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+		transform->Position() = Eigen::Vector3f(pos.x(), pos.y(), pos.z());
+		transform->Rotation() = Eigen::Quaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
 	}
 
     /**
@@ -131,8 +133,44 @@ namespace MCK::Physics
 	 */
 	void RigidbodyComponent::OnCreate()
 	{
-		MCK::EntitySystem::TransformComponent* transform = entity->GetComponent<MCK::EntitySystem::TransformComponent>();
-		std::cout << "I was created" << std::endl;
+		transform = entity->GetComponent<MCK::EntitySystem::TransformComponent>();
+		
+		// Calculate the initial transformation
+		btTransform initialTransformation{};
+
+		btVector3 pos(
+			static_cast<btScalar>(transform->Position().x()),
+			static_cast<btScalar>(transform->Position().y()),
+			static_cast<btScalar>(transform->Position().z())
+			);
+
+		btQuaternion rot(
+			static_cast<btScalar>(transform->Rotation().x()),
+			static_cast<btScalar>(transform->Rotation().y()),
+			static_cast<btScalar>(transform->Rotation().z()),
+			static_cast<btScalar>(transform->Rotation().w())
+		);
+
+		initialTransformation.setOrigin(pos);
+		initialTransformation.setRotation(rot);
+
+		// Collision shape
+		collisionShape = new btBoxShape(btVector3({ 1,1,1 }));
+
+		// Construct the rigidbody
+		btRigidBody::btRigidBodyConstructionInfo info
+		(
+			1, // mass
+			nullptr, // Motion state
+			collisionShape // Collision
+		);
+		info.m_startWorldTransform = initialTransformation;
+
+		rigidbody = new btRigidBody(info);
+		//rigidbody->setLinearFactor()
+
+		// Add rigidbody
+		entity->scene->physicsWorld.AddRigidbody(entity->id, this);
 	}
 
 	/**
@@ -141,7 +179,7 @@ namespace MCK::Physics
 	*/
 	void RigidbodyComponent::OnUpdate()
 	{
-		std::cout << "I am being updated" << std::endl;
+		std::cout << "Pos y: " << transform->Position().y() << std::endl;
 	}
 
 	/**
@@ -150,7 +188,14 @@ namespace MCK::Physics
 	*/
 	void RigidbodyComponent::OnDestroy()
 	{
-		std::cout << "I have been destroyed" << std::endl;
+		entity->scene->physicsWorld.RemoveRigidbody(entity->id);
+		delete collisionShape;
+		delete rigidbody;
+	}
+
+	bool RigidbodyComponent::Deserialise(json data)
+	{
+		return true;
 	}
 }
 

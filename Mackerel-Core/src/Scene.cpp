@@ -4,6 +4,7 @@
 #include "EntityFactory.h"
 #include "Component.h"
 #include "Scene.h"
+#include "TimeManager.h"
 
 using json = nlohmann::json;
 
@@ -72,6 +73,9 @@ namespace MCK::EntitySystem
 		{
 			entities[i]->FrameEnd();
 		}
+
+		double delta = MCK::TimeManager::getFrameTime();
+		physicsWorld.ApplySimulation(static_cast<float>(delta));
 	}
 
 	/**

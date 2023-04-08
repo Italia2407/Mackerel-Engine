@@ -31,7 +31,7 @@ namespace MCK::EntitySystem
 
 		entityId idSeed = 0;
 
-		Physics::PhysicsWorld physicsWorld;
+		
 
 		/**
 		 * Generates a unique ID for an entity.
@@ -40,6 +40,7 @@ namespace MCK::EntitySystem
 		 */
 		entityId GenerateEntityID();
 	public:
+		Physics::PhysicsWorld physicsWorld;
 
 		/**
 		 * Initialises the scene.

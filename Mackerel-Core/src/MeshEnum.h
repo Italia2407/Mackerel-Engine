@@ -9,5 +9,6 @@ enum class MeshEnum
 	__MCK_DISPLAY_SCREEN = -2,
 	__MCK_DEFAULT = -1,
 	// Negative values are reserved for engine use
-	DummyMesh = 0
+	DummyMesh = 0,
+	Suzanne = 1
 };

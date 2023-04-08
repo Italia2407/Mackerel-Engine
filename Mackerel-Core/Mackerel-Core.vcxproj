@@ -29,6 +29,7 @@
     <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
     <ClCompile Include="src\CameraComponent.cpp" />
+    <ClCompile Include="src\CollisionComponent.cpp" />
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentFactory.cpp" />
     <ClCompile Include="src\Entity.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\MeshLibrary.cpp" />
+    <ClCompile Include="src\PhysicsHelpers.cpp" />
     <ClCompile Include="src\PhysicsWorld.cpp" />
     <ClCompile Include="src\MeshRendererComponent.cpp" />
     <ClCompile Include="src\RenderBatch.cpp" />
@@ -77,9 +79,12 @@
     <ClInclude Include="ext\nlohmann\json.hpp" />
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
     <ClInclude Include="src\CameraComponent.h" />
+    <ClInclude Include="src\ColliderTypes.h" />
+    <ClInclude Include="src\CollisionComponent.h" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\ComponentFactory.h" />
     <ClInclude Include="src\ComponentState.h" />
+    <ClInclude Include="src\CreateCollisionShapeInfo.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
@@ -102,6 +107,7 @@
     <ClInclude Include="src\MeshEnum.h" />
     <ClInclude Include="src\MeshLibrary.h" />
     <ClInclude Include="src\OrthographicCamera.h" />
+    <ClInclude Include="src\PhysicsHelpers.h" />
     <ClInclude Include="src\PhysicsWorld.h" />
     <ClInclude Include="src\MouseButtons.h" />
     <ClInclude Include="src\MouseState.h" />
@@ -197,6 +203,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\Meshes\Primitives\cube.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </Resource>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

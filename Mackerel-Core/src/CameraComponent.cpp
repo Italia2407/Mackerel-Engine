@@ -2,6 +2,7 @@
 
 #include "OrthographicCamera.h"
 #include "ProjectionCamera.h"
+#include "Renderer.h"
 
 #include <math.h>
 
@@ -53,6 +54,12 @@ Eigen::Matrix4f CameraComponent::GetCameraViewMatrix() const
 
 	return cameraViewMatrix;
 }
+
+void CameraComponent::OnUpdate()
+{
+	Rendering::Renderer::UseCamera(*this);
+}
+
 }
 
 namespace MCK::EntitySystem {

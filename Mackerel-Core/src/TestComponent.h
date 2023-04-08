@@ -12,6 +12,8 @@ namespace MCK::EntitySystem
 		float t = 0;
 
 	public:
+		Eigen::Vector2f input;
+
 		void OnCreate();
 		void OnUpdate();
 		void OnDestroy();

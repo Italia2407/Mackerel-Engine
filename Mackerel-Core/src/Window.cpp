@@ -33,6 +33,9 @@
 #include "TransformComponent.h"
 #include "OrthographicCamera.h"
 #include "ProjectionCamera.h"
+#include "MeshRendererComponent.h"
+#include "MeshLibrary.h"
+#include "ShaderLibrary.h"
 
 MCK::EntitySystem::TransformComponent testTransform;
 MCK::EntitySystem::TransformComponent par;
@@ -323,7 +326,7 @@ void SayHello2()
     MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
 
     MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
-    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/TestMesh.msh");
+    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
     MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
     testMaterial->addUInt16Uniform("lightShaderID", 0);
     testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
@@ -343,6 +346,152 @@ void SayHello2()
         MCK::Rendering::Renderer::QueueMeshInstance(transformComp, testMesh, monocolourShader, testMaterial, false);
 
         /* Render here */
+        MCK::Rendering::Renderer::RenderFrame();
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
+}
+
+Eigen::Vector2f cubeInput;
+void MovingCubeCallback(int32_t key, MCK::ButtonEvents ButtonEvents)
+{
+    Eigen::Vector2f inp{};
+    if (key == MCK::Key::W)
+    {
+        inp.x() = 0.f;
+        inp.y() = 1.f;
+    }
+    else if (key == MCK::Key::S)
+    {
+        inp.x() = 0.f;
+        inp.y() = -1.f;
+    }
+    else if (key == MCK::Key::A)
+    {
+        inp.x() = -1.f;
+        inp.y() = 0.f;
+    }
+    else if (key == MCK::Key::D)
+    {
+        inp.x() = 1.f;
+        inp.y() = 0.f;
+    }
+    cubeInput = inp;
+    std::cout << "k" << key << " b" << (int)ButtonEvents << std::endl;
+}
+
+void SayHello3()
+{
+
+#pragma region Entity Creation
+
+    MCK::EntitySystem::Scene scene;
+
+    MCK::EntitySystem::Entity* entity = scene.CreateEntity();
+    MCK::EntitySystem::Entity* cameraEntity = scene.CreateEntity();
+    MCK::EntitySystem::Entity* floorEntity = scene.CreateEntity();
+
+    MCK::EntitySystem::TransformComponent transformComp;
+    MCK::EntitySystem::TestComponent testComp;
+    MCK::Physics::RigidbodyComponent rigidComp;
+
+    MCK::EntitySystem::TransformComponent floorTransform;
+    MCK::Physics::CollisionComponent collisionComp;
+
+    transformComp.Position() = Eigen::Vector3f({ 0,15, 20 });
+    floorTransform.Position() = Eigen::Vector3f({ 0,-3, 20 });
+    floorTransform.Scale() = Eigen::Vector3f({ 10,1, 10 });
+
+#pragma endregion
+
+#pragma region Input Init
+    MCK::InputCallback cubeInputCallback = MovingCubeCallback;
+    MCK::Input::InputSubReceipt receipt;
+
+    MCK::Input::Subscribe(MCK::Key::W, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+    MCK::Input::Subscribe(MCK::Key::A, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+    MCK::Input::Subscribe(MCK::Key::D, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+    MCK::Input::Subscribe(MCK::Key::S, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+#pragma endregion
+
+
+#pragma region Render Init
+
+    // Initialise GLFW
+    if (!glfwInit())
+    {
+        return;
+    }
+
+    MCK::Logger::initialize();
+
+    // Make Window Current & Load GLAD
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Test", nullptr, nullptr);
+
+    glfwMakeContextCurrent(window);
+    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+    MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
+
+    MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
+    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
+    MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
+    testMaterial->addUInt16Uniform("lightShaderID", 0);
+    testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
+
+    MCK::AssetType::Shader* testShader = nullptr;
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, testShader);
+
+    MCK::AssetType::Shader* lightShader = nullptr;
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT, lightShader);
+
+    MCK::EntitySystem::MeshRendererComponent meshRenderer(testMesh, testShader, testMaterial);
+    MCK::EntitySystem::MeshRendererComponent floorRenderer(testMesh, testShader, testMaterial);
+
+    MCK::Rendering::Renderer::AddUnlitShader(lightShader);
+
+    MCK::EntitySystem::ProjectionCamera cameraComponent(1280.f / 720.f);
+
+#pragma endregion
+
+#pragma region Add Components
+
+    entity->AddComponent(&transformComp);
+    //entity->AddComponent(&testComp);
+    entity->AddComponent(&meshRenderer);
+    entity->AddComponent(&rigidComp);
+
+    floorEntity->AddComponent(&floorTransform);
+    floorEntity->AddComponent(&collisionComp);
+    floorEntity->AddComponent(&floorRenderer);
+
+    cameraEntity->AddComponent(&cameraComponent);
+
+#pragma endregion
+
+    scene.InitialiseScene();
+
+    while (!glfwWindowShouldClose(window))
+    {
+        cubeInput = { 0,0 };
+
+        MCK::Input::InputManager::Update(window);
+        MCK::TimeManager::Update();
+
+        auto joyIn = MCK::Input::GamepadState();
+        
+        //testComp.input.x() = joyIn.axes[MCK::GamepadAxes::LEFT_X];
+        //testComp.input.y() = -joyIn.axes[MCK::GamepadAxes::LEFT_Y];
+
+        scene.UpdateScene();
+        
+
         MCK::Rendering::Renderer::RenderFrame();
 
         /* Swap front and back buffers */
