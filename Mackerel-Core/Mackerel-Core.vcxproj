@@ -28,6 +28,7 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
+    <ClCompile Include="src\BoxColliderComponent.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
     <ClCompile Include="src\Component.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
     <ClInclude Include="ext\nlohmann\json.hpp" />
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="src\BoxColliderComponent.h" />
     <ClInclude Include="src\CameraComponent.h" />
     <ClInclude Include="src\ColliderTypes.h" />
     <ClInclude Include="src\CollisionComponent.h" />

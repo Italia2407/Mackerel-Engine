@@ -252,6 +252,9 @@
     <ClCompile Include="src\CameraComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\BoxColliderComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
     <ClCompile Include="src\CollisionComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
@@ -472,6 +475,9 @@
     </ClInclude>
     <ClInclude Include="src\CreateCollisionShapeInfo.h">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoxColliderComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
