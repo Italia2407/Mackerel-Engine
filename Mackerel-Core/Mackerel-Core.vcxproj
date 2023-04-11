@@ -115,6 +115,7 @@
     <ClInclude Include="src\MouseState.h" />
     <ClInclude Include="src\MeshRendererComponent.h" />
     <ClInclude Include="src\ProjectionCamera.h" />
+    <ClInclude Include="src\RaycastHitInfo.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\RigidbodyComponent.h" />

@@ -47,6 +47,12 @@ namespace MCK::Physics
 		sceneColliders.erase(id);
 	}
 
+	RaycastHit Raycast()
+	{
+		RaycastHit cast{};
+		return cast;
+	}
+
 	void PhysicsWorld::ApplySimulation(double delta)
 	{
 		// Step

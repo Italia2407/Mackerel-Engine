@@ -479,6 +479,9 @@
     <ClInclude Include="src\BoxColliderComponent.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\RaycastHitInfo.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
