@@ -17,4 +17,10 @@ namespace MCK::Physics
 		// if something has been hit
 		bool hit;
 	};
+
+	struct RaycastHits
+	{
+		int num_hits;
+		std::vector<RaycastHit> hits;
+	};
 }
