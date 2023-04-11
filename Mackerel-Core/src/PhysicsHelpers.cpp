@@ -7,18 +7,18 @@ namespace MCK::Physics::PhysicsHelpers
 		return static_cast<RigidbodyComponent*>(btBody->getUserPointer());
 	}
 
-	MCK::EntitySystem::Component* GetDynamicsComponent(btCollisionObject* dynamicsObject)
+	MCK::EntitySystem::Component* GetDynamicsComponent(const btCollisionObject* dynamicsObject)
 	{
 		return static_cast<MCK::EntitySystem::Component*>(dynamicsObject->getUserPointer());
 	}
 
-	MCK::EntitySystem::Entity* GetEntity(btCollisionObject* dynamicsObject)
+	MCK::EntitySystem::Entity* GetEntity(const btCollisionObject* dynamicsObject)
 	{
 		MCK::EntitySystem::Component* correspondingComponent = GetDynamicsComponent(dynamicsObject);
 		return correspondingComponent->entity;
 	}
 
-	bool IsRigidbody(btCollisionObject* dynamicsObject)
+	bool IsRigidbody(const btCollisionObject* dynamicsObject)
 	{
 		return dynamicsObject->getInternalType() == btCollisionObject::CollisionObjectTypes::CO_RIGID_BODY;
 	}

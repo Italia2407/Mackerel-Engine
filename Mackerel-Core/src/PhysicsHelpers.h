@@ -22,14 +22,14 @@ namespace MCK::Physics::PhysicsHelpers
 	 * \param dynamicsObject: the bullet physics object
 	 * \return A pointer to the entity
 	 */
-	MCK::EntitySystem::Entity* GetEntity(btCollisionObject* dynamicsObject);
+	MCK::EntitySystem::Entity* GetEntity(const btCollisionObject* dynamicsObject);
 
 	/**
 	 * Whether a dynamics object is a Rigidbody.
 	 * 
 	 * \param dynamicsObject: the bullet physics object
 	 */
-	bool IsRigidbody(btCollisionObject* dynamicsObject);
+	bool IsRigidbody(const btCollisionObject* dynamicsObject);
 
 	/**
 	* Creates a btBoxShape entity and returns a pointer to it as a btCollisionShape.

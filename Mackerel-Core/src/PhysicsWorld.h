@@ -3,6 +3,7 @@
 #include "RigidbodyComponent.h"
 #include "CollisionComponent.h"
 #include "RaycastHitInfo.h"
+#include "PhysicsHelpers.h"
 #include "Component.h"
 #include "Entity.h"
 #include "../bullet3-master/src/btBulletDynamicsCommon.h"
@@ -32,7 +33,7 @@ namespace MCK::Physics
 
 		void RemoveCollider(entityId id);
 
-		RaycastHit Raycast();
+		RaycastHit Raycast(btVector3 start, btVector3 end);
 
 		/**
 		 * Applies the simulation transforms to all rigidbodies

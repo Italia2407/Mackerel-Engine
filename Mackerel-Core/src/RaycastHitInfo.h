@@ -7,7 +7,7 @@ namespace MCK::Physics
 	struct RaycastHit
 	{
 		// reference to hit entity
-		btCollisionObject* hitObject;
+		MCK::EntitySystem::Entity* hitEntity;
 
 		// some information
 		btVector3 point;

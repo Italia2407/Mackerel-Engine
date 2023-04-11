@@ -47,9 +47,24 @@ namespace MCK::Physics
 		sceneColliders.erase(id);
 	}
 
-	RaycastHit Raycast()
+	RaycastHit PhysicsWorld::Raycast(btVector3 start, btVector3 end)
 	{
 		RaycastHit cast{};
+		cast.hit = false;
+
+		btCollisionWorld::ClosestRayResultCallback RayCallback(start, end);
+
+		dynamicsWorld->rayTest(start, end, RayCallback);
+		
+		// set the raycast hit struct information
+		cast.distance = end - start;
+		cast.point = RayCallback.m_hitPointWorld;
+		cast.normal = RayCallback.m_hitNormalWorld;
+		if (RayCallback.hasHit())
+			cast.hit = true;
+
+		cast.hitEntity = PhysicsHelpers::GetEntity(RayCallback.m_collisionObject);
+
 		return cast;
 	}
 
