@@ -19,20 +19,19 @@ namespace MCK
 			 * 
 			 * \return Associated GLFWwindow pointer
 			 */
-			inline GLFWwindow* operator*() const
-			{
-				return _window;
-			}
-
-			inline int Width()
-			{
-				return _width;
-			}
-
-			inline int Height()
-			{
-				return _height;
-			}
+			GLFWwindow* operator*() const;
+			/**
+			 * Returns the width of the window associated with this context.
+			 * 
+			 * \return The window width
+			 */
+			int Width();
+			/**
+			 * Returns the height of the window associated with this context.
+			 *
+			 * \return The window height
+			 */
+			int Height();
 
 		private:
 			GLFWwindow* _window = nullptr;

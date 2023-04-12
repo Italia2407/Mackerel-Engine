@@ -32,6 +32,7 @@ namespace MCK
 
 				Context* context = new Context();
 				glfwMakeContextCurrent(**context);
+				AppAttorney::App_Instance::SetContext(application, context);
 				gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
 				/* Initialise other systems */

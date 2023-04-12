@@ -17,6 +17,21 @@ MCK::Context::~Context()
 	glfwDestroyWindow(_window);
 }
 
+GLFWwindow* MCK::Context::operator*() const
+{
+	return _window;
+}
+
+int MCK::Context::Width()
+{
+	return _width;
+}
+
+int MCK::Context::Height()
+{
+	return _height;
+}
+
 void MCK::Context::resizeWindow(GLFWwindow* window, int screenWidth, int screenHeight)
 {
 	MCK::Rendering::Renderer::ResizeRenderer((GLuint)screenWidth, (GLuint)screenHeight);

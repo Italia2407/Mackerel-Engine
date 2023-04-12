@@ -2,6 +2,8 @@
 
 #include "App.h"
 
+class Context;
+
 namespace MCK
 {
 	class AppAttorney
@@ -10,6 +12,11 @@ namespace MCK
 			class App_Instance /* private App member functions exposed to the Instance class */
 			{
 				friend class Instance;
+
+				static void SetContext(App* app, Context* context)
+				{
+					app->SetContext(context);
+				}
 
 				static void BeforeLoop(App* app)
 				{

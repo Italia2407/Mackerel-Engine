@@ -30,6 +30,11 @@ void MCK::App::Unload()
 void MCK::App::Release()
 {}
 
+void MCK::App::SetContext(Context* context)
+{
+	this->context = context;
+}
+
 void MCK::App::BeforeLoop()
 {
 	Init();

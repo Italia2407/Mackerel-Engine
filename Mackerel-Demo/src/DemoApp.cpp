@@ -88,6 +88,7 @@ void DemoApp::Start()
 void DemoApp::Update()
 {
     cubeInput = { 0,0 };
+    cameraComponent->AspectRatio() = static_cast<float>(context->Width()) / context->Height();
 
     auto joyIn = MCK::Input::GamepadState();
 

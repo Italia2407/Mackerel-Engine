@@ -1,6 +1,6 @@
 #pragma once
 
-struct GLFWwindow;
+#include "Context.h"
 
 namespace MCK
 {
@@ -16,6 +16,8 @@ namespace MCK
 			App& operator=(const App&) = delete;
 
 		protected:
+			Context* context = nullptr;
+
 			virtual void Init();
 			virtual void Load();
 			virtual void Start();
@@ -26,6 +28,8 @@ namespace MCK
 			virtual void Release();
 
 		private:
+			void SetContext(Context* context);
+
 			void BeforeLoop();
 			void DuringLoop();
 			void AfterLoop();
