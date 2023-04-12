@@ -207,9 +207,6 @@
     <ClCompile Include="src\TextureLibrary.cpp">
       <Filter>Source Files\Systems\Resource Management\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="src\InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ButtonEvents.h">
       <Filter>Source Files\Systems\Input System</Filter>
     </ClCompile>
@@ -244,9 +241,6 @@
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\RigidbodyComponent.cpp">
-      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RigidbodyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CameraComponent.cpp">
@@ -260,6 +254,12 @@
     </ClCompile>
     <ClCompile Include="src\PhysicsHelpers.cpp">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputManager.cpp">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RigidbodyComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
