@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "_Window.h"
 
 // Asset Headers
 #include "MeshLibrary.h"
@@ -484,7 +484,7 @@ void SayHello3()
         MCK::Input::InputManager::Update(window);
         MCK::TimeManager::Update();
 
-        auto joyIn = MCK::Input::GamepadState();
+        auto& joyIn = MCK::Input::GamepadState();
         
         //testComp.input.x() = joyIn.axes[MCK::GamepadAxes::LEFT_X];
         //testComp.input.y() = -joyIn.axes[MCK::GamepadAxes::LEFT_Y];
