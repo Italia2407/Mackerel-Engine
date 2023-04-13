@@ -16,6 +16,7 @@
 #include <TestComponent.h>
 #include <RigidbodyComponent.h>
 #include <CollisionComponent.h>
+#include <InputComponent.h>
 
 class DemoApp : public MCK::App
 {
@@ -39,6 +40,7 @@ class DemoApp : public MCK::App
 		MCK::Physics::RigidbodyComponent rigidComp;
 		MCK::EntitySystem::TransformComponent floorTransform;
 		MCK::Physics::CollisionComponent collisionComp;
+		MCK::EntitySystem::InputComponent inputComp;  
 
 		MCK::InputCallback cubeInputCallback;
 		MCK::Input::InputSubReceipt receipt;

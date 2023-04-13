@@ -30,7 +30,7 @@ void DemoApp::MovingCubeCallback(int32_t key, MCK::ButtonEvents ButtonEvents)
         inp.y() = 0.f;
     }
     cubeInput = inp;
-    std::cout << "k" << key << " b" << (int)ButtonEvents << std::endl;
+    //std::cout << "k" << key << " b" << (int)ButtonEvents << std::endl;
 }
 
 #include <filesystem>
@@ -47,11 +47,11 @@ void DemoApp::Start()
     floorTransform.Scale() = Eigen::Vector3f({ 10, 1, 10 });
 
     /* Input setup */
-    cubeInputCallback = std::bind(&DemoApp::MovingCubeCallback, this, std::placeholders::_1, std::placeholders::_2); /* <- syntax for member functions */
-    MCK::Input::Subscribe(MCK::Key::W, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
-    MCK::Input::Subscribe(MCK::Key::A, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
-    MCK::Input::Subscribe(MCK::Key::D, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
-    MCK::Input::Subscribe(MCK::Key::S, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+    //cubeInputCallback = std::bind(&DemoApp::MovingCubeCallback, this, std::placeholders::_1, std::placeholders::_2); /* <- syntax for member functions */
+    //MCK::Input::Subscribe(MCK::Key::W, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+    //MCK::Input::Subscribe(MCK::Key::A, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+    //MCK::Input::Subscribe(MCK::Key::D, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+    //MCK::Input::Subscribe(MCK::Key::S, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
 
     /* Graphics setup */
     testMesh = new MCK::AssetType::Mesh("Test Mesh");
@@ -75,6 +75,8 @@ void DemoApp::Start()
     //entity->AddComponent(&testComp);
     entity->AddComponent(meshRenderer);
     entity->AddComponent(&rigidComp);
+
+    entity->AddComponent(&inputComp);
 
     floorEntity->AddComponent(&floorTransform);
     floorEntity->AddComponent(&collisionComp);
