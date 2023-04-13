@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef LOGGINGSYSTEM_H
-#define LOGGINGSYSTEM_H
-
 #include <easyloggingpp-9.97.0/src/easylogging++.h>
 #include <source_location>
 #include <filesystem>
@@ -106,5 +103,3 @@ namespace MCK {
     };
 
 } // namespace MCK
-
-#endif // LOGGINGSYSTEM_H

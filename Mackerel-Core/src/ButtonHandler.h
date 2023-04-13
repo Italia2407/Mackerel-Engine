@@ -2,7 +2,7 @@
 
 
 #include <functional>
-#include <GLFW/glfw3.h>
+#include "GLinclude.h"
 #include <list>
 #include <vector>
 
