@@ -276,6 +276,9 @@
     <ClCompile Include="src\Context.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="src\InputComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -1522,6 +1525,9 @@
     </ClInclude>
     <ClInclude Include="src\Assets.h">
       <Filter>Source Files\Include Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InputComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
