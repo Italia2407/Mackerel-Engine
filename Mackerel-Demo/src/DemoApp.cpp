@@ -47,11 +47,7 @@ void DemoApp::Start()
     floorTransform.Scale() = Eigen::Vector3f({ 10, 1, 10 });
 
     /* Input setup */
-    //cubeInputCallback = std::bind(&DemoApp::MovingCubeCallback, this, std::placeholders::_1, std::placeholders::_2); /* <- syntax for member functions */
-    //MCK::Input::Subscribe(MCK::Key::W, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
-    //MCK::Input::Subscribe(MCK::Key::A, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
-    //MCK::Input::Subscribe(MCK::Key::D, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
-    //MCK::Input::Subscribe(MCK::Key::S, MCK::ButtonEvents::Held, cubeInputCallback, &receipt);
+    entity->AddComponent(&inputComp);
 
     /* Graphics setup */
     testMesh = new MCK::AssetType::Mesh("Test Mesh");
@@ -76,8 +72,6 @@ void DemoApp::Start()
     entity->AddComponent(meshRenderer);
     entity->AddComponent(&rigidComp);
 
-    entity->AddComponent(&inputComp);
-
     floorEntity->AddComponent(&floorTransform);
     floorEntity->AddComponent(&collisionComp);
     floorEntity->AddComponent(floorRenderer);
@@ -91,11 +85,6 @@ void DemoApp::Update()
 {
     cubeInput = { 0,0 };
     cameraComponent->AspectRatio() = static_cast<float>(context->Width()) / context->Height();
-
-    auto joyIn = MCK::Input::GamepadState();
-
-    //testComp.input.x() = joyIn.axes[MCK::GamepadAxes::LEFT_X];
-    //testComp.input.y() = -joyIn.axes[MCK::GamepadAxes::LEFT_Y];
 
     scene.UpdateScene();
 }

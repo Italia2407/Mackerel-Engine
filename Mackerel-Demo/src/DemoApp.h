@@ -42,7 +42,6 @@ class DemoApp : public MCK::App
 		MCK::Physics::CollisionComponent collisionComp;
 		MCK::EntitySystem::InputComponent inputComp;  
 
-		MCK::InputCallback cubeInputCallback;
 		MCK::Input::InputSubReceipt receipt;
 
 		MCK::AssetType::Mesh* testMesh = nullptr;
