@@ -2,6 +2,7 @@
 
 #include "Eigen/Eigen.h"
 #include "Component.h"
+#include "Input.h"
 
 namespace MCK::EntitySystem
 {
@@ -9,9 +10,18 @@ namespace MCK::EntitySystem
 	{
 	private:
 		Eigen::Vector2f direction;  
+		bool jumpPressed;
+		bool jumpHeld;
+
+		MCK::InputCallback buttonInputCallback;   
+		MCK::Input::InputSubReceipt receipt; 
+
+		void MovingPlayerCallback(int32_t key, MCK::ButtonEvents ButtonEvents);
 
 	public:
 		inline Eigen::Vector2f& Direction() { return direction; }
+		inline bool& JumpPressed() { return jumpPressed; }
+		inline bool& JumpHeld() { return jumpHeld; }
 
 	public:
 		void OnCreate() override;
