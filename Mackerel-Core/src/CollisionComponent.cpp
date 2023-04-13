@@ -56,7 +56,7 @@ namespace MCK::Physics
 
 		collider = new btCollisionObject();
 		collider->setCollisionShape(collisionShape);
-		collider->setUserPointer(static_cast<void*>(entity));
+		collider->setUserPointer(static_cast<void*>(this));
 
 		UpdateColliderTransform();
 

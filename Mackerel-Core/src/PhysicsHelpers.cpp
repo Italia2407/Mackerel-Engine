@@ -25,20 +25,20 @@ namespace MCK::Physics::PhysicsHelpers
 
 	btCollisionShape* CreateBoxShape(btVector3 halfExtents)
 	{
-		btBoxShape box = btBoxShape(halfExtents);
-		return static_cast<btCollisionShape*>(box.getUserPointer());
+		btBoxShape* box = new btBoxShape(halfExtents);
+		return static_cast<btCollisionShape*>(box);
 	}
 
 	btCollisionShape* CreateSphereShape(float radius)
 	{
-		btSphereShape sphere = btSphereShape(radius);
-		return static_cast<btCollisionShape*>(sphere.getUserPointer());
+		btSphereShape* sphere = new btSphereShape(radius);
+		return static_cast<btCollisionShape*>(sphere);
 	}
 
 	btCollisionShape* CreateCapsuleShape(float width, float height)
 	{
-		btCapsuleShape capsule = btCapsuleShape(width, height);
-		return static_cast<btCollisionShape*>(capsule.getUserPointer());
+		btCapsuleShape* capsule = new btCapsuleShape(width, height);
+		return static_cast<btCollisionShape*>(capsule);
 	}
 
 	void InitialiseCollider(CreateCollisionShapeInfo shapeInfo, btCollisionShape*& collisionShape)

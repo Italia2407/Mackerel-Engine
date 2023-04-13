@@ -490,6 +490,10 @@ void SayHello3()
         //testComp.input.y() = -joyIn.axes[MCK::GamepadAxes::LEFT_Y];
 
         scene.UpdateScene();
+
+        btVector3 rayStart(0, -3, 0);
+        btVector3 rayEnd(0, -3, 30);
+        MCK::Physics::RaycastHit hit = scene.physicsWorld.Raycast(rayStart, rayEnd);
         
 
         MCK::Rendering::Renderer::RenderFrame();
