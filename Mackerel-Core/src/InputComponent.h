@@ -9,7 +9,15 @@ namespace MCK::EntitySystem
 	class InputComponent : public Component
 	{
 	private:
-		Eigen::Vector2f direction;  
+		Eigen::Vector2f keyboardDirection;  
+		bool keyboardJumpPressed;
+		bool keyboardJumpHeld;
+
+		Eigen::Vector2f gamepadDirection;
+		bool gamepadJumpPressed;
+		bool gamepadJumpHeld;
+
+		Eigen::Vector2f direction;
 		bool jumpPressed;
 		bool jumpHeld;
 

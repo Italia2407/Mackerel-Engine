@@ -51,65 +51,65 @@ namespace MCK::EntitySystem
 		{
 			if (key == MCK::Key::W)
 			{
-				direction.y() -= moveSpeed;
+				keyboardDirection.y() -= moveSpeed;
 			}
 			else if (key == MCK::Key::S)
 			{
-				direction.y() += moveSpeed;
+				keyboardDirection.y() += moveSpeed;
 			}
 			else if (key == MCK::Key::A)
 			{
-				direction.x() -= moveSpeed;
+				keyboardDirection.x() -= moveSpeed;
 			}
 			else if (key == MCK::Key::D)
 			{
-				direction.x() += moveSpeed;
+				keyboardDirection.x() += moveSpeed;
 			}
 			else if (key == MCK::Key::SPACE)
 			{
-				jumpHeld = true;
+				keyboardJumpHeld = true;
 			}
 		}
 		else if (ButtonEvents == MCK::ButtonEvents::Released)
 		{
 			if (key == MCK::Key::W)
 			{
-				direction.y() += moveSpeed;
+				keyboardDirection.y() += moveSpeed;
 			}
 			else if (key == MCK::Key::S)
 			{
-				direction.y() -= moveSpeed;
+				keyboardDirection.y() -= moveSpeed;
 			}
 			else if (key == MCK::Key::A)
 			{
-				direction.x() += moveSpeed;
+				keyboardDirection.x() += moveSpeed;
 			}
 			else if (key == MCK::Key::D)
 			{
-				direction.x() -= moveSpeed;
+				keyboardDirection.x() -= moveSpeed;
 			}
 			else if (key == MCK::Key::SPACE)
 			{
-				jumpHeld = false;
+				keyboardJumpHeld = false;
+				keyboardJumpPressed = false;
 			}
 		}
 		else if (ButtonEvents == MCK::ButtonEvents::Pressed)
 		{
 			if (key == MCK::Key::SPACE)
 			{
-				jumpPressed = true;
+				keyboardJumpPressed = true;
 			}
 		}
 
 		// Normalize the direction vector
-		if (direction.norm() > 0)
+		if (keyboardDirection.norm() > 0)
 		{
-			direction.normalize();
+			keyboardDirection.normalize();
 		}
 
-		std::cout << "k" << key << " b" << (int)ButtonEvents << " x" << direction.x() << " y" << direction.y() << std::endl;
+		std::cout << "k" << key << " b" << (int)ButtonEvents << " x" << keyboardDirection.x() << " y" << keyboardDirection.y() << std::endl;
 	}
-
 
 	/**
 	* Invoked when the component is updated each frame.
@@ -119,40 +119,46 @@ namespace MCK::EntitySystem
 	{
 
 		// query gamepad state
-		auto gamepadState = Input::GamepadState(); 
+		auto gamepadState = Input::GamepadState();
 
 		// Update direction based on gamepad axes
-		direction.x() = gamepadState.axes[MCK::GamepadAxes::LEFT_X];
-		direction.y() = gamepadState.axes[MCK::GamepadAxes::LEFT_Y];
+		gamepadDirection.x() = gamepadState.axes[MCK::GamepadAxes::LEFT_X];
+		gamepadDirection.y() = gamepadState.axes[MCK::GamepadAxes::LEFT_Y];
 
 		// Normalize the direction vector
-		if (direction.norm() > 0)
+		if (gamepadDirection.norm() > 0)
 		{
-			direction.normalize();
+			gamepadDirection.normalize();
 		}
 
 		// Update jump held and jump pressed based on gamepad buttons
 		auto event = static_cast<MCK::ButtonEvents>(gamepadState.buttons[MCK::GamepadButton::CROSS]);
 
 		// The button is pressed and was not held before
-		bool crossPressed = (event == MCK::ButtonEvents::Pressed) && !jumpHeld;
+		bool crossPressed = (event == MCK::ButtonEvents::Pressed) && !gamepadJumpHeld;
 
 		// The button is held or pressed
-		bool crossHeld = (event == MCK::ButtonEvents::Held) || (event == MCK::ButtonEvents::Pressed);
+		bool crossHeld = (event == MCK::ButtonEvents::Held);
 
 		// Update jumpPressed and jumpHeld only if the state has changed
-		if (crossPressed != jumpPressed || crossHeld != jumpHeld)
+		if (crossPressed != gamepadJumpPressed || crossHeld != gamepadJumpHeld)
 		{
-			jumpPressed = crossPressed;
-			jumpHeld = crossHeld;
+			gamepadJumpPressed = crossPressed;
+			gamepadJumpHeld = crossHeld;
 		}
+
+		jumpPressed = keyboardJumpPressed || gamepadJumpPressed;
+		jumpHeld = keyboardJumpHeld || gamepadJumpHeld;
+		direction = keyboardDirection + gamepadDirection;
+
+		std::cout << "Direction: " << direction << " JumpHeld: " << jumpPressed << " JumpHeld: " << jumpHeld << std::endl;
 	}
 
 	/**
 	* Invoked before the entity holding this component is destroyed.
 	*
 	*/
-	void InputComponent::OnDestroy() 
+	void InputComponent::OnDestroy()
 	{
 		MCK::Input::Unsubscribe(&receipt);
 	}
