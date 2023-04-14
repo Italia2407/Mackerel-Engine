@@ -13,6 +13,7 @@
 // Logging Headers
 #include "LoggingSystem.h"
 #include <format>
+#include <glm/gtx/string_cast.hpp>
 
 // Asset Headers
 #include "Mesh.h"
@@ -71,22 +72,22 @@ bool Renderer::InitialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	k_DisplayScreenUniforms = new UniformBuffer();
 
 	// Add Position to Display Screen Uniform Buffer
-	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("position", Eigen::Vector3f::Zero())) {
+	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("position", glm::vec3(0.0f))) {
 		Logger::log("Could not Add Position to Display Screen Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Front to Display Screen Uniform Buffer
-	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("front", Eigen::Vector3f(0.0f, 0.0f, -1.0f))) {
+	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("front", glm::vec3(0.0f, 0.0f, -1.0f))) {
 		Logger::log("Could not Add Front to Display Screen Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Up to Display Screen Uniform Buffer
-	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("up", Eigen::Vector3f(0.0f, 1.0f, 0.0f))) {
+	if (!k_DisplayScreenUniforms->AddVec3BufferUniform("up", glm::vec3(0.0f, 1.0f, 0.0f))) {
 		Logger::log("Could not Add Up to Display Screen Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Camera Projection Matrix to Display Screen Uniform Buffer
-	if (!k_DisplayScreenUniforms->AddMat4BufferUniform("cameraProjectionMatrix", Eigen::Matrix4f::Identity())) {
+	if (!k_DisplayScreenUniforms->AddMat4BufferUniform("cameraProjectionMatrix", glm::mat4(1.0f))) {
 		Logger::log("Could not Add Camera Projection Matrix to Display Screen Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
@@ -320,28 +321,28 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	m_CameraBuffer = new UniformBuffer();
 	
 	// Add Position to Camera Uniform Buffer
-	if (!m_CameraBuffer->AddVec3BufferUniform("position", Eigen::Vector3f::Zero())) {
+	if (!m_CameraBuffer->AddVec3BufferUniform("position", glm::vec3(0.0f))) {
 		resetRenderer();
 
 		Logger::log("Could not Add Position to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Front to Camera Uniform Buffer
-	if (!m_CameraBuffer->AddVec3BufferUniform("front", Eigen::Vector3f(0.0f, 0.0f, -1.0f))) {
+	if (!m_CameraBuffer->AddVec3BufferUniform("front", glm::vec3(0.0f, 0.0f, -1.0f))) {
 		resetRenderer();
 
 		Logger::log("Could not Add Front to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Up to Camera Uniform Buffer
-	if (!m_CameraBuffer->AddVec3BufferUniform("up", Eigen::Vector3f(0.0f, 1.0f, 0.0f))) {
+	if (!m_CameraBuffer->AddVec3BufferUniform("up", glm::vec3(0.0f, 1.0f, 0.0f))) {
 		resetRenderer();
 
 		Logger::log("Could not Add Up to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Camera Projection Matrix to Camera Uniform Buffer
-	if (!m_CameraBuffer->AddMat4BufferUniform("cameraProjectionMatrix", Eigen::Matrix4f::Identity())) {
+	if (!m_CameraBuffer->AddMat4BufferUniform("cameraProjectionMatrix", glm::mat4(1.0f))) {
 		resetRenderer();
 
 		Logger::log("Could not Add Camera Projection Matrix to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
@@ -361,7 +362,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	m_MeshTransformBuffer = new UniformBuffer();
 
 	// Add Transform Matrix to Mesh Transform Uniform Buffer
-	if (!m_MeshTransformBuffer->AddMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity())) {
+	if (!m_MeshTransformBuffer->AddMat4BufferUniform("transformMatrix", glm::mat4(1.0f))) {
 		resetRenderer();
 
 		Logger::log("Could not Add Transform Matrix to Mesh Transform Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
@@ -685,7 +686,8 @@ bool Renderer::queueSpotLight(SpotLight* spotLight)
 bool Renderer::useCamera(const EntitySystem::CameraComponent& a_Camera)
 {
 	// Compute Camera ViewProjection Matrix
-	Eigen::Matrix4f cameraViewProjectionMatrix = a_Camera.GetProjectionMatrix() * a_Camera.GetCameraViewMatrix();
+	//Eigen::Matrix4f cameraViewProjectionMatrix = a_Camera.GetCameraViewMatrix();
+	glm::mat4 cameraViewProjectionMatrix = a_Camera.GetProjectionMatrix() * a_Camera.GetCameraViewMatrix();
 
 	// Set Camera Uniform Buffer Values
 	if (!m_CameraBuffer->SetVec3BufferUniform("position", a_Camera.Position())) {
@@ -721,28 +723,33 @@ bool Renderer::renderFrame()
 	glClearColor(0.5f, 0.4f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+
+	// Render Scene to the Geometry Buffer
 	m_CameraBuffer->BindUniformBufferObject(0);
 	m_MeshTransformBuffer->BindUniformBufferObject(1);
 
-	// Render Scene to the Geometry Buffer
+	glEnable(GL_DEPTH_TEST);
+
 	if (!m_GeometryBuffer || !renderGBuffer()) {
 		Logger::log("Could not Render to Geometry Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
-
 	// TODO:
 	// Render Shadow Maps for All Lights
 
+
+	glDisable(GL_DEPTH_TEST);
+
+	// Render to Deferred Buffer
+	k_DisplayScreenUniforms->BindUniformBufferObject(0);
+	//std::cout << "Transform Matrix Identity: " << glm::to_string(glm::mat4(1.0f)) << std::endl;
+	m_MeshTransformBuffer->SetMat4BufferUniform("transformMatrix", glm::mat4(1.0f));
 
 	// Enable Additive Blending for Overlapping Fragments
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 
-	k_DisplayScreenUniforms->BindUniformBufferObject(0);
-	m_MeshTransformBuffer->SetMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity());
-
-	// Render to Deferred Buffer
 	if (!m_DeferredBuffer || !renderDeferredBuffer()) {
 		Logger::log("Could not Render to Deferred Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
@@ -753,16 +760,18 @@ bool Renderer::renderFrame()
 
 
 	// TODO:
-	m_CameraBuffer->BindUniformBufferObject(0);
-	
 	// Render Transparency Buffer
+	m_CameraBuffer->BindUniformBufferObject(0);
 
+	glEnable(GL_DEPTH_TEST);
+
+	glDisable(GL_DEPTH_TEST);
 
 	// Display Frame to Scene
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	k_DisplayScreenUniforms->BindUniformBufferObject(0);
-	m_MeshTransformBuffer->SetMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity());
+	m_MeshTransformBuffer->SetMat4BufferUniform("transformMatrix", glm::mat4(1.0f));
 
 	// Load Framebuffer Output Texture
 	//auto FBOutputTexture = m_GeometryBuffer->GetColourAttachmentTexture(4);

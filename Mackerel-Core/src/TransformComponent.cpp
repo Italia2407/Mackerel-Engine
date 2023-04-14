@@ -11,10 +11,10 @@ namespace MCK::EntitySystem
 * Returns Transformation Matrix of Entity
 * Takes Parent Entity Transformations into Account
 */
-Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
+glm::mat4 TransformComponent::GetTransformationMatrix() const
 {
 	// Get Parent Entity's Transformation Matrix, if Existstant
-	Eigen::Matrix4f parentMatrix = Eigen::Matrix4f::Identity();
+	glm::mat4 parentMatrix = glm::mat4(1.0f);
 
 	if (entity->parent != nullptr) {
 		TransformComponent* parentTransform = entity->parent->GetComponent<TransformComponent>();
@@ -68,30 +68,30 @@ bool TransformComponent::Deserialise(json data)
 	data = data["data"];
 
 	// Get Transform Component's Position
-	Position().x() = data["positionX"];
-	Position().y() = data["positionY"];
-	Position().z() = data["positionZ"];
+	Position().x = data["positionX"];
+	Position().y = data["positionY"];
+	Position().z = data["positionZ"];
 
 	// Get Transform Component's Rotation
-	Rotation().x() = data["rotationAxisX"];
-	Rotation().y() = data["rotationAxisY"];
-	Rotation().z() = data["rotationAxisZ"];
-	Rotation().w() = data["rotationAmount"];
+	Rotation().x = data["rotationAxisX"];
+	Rotation().y = data["rotationAxisY"];
+	Rotation().z = data["rotationAxisZ"];
+	Rotation().w = data["rotationAmount"];
 
 	// Get Transform Component's Scale
-	Scale().x() = data["scaleX"];
-	Scale().y() = data["scaleY"];
-	Scale().z() = data["scaleZ"];
+	Scale().x = data["scaleX"];
+	Scale().y = data["scaleY"];
+	Scale().z = data["scaleZ"];
 
 	// Get Transform Component's Shear
-	YZPlaneShear().x() = data["YZPlaneShearY"];
-	YZPlaneShear().y() = data["YZPlaneShearZ"];
+	YZPlaneShear().x = data["YZPlaneShearY"];
+	YZPlaneShear().y = data["YZPlaneShearZ"];
 
-	XZPlaneShear().x() = data["XZPlaneShearX"];
-	XZPlaneShear().y() = data["XZPlaneShearZ"];
+	XZPlaneShear().x = data["XZPlaneShearX"];
+	XZPlaneShear().y = data["XZPlaneShearZ"];
 
-	XYPlaneShear().x() = data["XYPlaneShearX"];
-	XYPlaneShear().y() = data["XYPlaneShearY"];
+	XYPlaneShear().x = data["XYPlaneShearX"];
+	XYPlaneShear().y = data["XYPlaneShearY"];
 
 	return true;
 }

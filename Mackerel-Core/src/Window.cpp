@@ -8,6 +8,7 @@
 #include "LoggingSystem.h"
 
 #include <iostream>
+#include <format>
 #include <glad/glad.h>
 #include "GLFW/glfw3.h"
 
@@ -16,6 +17,7 @@
 #include "backends/imgui_impl_glfw.h"
 
 #include <Eigen/Dense.h>
+#include <glm/glm.hpp>
 #include <vector>
 #include <list>
 #include "Entity.h"
@@ -33,10 +35,12 @@
 #include "OrthographicCamera.h"
 #include "ProjectionCamera.h"
 
+
 MCK::EntitySystem::TransformComponent testTransform;
 MCK::EntitySystem::TransformComponent par;
 
 MCK::EntitySystem::ProjectionCamera* camera;
+//MCK::EntitySystem::OrthographicCamera* camera;
 
 void FramebufferResizeCallback(GLFWwindow* window, int screenWidth, int screenHeight)
 {
@@ -107,8 +111,8 @@ void SayHello()
 
     e1->parent = e2;
 
-    testTransform.Position().x() = 0.0f;
-    par.Position().y() = 0.0f;
+    testTransform.Position().x = 0.0f;
+    par.Position().y = 0.0f;
 
 	// Initialise GLFW
     if (!glfwInit())
@@ -227,10 +231,10 @@ void SayHello()
     MCK::Rendering::Renderer::InitialiseRenderer(1280, 720);
 
     MCK::AssetType::Mesh* testMesh = new MCK::AssetType::Mesh("Test Mesh");
-    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
+    testMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne-Copy.obj");
     MCK::AssetType::Material* testMaterial = new MCK::AssetType::Material();
     testMaterial->addUInt16Uniform("lightShaderID", 0);
-    testMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(1.0f, 1.0f, 1.0f));
+    testMaterial->addVec3Uniform("albedoColour", glm::vec3(1.0f, 1.0f, 1.0f));
 
     MCK::AssetType::Shader* unlitShader;
     MCK::AssetType::Shader* monocolourShader;
@@ -240,8 +244,10 @@ void SayHello()
 
     MCK::Rendering::Renderer::AddUnlitShader(unlitShader);
 
-    camera = new MCK::EntitySystem::ProjectionCamera(1280.0f / 720.0f);
-    camera->Position() = Eigen::Vector3f(0.0f, 0.0f, -3.0f);
+    //camera = new MCK::EntitySystem::OrthographicCamera(1280.0f / 720.0f, 1.0f, -1.0f, 1.0f, -1.0f, 10.0f, 0.0f);
+    camera = new MCK::EntitySystem::ProjectionCamera(1280.0f / 720.0f, 45.0f, 10.0f, 0.0f);
+    camera->Position() = glm::vec3(0.0f, 0.0f, 3.0f);
+    camera->FrontDirection() = glm::vec3(0.0f, 0.0f, -1.0f);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -252,12 +258,12 @@ void SayHello()
         // Time Manager
         MCK::TimeManager::Update();
 
+        //camera->Position().z() -= 0.001f;
+
         //ImGui
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
-        camera->Position() += Eigen::Vector3f(0.0f, 0.0f, -0.001f);
 
         // Set Renderer Data
         MCK::Rendering::Renderer::QueueMeshInstance(testTransform, testMesh, monocolourShader, testMaterial, false);

@@ -1,7 +1,8 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <Eigen/Core.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace MCK {
 struct UniformData
@@ -120,74 +121,74 @@ struct DoubleUniform : UniformData
 
 struct Vec2Uniform : UniformData
 {
-	Vec2Uniform(Eigen::Vector2f value) :
+	Vec2Uniform(glm::vec2 value) :
 		UniformData(), value(value) {}
 
-	Eigen::Vector2f value;
+	glm::vec2 value;
 
-	void* getUniformValue() override { return value.data(); }
+	void* getUniformValue() override { return glm::value_ptr(value); }
 	GLuint getUniformSize() override { return 8; }
 };
 struct Vec3Uniform : UniformData
 {
-	Vec3Uniform(Eigen::Vector3f value) :
+	Vec3Uniform(glm::vec3 value) :
 		UniformData(), value(value) {}
 
-	Eigen::Vector3f value;
+	glm::vec3 value;
 
-	void* getUniformValue() override { return value.data(); }
+	void* getUniformValue() override { return glm::value_ptr(value); }
 	GLuint getUniformSize() override { return 16; }
 };
 struct Vec4Uniform : UniformData
 {
-	Vec4Uniform(Eigen::Vector4f value) :
+	Vec4Uniform(glm::vec4 value) :
 		UniformData(), value(value) {}
 
-	Eigen::Vector4f value;
+	glm::vec4 value;
 
-	void* getUniformValue() override { return value.data(); }
+	void* getUniformValue() override { return glm::value_ptr(value); }
 	GLuint getUniformSize() override { return 16; }
 };
 
 struct UVec2Uniform : UniformData
 {
-	UVec2Uniform(Eigen::Vector2<uint32_t> value) :
+	UVec2Uniform(glm::uvec2 value) :
 		UniformData(), value(value) {}
 
-	Eigen::Vector2<uint32_t> value;
+	glm::uvec2 value;
 
-	void* getUniformValue() override { return value.data(); }
+	void* getUniformValue() override { return glm::value_ptr(value); }
 	GLuint getUniformSize() override { return 8; }
 };
 struct UVec3Uniform : UniformData
 {
-	UVec3Uniform(Eigen::Vector3<uint32_t> value) :
+	UVec3Uniform(glm::uvec3 value) :
 		UniformData(), value(value) {}
 
-	Eigen::Vector3<uint32_t> value;
+	glm::uvec3 value;
 
-	void* getUniformValue() override { return value.data(); }
+	void* getUniformValue() override { return glm::value_ptr(value); }
 	GLuint getUniformSize() override { return 16; }
 };
 struct UVec4Uniform : UniformData
 {
-	UVec4Uniform(Eigen::Vector4<uint32_t> value) :
+	UVec4Uniform(glm::uvec4 value) :
 		UniformData(), value(value) {}
 
-	Eigen::Vector4<uint32_t> value;
+	glm::uvec4 value;
 
-	void* getUniformValue() override { return value.data(); }
+	void* getUniformValue() override { return glm::value_ptr(value); }
 	GLuint getUniformSize() override { return 16; }
 };
 
 struct Mat4Uniform : UniformData
 {
-	Mat4Uniform(Eigen::Matrix4f value) :
+	Mat4Uniform(glm::mat4 value) :
 		UniformData(), value(value) {}
 
-	Eigen::Matrix4f value;
+	glm::mat4 value;
 
-	void* getUniformValue() override { return value.data(); }
+	void* getUniformValue() override { return glm::value_ptr(value); }
 	GLuint getUniformSize() override { return 64; }
 };
 }

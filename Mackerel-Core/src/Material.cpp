@@ -155,7 +155,7 @@ bool Material::addDoubleUniform(std::string name, double value)
  * \param value: The Uniform's Value
  * \return Whether the Uniform was Successfully Added
  */
-bool Material::addVec2Uniform(std::string name, Eigen::Vector2f value)
+bool Material::addVec2Uniform(std::string name, glm::vec2 value)
 {
 	bool result = m_UniformBuffer->AddVec2BufferUniform(name, value);
 	return result;
@@ -167,7 +167,7 @@ bool Material::addVec2Uniform(std::string name, Eigen::Vector2f value)
  * \param value: The Uniform's Value
  * \return Whether the Uniform was Successfully Added
  */
-bool Material::addVec3Uniform(std::string name, Eigen::Vector3f value)
+bool Material::addVec3Uniform(std::string name, glm::vec3 value)
 {
 	bool result = m_UniformBuffer->AddVec3BufferUniform(name, value);
 	return result;
@@ -179,7 +179,7 @@ bool Material::addVec3Uniform(std::string name, Eigen::Vector3f value)
  * \param value: The Uniform's Value
  * \return Whether the Uniform was Successfully Added
  */
-bool Material::addVec4Uniform(std::string name, Eigen::Vector4f value)
+bool Material::addVec4Uniform(std::string name, glm::vec4 value)
 {
 	bool result = m_UniformBuffer->AddVec4BufferUniform(name, value);
 	return result;
@@ -192,7 +192,7 @@ bool Material::addVec4Uniform(std::string name, Eigen::Vector4f value)
  * \param value: The Uniform's Value
  * \return Whether the Uniform was Successfully Added
  */
-bool Material::addUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value)
+bool Material::addUVec2Uniform(std::string name, glm::uvec2 value)
 {
 	bool result = m_UniformBuffer->AddUVec2BufferUniform(name, value);
 	return result;
@@ -204,7 +204,7 @@ bool Material::addUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value)
  * \param value: The Uniform's Value
  * \return Whether the Uniform was Successfully Added
  */
-bool Material::addUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value)
+bool Material::addUVec3Uniform(std::string name, glm::uvec3 value)
 {
 	bool result = m_UniformBuffer->AddUVec3BufferUniform(name, value);
 	return result;
@@ -216,7 +216,7 @@ bool Material::addUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value)
  * \param value: The Uniform's Value
  * \return Whether the Uniform was Successfully Added
  */
-bool Material::addUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value)
+bool Material::addUVec4Uniform(std::string name, glm::uvec4 value)
 {
 	bool result = m_UniformBuffer->AddUVec4BufferUniform(name, value);
 	return result;
@@ -229,7 +229,7 @@ bool Material::addUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value)
  * \param value: The Uniform's Value
  * \return Whether the Uniform was Successfully Added
  */
-bool Material::addMat4Uniform(std::string name, Eigen::Matrix4f value)
+bool Material::addMat4Uniform(std::string name, glm::mat4 value)
 {
 	bool result = m_UniformBuffer->AddMat4BufferUniform(name, value);
 	return result;
@@ -355,7 +355,7 @@ std::optional<double> Material::GetDoubleUniform(std::string name)
  * \param name: The Uniform's Name
  * \return The Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector2f> Material::GetVec2Uniform(std::string name)
+std::optional<glm::vec2> Material::GetVec2Uniform(std::string name)
 {
 	auto value = m_UniformBuffer->GetVec2BufferUniform(name);
 	return value;
@@ -366,7 +366,7 @@ std::optional<Eigen::Vector2f> Material::GetVec2Uniform(std::string name)
  * \param name: The Uniform's Name
  * \return The Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector3f> Material::GetVec3Uniform(std::string name)
+std::optional<glm::vec3> Material::GetVec3Uniform(std::string name)
 {
 	auto value = m_UniformBuffer->GetVec3BufferUniform(name);
 	return value;
@@ -377,7 +377,7 @@ std::optional<Eigen::Vector3f> Material::GetVec3Uniform(std::string name)
  * \param name: The Uniform's Name
  * \return The Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector4f> Material::GetVec4Uniform(std::string name)
+std::optional<glm::vec4> Material::GetVec4Uniform(std::string name)
 {
 	auto value = m_UniformBuffer->GetVec4BufferUniform(name);
 	return value;
@@ -389,7 +389,7 @@ std::optional<Eigen::Vector4f> Material::GetVec4Uniform(std::string name)
  * \param name: The Uniform's Name
  * \return The Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector2<uint32_t>> Material::GetUVec2Uniform(std::string name)
+std::optional<glm::uvec2> Material::GetUVec2Uniform(std::string name)
 {
 	auto value = m_UniformBuffer->GetUVec2BufferUniform(name);
 	return value;
@@ -400,7 +400,7 @@ std::optional<Eigen::Vector2<uint32_t>> Material::GetUVec2Uniform(std::string na
  * \param name: The Uniform's Name
  * \return The Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector3<uint32_t>> Material::GetUVec3Uniform(std::string name)
+std::optional<glm::uvec3> Material::GetUVec3Uniform(std::string name)
 {
 	auto value = m_UniformBuffer->GetUVec3BufferUniform(name);
 	return value;
@@ -411,7 +411,7 @@ std::optional<Eigen::Vector3<uint32_t>> Material::GetUVec3Uniform(std::string na
  * \param name: The Uniform's Name
  * \return The Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector4<uint32_t>> Material::GetUVec4Uniform(std::string name)
+std::optional<glm::uvec4> Material::GetUVec4Uniform(std::string name)
 {
 	auto value = m_UniformBuffer->GetUVec4BufferUniform(name);
 	return value;
@@ -423,7 +423,7 @@ std::optional<Eigen::Vector4<uint32_t>> Material::GetUVec4Uniform(std::string na
  * \param name: The Uniform's Name
  * \return The Uniform's Value, if Existent
  */
-std::optional<Eigen::Matrix4f> Material::GetMat4Uniform(std::string name)
+std::optional<glm::mat4> Material::GetMat4Uniform(std::string name)
 {
 	auto value = m_UniformBuffer->GetMat4BufferUniform(name);
 	return value;
@@ -575,7 +575,7 @@ bool Material::SetDoubleUniform(std::string name, double value)
  * \param value: The Uniform's new Value
  * \return Whether the Uniform's Value was Successfully Changed
  */
-bool Material::SetVec2Uniform(std::string name, Eigen::Vector2f value)
+bool Material::SetVec2Uniform(std::string name, glm::vec2 value)
 {
 	bool result = m_UniformBuffer->SetVec2BufferUniform(name, value);
 	return result;
@@ -587,7 +587,7 @@ bool Material::SetVec2Uniform(std::string name, Eigen::Vector2f value)
  * \param value: The Uniform's new Value
  * \return Whether the Uniform's Value was Successfully Changed
  */
-bool Material::SetVec3Uniform(std::string name, Eigen::Vector3f value)
+bool Material::SetVec3Uniform(std::string name, glm::vec3 value)
 {
 	bool result = m_UniformBuffer->SetVec3BufferUniform(name, value);
 	return result;
@@ -599,7 +599,7 @@ bool Material::SetVec3Uniform(std::string name, Eigen::Vector3f value)
  * \param value: The Uniform's new Value
  * \return Whether the Uniform's Value was Successfully Changed
  */
-bool Material::SetVec4Uniform(std::string name, Eigen::Vector4f value)
+bool Material::SetVec4Uniform(std::string name, glm::vec4 value)
 {
 	bool result = m_UniformBuffer->SetVec4BufferUniform(name, value);
 	return result;
@@ -612,7 +612,7 @@ bool Material::SetVec4Uniform(std::string name, Eigen::Vector4f value)
  * \param value: The Uniform's new Value
  * \return Whether the Uniform's Value was Successfully Changed
  */
-bool Material::SetUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value)
+bool Material::SetUVec2Uniform(std::string name, glm::uvec2 value)
 {
 	bool result = m_UniformBuffer->SetUVec2BufferUniform(name, value);
 	return result;
@@ -624,7 +624,7 @@ bool Material::SetUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value)
  * \param value: The Uniform's new Value
  * \return Whether the Uniform's Value was Successfully Changed
  */
-bool Material::SetUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value)
+bool Material::SetUVec3Uniform(std::string name, glm::uvec3 value)
 {
 	bool result = m_UniformBuffer->SetUVec3BufferUniform(name, value);
 	return result;
@@ -636,7 +636,7 @@ bool Material::SetUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value)
  * \param value: The Uniform's new Value
  * \return Whether the Uniform's Value was Successfully Changed
  */
-bool Material::SetUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value)
+bool Material::SetUVec4Uniform(std::string name, glm::uvec4 value)
 {
 	bool result = m_UniformBuffer->SetUVec4BufferUniform(name, value);
 	return result;
@@ -649,7 +649,7 @@ bool Material::SetUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value)
  * \param value: The Uniform's new Value
  * \return Whether the Uniform's Value was Successfully Changed
  */
-bool Material::SetMat4Uniform(std::string name, Eigen::Matrix4f value)
+bool Material::SetMat4Uniform(std::string name, glm::mat4 value)
 {
 	bool result = m_UniformBuffer->SetMat4BufferUniform(name, value);
 	return result;

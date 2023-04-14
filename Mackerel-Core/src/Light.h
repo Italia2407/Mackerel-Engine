@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <Eigen/Eigen.h>
+#include <glm/glm.hpp>
 
 // Forward Declarations
 namespace MCK {
@@ -16,19 +16,19 @@ namespace MCK::Rendering {
 class Light
 {
 public:
-	Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
+	Light(glm::vec4 diffuseColour, glm::vec4 specularColour, glm::vec4 ambientColour);
 
 	AssetType::Texture* ShadowMap() const { return _shadowMap; }
 
 protected:
-	Eigen::Vector4f _diffuseColour;
-	Eigen::Vector4f _specularColour;
-	Eigen::Vector4f _ambientColour;
+	glm::vec4 _diffuseColour;
+	glm::vec4 _specularColour;
+	glm::vec4 _ambientColour;
 
 	AssetType::Texture* _shadowMap;
 	UniformBuffer* _parametersBuffer;
 
-	virtual Eigen::Matrix4f getMVPMatrix();
+	virtual glm::mat4 getMVPMatrix();
 
 	virtual bool updateLightingParameters() = 0;
 
@@ -39,10 +39,10 @@ public:
 class PointLight : public Light
 {
 public:
-	PointLight(Eigen::Vector3f position, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
+	PointLight(glm::vec3 position, glm::vec4 diffuseColour, glm::vec4 specularColour, glm::vec4 ambientColour);
 
 private:
-	Eigen::Vector3f _position;
+	glm::vec3 _position;
 
 	//Eigen::Matrix4f getMVPMatrix() override;
 
@@ -51,10 +51,10 @@ private:
 class DirectionLight : public Light
 {
 public:
-	DirectionLight(Eigen::Vector3f direction, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
+	DirectionLight(glm::vec3 direction, glm::vec4 diffuseColour, glm::vec4 specularColour, glm::vec4 ambientColour);
 
 private:
-	Eigen::Vector3f _direction;
+	glm::vec3 _direction;
 
 	//Eigen::Matrix4f getMVPMatrix() override;
 
@@ -63,11 +63,11 @@ private:
 class SpotLight : public Light
 {
 public:
-	SpotLight(Eigen::Vector3f position, Eigen::Vector3f direction, float beamAngle, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
+	SpotLight(glm::vec3 position, glm::vec3 direction, float beamAngle, glm::vec4 diffuseColour, glm::vec4 specularColour, glm::vec4 ambientColour);
 
 private:
-	Eigen::Vector3f _position;
-	Eigen::Vector3f _direction;
+	glm::vec3 _position;
+	glm::vec3 _direction;
 
 	float _beamAngle;
 

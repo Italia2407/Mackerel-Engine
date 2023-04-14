@@ -4,7 +4,7 @@
 #include "UniformBuffer.h"
 
 namespace MCK::Rendering {
-Light::Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
+Light::Light(glm::vec4 diffuseColour, glm::vec4 specularColour, glm::vec4 ambientColour) :
 	_diffuseColour(diffuseColour), _specularColour(specularColour), _ambientColour(ambientColour), _shadowMap(nullptr), _parametersBuffer(nullptr)
 {
 	// Initialise & Create Shadow Map Texture
@@ -15,26 +15,26 @@ Light::Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eige
 	_parametersBuffer = new UniformBuffer();
 	{
 	// Add Light ModelViewProjection
-	_parametersBuffer->AddMat4BufferUniform("modelViewProjection", Eigen::Matrix4f::Zero());
+	_parametersBuffer->AddMat4BufferUniform("modelViewProjection", glm::mat4(0.0f));
 
 	// Add Position & Direction
-	_parametersBuffer->AddVec3BufferUniform("position", Eigen::Vector3f::Zero());
-	_parametersBuffer->AddVec3BufferUniform("direction", Eigen::Vector3f::Zero());
+	_parametersBuffer->AddVec3BufferUniform("position", glm::vec3(0.0f));
+	_parametersBuffer->AddVec3BufferUniform("direction", glm::vec3(0.0f));
 
 	// Add Beam Angle
 	_parametersBuffer->AddFloatBufferUniform("beamAngle", 0.0f);
 
 	// Add Light Colours
-	_parametersBuffer->AddVec4BufferUniform("diffuseColour", Eigen::Vector4f::Zero());
-	_parametersBuffer->AddVec4BufferUniform("specularColour", Eigen::Vector4f::Zero());
-	_parametersBuffer->AddVec4BufferUniform("ambientColour", Eigen::Vector4f::Zero());
+	_parametersBuffer->AddVec4BufferUniform("diffuseColour", glm::vec4(0.0f));
+	_parametersBuffer->AddVec4BufferUniform("specularColour", glm::vec4(0.0f));
+	_parametersBuffer->AddVec4BufferUniform("ambientColour", glm::vec4(0.0f));
 	}
 	_parametersBuffer->CreateUniformBufferObject();
 }
 
-Eigen::Matrix4f Light::getMVPMatrix()
+glm::mat4 Light::getMVPMatrix()
 {
-	return Eigen::Matrix4f::Zero();
+	return glm::mat4(0.0f);
 }
 
 bool Light::UseLight()
@@ -50,11 +50,11 @@ bool Light::UseLight()
 	return true;
 }
 
-PointLight::PointLight(Eigen::Vector3f position, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
+PointLight::PointLight(glm::vec3 position, glm::vec4 diffuseColour, glm::vec4 specularColour, glm::vec4 ambientColour) :
 	Light(diffuseColour, specularColour, ambientColour), _position(position) {}
-DirectionLight::DirectionLight(Eigen::Vector3f direction, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
+DirectionLight::DirectionLight(glm::vec3 direction, glm::vec4 diffuseColour, glm::vec4 specularColour, glm::vec4 ambientColour) :
 	Light(diffuseColour, specularColour, ambientColour), _direction(direction) {}
-SpotLight::SpotLight(Eigen::Vector3f position, Eigen::Vector3f direction, float beamAngle, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
+SpotLight::SpotLight(glm::vec3 position, glm::vec3 direction, float beamAngle, glm::vec4 diffuseColour, glm::vec4 specularColour, glm::vec4 ambientColour) :
 	Light(diffuseColour, specularColour, ambientColour), _position(position), _direction(direction), _beamAngle(beamAngle) {}
 
 bool PointLight::updateLightingParameters()

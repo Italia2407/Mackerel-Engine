@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <Eigen/Eigen.h>
+#include <glm/glm.hpp>
 
 // Forward Declarations
 namespace MCK {
@@ -30,7 +30,7 @@ public:
 private:
 	struct Instance
 	{
-		Eigen::Matrix4f transformMatrix;
+		glm::mat4 transformMatrix;
 		AssetType::Material* material;
 	};
 

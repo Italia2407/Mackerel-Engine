@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <Eigen/Eigen.h>
+#include <glm/glm.hpp>
 
 #include <string>
 #include <map>
@@ -39,15 +39,15 @@ public:
 	bool addFloatUniform(std::string name, float value);
 	bool addDoubleUniform(std::string name, double value);
 
-	bool addVec2Uniform(std::string name, Eigen::Vector2f value);
-	bool addVec3Uniform(std::string name, Eigen::Vector3f value);
-	bool addVec4Uniform(std::string name, Eigen::Vector4f value);
+	bool addVec2Uniform(std::string name, glm::vec2 value);
+	bool addVec3Uniform(std::string name, glm::vec3 value);
+	bool addVec4Uniform(std::string name, glm::vec4 value);
 
-	bool addUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value);
-	bool addUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value);
-	bool addUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value);
+	bool addUVec2Uniform(std::string name, glm::uvec2 value);
+	bool addUVec3Uniform(std::string name, glm::uvec3 value);
+	bool addUVec4Uniform(std::string name, glm::uvec4 value);
 
-	bool addMat4Uniform(std::string name, Eigen::Matrix4f value);
+	bool addMat4Uniform(std::string name, glm::mat4 value);
 
 public:
 	bool UseMaterial();
@@ -79,22 +79,22 @@ public:
 	std::optional<double> GetDoubleUniform(std::string name);
 	bool SetDoubleUniform(std::string name, double value);
 
-	std::optional<Eigen::Vector2f> GetVec2Uniform(std::string name);
-	bool SetVec2Uniform(std::string name, Eigen::Vector2f value);
-	std::optional<Eigen::Vector3f> GetVec3Uniform(std::string name);
-	bool SetVec3Uniform(std::string name, Eigen::Vector3f value);
-	std::optional<Eigen::Vector4f> GetVec4Uniform(std::string name);
-	bool SetVec4Uniform(std::string name, Eigen::Vector4f value);
+	std::optional<glm::vec2> GetVec2Uniform(std::string name);
+	bool SetVec2Uniform(std::string name, glm::vec2 value);
+	std::optional<glm::vec3> GetVec3Uniform(std::string name);
+	bool SetVec3Uniform(std::string name, glm::vec3 value);
+	std::optional<glm::vec4> GetVec4Uniform(std::string name);
+	bool SetVec4Uniform(std::string name, glm::vec4 value);
 
-	std::optional<Eigen::Vector2<uint32_t>> GetUVec2Uniform(std::string name);
-	bool SetUVec2Uniform(std::string name, Eigen::Vector2<uint32_t> value);
-	std::optional<Eigen::Vector3<uint32_t>> GetUVec3Uniform(std::string name);
-	bool SetUVec3Uniform(std::string name, Eigen::Vector3<uint32_t> value);
-	std::optional<Eigen::Vector4<uint32_t>> GetUVec4Uniform(std::string name);
-	bool SetUVec4Uniform(std::string name, Eigen::Vector4<uint32_t> value);
+	std::optional<glm::uvec2> GetUVec2Uniform(std::string name);
+	bool SetUVec2Uniform(std::string name, glm::uvec2 value);
+	std::optional<glm::uvec3> GetUVec3Uniform(std::string name);
+	bool SetUVec3Uniform(std::string name, glm::uvec3 value);
+	std::optional<glm::uvec4> GetUVec4Uniform(std::string name);
+	bool SetUVec4Uniform(std::string name, glm::uvec4 value);
 
-	std::optional<Eigen::Matrix4f> GetMat4Uniform(std::string name);
-	bool SetMat4Uniform(std::string name, Eigen::Matrix4f value);
+	std::optional<glm::mat4> GetMat4Uniform(std::string name);
+	bool SetMat4Uniform(std::string name, glm::mat4 value);
 
 	Texture* GetTexture(GLuint slot);
 	void SetTexture(GLuint slot, Texture* texture);

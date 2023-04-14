@@ -1,6 +1,8 @@
 #include "RigidbodyComponent.h"
 #include "Entity.h"
 
+#include <glm/glm.hpp>
+
 #include <typeinfo>
 #include <iostream>
 
@@ -109,8 +111,8 @@ namespace MCK::Physics
 		btVector3 pos = rigidbody->getCenterOfMassPosition();
 		btQuaternion rot = rbTransform.getRotation();
 		
-		transformComponent.Position() = Eigen::Vector3f(pos.x(), pos.y(), pos.z());
-		transformComponent.Rotation() = Eigen::Quaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+		transformComponent.Position() = glm::vec3(pos.x(), pos.y(), pos.z());
+		transformComponent.Rotation() = glm::quat(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
 	}
 
     /**

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Eigen/Eigen.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include <iostream>
 
@@ -8,52 +10,50 @@ namespace MCK {
 struct Transform
 {
 public:
-	Eigen::Vector3f Position;
-	Eigen::Quaternion<float> Rotation;
-	Eigen::Vector3f Scale;
+	glm::vec3 Position;
+	glm::quat Rotation;
+	glm::vec3 Scale;
 
-	Eigen::Vector2f YZPlaneShear;
-	Eigen::Vector2f XZPlaneShear;
-	Eigen::Vector2f XYPlaneShear;
+	glm::vec2 YZPlaneShear;
+	glm::vec2 XZPlaneShear;
+	glm::vec2 XYPlaneShear;
 
 public:
 	Transform() :
-		Position(Eigen::Vector3f::Zero()), Rotation(Eigen::Quaternion<float>::Identity()), Scale(Eigen::Vector3f::Ones()),
-		YZPlaneShear(Eigen::Vector2f::Zero()), XZPlaneShear(Eigen::Vector2f::Zero()), XYPlaneShear(Eigen::Vector2f::Zero()) {}
+		Position(glm::vec3(0.0f)), Rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)), Scale(glm::vec3(1.0f)),
+		YZPlaneShear(glm::vec2(0.0f)), XZPlaneShear(glm::vec2(0.0f)), XYPlaneShear(glm::vec2(0.0f)) {}
 
 	/**
 	 * Computes the Transformation Matrix.
 	 * 
 	 * \return The Trasformation Matrix
 	 */
-	Eigen::Matrix4f Matrix() const
+	glm::mat4 Matrix() const
 	{
 		// Create Translation Matrix
-		Eigen::Matrix4f translationMatrix = Eigen::Affine3f(Eigen::Translation3f(Position)).matrix();
+		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), Position);
 
 		// Create Rotation Matrix
-		Eigen::Matrix3f rotationMatrix3D = Rotation.toRotationMatrix();
-		Eigen::Matrix4f rotationMatrix = Eigen::Matrix4f::Identity();
-		rotationMatrix.block(0, 0, 3, 3) = rotationMatrix3D;
+		glm::mat4 rotationMatrix = glm::toMat4(Rotation);
 
 		// Create Scale Matrix
-		Eigen::Matrix4f scaleMatrix = Eigen::Matrix4f::Identity();
+		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), Scale);
 
 		// Create Shear Matrix
-		Eigen::Matrix4f shearMatrix = Eigen::Matrix4f::Identity();
+		glm::mat4 shearMatrix = glm::mat4(1.0f);
 
 		// Set X-Axis Shear
-		shearMatrix(0, 1) = YZPlaneShear.x();
-		shearMatrix(0, 2) = YZPlaneShear.y();
+		shearMatrix[0][1] = YZPlaneShear.x;
+		shearMatrix[0][2] = YZPlaneShear.y;
 		// Set Y-Axis Shear
-		shearMatrix(1, 0) = XZPlaneShear.x();
-		shearMatrix(1, 2) = XZPlaneShear.y();
+		shearMatrix[1][0] = XZPlaneShear.x;
+		shearMatrix[1][2] = XZPlaneShear.y;
 		// Set Z-Axis Shear
-		shearMatrix(2, 0) = XYPlaneShear.x();
-		shearMatrix(2, 1) = XYPlaneShear.y();
+		shearMatrix[2][0] = XYPlaneShear.x;
+		shearMatrix[2][1] = XYPlaneShear.y;
 
 
-		Eigen::Matrix4f transformationMatrix = translationMatrix * rotationMatrix * scaleMatrix * shearMatrix;
+		glm::mat4 transformationMatrix = translationMatrix * rotationMatrix * scaleMatrix * shearMatrix;
 		return transformationMatrix;
 	}
 };

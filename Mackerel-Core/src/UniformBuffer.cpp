@@ -836,7 +836,7 @@ bool UniformBuffer::SetDoubleBufferUniform(std::string name, double value)
  * \param value: The Buffer Uniform's Value
  * \return Whether the Buffer Uniform was Successfully Added
  */
-bool UniformBuffer::AddVec2BufferUniform(std::string name, Eigen::Vector2f value)
+bool UniformBuffer::AddVec2BufferUniform(std::string name, glm::vec2 value)
 {
 	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
@@ -858,7 +858,7 @@ bool UniformBuffer::AddVec2BufferUniform(std::string name, Eigen::Vector2f value
  * \param name: The Buffer Uniform's Name
  * \return The Buffer Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector2f> UniformBuffer::GetVec2BufferUniform(std::string name)
+std::optional<glm::vec2> UniformBuffer::GetVec2BufferUniform(std::string name)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -879,7 +879,7 @@ std::optional<Eigen::Vector2f> UniformBuffer::GetVec2BufferUniform(std::string n
  * \param value: The Uniform's New Value
  * \return  Whether the Uniform's Value was Successfully Changed
  */
-bool UniformBuffer::SetVec2BufferUniform(std::string name, Eigen::Vector2f value)
+bool UniformBuffer::SetVec2BufferUniform(std::string name, glm::vec2 value)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -910,7 +910,7 @@ bool UniformBuffer::SetVec2BufferUniform(std::string name, Eigen::Vector2f value
  * \param value: The Buffer Uniform's Value
  * \return Whether the Buffer Uniform was Successfully Added
  */
-bool UniformBuffer::AddVec3BufferUniform(std::string name, Eigen::Vector3f value)
+bool UniformBuffer::AddVec3BufferUniform(std::string name, glm::vec3 value)
 {
 	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
@@ -932,7 +932,7 @@ bool UniformBuffer::AddVec3BufferUniform(std::string name, Eigen::Vector3f value
  * \param name: The Buffer Uniform's Name
  * \return The Buffer Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector3f> UniformBuffer::GetVec3BufferUniform(std::string name)
+std::optional<glm::vec3> UniformBuffer::GetVec3BufferUniform(std::string name)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -953,7 +953,7 @@ std::optional<Eigen::Vector3f> UniformBuffer::GetVec3BufferUniform(std::string n
  * \param value: The Uniform's New Value
  * \return  Whether the Uniform's Value was Successfully Changed
  */
-bool UniformBuffer::SetVec3BufferUniform(std::string name, Eigen::Vector3f value)
+bool UniformBuffer::SetVec3BufferUniform(std::string name, glm::vec3 value)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -984,7 +984,7 @@ bool UniformBuffer::SetVec3BufferUniform(std::string name, Eigen::Vector3f value
  * \param value: The Buffer Uniform's Value
  * \return Whether the Buffer Uniform was Successfully Added
  */
-bool UniformBuffer::AddVec4BufferUniform(std::string name, Eigen::Vector4f value)
+bool UniformBuffer::AddVec4BufferUniform(std::string name, glm::vec4 value)
 {
 	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
@@ -1006,7 +1006,7 @@ bool UniformBuffer::AddVec4BufferUniform(std::string name, Eigen::Vector4f value
  * \param name: The Buffer Uniform's Name
  * \return The Buffer Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector4f> UniformBuffer::GetVec4BufferUniform(std::string name)
+std::optional<glm::vec4> UniformBuffer::GetVec4BufferUniform(std::string name)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1027,7 +1027,7 @@ std::optional<Eigen::Vector4f> UniformBuffer::GetVec4BufferUniform(std::string n
  * \param value: The Uniform's New Value
  * \return  Whether the Uniform's Value was Successfully Changed
  */
-bool UniformBuffer::SetVec4BufferUniform(std::string name, Eigen::Vector4f value)
+bool UniformBuffer::SetVec4BufferUniform(std::string name, glm::vec4 value)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1059,7 +1059,7 @@ bool UniformBuffer::SetVec4BufferUniform(std::string name, Eigen::Vector4f value
  * \param value: The Buffer Uniform's Value
  * \return Whether the Buffer Uniform was Successfully Added
  */
-bool UniformBuffer::AddUVec2BufferUniform(std::string name, Eigen::Vector2<uint32_t> value)
+bool UniformBuffer::AddUVec2BufferUniform(std::string name, glm::uvec2 value)
 {
 	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
@@ -1081,7 +1081,7 @@ bool UniformBuffer::AddUVec2BufferUniform(std::string name, Eigen::Vector2<uint3
  * \param name: The Buffer Uniform's Name
  * \return The Buffer Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector2<uint32_t>> UniformBuffer::GetUVec2BufferUniform(std::string name)
+std::optional<glm::uvec2> UniformBuffer::GetUVec2BufferUniform(std::string name)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1102,7 +1102,7 @@ std::optional<Eigen::Vector2<uint32_t>> UniformBuffer::GetUVec2BufferUniform(std
  * \param value: The Uniform's New Value
  * \return  Whether the Uniform's Value was Successfully Changed
  */
-bool UniformBuffer::SetUVec2BufferUniform(std::string name, Eigen::Vector2<uint32_t> value)
+bool UniformBuffer::SetUVec2BufferUniform(std::string name, glm::uvec2 value)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1133,7 +1133,7 @@ bool UniformBuffer::SetUVec2BufferUniform(std::string name, Eigen::Vector2<uint3
  * \param value: The Buffer Uniform's Value
  * \return Whether the Buffer Uniform was Successfully Added
  */
-bool UniformBuffer::AddUVec3BufferUniform(std::string name, Eigen::Vector3<uint32_t> value)
+bool UniformBuffer::AddUVec3BufferUniform(std::string name, glm::uvec3 value)
 {
 	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
@@ -1155,7 +1155,7 @@ bool UniformBuffer::AddUVec3BufferUniform(std::string name, Eigen::Vector3<uint3
  * \param name: The Buffer Uniform's Name
  * \return The Buffer Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector3<uint32_t>> UniformBuffer::GetUVec3BufferUniform(std::string name)
+std::optional<glm::uvec3> UniformBuffer::GetUVec3BufferUniform(std::string name)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1176,7 +1176,7 @@ std::optional<Eigen::Vector3<uint32_t>> UniformBuffer::GetUVec3BufferUniform(std
  * \param value: The Uniform's New Value
  * \return  Whether the Uniform's Value was Successfully Changed
  */
-bool UniformBuffer::SetUVec3BufferUniform(std::string name, Eigen::Vector3<uint32_t> value)
+bool UniformBuffer::SetUVec3BufferUniform(std::string name, glm::uvec3 value)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1207,7 +1207,7 @@ bool UniformBuffer::SetUVec3BufferUniform(std::string name, Eigen::Vector3<uint3
  * \param value: The Buffer Uniform's Value
  * \return Whether the Buffer Uniform was Successfully Added
  */
-bool UniformBuffer::AddUVec4BufferUniform(std::string name, Eigen::Vector4<uint32_t> value)
+bool UniformBuffer::AddUVec4BufferUniform(std::string name, glm::uvec4 value)
 {
 	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
@@ -1229,7 +1229,7 @@ bool UniformBuffer::AddUVec4BufferUniform(std::string name, Eigen::Vector4<uint3
  * \param name: The Buffer Uniform's Name
  * \return The Buffer Uniform's Value, if Existent
  */
-std::optional<Eigen::Vector4<uint32_t>> UniformBuffer::GetUVec4BufferUniform(std::string name)
+std::optional<glm::uvec4> UniformBuffer::GetUVec4BufferUniform(std::string name)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1250,7 +1250,7 @@ std::optional<Eigen::Vector4<uint32_t>> UniformBuffer::GetUVec4BufferUniform(std
  * \param value: The Uniform's New Value
  * \return  Whether the Uniform's Value was Successfully Changed
  */
-bool UniformBuffer::SetUVec4BufferUniform(std::string name, Eigen::Vector4<uint32_t> value)
+bool UniformBuffer::SetUVec4BufferUniform(std::string name, glm::uvec4 value)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1281,7 +1281,7 @@ bool UniformBuffer::SetUVec4BufferUniform(std::string name, Eigen::Vector4<uint3
  * \param value: The Buffer Uniform's Value
  * \return Whether the Buffer Uniform was Successfully Added
  */
-bool UniformBuffer::AddMat4BufferUniform(std::string name, Eigen::Matrix4f value)
+bool UniformBuffer::AddMat4BufferUniform(std::string name, glm::mat4 value)
 {
 	if (IsCreated())
 	{// Cannot add Buffer Uniforms if UBO is already Created
@@ -1303,7 +1303,7 @@ bool UniformBuffer::AddMat4BufferUniform(std::string name, Eigen::Matrix4f value
  * \param name: The Buffer Uniform's Name
  * \return The Buffer Uniform's Value, if Existent
  */
-std::optional<Eigen::Matrix4f> UniformBuffer::GetMat4BufferUniform(std::string name)
+std::optional<glm::mat4> UniformBuffer::GetMat4BufferUniform(std::string name)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name
@@ -1324,7 +1324,7 @@ std::optional<Eigen::Matrix4f> UniformBuffer::GetMat4BufferUniform(std::string n
  * \param value: The Uniform's New Value
  * \return  Whether the Uniform's Value was Successfully Changed
  */
-bool UniformBuffer::SetMat4BufferUniform(std::string name, Eigen::Matrix4f value)
+bool UniformBuffer::SetMat4BufferUniform(std::string name, glm::mat4 value)
 {
 	if (!m_BufferUniforms.contains(name))
 	{// No Buffer Uniform Exists with the Given Name

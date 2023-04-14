@@ -1,9 +1,9 @@
 #pragma once
-
-#include "Eigen/Eigen.h"
 #include "Component.h"
-
 #include "Transform.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 namespace MCK::EntitySystem
 {
@@ -13,16 +13,16 @@ private:
 	Transform m_Transform;
 
 public:
-	Eigen::Vector3f& Position() { return m_Transform.Position; }
-	Eigen::Quaternion<float>& Rotation() { return m_Transform.Rotation; }
-	Eigen::Vector3f& Scale() { return m_Transform.Scale; }
+	glm::vec3& Position() { return m_Transform.Position; }
+	glm::quat& Rotation() { return m_Transform.Rotation; }
+	glm::vec3& Scale() { return m_Transform.Scale; }
 
-	Eigen::Vector2f& YZPlaneShear() { return m_Transform.YZPlaneShear; }
-	Eigen::Vector2f& XZPlaneShear() { return m_Transform.XZPlaneShear; }
-	Eigen::Vector2f& XYPlaneShear() { return m_Transform.XYPlaneShear; }
+	glm::vec2& YZPlaneShear() { return m_Transform.YZPlaneShear; }
+	glm::vec2& XZPlaneShear() { return m_Transform.XZPlaneShear; }
+	glm::vec2& XYPlaneShear() { return m_Transform.XYPlaneShear; }
 
 public:
-	Eigen::Matrix4f GetTransformationMatrix() const;
+	glm::mat4 GetTransformationMatrix() const;
 
 	void OnCreate() override;
 	void OnUpdate() override;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <Eigen/Eigen.h>
+#include <glm/glm.hpp>
 
 #include <string>
 #include <map>
@@ -85,34 +85,34 @@ public:
 	bool SetDoubleBufferUniform(std::string name, double value);
 
 	// Vec2
-	bool AddVec2BufferUniform(std::string name, Eigen::Vector2f value);
-	std::optional<Eigen::Vector2f> GetVec2BufferUniform(std::string name);
-	bool SetVec2BufferUniform(std::string name, Eigen::Vector2f value);
+	bool AddVec2BufferUniform(std::string name, glm::vec2 value);
+	std::optional<glm::vec2> GetVec2BufferUniform(std::string name);
+	bool SetVec2BufferUniform(std::string name, glm::vec2 value);
 	// Vec3
-	bool AddVec3BufferUniform(std::string name, Eigen::Vector3f value);
-	std::optional<Eigen::Vector3f> GetVec3BufferUniform(std::string name);
-	bool SetVec3BufferUniform(std::string name, Eigen::Vector3f value);
+	bool AddVec3BufferUniform(std::string name, glm::vec3 value);
+	std::optional<glm::vec3> GetVec3BufferUniform(std::string name);
+	bool SetVec3BufferUniform(std::string name, glm::vec3 value);
 	// Vec4
-	bool AddVec4BufferUniform(std::string name, Eigen::Vector4f value);
-	std::optional<Eigen::Vector4f> GetVec4BufferUniform(std::string name);
-	bool SetVec4BufferUniform(std::string name, Eigen::Vector4f value);
+	bool AddVec4BufferUniform(std::string name, glm::vec4 value);
+	std::optional<glm::vec4> GetVec4BufferUniform(std::string name);
+	bool SetVec4BufferUniform(std::string name, glm::vec4 value);
 
 	// UVec2
-	bool AddUVec2BufferUniform(std::string name, Eigen::Vector2<uint32_t> value);
-	std::optional<Eigen::Vector2<uint32_t>> GetUVec2BufferUniform(std::string name);
-	bool SetUVec2BufferUniform(std::string name, Eigen::Vector2<uint32_t> value);
+	bool AddUVec2BufferUniform(std::string name, glm::uvec2 value);
+	std::optional<glm::uvec2> GetUVec2BufferUniform(std::string name);
+	bool SetUVec2BufferUniform(std::string name, glm::uvec2 value);
 	// UVec3
-	bool AddUVec3BufferUniform(std::string name, Eigen::Vector3<uint32_t> value);
-	std::optional<Eigen::Vector3<uint32_t>> GetUVec3BufferUniform(std::string name);
-	bool SetUVec3BufferUniform(std::string name, Eigen::Vector3<uint32_t> value);
+	bool AddUVec3BufferUniform(std::string name, glm::uvec3 value);
+	std::optional<glm::uvec3> GetUVec3BufferUniform(std::string name);
+	bool SetUVec3BufferUniform(std::string name, glm::uvec3 value);
 	// UVec4
-	bool AddUVec4BufferUniform(std::string name, Eigen::Vector4<uint32_t> value);
-	std::optional<Eigen::Vector4<uint32_t>> GetUVec4BufferUniform(std::string name);
-	bool SetUVec4BufferUniform(std::string name, Eigen::Vector4<uint32_t> value);
+	bool AddUVec4BufferUniform(std::string name, glm::uvec4 value);
+	std::optional<glm::uvec4> GetUVec4BufferUniform(std::string name);
+	bool SetUVec4BufferUniform(std::string name, glm::uvec4 value);
 
 	// Mat4
-	bool AddMat4BufferUniform(std::string name, Eigen::Matrix4f value);
-	std::optional<Eigen::Matrix4f> GetMat4BufferUniform(std::string name);
-	bool SetMat4BufferUniform(std::string name, Eigen::Matrix4f value);
+	bool AddMat4BufferUniform(std::string name, glm::mat4 value);
+	std::optional<glm::mat4> GetMat4BufferUniform(std::string name);
+	bool SetMat4BufferUniform(std::string name, glm::mat4 value);
 };
 }

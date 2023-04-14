@@ -10,7 +10,7 @@ public:
 	OrthographicCamera(float a_AspectRatio);
 	OrthographicCamera(float a_AspectRatio, float a_Right, float a_Left, float a_Top, float a_Bottom, float a_Far, float a_Near);
 	OrthographicCamera(float a_AspectRatio, float a_Right, float a_Left, float a_Top, float a_Bottom, float a_Far, float a_Near,
-		Eigen::Vector3f a_Position, Eigen::Vector3f a_FrontDirection, Eigen::Vector3f a_UpDirection);
+		glm::vec3 a_Position, glm::vec3 a_FrontDirection, glm::vec3 a_UpDirection);
 
 private:
 	float m_Right;
@@ -28,7 +28,7 @@ public:
 	float& Bottom() { return m_Bottom; }
 	const float& Bottom() const { return m_Bottom; }
 
-	Eigen::Matrix4f GetProjectionMatrix() const override;
+	glm::mat4 GetProjectionMatrix() const override;
 
 	bool Deserialise(json data) override;
 
