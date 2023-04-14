@@ -433,6 +433,7 @@
     <ClInclude Include="src\AppAttorney.h" />
     <ClInclude Include="src\Assets.h" />
     <ClInclude Include="src\AudioChannel.h" />
+    <ClInclude Include="src\AudioEngine.h" />
     <ClInclude Include="src\BoxColliderComponent.h" />
     <ClInclude Include="src\CameraComponent.h" />
     <ClInclude Include="src\ColliderTypes.h" />
@@ -480,6 +481,7 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderEnum.h" />
     <ClInclude Include="src\ShaderLibrary.h" />
+    <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\TestComponent.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureEnum.h" />

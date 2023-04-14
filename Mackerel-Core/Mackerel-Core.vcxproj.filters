@@ -1571,6 +1571,12 @@
     <ClInclude Include="src\AudioChannel.h">
       <Filter>Source Files\Systems\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\AudioEngine.h">
+      <Filter>Source Files\Systems\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sound.h">
+      <Filter>Source Files\Systems\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
