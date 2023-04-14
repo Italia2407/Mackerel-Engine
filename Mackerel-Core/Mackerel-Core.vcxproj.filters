@@ -115,6 +115,12 @@
     <Filter Include="Resource Files\Meshes\Primitives">
       <UniqueIdentifier>{26d88939-af10-4ad8-b778-72887ab27b6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Files\FMOD">
+      <UniqueIdentifier>{3e250867-a513-4c74-8656-d0b87568a48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Audio">
+      <UniqueIdentifier>{64d5b3b3-408c-4e7d-a7e1-4428fe70d13c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp">
@@ -481,6 +487,42 @@
     </ClInclude>
     <ClInclude Include="src\RaycastHitInfo.h">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod.hpp">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_codec.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_common.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_dsp.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_dsp_effects.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_errors.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_output.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_studio.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_studio.hpp">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\FMOD\Include\fmod_studio_common.h">
+      <Filter>External Files\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AudioChannel.h">
+      <Filter>Source Files\Systems\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
