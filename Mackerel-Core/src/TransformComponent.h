@@ -13,13 +13,13 @@ private:
 	Transform m_Transform;
 
 public:
-	Eigen::Vector3f& Position() { return m_Transform.Position; }
-	Eigen::Quaternion<float>& Rotation() { return m_Transform.Rotation; }
-	Eigen::Vector3f& Scale() { return m_Transform.Scale; }
+	inline Eigen::Vector3f& Position() { return m_Transform.Position; }
+	inline Eigen::Quaternion<float>& Rotation() { return m_Transform.Rotation; }
+	inline Eigen::Vector3f& Scale() { return m_Transform.Scale; }
 
-	Eigen::Vector2f& YZPlaneShear() { return m_Transform.YZPlaneShear; }
-	Eigen::Vector2f& XZPlaneShear() { return m_Transform.XZPlaneShear; }
-	Eigen::Vector2f& XYPlaneShear() { return m_Transform.XYPlaneShear; }
+	inline Eigen::Vector2f& YZPlaneShear() { return m_Transform.YZPlaneShear; }
+	inline Eigen::Vector2f& XZPlaneShear() { return m_Transform.XZPlaneShear; }
+	inline Eigen::Vector2f& XYPlaneShear() { return m_Transform.XYPlaneShear; }
 
 public:
 	Eigen::Matrix4f GetTransformationMatrix() const;

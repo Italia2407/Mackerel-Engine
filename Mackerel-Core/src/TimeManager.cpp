@@ -1,5 +1,5 @@
 #include "TimeManager.h"
-#include <GLFW/glfw3.h>
+#include "GLinclude.h"
 
 using namespace MCK;
 
