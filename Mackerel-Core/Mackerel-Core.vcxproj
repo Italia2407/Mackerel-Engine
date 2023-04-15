@@ -57,6 +57,7 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\TextureLibrary.cpp" />
     <ClCompile Include="src\TimeManager.cpp" />
+    <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\TransformComponent.cpp" />
     <ClCompile Include="src\UniformBuffer.cpp" />
     <ClCompile Include="src\Window.cpp" />
@@ -106,7 +107,7 @@
     <ClInclude Include="src\MouseButtons.h" />
     <ClInclude Include="src\MouseState.h" />
     <ClInclude Include="src\MeshRendererComponent.h" />
-    <ClInclude Include="src\ProjectionCamera.h" />
+    <ClInclude Include="src\PerspectiveCamera.h" />
     <ClInclude Include="src\RenderBatch.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\RigidbodyComponent.h" />

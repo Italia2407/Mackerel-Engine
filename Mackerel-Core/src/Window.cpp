@@ -31,12 +31,12 @@
 
 #include "TransformComponent.h"
 #include "OrthographicCamera.h"
-#include "ProjectionCamera.h"
+#include "PerspectiveCamera.h"
 
 MCK::EntitySystem::TransformComponent testTransform;
 MCK::EntitySystem::TransformComponent par;
 
-MCK::EntitySystem::ProjectionCamera* camera;
+MCK::EntitySystem::CameraComponent* camera;
 
 void FramebufferResizeCallback(GLFWwindow* window, int screenWidth, int screenHeight)
 {
@@ -46,10 +46,84 @@ void FramebufferResizeCallback(GLFWwindow* window, int screenWidth, int screenHe
     glViewport(0, 0, screenWidth, screenHeight);
 }
 
+bool moveCamUp = false;
+bool moveCamDown = false;
+bool moveCamIn = false;
+bool moveCamOut = false;
+bool moveCamLeft = false;
+bool moveCamRight = false;
+
+bool moveModUp = false;
+bool moveModDown = false;
+bool moveModIn = false;
+bool moveModOut = false;
+bool moveModLeft = false;
+bool moveModRight = false;
+
 void InputCallbackTest(int32_t key, MCK::ButtonEvents ButtonEvents)
 {
     std::string message = "Key [" + std::to_string(static_cast<int>(key)) + "] did action [" + std::to_string(static_cast<int>(ButtonEvents)) + "].";
     MCK::Logger::log(message, MCK::Logger::LogLevel::Debug, std::source_location::current());
+
+    if (key == MCK::Key::E && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveCamUp = true;
+    else if (key == MCK::Key::E && ButtonEvents == MCK::ButtonEvents::Released)
+        moveCamUp = false;
+
+    if (key == MCK::Key::Q && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveCamDown = true;
+    else if (key == MCK::Key::Q && ButtonEvents == MCK::ButtonEvents::Released)
+        moveCamDown = false;
+
+    if (key == MCK::Key::W && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveCamIn = true;
+    else if (key == MCK::Key::W && ButtonEvents == MCK::ButtonEvents::Released)
+        moveCamIn = false;
+
+    if (key == MCK::Key::S && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveCamOut = true;
+    else if (key == MCK::Key::S && ButtonEvents == MCK::ButtonEvents::Released)
+        moveCamOut = false;
+
+    if (key == MCK::Key::A && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveCamLeft = true;
+    else if (key == MCK::Key::A && ButtonEvents == MCK::ButtonEvents::Released)
+        moveCamLeft = false;
+
+    if (key == MCK::Key::D && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveCamRight = true;
+    else if (key == MCK::Key::D && ButtonEvents == MCK::ButtonEvents::Released)
+        moveCamRight = false;
+
+    if (key == MCK::Key::LEFT_SHIFT && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveModUp = true;
+    else if (key == MCK::Key::LEFT_SHIFT && ButtonEvents == MCK::ButtonEvents::Released)
+        moveModUp = false;
+
+    if (key == MCK::Key::LEFT_CONTROL && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveModDown = true;
+    else if (key == MCK::Key::LEFT_CONTROL && ButtonEvents == MCK::ButtonEvents::Released)
+        moveModDown = false;
+
+    if (key == MCK::Key::UP && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveModIn = true;
+    else if (key == MCK::Key::UP && ButtonEvents == MCK::ButtonEvents::Released)
+        moveModIn = false;
+
+    if (key == MCK::Key::DOWN && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveModOut = true;
+    else if (key == MCK::Key::DOWN && ButtonEvents == MCK::ButtonEvents::Released)
+        moveModOut = false;
+
+    if (key == MCK::Key::LEFT && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveModLeft = true;
+    else if (key == MCK::Key::LEFT && ButtonEvents == MCK::ButtonEvents::Released)
+        moveModLeft = false;
+
+    if (key == MCK::Key::RIGHT && ButtonEvents == MCK::ButtonEvents::Pressed)
+        moveModRight = true;
+    else if (key == MCK::Key::RIGHT && ButtonEvents == MCK::ButtonEvents::Released)
+        moveModRight = false;
 }
 
 void MouseCallbacktest(int32_t key, MCK::ButtonEvents ButtonEvents)
@@ -107,9 +181,6 @@ void SayHello()
 
     e1->parent = e2;
 
-    testTransform.Position().x() = 0.0f;
-    par.Position().y() = 0.0f;
-
 	// Initialise GLFW
     if (!glfwInit())
     {
@@ -137,18 +208,27 @@ void SayHello()
     MCK::Input::InputSubReceipt* receipt = new MCK::Input::InputSubReceipt();
 
         // These keys will print a message when pressed, released, or held
+    MCK::Input::Subscribe(MCK::Key::Q, MCK::ButtonEvents::All, exampleCallback, receipt);
+    MCK::Input::Subscribe(MCK::Key::E, MCK::ButtonEvents::All, exampleCallback, receipt);
     MCK::Input::Subscribe(MCK::Key::W, MCK::ButtonEvents::All, exampleCallback, receipt);
     MCK::Input::Subscribe(MCK::Key::A, MCK::ButtonEvents::All, exampleCallback, receipt);
     MCK::Input::Subscribe(MCK::Key::S, MCK::ButtonEvents::All, exampleCallback, receipt);
     MCK::Input::Subscribe(MCK::Key::D, MCK::ButtonEvents::All, exampleCallback, receipt);
 
+    MCK::Input::Subscribe(MCK::Key::LEFT_SHIFT, MCK::ButtonEvents::All, exampleCallback, receipt);
+    MCK::Input::Subscribe(MCK::Key::LEFT_CONTROL, MCK::ButtonEvents::All, exampleCallback, receipt);
+    MCK::Input::Subscribe(MCK::Key::LEFT, MCK::ButtonEvents::All, exampleCallback, receipt);
+    MCK::Input::Subscribe(MCK::Key::RIGHT, MCK::ButtonEvents::All, exampleCallback, receipt);
+    MCK::Input::Subscribe(MCK::Key::UP, MCK::ButtonEvents::All, exampleCallback, receipt);
+    MCK::Input::Subscribe(MCK::Key::DOWN, MCK::ButtonEvents::All, exampleCallback, receipt);
+
         // This key will print a message only when pressed
-    MCK::Input::Subscribe(MCK::Key::E, MCK::ButtonEvents::Pressed, exampleCallback, receipt);
+    //MCK::Input::Subscribe(MCK::Key::E, MCK::ButtonEvents::Pressed, exampleCallback, receipt);
     MCK::Input::Subscribe(MCK::GamepadButton::CROSS, MCK::ButtonEvents::Pressed, exampleCallback, receipt);
     MCK::Input::Subscribe(MCK::MouseButton::MOUSE_LEFT, MCK::ButtonEvents::Pressed, exampleCallback, receipt);
 
         // This key will print a message only when released
-    MCK::Input::Subscribe(MCK::Key::Q, MCK::ButtonEvents::Released, exampleCallback, receipt);
+    //MCK::Input::Subscribe(MCK::Key::Q, MCK::ButtonEvents::Released, exampleCallback, receipt);
 
         // This key will print a message only when held
     MCK::Input::Subscribe(MCK::Key::R, MCK::ButtonEvents::Held, exampleCallback, receipt);
@@ -240,8 +320,11 @@ void SayHello()
 
     MCK::Rendering::Renderer::AddUnlitShader(unlitShader);
 
-    camera = new MCK::EntitySystem::ProjectionCamera(1280.0f / 720.0f);
+    camera = new MCK::EntitySystem::PerspectiveCamera(1280.0f / 720.0f);
+    //camera = new MCK::EntitySystem::OrthographicCamera(1280.0f / 720.0f);
     camera->Position() = Eigen::Vector3f(0.0f, 0.0f, -3.0f);
+    //camera->FrontDirection() = Eigen::Vector3f(0.0f, -1.0f, 0.0f);
+    //camera->UpDirection() = Eigen::Vector3f(0.0f, 0.0f, 1.0f);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -252,12 +335,38 @@ void SayHello()
         // Time Manager
         MCK::TimeManager::Update();
 
+        if (moveCamIn)
+            camera->Position().z() += 0.001f;
+        if (moveCamOut)
+            camera->Position().z() -= 0.001f;
+        if (moveCamUp)
+            camera->Position().y() += 0.001f;
+        if (moveCamDown)
+            camera->Position().y() -= 0.001f;
+        if (moveCamRight)
+            camera->Position().x() += 0.001f;
+        if (moveCamLeft)
+            camera->Position().x() -= 0.001f;
+
+        if (moveModIn)
+            camera->FrontDirection().z() += 0.001f;
+        if (moveModOut)
+            camera->FrontDirection().z() -= 0.001f;
+        if (moveModUp)
+            camera->FrontDirection().y() += 0.001f;
+        if (moveModDown)
+            camera->FrontDirection().y() -= 0.001f;
+        if (moveModRight)
+            camera->FrontDirection().x() += 0.001f;
+        if (moveModLeft)
+            camera->FrontDirection().x() -= 0.001f;
+
+        //testTransform.Rotation() = Eigen::Quaternionf(Eigen::AngleAxisf((float)MCK::TimeManager::GetUpTime(), Eigen::Vector3f(0.0f, 1.0f, 1.0f).normalized()));
+
         //ImGui
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
-        camera->Position() += Eigen::Vector3f(0.0f, 0.0f, -0.001f);
 
         // Set Renderer Data
         MCK::Rendering::Renderer::QueueMeshInstance(testTransform, testMesh, monocolourShader, testMaterial, false);

@@ -249,6 +249,9 @@
     <ClCompile Include="src\CameraComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
+      <Filter>Source Files\AssetTypes\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -446,7 +449,7 @@
     <ClInclude Include="src\CameraComponent.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\ProjectionCamera.h">
+    <ClInclude Include="src\PerspectiveCamera.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\OrthographicCamera.h">

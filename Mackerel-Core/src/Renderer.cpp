@@ -724,11 +724,15 @@ bool Renderer::renderFrame()
 	m_CameraBuffer->BindUniformBufferObject(0);
 	m_MeshTransformBuffer->BindUniformBufferObject(1);
 
+	glEnable(GL_DEPTH_TEST);
+
 	// Render Scene to the Geometry Buffer
 	if (!m_GeometryBuffer || !renderGBuffer()) {
 		Logger::log("Could not Render to Geometry Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
+
+	glDisable(GL_DEPTH_TEST);
 
 
 	// TODO:
