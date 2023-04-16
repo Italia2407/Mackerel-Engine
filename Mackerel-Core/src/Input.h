@@ -16,7 +16,7 @@
 namespace MCK
 {
 	using InputCallback = std::function<void(int32_t, MCK::ButtonEvents)>;
-}
+};
 
 namespace MCK::Input
 {
@@ -29,7 +29,7 @@ namespace MCK::Input
 	 * \param callback: the callback function
 	 * \param receipt: the receipt to append this callback to, used for deregistration
 	 */
-	bool Subscribe(int32_t key, ButtonEvents event, callbackFunc& callback, InputSubReceipt* receipt)
+	inline bool Subscribe(int32_t key, ButtonEvents event, callbackFunc& callback, InputSubReceipt* receipt)
 	{
 		return InputManager::Subscribe(key, event, callback, receipt);
 	}
@@ -39,7 +39,7 @@ namespace MCK::Input
 	 *
 	 * \param receipt: the receipt of subscriptions to be unsubscribed
 	 */
-	void Unsubscribe(InputSubReceipt* receipt)
+	inline void Unsubscribe(InputSubReceipt* receipt)
 	{
 		InputManager::Unsubscribe(receipt);
 	}
@@ -49,7 +49,7 @@ namespace MCK::Input
 	 *
 	 * \param window: the glfw window to query the key states from.
 	 */
-	void Update(GLFWwindow* window)
+	inline void Update(GLFWwindow* window)
 	{
 		InputManager::Update(window);
 	}
@@ -59,7 +59,7 @@ namespace MCK::Input
 	 * 
 	 * \return The gamepad state
 	 */
-	const GLFWgamepadstate& GamepadState()
+	inline const GLFWgamepadstate& GamepadState()
 	{
 		return InputManager::GetGamepadState();
 	}
@@ -69,8 +69,8 @@ namespace MCK::Input
 	 * 
 	 * \return The mouse state
 	 */
-	const MouseState& MousePosition()
+	inline const MouseState& MousePosition()
 	{
 		return InputManager::GetMouseState();
 	}
-}
+};

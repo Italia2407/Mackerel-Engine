@@ -4,6 +4,8 @@
 
 #include <typeinfo>
 #include <iostream>
+#include <math.h>
+#include "TimeManager.h"
 
 namespace MCK::EntitySystem
 {
@@ -24,6 +26,8 @@ namespace MCK::EntitySystem
 	void TestComponent::OnCreate() 
 	{
 		std::cout << "I was created" << std::endl;
+		transform = entity->GetComponent<TransformComponent>();
+		transform->Position().z() = 3;
 	}
 
 	/**
@@ -32,7 +36,14 @@ namespace MCK::EntitySystem
 	*/
 	void TestComponent::OnUpdate() 
 	{
-		std::cout << "I am being updated" << std::endl;
+		double delta = MCK::TimeManager::getFrameTime();
+		float speed = 1.f * static_cast<float>(delta);
+
+		std::cout << "I am being updated. Pos " << transform->Position().x();
+		std::cout << "Input: " << input.x() << ", " << input.y() << std::endl;
+
+		transform->Position().x() += speed * input.x();
+		transform->Position().z() += speed * input.y();
 	}
 
 	/**

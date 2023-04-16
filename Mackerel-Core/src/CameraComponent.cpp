@@ -5,6 +5,8 @@
 
 #include <math.h>
 
+#include "Renderer.h"
+
 namespace MCK::EntitySystem {
 CameraComponent::CameraComponent(float a_AspectRatio) :
 	m_Position(Eigen::Vector3f::Zero()), m_FrontDirection(Eigen::Vector3f(0.0f, 0.0f, 1.0f)), m_UpDirection(Eigen::Vector3f(0.0f, 1.0f, 0.0f)),
@@ -50,6 +52,11 @@ Eigen::Matrix4f CameraComponent::GetCameraViewMatrix() const
 	}
 
 	return cameraViewMatrix;
+}
+
+void CameraComponent::OnUpdate()
+{
+	Rendering::Renderer::UseCamera(*this);
 }
 }
 

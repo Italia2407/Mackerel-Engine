@@ -20,6 +20,7 @@ class MeshRendererComponent : public Component
 {
 public:
 	MeshRendererComponent(MeshEnum a_MeshEnum, ShaderEnum a_ShaderEnum, MaterialEnum a_MaterialEnum);
+	MeshRendererComponent(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material);
 	~MeshRendererComponent();
 
 private:

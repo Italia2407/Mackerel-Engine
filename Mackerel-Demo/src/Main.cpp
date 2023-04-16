@@ -2,9 +2,13 @@
 //
 
 #include <iostream>
-#include "Window.h"
+#include <Instance.h>
+
+#include "DemoApp.h"
+#include "TestApp.h"
 
 int main()
 {
-	SayHello();
+	//MCK::Instance::Start(new DemoApp);
+	MCK::Instance::Start(new TestApp());
 }

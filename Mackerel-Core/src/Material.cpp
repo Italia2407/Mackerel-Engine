@@ -705,4 +705,9 @@ void Material::ResetMaterial()
 		m_MaterialTextures[i] = nullptr;
 	}
 }
+
+bool Material::LoadFromFile(std::string a_FilePath)
+{
+	return false;
+}
 }

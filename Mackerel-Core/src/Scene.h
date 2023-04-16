@@ -31,6 +31,8 @@ namespace MCK::EntitySystem
 
 		entityId idSeed = 0;
 
+		
+
 		/**
 		 * Generates a unique ID for an entity.
 		 *
@@ -38,6 +40,13 @@ namespace MCK::EntitySystem
 		 */
 		entityId GenerateEntityID();
 	public:
+		Physics::PhysicsWorld physicsWorld;
+
+		/**
+		 * Initialises the scene.
+		 * 
+		 */
+		void InitialiseScene();
 
 		/**
 		 * Creates a blank entity and adds it to the scene.
@@ -80,6 +89,8 @@ namespace MCK::EntitySystem
 		 * \param component The component to free
 		 */
 		void FreeComponent(Component* component);
+
+		void UnloadScene();
 
 		/**
 		 * Test JSON for a scene. TODO remove

@@ -4,11 +4,17 @@
 #include "EntityFactory.h"
 #include "Component.h"
 #include "Scene.h"
+#include "TimeManager.h"
 
 using json = nlohmann::json;
 
 namespace MCK::EntitySystem
 {
+	void Scene::InitialiseScene()
+	{
+		physicsWorld.InitialiseWorld();
+	}
+
 	/**
 	 * Creates a blank entity and adds it to the scene.
 	 *
@@ -67,6 +73,9 @@ namespace MCK::EntitySystem
 		{
 			entities[i]->FrameEnd();
 		}
+
+		double delta = MCK::TimeManager::getFrameTime();
+		physicsWorld.ApplySimulation(static_cast<float>(delta));
 	}
 
 	/**
@@ -104,6 +113,11 @@ namespace MCK::EntitySystem
 			Entity* newEntity = CreateEntity();
 			newEntity->Deserialise(entityJson);
 		}
+	}
+
+	void Scene::UnloadScene()
+	{
+		physicsWorld.TeardownWorld();
 	}
 
 	/**

@@ -40,5 +40,7 @@ public:
 
 	Eigen::Matrix4f GetCameraViewMatrix() const;
 	virtual Eigen::Matrix4f GetProjectionMatrix() const = 0;
+
+	void OnUpdate() override;
 };
 }
