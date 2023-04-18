@@ -5,6 +5,7 @@
 
 #include <App.h>
 #include <Assets.h>
+#include <AudioEngine.h>
 #include <Entity.h>
 #include <Input.h>
 #include <PerspectiveCamera.h>

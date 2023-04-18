@@ -30,6 +30,7 @@
     <ClCompile Include="ext\GLAD\src\glad.c" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\AudioChannel.cpp" />
+    <ClCompile Include="src\AudioEngine.cpp" />
     <ClCompile Include="src\BoxColliderComponent.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />

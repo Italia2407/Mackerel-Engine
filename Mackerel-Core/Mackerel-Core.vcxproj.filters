@@ -291,6 +291,9 @@
     <ClCompile Include="src\AudioChannel.cpp">
       <Filter>Source Files\Systems\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\AudioEngine.cpp">
+      <Filter>Source Files\Systems\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">

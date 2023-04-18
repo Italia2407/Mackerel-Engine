@@ -67,6 +67,21 @@ void DemoApp::Start()
     cameraComponent = new MCK::EntitySystem::PerspectiveCamera(1280.f / 720.f);
     cameraComponent->Position() = Eigen::Vector3f(0.0f, -1.0f, -3.0f);
 
+    /* Audio Engine Testing */
+    MCK::Audio::AudioEngine audioEngine; 
+
+    // Initialize the audio engine - Uncomment to see the issue with fmodL.dll
+    //audioEngine.Initialise();
+
+    // Load a sound with ID 1
+    //MCK::Audio::Sound sound1 = audioEngine.LoadSound("../Mackerel-Core/res/Sounds/test.mp3", 1, false, false, false);
+
+    // Unload the sounds
+    //audioEngine.UnloadSound(&sound1);
+
+    // Teardown the audio engine
+    //audioEngine.Teardown();
+
     /* Scene setup */
     entity->AddComponent(&transformComp);
     //entity->AddComponent(&testComp);
