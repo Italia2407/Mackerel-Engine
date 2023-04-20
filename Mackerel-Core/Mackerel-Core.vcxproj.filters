@@ -288,6 +288,12 @@
     <ClCompile Include="src\Transform.cpp">
       <Filter>Source Files\AssetTypes\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="src\AudioChannel.cpp">
+      <Filter>Source Files\Systems\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioEngine.cpp">
+      <Filter>Source Files\Systems\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="src\ExamplePlayerController.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>

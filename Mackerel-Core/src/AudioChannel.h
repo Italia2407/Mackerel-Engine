@@ -1,6 +1,6 @@
 #pragma once
 #include "../FMOD/Include/fmod.hpp"
-#include "../FMOD/Include/fmod_studio.h"
+#include "../FMOD/Include/fmod_studio.hpp"
 #include "../ext/Eigen 3.4.0/Eigen/Eigen.h"
 
 namespace MCK::Audio
@@ -11,9 +11,9 @@ namespace MCK::Audio
 		unsigned int id;
 		FMOD::Channel* fChannel;
 
-		// TODO Implement me - commented so it compiles
-		//bool IsPlaying();
-		//void SetPosition(Eigen::Vector3f position);
+		bool IsPlaying();
+
+		void SetPosition(Eigen::Vector3f position);
 	};
 }
 

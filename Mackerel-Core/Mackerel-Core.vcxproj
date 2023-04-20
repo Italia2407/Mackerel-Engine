@@ -29,6 +29,8 @@
     <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
     <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\AudioChannel.cpp" />
+    <ClCompile Include="src\AudioEngine.cpp" />
     <ClCompile Include="src\BoxColliderComponent.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
