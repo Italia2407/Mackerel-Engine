@@ -10,13 +10,13 @@
 namespace MCK::EntitySystem {
 CameraComponent::CameraComponent(float a_AspectRatio) :
 	m_Position(Eigen::Vector3f::Zero()), m_FrontDirection(Eigen::Vector3f(0.0f, 0.0f, 1.0f)), m_UpDirection(Eigen::Vector3f(0.0f, 1.0f, 0.0f)),
-	m_AspectRatio(a_AspectRatio), m_FarPlane(10.0f), m_NearPlane(0.0001f) {}
+	m_AspectRatio(a_AspectRatio), m_FarPlane(300.0f), m_NearPlane(1.f) {}
 CameraComponent::CameraComponent(float a_AspectRatio, float a_FarPlane, float a_NearPlane) :
 	m_Position(Eigen::Vector3f::Zero()), m_FrontDirection(Eigen::Vector3f(0.0f, 0.0f, 1.0f)), m_UpDirection(Eigen::Vector3f(0.0f, 1.0f, 0.0f)),
 	m_AspectRatio(a_AspectRatio), m_FarPlane(a_FarPlane), m_NearPlane(a_NearPlane) {}
 CameraComponent::CameraComponent(float a_AspectRatio, Eigen::Vector3f a_Position, Eigen::Vector3f a_FrontDirection, Eigen::Vector3f a_UpDirection) :
 	m_Position(a_Position), m_FrontDirection(a_FrontDirection), m_UpDirection(a_UpDirection),
-	m_AspectRatio(a_AspectRatio), m_FarPlane(10.0f), m_NearPlane(0.0001f) {}
+	m_AspectRatio(a_AspectRatio), m_FarPlane(300.0f), m_NearPlane(1.f) {}
 CameraComponent::CameraComponent(float a_AspectRatio, float a_FarPlane, float a_NearPlane, Eigen::Vector3f a_Position, Eigen::Vector3f a_FrontDirection, Eigen::Vector3f a_UpDirection) :
 	m_Position(a_Position), m_FrontDirection(a_FrontDirection), m_UpDirection(a_UpDirection),
 	m_AspectRatio(a_AspectRatio), m_FarPlane(a_FarPlane), m_NearPlane(a_NearPlane) {}

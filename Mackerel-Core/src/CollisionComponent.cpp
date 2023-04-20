@@ -1,6 +1,7 @@
 #include "CollisionComponent.h"
 #include "Scene.h"
 #include "Entity.h"
+#include "PhysicsHelpers.h"
 
 #include <typeinfo>
 #include <iostream>
@@ -42,6 +43,26 @@ namespace MCK::Physics
 	}
 
 	/**
+	 * Sets the collision shape of the collision component.
+	 *
+	 * \param shapeInfo The details of the shape
+	 */
+	void CollisionComponent::SetCollisionShape(CreateCollisionShapeInfo shapeInfo)
+	{
+		if (collisionShape != nullptr)
+		{
+			delete collisionShape;
+		}
+
+		PhysicsHelpers::InitialiseCollider(shapeInfo, collisionShape);
+
+		if (collider != nullptr)
+		{
+			collider->setCollisionShape(collisionShape);
+		}
+	}
+
+	/**
 	 * Invoked when the entity holding the component is created.
 	 * The transform component of the entity rigidbody is part of is retrieved
 	 * so it can be set by rigidbody's properties.
@@ -52,7 +73,8 @@ namespace MCK::Physics
 		transform = entity->GetComponent<MCK::EntitySystem::TransformComponent>();
 
 		// Collision shape
-		collisionShape = new btBoxShape(btVector3({ 1,1,1 }));
+		if(collisionShape == nullptr)
+			collisionShape = new btBoxShape(btVector3({ 7,7,7 }));
 
 		collider = new btCollisionObject();
 		collider->setCollisionShape(collisionShape);

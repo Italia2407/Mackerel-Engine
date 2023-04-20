@@ -1,6 +1,7 @@
 #include "RigidbodyComponent.h"
 #include "Scene.h"
 #include "Entity.h"
+#include "PhysicsHelpers.h"
 
 #include <typeinfo>
 #include <iostream>
@@ -107,12 +108,67 @@ namespace MCK::Physics
 	*/
 	void RigidbodyComponent::ApplyToTransformComponent()
 	{
-		btTransform rbTransform = rigidbody->getCenterOfMassTransform();
-		btVector3 pos = rigidbody->getCenterOfMassPosition();
+		btTransform rbTransform = rigidbody->getWorldTransform();
+		btVector3 pos =  rbTransform.getOrigin();
 		btQuaternion rot = rbTransform.getRotation();
 		
 		transform->Position() = Eigen::Vector3f(pos.x(), pos.y(), pos.z());
-		transform->Rotation() = Eigen::Quaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+
+		if(rigidbody->getAngularFactor().length() > 0)
+			transform->Rotation() = Eigen::Quaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+		else
+		{
+			rbTransform.setRotation(btQuaternion
+				(
+					transform->Rotation().x(),
+					transform->Rotation().y(),
+					transform->Rotation().z(),
+					transform->Rotation().w()
+				));
+			rigidbody->setCenterOfMassTransform(rbTransform);
+		}
+	}
+
+	/**
+	 * Sets the collision shape of the rigidbody.
+	 * 
+	 * \param shapeInfo The details of the shape
+	 */
+	void RigidbodyComponent::SetCollisionShape(CreateCollisionShapeInfo shapeInfo)
+	{
+		if (collisionShape != nullptr)
+		{
+			delete collisionShape;
+		}
+
+		PhysicsHelpers::InitialiseCollider(shapeInfo, collisionShape);
+
+		if (rigidbody != nullptr)
+		{
+			rigidbody->setCollisionShape(collisionShape);
+		}
+	}
+
+	/**
+	 * Enables rotation (rotation is enabled by default).
+	 * 
+	 */
+	void RigidbodyComponent::EnableRotation()
+	{
+		angularFactor = 1;
+		if(rigidbody != nullptr)
+			rigidbody->setAngularFactor(angularFactor);
+	}
+
+	/**
+	 * Disables rigidbody rotation.
+	 * 
+	 */
+	void RigidbodyComponent::DisableRotation()
+	{
+		angularFactor = 0;
+		if (rigidbody != nullptr)
+			rigidbody->setAngularFactor(angularFactor);
 	}
 
     /**
@@ -155,7 +211,8 @@ namespace MCK::Physics
 		initialTransformation.setRotation(rot);
 
 		// Collision shape
-		collisionShape = new btBoxShape(btVector3({ 1,1,1 }));
+		if(collisionShape == nullptr)
+			collisionShape = new btBoxShape(btVector3({ 1,1,1 }));
 
 		// Construct the rigidbody
 		btRigidBody::btRigidBodyConstructionInfo info
@@ -168,6 +225,8 @@ namespace MCK::Physics
 
 		rigidbody = new btRigidBody(info);
 		rigidbody->setUserPointer(static_cast<void*>(this));
+		//rigidbody->setAngularFactor(angularFactor);
+
 		//rigidbody->setLinearFactor()
 
 		// Add rigidbody
@@ -180,7 +239,7 @@ namespace MCK::Physics
 	*/
 	void RigidbodyComponent::OnUpdate()
 	{
-		std::cout << "Pos y: " << transform->Position().y() << std::endl;
+
 	}
 
 	/**

@@ -24,12 +24,18 @@
     <ClCompile Include="src\TestApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PlatformerDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DemoApp.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\TestApp.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlatformerDemo.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

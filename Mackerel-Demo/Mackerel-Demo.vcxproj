@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="src\DemoApp.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\PlatformerDemo.cpp" />
     <ClCompile Include="src\TestApp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DemoApp.h" />
+    <ClInclude Include="src\PlatformerDemo.h" />
     <ClInclude Include="src\TestApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

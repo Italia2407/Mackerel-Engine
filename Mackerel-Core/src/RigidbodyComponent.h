@@ -12,9 +12,11 @@ namespace MCK::Physics
 	private:
 		
 		MCK::EntitySystem::TransformComponent* transform;
+
+		float angularFactor = 1;
 	public:
-		btRigidBody* rigidbody;
-		btCollisionShape* collisionShape;
+		btRigidBody* rigidbody = nullptr;
+		btCollisionShape* collisionShape = nullptr;
 
 		void AddCentralForce(const Eigen::Vector3f force);
 		void AddTorque(const Eigen::Vector3f torque);
@@ -26,6 +28,9 @@ namespace MCK::Physics
 		Eigen::Vector3f GetAngularVelocity();
 		Eigen::Vector3f GetPosition();
 		void ApplyToTransformComponent();
+		void SetCollisionShape(CreateCollisionShapeInfo shapeInfo);
+		void EnableRotation();
+		void DisableRotation();
 
 		void OnCreate();
 		void OnUpdate();

@@ -37,6 +37,7 @@
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\EntityFactory.cpp" />
     <ClCompile Include="src\EntityPool.cpp" />
+    <ClCompile Include="src\ExamplePlayerController.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\InputComponent.cpp" />
     <ClCompile Include="src\JsonHelpers.cpp" />
@@ -446,6 +447,7 @@
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\EntityPool.h" />
+    <ClInclude Include="src\ExamplePlayerController.h" />
     <ClInclude Include="src\GamepadAxes.h" />
     <ClInclude Include="src\GamepadButtons.h" />
     <ClInclude Include="src\GLinclude.h" />

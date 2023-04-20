@@ -288,6 +288,9 @@
     <ClCompile Include="src\Transform.cpp">
       <Filter>Source Files\AssetTypes\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="src\ExamplePlayerController.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -1579,6 +1582,9 @@
     </ClInclude>
     <ClInclude Include="src\Sound.h">
       <Filter>Source Files\Systems\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ExamplePlayerController.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

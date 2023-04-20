@@ -50,7 +50,7 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 	*/
 	void TransformComponent::OnUpdate()
 	{
-		std::cout << "I am being updated" << std::endl;
+
 	}
 
 	/**
