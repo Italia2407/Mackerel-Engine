@@ -6,6 +6,7 @@
 #include "../ext/nlohmann/json.hpp"
 #include "RigidbodyComponent.h"
 #include "PhysicsWorld.h"
+#include "AudioEngine.h"
 
 // Forward declarations
 namespace MCK::EntitySystem {
@@ -31,8 +32,6 @@ namespace MCK::EntitySystem
 
 		entityId idSeed = 0;
 
-		
-
 		/**
 		 * Generates a unique ID for an entity.
 		 *
@@ -41,6 +40,7 @@ namespace MCK::EntitySystem
 		entityId GenerateEntityID();
 	public:
 		Physics::PhysicsWorld physicsWorld;
+		MCK::Audio::AudioEngine audioEngine;
 
 		/**
 		 * Initialises the scene.

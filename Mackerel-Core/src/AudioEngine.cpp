@@ -26,6 +26,15 @@ namespace MCK::Audio
 
             MCK::Logger::log(outputStr, MCK::Logger::LogLevel::Error, std::source_location::current());
         }
+
+        // Initialise the audio listener
+        audioSystem->set3DNumListeners(1);
+
+        FMOD_VECTOR zero = FMOD_VECTOR(0, 0, 0);
+        FMOD_VECTOR forward = FMOD_VECTOR(0, 0, 1);
+        FMOD_VECTOR up = FMOD_VECTOR(0, 1, 0);
+
+        audioSystem->set3DListenerAttributes(0, &zero, &zero, &forward, &up);
     }
 
     /**
@@ -51,6 +60,41 @@ namespace MCK::Audio
         }
 
         audioSystem->release();
+    }
+
+    void AudioEngine::Update()
+    {
+        std::vector<unsigned int> stoppedChannelIDs;
+
+        // Find all stopped channels and add them to stoppedChannelIDs
+        for (auto it = channels.begin(); it != channels.end(); )
+        {
+            unsigned int id = it->first;
+            AudioChannel channel = it->second;
+            
+            // Find is paused/is playing
+            bool isPaused = false;
+            channel.fChannel->getPaused(&isPaused);
+
+            bool isPlaying = false;
+            channel.fChannel->isPlaying(&isPlaying);
+
+            // Sound finished - add to remove list
+            if (!isPlaying && !isPaused) 
+            {
+                stoppedChannelIDs.push_back(id);
+            }
+        }
+
+        // Stop all dead sounds
+        for (unsigned int i = 0; i < stoppedChannelIDs.size(); ++i)
+        {
+            channels[stoppedChannelIDs[i]].fChannel->stop();
+            channels.erase(stoppedChannelIDs[i]);
+        }
+        
+        // Update
+        audioSystem->update();
     }
 
     /**
@@ -106,5 +150,113 @@ namespace MCK::Audio
                 loadedSounds.erase(it);
             }
         }
+    }
+
+    void AudioEngine::Play(Sound sound, unsigned int channelID)
+    {
+        // Is there already a sound with this ID?
+        auto found = channels.find(channelID);
+        if (found != channels.end())
+        {
+            // Stop that sound
+            StopUnsafe(channelID);
+        }
+
+        // Play the sound
+        FMOD::Channel* fmodChannel = nullptr;
+        audioSystem->playSound(sound.sound, nullptr, false, &fmodChannel);
+
+        // Construct channel
+        AudioChannel channel{};
+        channel.id = channelID;
+        channel.fChannel = fmodChannel;
+
+        // Add this sound
+        channels[channel.id] = channel;
+    }
+
+    void AudioEngine::Stop(unsigned int id)
+    {
+        auto found = channels.find(id);
+        if (found != channels.end())
+        {
+            // Stop this sound
+            StopUnsafe(id);
+        }
+    }
+
+    void AudioEngine::StopUnsafe(unsigned int id)
+    {
+        channels[id].fChannel->stop();
+        loadedSounds.erase(id);
+    }
+
+    void AudioEngine::Pause(unsigned int id)
+    {
+        if (channels.count(id))
+        {
+            channels[id].fChannel->setPaused(true);
+        }
+    }
+    
+    void AudioEngine::Resume(unsigned int id)
+    {
+        if (channels.count(id))
+        {
+            channels[id].fChannel->setPaused(false);
+        }
+    }
+
+    void AudioEngine::SetPosition(unsigned int id, Eigen::Vector3f position)
+    {
+        if (channels.count(id))
+        {
+            // convert to FMOD vector
+            FMOD_VECTOR fVec;
+            fVec.x = position[0];
+            fVec.y = position[1];
+            fVec.z = position[2];
+
+            channels[id].fChannel->set3DAttributes(&fVec, NULL);
+        }
+
+    }
+
+    bool AudioEngine::IsPlaying(unsigned int id)
+    {
+        if (channels.count(id))
+        {
+            bool playing = false;
+            channels[id].fChannel->isPlaying(&playing);
+            return playing;
+        }
+        return false;
+    }
+
+    bool AudioEngine::IsPaused(unsigned int id)
+    {
+        if (channels.count(id))
+        {
+            bool paused = false;
+            channels[id].fChannel->getPaused(&paused);
+            return paused;
+        }
+        return false;
+    }
+
+    bool AudioEngine::HasChannel(unsigned int id)
+    {
+        return bool(channels.count(id));
+    }
+
+    unsigned int AudioEngine::GenerateEmitterID()
+    {
+        return ++curEmitterID;
+    }
+
+    unsigned int AudioEngine::GenerateChannelID(unsigned int emitterID, unsigned int& emitterSeed)
+    {
+        ++emitterSeed;
+        return emitterID * channelsPerEmitter + (emitterSeed % channelsPerEmitter);
     }
 }

@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "Scene.h"
 #include "TimeManager.h"
-#include "AudioEngine.h"
+
 
 #include <iostream>
 
@@ -17,11 +17,11 @@ namespace MCK::EntitySystem
 	{
 		physicsWorld.InitialiseWorld();
 
-		/* Audio Engine Testing */
-		MCK::Audio::AudioEngine audioEngine;
-
-		// Initialize the audio engine - Uncomment to see the issue with fmodL.dll
+		// Initialize the audio engine
 		audioEngine.Initialise();
+
+		// Load a sound with ID 1
+		//MCK::Audio::Sound sound1 = audioEngine.LoadSound("../Mackerel-Core/res/Sounds/Voyager.mp3", 1, true, false, false);
 	}
 
 	/**
@@ -85,7 +85,9 @@ namespace MCK::EntitySystem
 
 		MCK::TimeManager::Update();
 		double delta = MCK::TimeManager::getFrameTime();
+
 		physicsWorld.ApplySimulation(static_cast<float>(delta));
+		audioEngine.Update();
 	}
 
 	/**

@@ -288,9 +288,6 @@
     <ClCompile Include="src\Transform.cpp">
       <Filter>Source Files\AssetTypes\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="src\AudioChannel.cpp">
-      <Filter>Source Files\Systems\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="src\AudioEngine.cpp">
       <Filter>Source Files\Systems\Audio</Filter>
     </ClCompile>
@@ -1592,6 +1589,9 @@
     <ClInclude Include="src\ExamplePlayerController.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\AudioEmitter.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
@@ -1637,5 +1637,10 @@
     <Resource Include="res\Meshes\Primitives\cube.obj">
       <Filter>Resource Files\Meshes\Primitives</Filter>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\Sounds\Voyager.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

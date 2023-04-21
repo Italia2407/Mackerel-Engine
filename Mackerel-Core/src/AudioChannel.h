@@ -10,10 +10,6 @@ namespace MCK::Audio
 	{
 		unsigned int id;
 		FMOD::Channel* fChannel;
-
-		bool IsPlaying();
-
-		void SetPosition(Eigen::Vector3f position);
 	};
 }
 
