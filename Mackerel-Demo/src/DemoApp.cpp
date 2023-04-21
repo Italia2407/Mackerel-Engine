@@ -38,6 +38,7 @@ void DemoApp::MovingCubeCallback(int32_t key, MCK::ButtonEvents ButtonEvents)
 void DemoApp::Start()
 {
     /* Entity Creation */
+    scene.InitialiseScene();
     entity = scene.CreateEntity();
     cameraEntity = scene.CreateEntity();
     floorEntity = scene.CreateEntity();
@@ -68,7 +69,7 @@ void DemoApp::Start()
     cameraComponent->Position() = Eigen::Vector3f(0.0f, -1.0f, -3.0f);
 
     /* Audio Engine Testing */
-    MCK::Audio::AudioEngine audioEngine; 
+    //MCK::Audio::AudioEngine audioEngine; 
 
     // Initialize the audio engine - Uncomment to see the issue with fmodL.dll
     //audioEngine.Initialise();

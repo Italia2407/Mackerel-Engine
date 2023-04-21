@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "Scene.h"
 #include "TimeManager.h"
+#include "AudioEngine.h"
 
 #include <iostream>
 
@@ -15,6 +16,12 @@ namespace MCK::EntitySystem
 	void Scene::InitialiseScene()
 	{
 		physicsWorld.InitialiseWorld();
+
+		/* Audio Engine Testing */
+		MCK::Audio::AudioEngine audioEngine;
+
+		// Initialize the audio engine - Uncomment to see the issue with fmodL.dll
+		audioEngine.Initialise();
 	}
 
 	/**
