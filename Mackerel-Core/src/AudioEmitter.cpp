@@ -52,50 +52,94 @@ namespace MCK::EntitySystem
 		audioEngine->Play(loadedSound, channelID);
 	}
 
+	/**
+	 * Pauses the audio of the current channel.
+	 * 
+	 */
 	void AudioComponent::Pause()
 	{
 		audioEngine->Pause(currentChannelID);
 	}
 
+	/**
+	 * Resumes the audio of the current channel.
+	 * 
+	 */
 	void AudioComponent::Resume()
 	{
 		audioEngine->Resume(currentChannelID);
 	}
 
+	/**
+	 * Stops the audio of the current channel.
+	 * 
+	 */
 	void AudioComponent::Stop()
 	{
 		audioEngine->Stop(currentChannelID);
 	}
 
+	/**
+	 * Checks if the audio in the current channel is paused.
+	 * 
+	 * \return true if audio is paused, false otherwise
+	 */
 	bool AudioComponent::IsPaused()
 	{
 		return audioEngine->IsPaused(currentChannelID);
 	}
 
+	/**
+	 * Checks if the audio in the current channel is playing.
+	 * 
+	 * \return true if audio is playing, false otherwise
+	 */
 	bool AudioComponent::IsPlaying()
 	{
 		return audioEngine->IsPlaying(currentChannelID);
 	}
 
+	/**
+	 * Setter function to set the filename for the sound to be loaded.
+	 * 
+	 * \param filename
+	 */
 	void AudioComponent::SetSoundFileName(const char* filename)
 	{
 		soundFileName = filename;
 	}
 
+	/**
+	 * Setter function to set whether the audio to be loaded 
+	 *	should be looped.
+	 * 
+	 * \param loop
+	 */
 	void AudioComponent::SetSoundLoop(bool loop)
 	{
 		soundLoop = loop;
 	}
 
+	/**
+	 * Setter function to set whether the audio to be loaded
+	 *	is a 3D sound.
+	 * 
+	 * \param s3D
+	 */
 	void AudioComponent::SetSound3D(bool s3D)
 	{
 		sound3D = s3D;
 	}
 
+	/**
+	 * When the audio component is created, it sets some data
+	 *	and loads a sound based on the settings stored in the emitter.
+	 * 
+	 */
 	void AudioComponent::OnCreate()
 	{
 		// get a reference to the audio engine
-		//audioEngine = 
+		audioEngine = &entity->scene->audioEngine;
 
 		// set the emitter ID 
 		emitterID = audioEngine->GenerateEmitterID();
@@ -107,12 +151,20 @@ namespace MCK::EntitySystem
 		transform = entity->GetComponent<MCK::EntitySystem::TransformComponent>();
 	}
 
+	/**
+	 * Each frame, updates the position of the emitter.
+	 * 
+	 */
 	void AudioComponent::OnUpdate()
 	{
 		// set the position of the current channel
 		audioEngine->SetPosition(emitterID, transform->Position());
 	}
 
+	/**
+	 * When the component is destroyed, stops the sound and unloads it.
+	 * 
+	 */
 	void AudioComponent::OnDestroy()
 	{
 		// stop the current channel
