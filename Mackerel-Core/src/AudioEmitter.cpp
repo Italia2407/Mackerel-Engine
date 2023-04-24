@@ -11,7 +11,7 @@ namespace MCK::EntitySystem
 	 * The function also stores the loaded sound in the emitter.
 	 * 
 	 */
-	void AudioComponent::LoadSound()
+	void AudioEmitter::LoadSound()
 	{
 		// check if a sound has already been loaded, if yes, unload it
 		if (loadedSound.sound != nullptr)
@@ -25,7 +25,7 @@ namespace MCK::EntitySystem
 	 * Function to unload the sound previously loaded by the audio emitter.
 	 * 
 	 */
-	void AudioComponent::UnloadSound()
+	void AudioEmitter::UnloadSound()
 	{
 		audioEngine->UnloadSound(&loadedSound);
 	}
@@ -35,7 +35,7 @@ namespace MCK::EntitySystem
 	 * stores it in the emitter. Then calls play through the audio engine.
 	 * 
 	 */
-	void AudioComponent::Play()
+	void AudioEmitter::Play()
 	{
 		Stop();
 		currentChannelID = audioEngine->GenerateChannelID(emitterID, emitterSeed);
@@ -46,7 +46,7 @@ namespace MCK::EntitySystem
 	 * Play a sound without stopping or changing the current channel ID.
 	 * 
 	 */
-	void AudioComponent::PlayOneShot()
+	void AudioEmitter::PlayOneShot()
 	{
 		unsigned int channelID = audioEngine->GenerateChannelID(emitterID, emitterSeed);
 		audioEngine->Play(loadedSound, channelID);
@@ -56,7 +56,7 @@ namespace MCK::EntitySystem
 	 * Pauses the audio of the current channel.
 	 * 
 	 */
-	void AudioComponent::Pause()
+	void AudioEmitter::Pause()
 	{
 		audioEngine->Pause(currentChannelID);
 	}
@@ -65,7 +65,7 @@ namespace MCK::EntitySystem
 	 * Resumes the audio of the current channel.
 	 * 
 	 */
-	void AudioComponent::Resume()
+	void AudioEmitter::Resume()
 	{
 		audioEngine->Resume(currentChannelID);
 	}
@@ -74,7 +74,7 @@ namespace MCK::EntitySystem
 	 * Stops the audio of the current channel.
 	 * 
 	 */
-	void AudioComponent::Stop()
+	void AudioEmitter::Stop()
 	{
 		audioEngine->Stop(currentChannelID);
 	}
@@ -84,7 +84,7 @@ namespace MCK::EntitySystem
 	 * 
 	 * \return true if audio is paused, false otherwise
 	 */
-	bool AudioComponent::IsPaused()
+	bool AudioEmitter::IsPaused()
 	{
 		return audioEngine->IsPaused(currentChannelID);
 	}
@@ -94,7 +94,7 @@ namespace MCK::EntitySystem
 	 * 
 	 * \return true if audio is playing, false otherwise
 	 */
-	bool AudioComponent::IsPlaying()
+	bool AudioEmitter::IsPlaying()
 	{
 		return audioEngine->IsPlaying(currentChannelID);
 	}
@@ -104,7 +104,7 @@ namespace MCK::EntitySystem
 	 * 
 	 * \param filename
 	 */
-	void AudioComponent::SetSoundFileName(const char* filename)
+	void AudioEmitter::SetSoundFileName(const char* filename)
 	{
 		soundFileName = filename;
 	}
@@ -115,7 +115,7 @@ namespace MCK::EntitySystem
 	 * 
 	 * \param loop
 	 */
-	void AudioComponent::SetSoundLoop(bool loop)
+	void AudioEmitter::SetSoundLoop(bool loop)
 	{
 		soundLoop = loop;
 	}
@@ -126,7 +126,7 @@ namespace MCK::EntitySystem
 	 * 
 	 * \param s3D
 	 */
-	void AudioComponent::SetSound3D(bool s3D)
+	void AudioEmitter::SetSound3D(bool s3D)
 	{
 		sound3D = s3D;
 	}
@@ -136,7 +136,7 @@ namespace MCK::EntitySystem
 	 *	and loads a sound based on the settings stored in the emitter.
 	 * 
 	 */
-	void AudioComponent::OnCreate()
+	void AudioEmitter::OnCreate()
 	{
 		// get a reference to the audio engine
 		audioEngine = &entity->scene->audioEngine;
@@ -155,7 +155,7 @@ namespace MCK::EntitySystem
 	 * Each frame, updates the position of the emitter.
 	 * 
 	 */
-	void AudioComponent::OnUpdate()
+	void AudioEmitter::OnUpdate()
 	{
 		// set the position of the current channel
 		audioEngine->SetPosition(emitterID, transform->Position());
@@ -165,7 +165,7 @@ namespace MCK::EntitySystem
 	 * When the component is destroyed, stops the sound and unloads it.
 	 * 
 	 */
-	void AudioComponent::OnDestroy()
+	void AudioEmitter::OnDestroy()
 	{
 		// stop the current channel
 		Stop();

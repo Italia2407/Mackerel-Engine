@@ -2,6 +2,8 @@
 #include "AudioChannel.h"
 #include "Sound.h"
 
+#include "Eigen/Eigen.h"
+
 #include<map>
 
 namespace MCK::Audio
@@ -125,6 +127,16 @@ namespace MCK::Audio
 			 */
 			unsigned int GenerateChannelID(unsigned int emitterID, 
 				unsigned int &emitterSeed);
+
+			/**
+			 * Updates listener transform, by passing the neccessary arguments
+			 * set3DListenerAttributes.
+			 * 
+			 * \param position used to set the position of the listener
+			 * \param rotation used to calculate and set the forward and up directions
+			 */
+			void UpdateTransform(Eigen::Vector3f position, Eigen::Quaternionf rotation);
+
 		private:
 			// The current emitter ID to use
 			unsigned int curEmitterID = 0;
