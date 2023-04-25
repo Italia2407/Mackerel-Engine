@@ -99,7 +99,7 @@ void PlatformerApp::Start()
    EntitySystem::TransformComponent* audioTransform = new EntitySystem::TransformComponent();
    audioTransform->Position() = Eigen::Vector3f(-30.f, 0, 0);
 
-    EntitySystem::AudioComponent* audioComponent = new EntitySystem::AudioComponent();
+    EntitySystem::AudioEmitter* audioComponent = new EntitySystem::AudioEmitter();
     audioComponent->SetSoundFileName("../Mackerel-Core/res/Sounds/Voyager.mp3");
 
     EntitySystem::Entity* audioEntity = scene.CreateEntity();
