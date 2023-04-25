@@ -15,7 +15,6 @@ namespace MCK::EntitySystem
 		void OnUpdate() override;
 		void OnDestroy() override;
 
-
 		TypeInfoRef GetType() override;
 
 		bool Deserialise(json data) override;
