@@ -23,5 +23,20 @@ namespace MCK::EntitySystem
 	void AudioListener::OnUpdate()
 	{
 		audioEngine->UpdateTransform(transform->Position(), transform->Rotation());
+	}	
+	
+	void AudioListener::OnDestroy()
+	{
+
+	}
+
+	TypeInfoRef AudioListener::GetType()
+	{
+		return typeid(AudioListener);
+	}
+
+	bool AudioListener::Deserialise(json data)
+	{
+		return true;
 	}
 }

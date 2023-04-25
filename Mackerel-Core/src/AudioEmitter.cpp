@@ -179,12 +179,12 @@ namespace MCK::EntitySystem
 	/**
 	* Returns the type id of this component
 	*/
-	TypeInfoRef AudioComponent::GetType()
+	TypeInfoRef AudioEmitter::GetType()
 	{
-		return typeid(AudioComponent);
+		return typeid(AudioEmitter);
 	}
 
-	bool AudioComponent::Deserialise(json data)
+	bool AudioEmitter::Deserialise(json data)
 	{
 		return true;
 	}
