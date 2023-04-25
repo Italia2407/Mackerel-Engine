@@ -297,6 +297,9 @@
     <ClCompile Include="src\AudioEmitter.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\AudioListener.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
     <ClCompile Include="src\CollisionCallbackManager.cpp">
       <Filter>Source Files\Systems\Physics</Filter>
     </ClCompile>
@@ -1596,6 +1599,9 @@
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\AudioEmitter.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AudioListener.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\CollisionData.h">

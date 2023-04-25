@@ -5,7 +5,7 @@
 
 namespace MCK::EntitySystem
 {
-	class AudioComponent : public Component
+	class AudioEmitter : public Component
 	{
 	private:
 		unsigned int emitterSeed = 0;

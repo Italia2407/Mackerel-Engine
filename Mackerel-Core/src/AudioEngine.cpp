@@ -259,4 +259,24 @@ namespace MCK::Audio
         ++emitterSeed;
         return emitterID * channelsPerEmitter + (emitterSeed % channelsPerEmitter);
     }
+
+    void AudioEngine::UpdateTransform(Eigen::Vector3f position, Eigen::Quaternionf rotation)
+    {
+        // rotated forward direction
+        Eigen::Vector3f forward_rotated = rotation * Eigen::Vector3f(0, 0, 1);
+
+        // calculate rotated up direction
+        Eigen::Vector3f up_rotated = (forward_rotated.cross(Eigen::Vector3f(0, 1, 0))).normalized();
+
+        // convert to FMOD
+        FMOD_VECTOR pos = FMOD_VECTOR(position[0], position[1], position[2]);
+
+        FMOD_VECTOR forward = FMOD_VECTOR(forward_rotated[0], forward_rotated[1], forward_rotated[2]);
+        FMOD_VECTOR up = FMOD_VECTOR(up_rotated[0], up_rotated[1], up_rotated[2]);
+
+        // velocity remains zero
+        FMOD_VECTOR zero = FMOD_VECTOR(0, 0, 0);
+
+        audioSystem->set3DListenerAttributes(0, &pos, &zero, &forward, &up);
+    }
 }
