@@ -95,6 +95,18 @@ void PlatformerApp::Start()
 
 #pragma endregion
 
+#pragma region Audio Init
+   EntitySystem::TransformComponent* audioTransform = new EntitySystem::TransformComponent();
+   audioTransform->Position() = Eigen::Vector3f(-30.f, 0, 0);
+
+    EntitySystem::AudioComponent* audioComponent = new EntitySystem::AudioComponent();
+    audioComponent->SetSoundFileName("../Mackerel-Core/res/Sounds/Voyager.mp3");
+
+    EntitySystem::Entity* audioEntity = scene.CreateEntity();
+    audioEntity->AddComponent(audioTransform);
+    audioEntity->AddComponent(audioComponent);
+
+#pragma endregion
 
 }
 

@@ -21,6 +21,7 @@
 #include "PhysicsHelpers.h"
 #include "InputComponent.h"
 #include "ExamplePlayerController.h"
+#include "AudioEmitter.h"
 
 using namespace MCK;
 

@@ -79,6 +79,10 @@ namespace MCK::Physics
 		collider = new btCollisionObject();
 		collider->setCollisionShape(collisionShape);
 		collider->setUserPointer(static_cast<void*>(this));
+		collider->setCollisionFlags(collider->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+
+		if(isTrigger)
+			collider->setCollisionFlags(collider->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 
 		UpdateColliderTransform();
 

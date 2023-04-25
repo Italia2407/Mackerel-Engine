@@ -8,6 +8,11 @@
 namespace MCK::Physics::PhysicsHelpers
 {
 	/**
+	 * Returns the corresponding dynamics component. Either a RigidbodyComponent or a CollisionComponent
+	 */
+	MCK::EntitySystem::Component* GetDynamicsComponent(const btCollisionObject* dynamicsObject);
+
+	/**
 	 * Gets the corresponding Rigidbody component from a btRigidbody.
 	 * 
 	 * \param btBody: the rigidbody
