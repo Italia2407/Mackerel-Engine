@@ -27,8 +27,6 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 
 	/**
 	* Returns the type id of this component
-	*
-	* \return The name as a C string.
 	*/
 	TypeInfoRef TransformComponent::GetType()
 	{
@@ -50,7 +48,7 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 	*/
 	void TransformComponent::OnUpdate()
 	{
-		std::cout << "I am being updated" << std::endl;
+
 	}
 
 	/**

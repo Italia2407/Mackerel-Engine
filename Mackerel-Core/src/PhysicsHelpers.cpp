@@ -46,7 +46,7 @@ namespace MCK::Physics::PhysicsHelpers
 		switch (shapeInfo.colliderType)
 		{
 		case (Box):
-			collisionShape = CreateBoxShape(btVector3(shapeInfo.width/2, shapeInfo.height/2, shapeInfo.depth/2));
+			collisionShape = CreateBoxShape(btVector3(shapeInfo.width, shapeInfo.height, shapeInfo.depth));
 			break;
 		case (Sphere):
 			collisionShape = CreateSphereShape(shapeInfo.radius);

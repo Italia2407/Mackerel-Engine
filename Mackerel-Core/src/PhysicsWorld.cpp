@@ -1,7 +1,15 @@
 #include "PhysicsWorld.h"
-
+#include "CollisionData.h"
+#include "RigidbodyComponent.h"
 namespace MCK::Physics
 {
+	/**
+	 * Bullet Collision Callback
+	 */
+	bool OnCollision(btManifoldPoint& cp,
+		const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
+		const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1);
+
 	void PhysicsWorld::InitialiseWorld()
 	{
 		collisionConfiguration = new
@@ -17,6 +25,8 @@ namespace MCK::Physics
 			overlappingPairCache, solver, collisionConfiguration);
 
 		dynamicsWorld -> setGravity(btVector3(0, -10, 0));
+
+		gContactAddedCallback = OnCollision;
 	}
 
 	void PhysicsWorld::AddRigidbody(entityId id, RigidbodyComponent* rigidbody)
@@ -68,6 +78,48 @@ namespace MCK::Physics
 		}
 
 		return cast;
+	}
+
+	bool OnCollision(btManifoldPoint& cp, 
+		const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, 
+		const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
+	{
+		bool rigidbodyStatus[2];
+		rigidbodyStatus[0] = PhysicsHelpers::IsRigidbody(colObj0Wrap->getCollisionObject());
+		rigidbodyStatus[1] = PhysicsHelpers::IsRigidbody(colObj1Wrap->getCollisionObject());
+
+		if (rigidbodyStatus[0] || rigidbodyStatus[1])
+		{
+			const btCollisionObject* btCollisionObjects[2];
+			btCollisionObjects[0] = colObj0Wrap->getCollisionObject();
+			btCollisionObjects[1] = colObj1Wrap->getCollisionObject();
+
+			EntitySystem::Entity* entities[2];
+			entities[0] = PhysicsHelpers::GetEntity(colObj0Wrap->getCollisionObject());
+			entities[1] = PhysicsHelpers::GetEntity(colObj1Wrap->getCollisionObject());
+
+			for (int i = 0; i < 2; ++i)
+			{
+				int other = 1 - i;
+
+				CollisionData colData{};
+				colData.collidedEntity = entities[other];
+
+				EntitySystem::Component* dynamicsComponent = PhysicsHelpers::GetDynamicsComponent(btCollisionObjects[i]);
+				
+				if (rigidbodyStatus[i])
+				{
+					RigidbodyComponent* comp = static_cast<RigidbodyComponent*>(dynamicsComponent);
+					comp->onCollisionHandler.Invoke(colData);
+				}
+				else
+				{
+					CollisionComponent* comp = static_cast<CollisionComponent*>(dynamicsComponent);
+					comp->onCollisionHandler.Invoke(colData);
+				}
+			}
+		}
+		return true;
 	}
 
 	RaycastHits PhysicsWorld::RaycastAll(btVector3 start, btVector3 end)

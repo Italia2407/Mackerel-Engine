@@ -6,6 +6,9 @@
 #include "Scene.h"
 #include "TimeManager.h"
 
+
+#include <iostream>
+
 using json = nlohmann::json;
 
 namespace MCK::EntitySystem
@@ -13,6 +16,12 @@ namespace MCK::EntitySystem
 	void Scene::InitialiseScene()
 	{
 		physicsWorld.InitialiseWorld();
+
+		// Initialize the audio engine
+		audioEngine.Initialise();
+
+		// Load a sound with ID 1
+		//MCK::Audio::Sound sound1 = audioEngine.LoadSound("../Mackerel-Core/res/Sounds/Voyager.mp3", 1, true, false, false);
 	}
 
 	/**
@@ -74,8 +83,11 @@ namespace MCK::EntitySystem
 			entities[i]->FrameEnd();
 		}
 
+		MCK::TimeManager::Update();
 		double delta = MCK::TimeManager::getFrameTime();
+
 		physicsWorld.ApplySimulation(static_cast<float>(delta));
+		audioEngine.Update();
 	}
 
 	/**

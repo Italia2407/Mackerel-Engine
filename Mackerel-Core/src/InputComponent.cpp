@@ -129,11 +129,11 @@ namespace MCK::EntitySystem
 			}
 		}
 
-		std::ostringstream output;
-		output << "Direction: (" << direction.x() << ", " << direction.y() << ") " << " JumpPressed: " << jumpPressed << " JumpHeld: " << jumpHeld;
-		std::string outputStr = output.str();
+		//std::ostringstream output;
+		//output << "Direction: (" << direction.x() << ", " << direction.y() << ") " << " JumpPressed: " << jumpPressed << " JumpHeld: " << jumpHeld;
+		//std::string outputStr = output.str();
 
-		MCK::Logger::log(outputStr, MCK::Logger::LogLevel::Debug, std::source_location::current());
+		//MCK::Logger::log(outputStr, MCK::Logger::LogLevel::Debug, std::source_location::current());
 	}
 
 	/**

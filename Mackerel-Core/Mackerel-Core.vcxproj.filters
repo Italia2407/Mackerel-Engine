@@ -288,6 +288,21 @@
     <ClCompile Include="src\Transform.cpp">
       <Filter>Source Files\AssetTypes\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="src\AudioEngine.cpp">
+      <Filter>Source Files\Systems\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ExamplePlayerController.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioEmitter.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioListener.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionCallbackManager.cpp">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -1580,6 +1595,24 @@
     <ClInclude Include="src\Sound.h">
       <Filter>Source Files\Systems\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\ExamplePlayerController.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AudioEmitter.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AudioListener.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionData.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionCallbackManager.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionCallbackReceipt.h">
+      <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
@@ -1625,5 +1658,10 @@
     <Resource Include="res\Meshes\Primitives\cube.obj">
       <Filter>Resource Files\Meshes\Primitives</Filter>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\Sounds\Voyager.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

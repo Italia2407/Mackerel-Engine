@@ -38,6 +38,7 @@ void DemoApp::MovingCubeCallback(int32_t key, MCK::ButtonEvents ButtonEvents)
 void DemoApp::Start()
 {
     /* Entity Creation */
+    scene.InitialiseScene();
     entity = scene.CreateEntity();
     cameraEntity = scene.CreateEntity();
     floorEntity = scene.CreateEntity();
