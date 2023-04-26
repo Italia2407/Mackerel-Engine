@@ -4,9 +4,10 @@
 #include "PerspectiveCamera.h"
 
 #include "Renderer.h"
+#include "Input.h"
 
 TestApp::TestApp() :
-    m_Mesh(nullptr), m_Material(nullptr), m_UnlitShader(nullptr), m_MonoColourShader(nullptr), m_Camera(nullptr) {}
+    m_MeshEntity(nullptr), m_Mesh(nullptr), m_Material(nullptr), m_UnlitShader(nullptr), m_MonoColourShader(nullptr), m_Camera(nullptr) {}
 TestApp::~TestApp()
 {}
 
@@ -36,10 +37,15 @@ void TestApp::Start()
 
     m_Camera = new MCK::EntitySystem::PerspectiveCamera(1280.0f / 720.0f);
     m_Camera->Position() = Eigen::Vector3f(0.0f, 0.0f, -3.0f);
+
+    m_MeshTransform.Position() = Eigen::Vector3f(0.0f, 0.0f, 2.0f);
+    m_MeshTransform.Scale() = Eigen::Vector3f(1.0f, 1.0f, 0.1f);
 }
 
 void TestApp::Update()
 {
+    m_MeshTransform.Rotation() = m_MeshTransform.Rotation() * Eigen::AngleAxisf(0.002f, Eigen::Vector3f(0.0f, 1.0f, 1.0f));
+
     MCK::Rendering::Renderer::QueueMeshInstance(m_MeshTransform, m_Mesh, m_MonoColourShader, m_Material, false);
     MCK::Rendering::Renderer::UseCamera(*m_Camera);
 }
