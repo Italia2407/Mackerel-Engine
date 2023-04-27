@@ -149,6 +149,8 @@ namespace MCK::EntitySystem
 
 		// get a reference to a transform component
 		transform = entity->GetComponent<MCK::EntitySystem::TransformComponent>();
+
+		Play();
 	}
 
 	/**
@@ -158,7 +160,7 @@ namespace MCK::EntitySystem
 	void AudioEmitter::OnUpdate()
 	{
 		// set the position of the current channel
-		audioEngine->SetPosition(emitterID, transform->Position());
+		audioEngine->SetPosition(currentChannelID, transform->Position());
 	}
 
 	/**
@@ -172,6 +174,19 @@ namespace MCK::EntitySystem
 
 		// unload the sound
 		UnloadSound();
+	}
+
+	/**
+	* Returns the type id of this component
+	*/
+	TypeInfoRef AudioEmitter::GetType()
+	{
+		return typeid(AudioEmitter);
+	}
+
+	bool AudioEmitter::Deserialise(json data)
+	{
+		return true;
 	}
 
 }

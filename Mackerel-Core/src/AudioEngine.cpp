@@ -53,7 +53,7 @@ namespace MCK::Audio
     {
         Reset();
 
-        for (auto it = loadedSounds.begin(); it != loadedSounds.end(); )
+        for (auto it = loadedSounds.begin(); it != loadedSounds.end(); ++it)
         {
             UnloadSound(&(it->second));
             it = loadedSounds.erase(it);
@@ -67,7 +67,7 @@ namespace MCK::Audio
         std::vector<unsigned int> stoppedChannelIDs;
 
         // Find all stopped channels and add them to stoppedChannelIDs
-        for (auto it = channels.begin(); it != channels.end(); )
+        for (auto it = channels.begin(); it != channels.end(); it++)
         {
             unsigned int id = it->first;
             AudioChannel channel = it->second;

@@ -4,11 +4,14 @@
 #include "Component.h"
 #include "TransformComponent.h"
 #include "CreateCollisionShapeInfo.h"
+#include "CollisionData.h"
+#include "CollisionCallbackManager.h"
 
 namespace MCK::Physics
 {
 	class RigidbodyComponent : public MCK::EntitySystem::Component
 	{
+
 	private:
 		
 		MCK::EntitySystem::TransformComponent* transform;
@@ -17,6 +20,7 @@ namespace MCK::Physics
 	public:
 		btRigidBody* rigidbody = nullptr;
 		btCollisionShape* collisionShape = nullptr;
+		CollisionCallbackManager onCollisionHandler;
 
 		void AddCentralForce(const Eigen::Vector3f force);
 		void AddTorque(const Eigen::Vector3f torque);

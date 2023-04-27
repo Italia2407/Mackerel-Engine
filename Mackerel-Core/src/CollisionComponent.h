@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "TransformComponent.h"
 #include "CreateCollisionShapeInfo.h"
+#include "CollisionCallbackManager.h"
 
 namespace MCK::Physics
 {
@@ -15,6 +16,8 @@ namespace MCK::Physics
 	public:
 		btCollisionObject* collider = nullptr;
 		btCollisionShape* collisionShape = nullptr;
+		CollisionCallbackManager onCollisionHandler;
+		bool isTrigger = false;
 
 		void UpdateColliderTransform();
 		void SetCollisionShape(CreateCollisionShapeInfo shapeInfo);

@@ -5,6 +5,9 @@
 
 #include <typeinfo>
 #include <iostream>
+#include <functional>
+
+#define BIND_ON_COLLISION_CALLBACK(x) std::bind(x, this, std::placeholders::_1)
 
 namespace MCK::Physics
 {
@@ -222,9 +225,10 @@ namespace MCK::Physics
 			collisionShape // Collision
 		);
 		info.m_startWorldTransform = initialTransformation;
-
+		
 		rigidbody = new btRigidBody(info);
 		rigidbody->setUserPointer(static_cast<void*>(this));
+		rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 		//rigidbody->setAngularFactor(angularFactor);
 
 		//rigidbody->setLinearFactor()

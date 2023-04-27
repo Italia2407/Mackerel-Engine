@@ -13,5 +13,10 @@ namespace MCK::EntitySystem
 	public:
 		void OnCreate() override;
 		void OnUpdate() override;
+		void OnDestroy() override;
+
+		TypeInfoRef GetType() override;
+
+		bool Deserialise(json data) override;
 	};
 }

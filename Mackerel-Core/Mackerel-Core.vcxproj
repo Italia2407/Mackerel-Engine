@@ -34,6 +34,7 @@
     <ClCompile Include="src\AudioListener.cpp" />
     <ClCompile Include="src\BoxColliderComponent.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
+    <ClCompile Include="src\CollisionCallbackManager.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentFactory.cpp" />
@@ -444,7 +445,10 @@
     <ClInclude Include="src\BoxColliderComponent.h" />
     <ClInclude Include="src\CameraComponent.h" />
     <ClInclude Include="src\ColliderTypes.h" />
+    <ClInclude Include="src\CollisionCallbackManager.h" />
+    <ClInclude Include="src\CollisionCallbackReceipt.h" />
     <ClInclude Include="src\CollisionComponent.h" />
+    <ClInclude Include="src\CollisionData.h" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\ComponentFactory.h" />
     <ClInclude Include="src\ComponentState.h" />
