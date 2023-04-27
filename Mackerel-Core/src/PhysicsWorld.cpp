@@ -163,10 +163,10 @@ namespace MCK::Physics
 
 	void PhysicsWorld::TeardownWorld()
 	{
+		delete dynamicsWorld;
 		delete collisionConfiguration;
 		delete dispatcher;
 		delete overlappingPairCache;
 		delete solver;
-		delete dynamicsWorld;
 	}
 }
