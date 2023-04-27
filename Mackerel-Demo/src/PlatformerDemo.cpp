@@ -10,6 +10,7 @@ void PlatformerApp::Start()
 
 #pragma region Scene Init
     scene.InitialiseScene();
+    //MCK::Logger::initialize();
 #pragma endregion
 
 #pragma region Rendering Init
@@ -108,11 +109,26 @@ void PlatformerApp::Start()
 
 #pragma endregion
 
+#pragma region UI Init
+    EntitySystem::UIComponent* uiComponent = new EntitySystem::UIComponent();  
+    uiComponent->CreateStandardMenu();
+    uiComponent->CreateStandardHUD();
+    uiComponent->CreateButton(true, ImVec2(580, 280), 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 1.0f), 1.0f, "Test Button", ImVec2(120, 40), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), [&]() {ButtonCallbackTestFunction(); });
+    
+    EntitySystem::Entity* uiEntity = scene.CreateEntity();
+    uiEntity->AddComponent(uiComponent);
+
+#pragma endregion
+
+}
+
+void PlatformerApp::ButtonCallbackTestFunction()
+{
+    std::cout << "Button Pressed" << std::endl;
 }
 
 void PlatformerApp::Update()
 {
-    TimeManager::Update();
     scene.UpdateScene();
 }
 

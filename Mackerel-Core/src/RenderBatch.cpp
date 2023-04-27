@@ -1,3 +1,5 @@
+#include "LoggingSystem.h"
+
 #include "RenderBatch.h"
 
 #include "UniformBuffer.h"
@@ -11,8 +13,6 @@
 
 #include "TransformComponent.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 namespace MCK::Rendering {

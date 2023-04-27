@@ -83,7 +83,6 @@ namespace MCK::EntitySystem
 			entities[i]->FrameEnd();
 		}
 
-		MCK::TimeManager::Update();
 		double delta = MCK::TimeManager::getFrameTime();
 
 		physicsWorld.ApplySimulation(static_cast<float>(delta));

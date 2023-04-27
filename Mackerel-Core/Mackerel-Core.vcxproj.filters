@@ -133,6 +133,12 @@
     <Filter Include="Source Files\Systems\Audio">
       <UniqueIdentifier>{64d5b3b3-408c-4e7d-a7e1-4428fe70d13c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\User Interface">
+      <UniqueIdentifier>{5f61aaa6-7e58-4fcc-8024-82143db13883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\User Interface\UI Elements">
+      <UniqueIdentifier>{1d951c6b-237a-415b-8c2c-89d9870752ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLAD\src\glad.c">
@@ -302,6 +308,27 @@
     </ClCompile>
     <ClCompile Include="src\CollisionCallbackManager.cpp">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ButtonElement.cpp">
+      <Filter>Source Files\Systems\User Interface\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextElement.cpp">
+      <Filter>Source Files\Systems\User Interface\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShapeElement.cpp">
+      <Filter>Source Files\Systems\User Interface\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UISystem.cpp">
+      <Filter>Source Files\Systems\User Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImageLoader.cpp">
+      <Filter>Source Files\Systems\User Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIElement.cpp">
+      <Filter>Source Files\Systems\User Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1612,6 +1639,27 @@
     </ClInclude>
     <ClInclude Include="src\CollisionCallbackReceipt.h">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ButtonElement.h">
+      <Filter>Source Files\Systems\User Interface\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextElement.h">
+      <Filter>Source Files\Systems\User Interface\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShapeElement.h">
+      <Filter>Source Files\Systems\User Interface\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImageLoader.h">
+      <Filter>Source Files\Systems\User Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UISystem.h">
+      <Filter>Source Files\Systems\User Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIElement.h">
+      <Filter>Source Files\Systems\User Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

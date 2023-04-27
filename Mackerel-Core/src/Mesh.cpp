@@ -1,7 +1,6 @@
+#include "LoggingSystem.h"
 #include "Mesh.h"
 
-// Loggin Headers
-#include "LoggingSystem.h"
 #include <format>
 
 namespace MCK::AssetType {

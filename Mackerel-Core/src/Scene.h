@@ -7,6 +7,7 @@
 #include "RigidbodyComponent.h"
 #include "PhysicsWorld.h"
 #include "AudioEngine.h"
+#include "UISystem.h"
 
 // Forward declarations
 namespace MCK::EntitySystem {

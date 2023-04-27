@@ -1,6 +1,7 @@
 #pragma once
 #include "App.h"
 
+
 #include <Eigen/Eigen.h>
 #include <InputComponent.h>
 
@@ -22,6 +23,8 @@
 #include "InputComponent.h"
 #include "ExamplePlayerController.h"
 #include "AudioEmitter.h"
+#include "UIComponent.h"
+
 
 using namespace MCK;
 
@@ -57,4 +60,6 @@ public:
 	void Start() override;
 	void Update() override;
 	void End() override;
+
+	void ButtonCallbackTestFunction();
 };

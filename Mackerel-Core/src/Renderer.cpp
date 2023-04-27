@@ -1,3 +1,5 @@
+#include "LoggingSystem.h"
+
 #include "Renderer.h"
 
 #include "UniformBuffer.h"
@@ -10,8 +12,6 @@
 #include <utility>
 #include <functional>
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 // Asset Headers
