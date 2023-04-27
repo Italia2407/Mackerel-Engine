@@ -64,7 +64,7 @@ namespace MCK::UI
 	 * Creates a UIElement of type button
 	 *
 	 */
-	UIElement* UISystem::CreateButton(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& label, const ImVec2& size, const ImVec4& labelColour, const std::function<void()>& callback)
+	UIElement* UISystem::CreateButton(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& label, const ImVec2& size, const ImVec4& labelColour, const std::function<void()>& callback, MCK::AssetType::Texture* image)
 	{
 		ButtonElement* buttonElement = new ButtonElement;
 
@@ -78,6 +78,8 @@ namespace MCK::UI
 		buttonElement->SetSize(size);
 		buttonElement->SetLabelColour(labelColour);
 		buttonElement->SetOnClickCallback(callback); 
+		if (image != nullptr)
+			buttonElement->SetTextureID(image->getTextureID());
 
 		return buttonElement;
 	}
@@ -104,7 +106,7 @@ namespace MCK::UI
 	 * Creates a UIElement of type shape
 	 *
 	 */
-	UIElement* UISystem::CreateShape(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, MCK::UI::ShapeElement::ShapeType type, const ImVec2& size, const ImVec4& borderColour, float borderThickness, ImTextureID imageID)
+	UIElement* UISystem::CreateShape(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, MCK::UI::ShapeElement::ShapeType type, const ImVec2& size, const ImVec4& borderColour, float borderThickness, MCK::AssetType::Texture* image)
 	{
 		ShapeElement* shapeElement = new ShapeElement();
 		if (!visible)
@@ -117,7 +119,8 @@ namespace MCK::UI
 		shapeElement->SetSize(size);
 		shapeElement->SetBorderColour(borderColour);
 		shapeElement->SetBorderThickness(borderThickness);
-		//shapeElement->SetImageID(imageID);
+		if (image != nullptr)
+			shapeElement->SetTextureID(image->getTextureID());
 
 		return shapeElement;
 	}

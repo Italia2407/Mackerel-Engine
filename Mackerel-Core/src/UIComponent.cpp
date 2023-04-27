@@ -76,7 +76,6 @@ namespace MCK::EntitySystem
 
 	void UIComponent::ToggleVisible()
 	{
-		std::cout << "Button Pressed" << std::endl;
 		paused = !paused;
 
 		for (MCK::UI::UIElement* element : UIElements)
@@ -87,7 +86,6 @@ namespace MCK::EntitySystem
 
 	void UIComponent::CreateStandardHUD()
 	{
-
 		ImVec2 windowSize = ImVec2(1280, 720);//ImGui::GetWindowSize(); 
 
 		// Define the position and size of the minimap
@@ -122,15 +120,14 @@ namespace MCK::EntitySystem
 
 	void UIComponent::CreateStandardMenu()
 	{
-		// Calculate the position of the menu to center it on the page
-
-		ImVec2 windowSize = ImVec2(1280, 720);//ImGui::GetWindowSize(); 
+		ImVec2 windowSize = ImVec2(1280, 720); //ImGui::GetWindowSize(); 
 		ImVec2 menuSize = ImVec2(400, 500);
 		ImVec2 menuPosition = ImVec2((windowSize.x - menuSize.x) / 2, (windowSize.y - menuSize.y) / 2);
 
 		// Create a background shape
 		ImVec2 shapePosition = menuPosition;
 		ImVec2 shapeSize = menuSize;
+		CreateShape(true, ImVec2(0, 0), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 1.0f), 0.5f, MCK::UI::ShapeElement::ShapeType::Rectangle, windowSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 0.0f);
 		CreateShape(true, shapePosition, 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::RoundedRectangle, shapeSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f);
 
 		// Create a title text element
@@ -141,31 +138,34 @@ namespace MCK::EntitySystem
 		ImVec2 buttonSize = ImVec2(120, 40);
 
 		ImVec2 buttonPosition = ImVec2(menuPosition.x + (menuSize.x - buttonSize.x) / 2, menuPosition.y + (menuSize.y - buttonSize.y) / 2);
-		CreateButton(true, buttonPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 1.0f), 1.0f, "Demo 1", buttonSize, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), []() {});
+		CreateButton(true, buttonPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 1.0f), 1.0f, "Demo 1", buttonSize, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		// Create another button element
 		ImVec2 buttonPosition2 = ImVec2(menuPosition.x + (menuSize.x - buttonSize.x) / 2, menuPosition.y + (menuSize.y - buttonSize.y) / 2 + 60);
-		CreateButton(true, buttonPosition2, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 1.0f), 1.0f, "Quit", buttonSize, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), []() {});
+		CreateButton(true, buttonPosition2, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 1.0f), 1.0f, "Quit", buttonSize, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
-	void UIComponent::CreateButton(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& label, const ImVec2& size, const ImVec4& labelColour, const std::function<void()>& callback, bool unpauseOnClick)
+	void UIComponent::CreateButton(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& label, const ImVec2& size, const ImVec4& labelColour, const std::function<void()>& callback, bool unpauseOnClick, MCK::AssetType::Texture* image)
 	{
-		auto combinedCallback = [this, callback]() {
-			if (callback) { 
+		auto combinedCallback = [this, callback, unpauseOnClick]() {
+			if (callback) 
+			{ 
 				callback(); 
 			}
 			if (unpauseOnClick)
+			{
 				ToggleVisible();
+			}
 		};
 
-		MCK::UI::UIElement* buttonElement = MCK::UI::UISystem::CreateButton(visible, position, scale, colour, transparency, label, size, labelColour, combinedCallback);
+		MCK::UI::UIElement* buttonElement = MCK::UI::UISystem::CreateButton(visible, position, scale, colour, transparency, label, size, labelColour, combinedCallback, image);
 
 		UIElements.push_back(buttonElement);
 	}
 
-	void UIComponent::CreateShape(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, MCK::UI::ShapeElement::ShapeType type, const ImVec2& size, const ImVec4& borderColour, float borderThickness, ImTextureID imageID)
+	void UIComponent::CreateShape(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, MCK::UI::ShapeElement::ShapeType type, const ImVec2& size, const ImVec4& borderColour, float borderThickness, MCK::AssetType::Texture* image)
 	{
-		MCK::UI::UIElement* shapeElement = MCK::UI::UISystem::CreateShape(visible, position, scale, colour, transparency, type, size, borderColour, borderThickness, imageID);
+		MCK::UI::UIElement* shapeElement = MCK::UI::UISystem::CreateShape(visible, position, scale, colour, transparency, type, size, borderColour, borderThickness, image);
 
 		UIElements.push_back(shapeElement);
 	}
@@ -175,6 +175,20 @@ namespace MCK::EntitySystem
 		MCK::UI::UIElement* shapeElement = MCK::UI::UISystem::CreateText(visible, position, scale, colour, transparency, text);
 
 		UIElements.push_back(shapeElement);
+	}
+
+	MCK::AssetType::Texture* UIComponent::LoadUIImage(const std::string& filename)
+	{
+		MCK::AssetType::Texture* loadedImage = new MCK::AssetType::Texture();
+		if (loadedImage->LoadFromFile(filename)) {
+			
+			loadedImages.push_back(loadedImage);
+			return loadedImage;
+		}
+		else {
+			delete loadedImage;
+			return nullptr;
+		}
 	}
 
 	bool UIComponent::Deserialise(json data)

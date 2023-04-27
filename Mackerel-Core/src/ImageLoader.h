@@ -1,22 +1,19 @@
 #pragma once
 
 //#include "stb_image.h"
-//#include "imgui.h"
+#include "imgui.h"
+#include "Texture.h"
 
 #include <string>
 
 namespace MCK::UI
 {
-	struct Image
+	class ImageLoader
 	{
-		unsigned int id = 0;
-		//ImTextureID textureID = nullptr;
-	};
+		public:
+			void LoadFromFile(const std::string& filename);
 
-	//class ImageLoader
-	//{
-	//public:
-		//Image LoadImage(const std::string& filePath); 
-		//void UnloadImage(Image& image);
-	//};
+	private:
+		GLuint textureId;
+	};
 }

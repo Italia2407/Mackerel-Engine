@@ -19,7 +19,7 @@ namespace MCK::UI
 		ImVec2 size;
 		ImVec4 borderColour;
 		float borderThickness;
-		ImTextureID textureID;
+		GLuint textureID;
 
 	public:
 		ShapeElement();
@@ -37,8 +37,8 @@ namespace MCK::UI
 		void SetBorderThickness(float newBorderThickness);
 		float GetBorderThickness() const;
 
-		void SetTextureID(ImTextureID newTextureID);
-		ImTextureID GetTextureID() const;
+		void SetTextureID(GLuint newTextureID);
+		GLuint GetTextureID() const;
 
 		virtual void Draw() override;
 	};

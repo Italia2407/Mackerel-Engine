@@ -12,6 +12,7 @@ namespace MCK::UI
 		ImVec2 size;
 		ImVec4 labelColour;
 		std::function<void()> onClickCallback;
+		GLuint textureID;
 
 	public:
 		ButtonElement();
@@ -27,6 +28,9 @@ namespace MCK::UI
 		const ImVec4& GetLabelColour() const;
 
 		void SetOnClickCallback(const std::function<void()>& callback); 
+
+		void SetTextureID(GLuint newTextureID);
+		GLuint GetTextureID() const;
 
 		virtual void Draw() override;
 	};

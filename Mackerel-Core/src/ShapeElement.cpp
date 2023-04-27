@@ -3,7 +3,7 @@
 namespace MCK::UI
 {
 	ShapeElement::ShapeElement() : shapeType(ShapeType::Rectangle), size(ImVec2(100, 100)), // Default size
-		borderColour(ImVec4(0.0f, 0.0f, 0.0f, 1.0f)), borderThickness(0.0f), textureID(nullptr)
+		borderColour(ImVec4(0.0f, 0.0f, 0.0f, 1.0f)), borderThickness(0.0f), textureID(0)
 	{
 
 	}
@@ -53,12 +53,12 @@ namespace MCK::UI
 		return borderThickness;
 	}
 
-	void ShapeElement::SetTextureID(ImTextureID newTextureID)
+	void ShapeElement::SetTextureID(GLuint newTextureID)
 	{
 		textureID = newTextureID;
 	}
 
-	ImTextureID ShapeElement::GetTextureID() const
+	GLuint ShapeElement::GetTextureID() const
 	{
 		return textureID;
 	}
@@ -74,17 +74,21 @@ namespace MCK::UI
 
 			ImVec2 absPosition = GetAbsolutePosition();
 			ImGui::SetCursorPos(absPosition);
-			if (textureID != nullptr)
-			{
-				ImGui::Image(textureID, size);
-			}
+
 			ImDrawList* drawList = ImGui::GetWindowDrawList();
 
 			switch (shapeType)
 			{
 			case ShapeType::Rectangle:
-				drawList->AddRectFilled(position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImGui::ColorConvertFloat4ToU32(currentColour));
-				drawList->AddRect(position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImGui::ColorConvertFloat4ToU32(currentBorderColour), 0, ImDrawCornerFlags_All, borderThickness);
+				if (textureID != 0)
+				{
+					drawList->AddImage((void*)(intptr_t)textureID, position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImVec2(0, 0), ImVec2(1, 1), ImGui::ColorConvertFloat4ToU32(ImVec4(1.0f, 1.0f, 1.0f, 1.0f)));
+				}
+				else
+				{
+					drawList->AddRectFilled(position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImGui::ColorConvertFloat4ToU32(currentColour));
+					drawList->AddRect(position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImGui::ColorConvertFloat4ToU32(currentBorderColour), 0, ImDrawCornerFlags_All, borderThickness);
+				}
 				break;
 
 			case ShapeType::Circle:
@@ -93,8 +97,8 @@ namespace MCK::UI
 				break;
 
 			case ShapeType::RoundedRectangle:
-				drawList->AddRectFilled(position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImGui::ColorConvertFloat4ToU32(currentColour));
-				drawList->AddRect(position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImGui::ColorConvertFloat4ToU32(currentBorderColour), 0.5f, ImDrawCornerFlags_All, borderThickness);
+				drawList->AddRectFilled(position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImGui::ColorConvertFloat4ToU32(currentColour), 8.0f, ImDrawCornerFlags_All);
+				drawList->AddRect(position, ImVec2(absPosition.x + size.x, absPosition.y + size.y), ImGui::ColorConvertFloat4ToU32(currentBorderColour), 8.0f, ImDrawCornerFlags_All, borderThickness);
 				break;
 
 			default:

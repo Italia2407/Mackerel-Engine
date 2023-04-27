@@ -1661,6 +1661,9 @@
     <ClInclude Include="src\UIComponent.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ext\STBI\stb_image.h">
+      <Filter>External Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">

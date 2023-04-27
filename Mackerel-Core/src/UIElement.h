@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glad/glad.h>
 #include "imgui.h"
 
 #include <string>

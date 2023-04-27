@@ -3,5 +3,8 @@
 
 namespace MCK::UI
 {
+	void ImageLoader::LoadFromFile(const std::string& filename)
+	{
 
+	}
 }

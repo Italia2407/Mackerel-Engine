@@ -111,9 +111,10 @@ void PlatformerApp::Start()
 
 #pragma region UI Init
     EntitySystem::UIComponent* uiComponent = new EntitySystem::UIComponent();  
+    //MCK::AssetType::Texture* image = uiComponent->LoadUIImage("../Mackerel-Core/res/Textures/TestImage.png");
     uiComponent->CreateStandardMenu();
     uiComponent->CreateStandardHUD();
-    uiComponent->CreateButton(true, ImVec2(580, 280), 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 1.0f), 1.0f, "Test Button", ImVec2(120, 40), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), [&]() {ButtonCallbackTestFunction(); });
+    uiComponent->CreateButton(true, ImVec2(580, 280), 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 1.0f), 1.0f, "Test Button", ImVec2(120, 40), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), [&]() {ButtonCallbackTestFunction(); }, true);
     
     EntitySystem::Entity* uiEntity = scene.CreateEntity();
     uiEntity->AddComponent(uiComponent);

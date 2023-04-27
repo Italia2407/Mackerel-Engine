@@ -48,6 +48,16 @@ namespace MCK::UI
 		onClickCallback = callback;
 	}
 
+	void ButtonElement::SetTextureID(GLuint newTextureID)
+	{
+		textureID = newTextureID;
+	}
+
+	GLuint ButtonElement::GetTextureID() const
+	{
+		return textureID;
+	}
+
 	void ButtonElement::Draw()
 	{
 		if (IsVisible())
@@ -59,14 +69,29 @@ namespace MCK::UI
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(labelColour.x, labelColour.y, labelColour.z, GetTransparency()));
 
 			// Check if the button is pressed
-			if (ImGui::Button(GetLabel().c_str(), GetSize()))
+			if (textureID != 0)
 			{
-				// Call the onClickCallback if it is set
-				if (onClickCallback)
+				if (ImGui::ImageButton((void*)(intptr_t)textureID, GetSize()))
 				{
-					onClickCallback();
+					// Call the onClickCallback if it is set
+					if (onClickCallback)
+					{
+						onClickCallback();
+					}
 				}
 			}
+			else
+			{
+				if (ImGui::Button(GetLabel().c_str(), GetSize()))
+				{
+					// Call the onClickCallback if it is set
+					if (onClickCallback)
+					{
+						onClickCallback();
+					}
+				}
+			}
+
 
 			ImGui::PopStyleColor(); 
 			ImGui::PopStyleColor();
