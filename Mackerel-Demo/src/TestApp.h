@@ -13,6 +13,8 @@
 #include "Entity.h"
 #include "TransformComponent.h"
 
+#include "Light.h"
+
 class TestApp : public MCK::App
 {
 public:
@@ -36,6 +38,8 @@ private:
 
 	MCK::AssetType::Shader* m_UnlitShader;
 	MCK::AssetType::Shader* m_MonoColourShader;
+
+	MCK::Rendering::DirectionLight* light;
 
 public:
 	void Start() override;

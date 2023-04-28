@@ -36,7 +36,7 @@ bool RenderBatch::AddBatchInstance(const EntitySystem::TransformComponent& a_Tra
 }
 
 /**  */
-bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
+bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_DepthOnly)
 {
 	// Ensure Mesh Uniform Buffer is Valid
 	if (!a_TransformBuffer || !a_TransformBuffer->IsCreated()) {
@@ -51,9 +51,19 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
 	}
 
 	// Load Shader Program to GPU
-	if (!m_Shader->UseShaderProgram()) {
-		Logger::log("Cannot Use Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-		return false;
+	if (!a_DepthOnly)
+	{// Use Regular Shader Program
+		if (!m_Shader->UseShaderProgram()) {
+			Logger::log("Cannot Use Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+	}
+	else
+	{// Use Depth Only Shader Program
+		if (!AssetType::Shader::k_DepthOnlyShader->UseShaderProgram()) {
+			Logger::log("Cannot Use Depth Only Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
 	}
 
 	// Render All Mesh Instances
@@ -66,12 +76,14 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer)
 			continue;
 		}
 
+		if (!a_DepthOnly) {
 		// Load Instance's Material Uniforms
 		if (!instance.material || !instance.material->UseMaterial()) {
 			Logger::log(std::format("Cannot Load Instance #{} Material", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-		}
+		}}
 
 		// Draw Mesh Instance
+		//glDrawArrays(GL_TRIANGLES, 0, m_Mesh->NumVertices() * 3);
 		glDrawElements(GL_TRIANGLES, m_Mesh->NumIndices(), GL_UNSIGNED_INT, nullptr);
 	}
 

@@ -13,7 +13,7 @@ void PlatformerApp::Start()
 #pragma endregion
 
 #pragma region Rendering Init
-    cubeMesh = new MCK::AssetType::Mesh("Test Mesh");
+    cubeMesh = new MCK::AssetType::Mesh("Cube Mesh");
     cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj"); 
     //cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
 
@@ -25,14 +25,18 @@ void PlatformerApp::Start()
     blueMaterial->addUInt16Uniform("lightShaderID", 0);
     blueMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.6f, 0.6f, 1.f));
 
-    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT, m_UnlitShader);
+    //MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT, m_UnlitShader);
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
     MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, m_MonoColourShader);
 
-    MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
+    //MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
+    MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
+
+    light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero());
 #pragma endregion
 
 #pragma region Floor Init
-    floorTransform.Position() = Eigen::Vector3f(0,-8, 0);
+    floorTransform.Position() = Eigen::Vector3f(0,-8, -2);
     floorTransform.Scale() = Eigen::Vector3f(6, 6, 6);
 
     floorMesh = new EntitySystem::MeshRendererComponent(cubeMesh, m_MonoColourShader, greyMaterial);
@@ -54,8 +58,8 @@ void PlatformerApp::Start()
 
 #pragma region Camera Init
     cameraComponent = new EntitySystem::PerspectiveCamera(1280.0f / 720.0f);
-    cameraComponent->Position() = Eigen::Vector3f(0, 5, -10);
-    cameraComponent->FrontDirection() = Eigen::Vector3f(0, -.7f, 1).normalized();
+    cameraComponent->Position() = Eigen::Vector3f(0, 5, 10);
+    cameraComponent->FrontDirection() = Eigen::Vector3f(0, -.7f, -1).normalized();
     cameraComponent->UpDirection() = Eigen::Vector3f(0, 1, 0).normalized();
 
     EntitySystem::Entity* cameraEnttiy = scene.CreateEntity();
@@ -113,6 +117,9 @@ void PlatformerApp::Start()
 void PlatformerApp::Update()
 {
     TimeManager::Update();
+    //floorTransform.Rotation() = floorTransform.Rotation() * Eigen::AngleAxisf(0.001f, Eigen::Vector3f(0.0f, 1.0f, 0.0f));
+
+    Rendering::Renderer::QueueDirectionLight(light);
     scene.UpdateScene();
 }
 

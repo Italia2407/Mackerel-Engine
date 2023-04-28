@@ -31,10 +31,16 @@ layout(std140, binding = 1) uniform MeshTransform
 
 void main()
 {
-	gl_Position = camera.cameraProjectionMatrix * mesh.transformMatrix * vec4(vertexPosition, 1.0f);
+	// Compute Transformed Position
+	vec4 transformedPosition = mesh.transformMatrix * vec4(vertexPosition, 1.0f);
+	v2fPosition = transformedPosition.xyz / transformedPosition.w;
 
-	v2fPosition = vertexPosition;
-	v2fNormal = vertexNormal;
+	// Compute Transformed Normal
+	vec4 transformedNormal = transpose(inverse(mesh.transformMatrix)) * vec4(vertexNormal, 1.0f);
+	v2fNormal = normalize(transformedNormal.xyz);
+
+	gl_Position = camera.cameraProjectionMatrix * transformedPosition;
+
 	v2fUV = vertexUV;
 	v2fTint = vertexTint;
 }

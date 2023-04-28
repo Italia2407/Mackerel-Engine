@@ -6,6 +6,7 @@
 */
 enum class ShaderEnum
 {
+	__LIGHT_UNLIT_SHADOWS = -5,
 	__LIGHT_UNLIT = -4,
 	__FRAG_MONOCOLOUR = -3,
 	__MCK_FRAMEBUFFER_DISPLAY = -2,

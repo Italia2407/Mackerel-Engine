@@ -15,10 +15,10 @@ Transform::Transform() :
 Eigen::Matrix4f Transform::Matrix() const
 {
 	// Create Translation Matrix
-	Eigen::Matrix4f translationMatrix = Eigen::Affine3f(Eigen::Translation3f(Position.x(), Position.y(), -Position.z())).matrix();
+	Eigen::Matrix4f translationMatrix = Eigen::Affine3f(Eigen::Translation3f(Position.x(), Position.y(), Position.z())).matrix();
 
 	// Create Rotation Matrix
-	Eigen::Matrix3f rotationMatrix3D = Eigen::Quaternion<float>(Rotation.w(), Rotation.x(), Rotation.y(), -Rotation.z()).toRotationMatrix();
+	Eigen::Matrix3f rotationMatrix3D = Eigen::Quaternion<float>(Rotation.w(), Rotation.x(), Rotation.y(), Rotation.z()).toRotationMatrix();
 	Eigen::Matrix4f rotationMatrix = Eigen::Matrix4f::Identity();
 	rotationMatrix.block(0, 0, 3, 3) = rotationMatrix3D;
 

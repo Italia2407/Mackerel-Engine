@@ -23,6 +23,8 @@
 #include "ExamplePlayerController.h"
 #include "AudioEmitter.h"
 
+#include "Light.h"
+
 using namespace MCK;
 
 class PlatformerApp : public MCK::App
@@ -52,6 +54,8 @@ private:
 	
 	// Scene
 	EntitySystem::Scene scene;
+
+	Rendering::DirectionLight* light;
 
 public:
 	void Start() override;

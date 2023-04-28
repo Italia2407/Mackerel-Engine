@@ -435,6 +435,7 @@
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
     <ClInclude Include="ext\nlohmann\json.hpp" />
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="ext\TinyOBJ\tiny_obj_loader.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\AppAttorney.h" />
     <ClInclude Include="src\Assets.h" />
@@ -508,8 +509,10 @@
   <ItemGroup>
     <None Include="res\Shaders\fragmentHeader.glsl" />
     <None Include="res\Shaders\frag\monoColour.glsl" />
+    <None Include="res\Shaders\frag\unlitShadows.glsl" />
     <None Include="res\Shaders\lightsHeader.glsl" />
     <None Include="res\Shaders\light\unlit.glsl" />
+    <None Include="res\Shaders\static\depthOnly.glsl" />
     <None Include="res\Shaders\static\FBDisplayer.glsl" />
     <None Include="res\Shaders\vertexHeader.glsl" />
     <None Include="res\Shaders\vert\projection.vert" />
@@ -701,7 +704,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -731,7 +734,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalModuleDependencies>%(AdditionalModuleDependencies)</AdditionalModuleDependencies>
     </ClCompile>

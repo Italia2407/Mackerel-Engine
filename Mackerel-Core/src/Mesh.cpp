@@ -1,8 +1,28 @@
 #include "Mesh.h"
 
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
+
 // Loggin Headers
 #include "LoggingSystem.h"
 #include <format>
+
+// Module Only Structures
+struct MeshVertex
+{
+	Eigen::Vector3f position;
+	Eigen::Vector3f normal;
+	Eigen::Vector2f textureCoord;
+	Eigen::Vector3f tint;
+
+	bool operator==(const MeshVertex& other) const
+	{
+		return position == other.position &&
+			normal == other.normal &&
+			textureCoord == other.textureCoord &&
+			tint == other.tint;
+	}
+};
 
 namespace MCK::AssetType {
 Mesh::Mesh(std::string a_Name = "") :
@@ -116,139 +136,98 @@ bool Mesh::generateVertexObjects(
  */
 bool Mesh::LoadFromFile(std::string a_FilePath)
 {
-	// Open Mesh File
-	std::ifstream meshFile(a_FilePath.c_str(), std::ios::in);
-	if (!meshFile.good()) {
-		meshFile.close();
+	// Open Mesh File with TinyOBJ
+	tinyobj::ObjReader fileReader;
 
-		Logger::log(std::format("Cannot Load Mesh File", a_FilePath), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-		return false;
+	if (!fileReader.ParseFromFile(a_FilePath)) {
+		if (!fileReader.Error().empty()) {
+			Logger::log(std::format("TinyOBJ Reader: {}", fileReader.Error()), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		}
 	}
 
-	// Reading Arrays
-	std::vector<Eigen::Vector3f> readPositions;
-	std::vector<Eigen::Vector3f> readNormals;
-	std::vector<Eigen::Vector2f> readTextureCoords;
-	std::vector<Eigen::Vector3f> readTints;
+	auto& attributes = fileReader.GetAttrib();
+	auto& shapes = fileReader.GetShapes();
 
-	std::vector<uint32_t> vertexIndices;
-	std::vector<uint32_t> textureCoordIndices;
-	std::vector<uint32_t> normalIndices;
+	// Store OBJ Data in Float Arrays
+	std::vector<float> vertexPositions;
+	std::vector<float> vertexNormals;
+	std::vector<float> vertexTextureCoords;
+	std::vector<float> vertexTints;
 
-	// Parse each Line of the Mesh File
-	std::string meshFileReadLine;
-	while (std::getline(meshFile, meshFileReadLine))
+	std::vector<GLuint> vertexIndices;
+
+	std::vector<MeshVertex> uniqueVertices;
+	for (const auto& shape : shapes) {
+	for (const auto& index : shape.mesh.indices)
 	{
-		std::stringstream meshLineWordStream(meshFileReadLine);
+		MeshVertex vertex{};
 
-		// Get the First Word of the Current Line
-		std::string firstWord;
-		meshLineWordStream >> firstWord;
+		// Read Positon & Colour Values
+		if (index.vertex_index >= 0) {
+			vertex.position.x() = attributes.vertices[(3 * index.vertex_index) + 0];
+			vertex.position.y() = attributes.vertices[(3 * index.vertex_index) + 1];
+			vertex.position.z() = attributes.vertices[(3 * index.vertex_index) + 2];
 
-		// Read Vertex Positions & Tints
-		if (firstWord == "v")
-		{
-			// Positions
-			std::string p0, p1, p2;
-			meshLineWordStream >> p0;
-			meshLineWordStream >> p1;
-			meshLineWordStream >> p2;
-
-			Eigen::Vector3f position(std::stof(p0), std::stof(p1), std::stof(p2));
-			readPositions.push_back(position);
-
-			// Tints
-			std::string c0 = "1.0", c1 = "1,0", c2 = "1.0";
-			meshLineWordStream >> c0;
-			meshLineWordStream >> c1;
-			meshLineWordStream >> c2;
-
-			Eigen::Vector3f tint(std::stof(c0), std::stof(c1), std::stof(c2));
-			readTints.push_back(tint);
-		}
-		// Read Vertex Normals
-		else if (firstWord == "vn")
-		{
-			std::string n0, n1, n2;
-			meshLineWordStream >> n0;
-			meshLineWordStream >> n1;
-			meshLineWordStream >> n2;
-
-			Eigen::Vector3f normal(std::stof(n0), std::stof(n1), std::stof(n2));
-			readNormals.push_back(normal);
-		}
-		// Read Vertex Normals
-		else if (firstWord == "vt")
-		{
-			std::string t0, t1;
-			meshLineWordStream >> t0;
-			meshLineWordStream >> t1;
-
-			Eigen::Vector2f textureCoord(std::stof(t0), std::stof(t1));
-			readTextureCoords.push_back(textureCoord);
-		}
-
-		// Read Mesh Face
-		else if (firstWord == "f")
-		{
-			// Loop for each Face Vertex
-			for (int i = 0; i < 3; i++)
-			{
-				std::string f;
-				meshLineWordStream >> f;
-				std::istringstream face(f);
-
-				// Get Face Vertex Indices
-				std::string vertexIndex;
-				std::string normalIndex;
-				std::string textureCoordIndex;
-
-				std::getline(face, vertexIndex, '/');
-				std::getline(face, textureCoordIndex, '/');
-				std::getline(face, normalIndex, '/');
-
-				vertexIndices.push_back((uint32_t)std::stoi(vertexIndex)-1);
-				textureCoordIndices.push_back((uint32_t)std::stoi(textureCoordIndex)-1);
-				normalIndices.push_back((uint32_t)std::stoi(normalIndex)-1);
+			auto colourIndex = (3 * index.vertex_index) + 2;
+			if (colourIndex < attributes.colors.size()) {
+				vertex.tint.x() = attributes.colors[colourIndex - 2];
+				vertex.tint.y() = attributes.colors[colourIndex - 1];
+				vertex.tint.z() = attributes.colors[colourIndex - 0];
+			}
+			else {
+				vertex.tint = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
 			}
 		}
-	}
-	meshFile.close();
+		// Read Normal Value
+		if (index.normal_index >= 0) {
+			vertex.normal.x() = attributes.normals[(3 * index.normal_index) + 0];
+			vertex.normal.y() = attributes.normals[(3 * index.normal_index) + 1];
+			vertex.normal.z() = attributes.normals[(3 * index.normal_index) + 2];
+		}
+		// Read Texture Coord Value
+		if (index.texcoord_index >= 0) {
+			vertex.textureCoord.x() = attributes.texcoords[(2 * index.texcoord_index) + 0];
+			vertex.textureCoord.y() = attributes.texcoords[(2 * index.texcoord_index) + 1];
+		}
 
-	m_NumVertices = (GLuint)readPositions.size();
+		// TODO: Perhaps use Unordered Set, with Hash Function instead
+		GLuint vertexIndex = (GLuint)uniqueVertices.size();
+		bool duplicateVertex = false;
+		for (size_t i = 0; i < uniqueVertices.size(); i++) {
+			auto uniqueVertex = uniqueVertices[i];
+			if (uniqueVertex == vertex) {
+				vertexIndex = (GLuint)i;
+				duplicateVertex = true;
+				break;
+			}
+		}
+
+		// Add Vertex to Unique Set
+		if (!duplicateVertex)
+		{
+			uniqueVertices.push_back(vertex);
+
+			// Add Vertex Params to Arrays
+			vertexPositions.push_back(vertex.position.x());
+			vertexPositions.push_back(vertex.position.y());
+			vertexPositions.push_back(vertex.position.z());
+
+			vertexNormals.push_back(vertex.normal.x());
+			vertexNormals.push_back(vertex.normal.y());
+			vertexNormals.push_back(vertex.normal.z());
+
+			vertexTextureCoords.push_back(vertex.textureCoord.x());
+			vertexTextureCoords.push_back(vertex.textureCoord.y());
+
+			vertexTints.push_back(vertex.tint.x());
+			vertexTints.push_back(vertex.tint.y());
+			vertexTints.push_back(vertex.tint.z());
+		}
+		vertexIndices.push_back(vertexIndex);
+	}}
+
+	m_NumVertices = (GLuint)uniqueVertices.size();
 	m_NumIndices = (GLuint)vertexIndices.size();
-
-	// Computing
-	std::vector<float> vertexPositions(m_NumVertices * 3);
-	std::vector<float> vertexNormals(m_NumVertices * 3);
-	std::vector<float> vertexTextureCoords(m_NumVertices * 2);
-	std::vector<float> vertexTints(m_NumVertices * 3);
-
-	for (int i = 0; i < vertexIndices.size(); i++)
-	{
-		auto vertexIndex = vertexIndices[i];
-		auto normalIndex = normalIndices[i];
-		auto texCoordIndex = textureCoordIndices[i];
-
-		// Set Vertex Positions
-		vertexPositions[vertexIndex * 3 + 0] = readPositions[vertexIndex].x();
-		vertexPositions[vertexIndex * 3 + 1] = readPositions[vertexIndex].y();
-		vertexPositions[vertexIndex * 3 + 2] = readPositions[vertexIndex].z();
-
-		// Set Vertex Normals
-		vertexNormals[vertexIndex * 3 + 0] = readNormals[normalIndex].x();
-		vertexNormals[vertexIndex * 3 + 1] = readNormals[normalIndex].y();
-		vertexNormals[vertexIndex * 3 + 2] = readNormals[normalIndex].z();
-
-		// Set Vertex Texture Coords
-		vertexTextureCoords[vertexIndex * 2 + 0] = readTextureCoords[texCoordIndex].x();
-		vertexTextureCoords[vertexIndex * 2 + 1] = readTextureCoords[texCoordIndex].y();
-
-		// Set Vertex Tints
-		vertexTints[vertexIndex * 3 + 0] = readTints[vertexIndex].x();
-		vertexTints[vertexIndex * 3 + 1] = readTints[vertexIndex].y();
-		vertexTints[vertexIndex * 3 + 2] = readTints[vertexIndex].z();
-	}
 
 	// Generate Mesh GPU Data
 	if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {

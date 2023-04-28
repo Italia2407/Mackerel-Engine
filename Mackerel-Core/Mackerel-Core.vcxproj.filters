@@ -133,6 +133,9 @@
     <Filter Include="Source Files\Systems\Audio">
       <UniqueIdentifier>{64d5b3b3-408c-4e7d-a7e1-4428fe70d13c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Files\tiny-obj-loader">
+      <UniqueIdentifier>{9190cdbd-9565-4b7e-9e25-12897dbb0036}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLAD\src\glad.c">
@@ -1613,6 +1616,9 @@
     <ClInclude Include="src\CollisionCallbackReceipt.h">
       <Filter>Source Files\Systems\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="ext\TinyOBJ\tiny_obj_loader.h">
+      <Filter>External Files\tiny-obj-loader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\MaterialDiagram.cd">
@@ -1647,6 +1653,12 @@
     </None>
     <None Include="res\Meshes\Suzanne.obj">
       <Filter>Resource Files\Meshes</Filter>
+    </None>
+    <None Include="res\Shaders\static\depthOnly.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="res\Shaders\frag\unlitShadows.glsl">
+      <Filter>Resource Files\Shaders\Vertex Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
