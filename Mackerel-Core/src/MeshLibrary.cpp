@@ -1,9 +1,8 @@
+#include "LoggingSystem.h"
 #include "MeshLibrary.h"
 
 #include "Mesh.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 // Static/Singleton Functions

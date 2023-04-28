@@ -32,6 +32,11 @@ int MCK::Context::Height()
 	return _height;
 }
 
+void MCK::Context::UpdateDimensions()
+{
+	glfwGetWindowSize(_window, &_width, &_height);
+}
+
 void MCK::Context::resizeWindow(GLFWwindow* window, int screenWidth, int screenHeight)
 {
 	MCK::Rendering::Renderer::ResizeRenderer((GLuint)screenWidth, (GLuint)screenHeight);

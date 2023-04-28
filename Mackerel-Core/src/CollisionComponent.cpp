@@ -12,7 +12,7 @@ namespace MCK::Physics
     /**
     * Returns the type id of this component
     *
-    * \return The name as a C string.
+    * \return The type id
     */
     TypeInfoRef CollisionComponent::GetType()
     {

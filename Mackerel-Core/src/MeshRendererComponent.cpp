@@ -1,10 +1,10 @@
+#include "LoggingSystem.h"
+
 #include "MeshRendererComponent.h"
 
 // System Headers
 #include "Renderer.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 // Asset Headers

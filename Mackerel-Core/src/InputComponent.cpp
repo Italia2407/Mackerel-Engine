@@ -1,10 +1,10 @@
+#include "LoggingSystem.h"
+
 #include "InputComponent.h"
 
 #include "Entity.h"
 
 #include "Input.h"
-
-#include "LoggingSystem.h"
 
 namespace MCK::EntitySystem
 {

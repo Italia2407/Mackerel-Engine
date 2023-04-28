@@ -33,6 +33,11 @@ namespace MCK
 			 */
 			int Height();
 
+			/**
+			 * Updates the stored window dimensions of this context.
+			 */
+			void UpdateDimensions();
+
 		private:
 			GLFWwindow* _window = nullptr;
 			int _width = 0, _height = 0;

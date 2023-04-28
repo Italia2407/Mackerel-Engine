@@ -1,7 +1,7 @@
+#include "LoggingSystem.h"
+
 #include "Shader.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 #include <iostream>
