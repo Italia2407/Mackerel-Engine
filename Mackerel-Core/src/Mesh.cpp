@@ -2,7 +2,7 @@
 #include "Mesh.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
-#include "tiny_obj_loader.h"
+#include <tiny_obj_loader.h>
 
 // Loggin Headers
 #include "LoggingSystem.h"
