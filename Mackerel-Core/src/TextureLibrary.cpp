@@ -1,9 +1,9 @@
+#include "LoggingSystem.h"
+
 #include "TextureLibrary.h"
 
 #include "Texture.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 // Static/Singleton Functions

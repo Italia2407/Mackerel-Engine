@@ -1,9 +1,8 @@
+#include "LoggingSystem.h"
 #include "MaterialLibrary.h"
 
 #include "Material.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 // Static/Singleton Functions

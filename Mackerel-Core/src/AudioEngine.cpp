@@ -1,5 +1,5 @@
-#include "AudioEngine.h"
 #include "LoggingSystem.h"
+#include "AudioEngine.h"
 
 namespace MCK::Audio
 {

@@ -1,9 +1,8 @@
+#include "LoggingSystem.h"
 #include "ShaderLibrary.h"
 
 #include "Shader.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 // Static/Singleton Functions

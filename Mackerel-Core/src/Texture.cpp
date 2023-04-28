@@ -3,6 +3,9 @@
 #include <iostream>
 #include <vector>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 namespace MCK::AssetType {
 bool Texture::GenerateFloatTexture(GLuint width, GLuint height)
 {
@@ -107,5 +110,56 @@ bool Texture::BindTexture(GLuint a_TextureUnit)
 	glBindTexture(GL_TEXTURE_2D, _textureID);
 
 	return true;
+}
+
+bool Texture::LoadFromFile(std::string a_FilePath)
+{
+	int width, height, channels;
+
+	// Load image with stb_image
+	unsigned char* data = stbi_load(a_FilePath.c_str(), &width, &height, &channels, 0);
+
+	if (data == nullptr) {
+		const char* failure_reason = stbi_failure_reason();
+		std::cerr << "Failed to load image: " << failure_reason << std::endl;
+	}
+
+	if (data)
+	{
+		// Detrmine format of the image
+		GLenum format = GL_RGB;
+		if (channels == 1)
+			format = GL_RED;
+		else if (channels == 3)
+			format = GL_RGB;
+		else if (channels == 4)
+			format = GL_RGBA;
+
+		// Generete and bind the OpenGL texture
+		glGenTextures(1, &_textureID);
+		glBindTexture(GL_TEXTURE_2D, _textureID);
+
+		// Set  tex parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		
+		// Load texture data into OpenGL
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		// Free image data
+		stbi_image_free(data);
+
+		return true;
+	}
+	else
+	{
+		// Failed to load image
+		std::cout << "Failed to load texture: " << a_FilePath << std::endl;
+		stbi_image_free(data);
+		return false;
+	}
 }
 }

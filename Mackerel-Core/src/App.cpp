@@ -44,6 +44,9 @@ void MCK::App::BeforeLoop()
 
 void MCK::App::DuringLoop()
 {
+	/* Context upkeep (maybe move or refactor later) */
+	context->UpdateDimensions();
+
 	Update();
 	Draw();
 }
