@@ -1,10 +1,10 @@
+#include "LoggingSystem.h"
+
 #include "InputComponent.h"
 
 #include "Entity.h"
 
 #include "Input.h"
-
-#include "LoggingSystem.h"
 
 namespace MCK::EntitySystem
 {
@@ -155,7 +155,7 @@ namespace MCK::EntitySystem
 
 		// Update direction based on keyboard
 		keyboardDirection.x() = static_cast<float>(keyboardRight - keyboardLeft);
-		keyboardDirection.y() = static_cast<float>(keyboardUp - keyboardDown);
+		keyboardDirection.y() = static_cast<float>(keyboardDown - keyboardUp);
 
 		jumpPressed = keyboardJumpPressed || gamepadJumpPressed;
 		jumpHeld = keyboardJumpHeld || gamepadJumpHeld;

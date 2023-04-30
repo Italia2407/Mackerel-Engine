@@ -33,8 +33,8 @@ CameraComponent::CameraComponent(float a_AspectRatio, float a_FarPlane, float a_
 Eigen::Matrix4f CameraComponent::GetCameraViewMatrix() const
 {
 	// Calculate the Camera Space Axes Directions
-	Eigen::Vector3f cameraZAxis = Eigen::Vector3f(m_FrontDirection.x(), m_FrontDirection.y(), -m_FrontDirection.z()).normalized();
-	Eigen::Vector3f cameraXAxis = cameraZAxis.cross(Eigen::Vector3f(m_UpDirection.x(), m_UpDirection.y(), -m_UpDirection.z())).normalized();
+	Eigen::Vector3f cameraZAxis = Eigen::Vector3f(m_FrontDirection.x(), m_FrontDirection.y(), m_FrontDirection.z()).normalized();
+	Eigen::Vector3f cameraXAxis = cameraZAxis.cross(Eigen::Vector3f(m_UpDirection.x(), m_UpDirection.y(), m_UpDirection.z())).normalized();
 	Eigen::Vector3f cameraYAxis = cameraXAxis.cross(cameraZAxis).normalized();
 
 	// Create the Camera View Matrix
@@ -42,17 +42,17 @@ Eigen::Matrix4f CameraComponent::GetCameraViewMatrix() const
 		cameraViewMatrix.coeffRef(0, 0) = cameraXAxis.x();
 		cameraViewMatrix.coeffRef(0, 1) = cameraXAxis.y();
 		cameraViewMatrix.coeffRef(0, 2) = cameraXAxis.z();
-		cameraViewMatrix.coeffRef(0, 3) = cameraXAxis.dot(Eigen::Vector3f(-m_Position.x(), -m_Position.y(), m_Position.z()));
+		cameraViewMatrix.coeffRef(0, 3) = cameraXAxis.dot(Eigen::Vector3f(-m_Position.x(), -m_Position.y(), -m_Position.z()));
 
 		cameraViewMatrix.coeffRef(1, 0) = cameraYAxis.x();
 		cameraViewMatrix.coeffRef(1, 1) = cameraYAxis.y();
 		cameraViewMatrix.coeffRef(1, 2) = cameraYAxis.z();
-		cameraViewMatrix.coeffRef(1, 3) = cameraYAxis.dot(Eigen::Vector3f(-m_Position.x(), -m_Position.y(), m_Position.z()));
+		cameraViewMatrix.coeffRef(1, 3) = cameraYAxis.dot(Eigen::Vector3f(-m_Position.x(), -m_Position.y(), -m_Position.z()));
 
 		cameraViewMatrix.coeffRef(2, 0) = cameraZAxis.x();
 		cameraViewMatrix.coeffRef(2, 1) = cameraZAxis.y();
 		cameraViewMatrix.coeffRef(2, 2) = cameraZAxis.z();
-		cameraViewMatrix.coeffRef(2, 3) = cameraZAxis.dot(Eigen::Vector3f(-m_Position.x(), -m_Position.y(), m_Position.z()));
+		cameraViewMatrix.coeffRef(2, 3) = cameraZAxis.dot(Eigen::Vector3f(-m_Position.x(), -m_Position.y(), -m_Position.z()));
 	}
 
 	return cameraViewMatrix;

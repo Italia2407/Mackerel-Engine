@@ -77,6 +77,9 @@ private:
 	std::vector<DirectionLight*> _directionLights;
 	std::vector<SpotLight*> _spotLights;
 
+	// The Centre Position around which Shadow Mapping is Performed
+	Eigen::Vector3f m_CentrePosition;
+
 // Member Methods
 private:
 	bool initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight);
@@ -89,7 +92,7 @@ private:
 	bool addDirectionLightShader(AssetType::Shader* a_Shader);
 	bool addSpotLightShader(AssetType::Shader* a_Shader);
 
-	bool renderGBuffer();
+	bool renderGeometry(FrameBuffer* a_Framebuffer, bool a_DepthOnly);
 	bool renderDeferredBuffer();
 
 	// Functions to tell the Renderer what needs to be Rendered
@@ -100,6 +103,8 @@ private:
 	bool queueSpotLight(SpotLight* spotLight);
 
 	bool useCamera(const EntitySystem::CameraComponent& a_Camera);
+
+	void setCentrePosition(Eigen::Vector3f a_CentrePosition);
 
 	bool renderFrame();
 	void renderDisplayScreen();
@@ -123,6 +128,8 @@ public:
 	static bool QueueSpotLight(SpotLight* a_SpotLight);
 
 	static bool UseCamera(const EntitySystem::CameraComponent& a_Camera);
+
+	static void SetCentrePosition(Eigen::Vector3f a_CentrePosition);
 
 	static bool RenderFrame();
 };

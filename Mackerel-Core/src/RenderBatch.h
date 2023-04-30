@@ -43,6 +43,6 @@ private:
 public:
 	bool AddBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Material* a_Material);
 
-	bool DrawBatchObjects(UniformBuffer* a_TransformBuffer);
+	bool DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_DepthOnly);
 };
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "App.h"
 
+
 #include <Eigen/Eigen.h>
 #include <InputComponent.h>
 
@@ -22,6 +23,10 @@
 #include "InputComponent.h"
 #include "ExamplePlayerController.h"
 #include "AudioEmitter.h"
+#include "UIComponent.h"
+
+
+#include "Light.h"
 #include "ComponentRegistrar.h"
 
 using namespace MCK;
@@ -54,8 +59,12 @@ private:
 	// Scene
 	EntitySystem::Scene scene;
 
+	Rendering::DirectionLight* light;
+
 public:
 	void Start() override;
 	void Update() override;
 	void End() override;
+
+	void ButtonCallbackTestFunction();
 };

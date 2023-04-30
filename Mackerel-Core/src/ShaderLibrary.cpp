@@ -1,9 +1,8 @@
+#include "LoggingSystem.h"
 #include "ShaderLibrary.h"
 
 #include "Shader.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 // Static/Singleton Functions
@@ -95,12 +94,13 @@ namespace MCK {
 ShaderLibrary::ShaderLibrary()
 {
 	// Load Vertex Shaders for Shader Program Compilation
-	AssetType::Shader::LoadVertexShaders();
+	AssetType::Shader::LoadDefaultShaders();
 	
 	// TODO: Load Engine Reserved Shaders to the Data
 	loadShader(ShaderEnum::__MCK_FRAMEBUFFER_DISPLAY, "../Mackerel-Core/res/Shaders/static/FBDisplayer.glsl");
 	loadShader(ShaderEnum::__LIGHT_UNLIT, "../Mackerel-Core/res/Shaders/light/unlit.glsl");
 	loadShader(ShaderEnum::__FRAG_MONOCOLOUR, "../Mackerel-Core/res/Shaders/frag/monocolour.glsl");
+	loadShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, "../Mackerel-Core/res/Shaders/frag/unlitShadows.glsl");
 
 	/* Example:
 		AssetType::Shader defaultTex(std::string filepath_to_default_texture);
@@ -110,7 +110,7 @@ ShaderLibrary::ShaderLibrary()
 ShaderLibrary::~ShaderLibrary()
 {
 	// Delete Vertex Shaders for Shader Program Compilation
-	AssetType::Shader::DeleteVertexShaders();
+	AssetType::Shader::DeleteDefaultShaders();
 
 	// Free all Shader Assets Loaded in Memory
 	for (auto [assetEnum, texture] : m_LibraryData)

@@ -1,7 +1,7 @@
+#include "LoggingSystem.h"
+
 #include "Shader.h"
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 #include <iostream>
@@ -12,6 +12,7 @@
 
 namespace MCK::AssetType {
 GLuint Shader::k_ProjectionShaderID = GL_ZERO;
+Shader* Shader::k_DepthOnlyShader = nullptr;
 
 /**
  * Load & Compile OpenGL Shader from Source File.
@@ -89,7 +90,7 @@ bool Shader::loadShaderSource(std::string a_FilePath, GLuint a_ShaderType, GLuin
 	return true;
 }
 
-bool Shader::LoadVertexShaders()
+bool Shader::LoadDefaultShaders()
 {
 	// Ensure Vertex Shaders aren't already Loaded
 	if (k_ProjectionShaderID != GL_ZERO) {
@@ -103,15 +104,25 @@ bool Shader::LoadVertexShaders()
 		return false;
 	}
 
+	// Load Depth Only Shader Program
+	k_DepthOnlyShader = new Shader("Depth Only Shader");
+	if (!k_DepthOnlyShader->LoadFromFile("../Mackerel-Core/res/Shaders/static/depthOnly.glsl")) {
+		Logger::log("Could not Load Depth Only Shader", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
 	return true;
 }
-bool Shader::DeleteVertexShaders()
+bool Shader::DeleteDefaultShaders()
 {
 	if (k_ProjectionShaderID != GL_ZERO)
 	{
 		glDeleteShader(k_ProjectionShaderID);
 		k_ProjectionShaderID = GL_ZERO;
 	}
+
+	if (k_DepthOnlyShader != nullptr)
+		delete k_DepthOnlyShader;
 
 	return true;
 }

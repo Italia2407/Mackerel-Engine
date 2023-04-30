@@ -32,6 +32,7 @@
     <ClCompile Include="src\AudioEmitter.cpp" />
     <ClCompile Include="src\AudioEngine.cpp" />
     <ClCompile Include="src\AudioListener.cpp" />
+    <ClCompile Include="src\ButtonElement.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
     <ClCompile Include="src\CollisionCallbackManager.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
@@ -44,6 +45,7 @@
     <ClCompile Include="src\EntityPool.cpp" />
     <ClCompile Include="src\ExamplePlayerController.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
+    <ClCompile Include="src\ImageLoader.cpp" />
     <ClCompile Include="src\InputComponent.cpp" />
     <ClCompile Include="src\JsonHelpers.cpp" />
     <ClCompile Include="src\ButtonEvents.h" />
@@ -65,12 +67,17 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\ShaderLibrary.cpp" />
     <ClCompile Include="src\Context.cpp" />
+    <ClCompile Include="src\ShapeElement.cpp" />
     <ClCompile Include="src\TestComponent.cpp" />
+    <ClCompile Include="src\TextElement.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\TextureLibrary.cpp" />
     <ClCompile Include="src\TimeManager.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\TransformComponent.cpp" />
+    <ClCompile Include="src\UIComponent.cpp" />
+    <ClCompile Include="src\UIElement.cpp" />
+    <ClCompile Include="src\UISystem.cpp" />
     <ClCompile Include="src\UniformBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -436,6 +443,8 @@
     <ClInclude Include="ext\GLAD\include\KHR\khrplatform.h" />
     <ClInclude Include="ext\nlohmann\json.hpp" />
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="ext\STBI\stb_image.h" />
+    <ClInclude Include="ext\TinyOBJ\tiny_obj_loader.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\AppAttorney.h" />
     <ClInclude Include="src\Assets.h" />
@@ -443,6 +452,7 @@
     <ClInclude Include="src\AudioEmitter.h" />
     <ClInclude Include="src\AudioEngine.h" />
     <ClInclude Include="src\AudioListener.h" />
+    <ClInclude Include="src\ButtonElement.h" />
     <ClInclude Include="src\CameraComponent.h" />
     <ClInclude Include="src\ColliderTypes.h" />
     <ClInclude Include="src\CollisionCallbackManager.h" />
@@ -464,6 +474,7 @@
     <ClInclude Include="src\GamepadAxes.h" />
     <ClInclude Include="src\GamepadButtons.h" />
     <ClInclude Include="src\GLinclude.h" />
+    <ClInclude Include="src\ImageLoader.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\InputComponent.h" />
     <ClInclude Include="src\InputManager.h" />
@@ -497,13 +508,18 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderEnum.h" />
     <ClInclude Include="src\ShaderLibrary.h" />
+    <ClInclude Include="src\ShapeElement.h" />
     <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\TestComponent.h" />
+    <ClInclude Include="src\TextElement.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureEnum.h" />
     <ClInclude Include="src\TextureLibrary.h" />
     <ClInclude Include="src\Transform.h" />
     <ClInclude Include="src\TransformComponent.h" />
+    <ClInclude Include="src\UIComponent.h" />
+    <ClInclude Include="src\UIElement.h" />
+    <ClInclude Include="src\UISystem.h" />
     <ClInclude Include="src\UniformBuffer.h" />
     <ClInclude Include="src\TimeManager.h" />
     <ClInclude Include="src\UniformData.h" />
@@ -512,8 +528,10 @@
   <ItemGroup>
     <None Include="res\Shaders\fragmentHeader.glsl" />
     <None Include="res\Shaders\frag\monoColour.glsl" />
+    <None Include="res\Shaders\frag\unlitShadows.glsl" />
     <None Include="res\Shaders\lightsHeader.glsl" />
     <None Include="res\Shaders\light\unlit.glsl" />
+    <None Include="res\Shaders\static\depthOnly.glsl" />
     <None Include="res\Shaders\static\FBDisplayer.glsl" />
     <None Include="res\Shaders\vertexHeader.glsl" />
     <None Include="res\Shaders\vert\projection.vert" />
@@ -705,7 +723,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\STBI;$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -735,7 +754,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\STBI;$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalModuleDependencies>%(AdditionalModuleDependencies)</AdditionalModuleDependencies>
     </ClCompile>

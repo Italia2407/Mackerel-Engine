@@ -11,6 +11,7 @@
 #include "Input.h"
 #include "Renderer.h"
 #include "TimeManager.h"
+#include "UISystem.h"
 
 class App;
 
@@ -41,6 +42,12 @@ namespace MCK
 					return false;
 				}
 
+				/* Initialise ImGui */
+				if (MCK::UI::UISystem::InitialiseImGui(context) == false)
+				{
+					return false;
+				}
+
 				/* Start the app */
 				AppAttorney::App_Instance::BeforeLoop(application);
 				while (glfwWindowShouldClose(**context) == false)
@@ -48,6 +55,9 @@ namespace MCK
 					/* Poll for events */
 					glfwPollEvents();
 
+					// Prepare ImGui for a new frame
+					MCK::UI::UISystem::NewFrame(context);
+					
 					/* Update systems */
 					MCK::Input::Update(**context);
 					MCK::TimeManager::Update();
@@ -55,14 +65,22 @@ namespace MCK
 					/* Update/Draw the app */
 					AppAttorney::App_Instance::DuringLoop(application);
 
+					ImGui::End();
+					ImGui::Render();
+
 					/* Render the frame */
 					MCK::Rendering::Renderer::RenderFrame();
+
+					ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 					/* Swap front and back buffers */
 					glfwSwapBuffers(**context);
 				}
 				/* Shutdown the app */
 				AppAttorney::App_Instance::AfterLoop(application);
+
+				/* Clean up ImGui*/
+				MCK::UI::UISystem::CleanImGui();
 			
 				/* clean up glfw instance and context */
 				delete context;

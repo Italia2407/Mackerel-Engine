@@ -30,5 +30,5 @@ layout(binding = 3) uniform sampler2D gNormal;
 void main()
 {
 	AssertLightShader(0);
-	oColour = vec4(texture(gAlbedoColour, v2fUV).rgb, 1.0f); 
+	oColour = vec4(texture(gAlbedoColour, v2fUV).rgb, 1.0f);
 }

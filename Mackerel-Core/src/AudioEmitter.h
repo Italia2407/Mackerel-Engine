@@ -1,8 +1,9 @@
 #pragma once
+#include "LoggingSystem.h"
 #include "Component.h"
 #include "Scene.h"
 #include "Sound.h"
-
+ 
 namespace MCK::EntitySystem
 {
 	class AudioEmitter : public Component<AudioEmitter>

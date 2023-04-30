@@ -1,3 +1,5 @@
+#include "LoggingSystem.h"
+
 #include "Renderer.h"
 
 #include "UniformBuffer.h"
@@ -10,8 +12,6 @@
 #include <utility>
 #include <functional>
 
-// Logging Headers
-#include "LoggingSystem.h"
 #include <format>
 
 // Asset Headers
@@ -181,9 +181,28 @@ bool Renderer::QueueMeshInstance(const EntitySystem::TransformComponent& a_Trans
 	return result;
 }
 
+bool Renderer::QueuePointLight(PointLight* a_PointLight)
+{
+	return Instance()->queuePointLight(a_PointLight);
+}
+bool Renderer::QueueDirectionLight(DirectionLight* a_DirectionLight)
+{
+	return Instance()->queueDirectionLight(a_DirectionLight);
+}
+bool Renderer::QueueSpotLight(SpotLight* a_SpotLight)
+{
+	return Instance()->queueSpotLight(a_SpotLight);
+}
+
 bool Renderer::UseCamera(const EntitySystem::CameraComponent& a_Camera)
 {
 	return Instance()->useCamera(a_Camera);
+}
+
+/**  */
+void Renderer::SetCentrePosition(Eigen::Vector3f a_CentrePosition)
+{
+	Instance()->setCentrePosition(a_CentrePosition);
 }
 
 /**  */
@@ -198,7 +217,8 @@ Renderer::Renderer() :
 	m_ShaderProgramID(GL_ZERO),
 	m_GeometryBuffer(nullptr), m_DeferredBuffer(nullptr),
 	m_DepthBufferTexture(nullptr),
-	m_MeshTransformBuffer(nullptr), m_CameraBuffer(nullptr) {}
+	m_CameraBuffer(nullptr), m_MeshTransformBuffer(nullptr),
+	m_CentrePosition(Eigen::Vector3f::Zero()) {}
 Renderer::~Renderer()
 {
 	resetRenderer();
@@ -248,10 +268,10 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 
 
 	// Create the Geometry Frame Buffer
-	m_GeometryBuffer = new FrameBuffer("Geometry Buffer");
+	m_GeometryBuffer = new FrameBuffer(a_ScreenWidth, a_ScreenHeight);
 
 	// Add Geometry Buffer Colour Attachments
-	if (!m_GeometryBuffer->AddUIntColourAttachment(a_ScreenWidth, a_ScreenHeight))
+	if (!m_GeometryBuffer->AddUIntColourAttachment())
 	{// ID #0 is Reserved for the Lighting Shader ID Map
 		resetRenderer();
 
@@ -259,7 +279,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 		return false;
 	}
 	for (int i = 1; i < 31; i++) {
-	if (!m_GeometryBuffer->AddFloatColourAttachment(a_ScreenWidth, a_ScreenHeight))
+	if (!m_GeometryBuffer->AddFloatColourAttachment())
 	{// Other ID #s are for General Purpose
 		resetRenderer();
 
@@ -287,10 +307,10 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 
 
 	// Create the Deferred Frame Buffer
-	m_DeferredBuffer = new FrameBuffer("Deferred Buffer");
+	m_DeferredBuffer = new FrameBuffer(a_ScreenWidth, a_ScreenHeight);
 
 	// Add Output Colour Attachment Texture
-	if (!m_DeferredBuffer->AddFloatColourAttachment(a_ScreenWidth, a_ScreenHeight))
+	if (!m_DeferredBuffer->AddFloatColourAttachment())
 	{
 		resetRenderer();
 
@@ -299,7 +319,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	}
 
 	// Add Depth Buffer Texture
-	if (!m_DeferredBuffer->AddDepthBufferTexture(a_ScreenWidth, a_ScreenHeight))
+	if (!m_DeferredBuffer->AddDepthBufferTexture())
 	{
 		resetRenderer();
 
@@ -491,24 +511,29 @@ bool Renderer::addSpotLightShader(AssetType::Shader* a_Shader)
 }
 
 /**
- * Render the Geometry Data onto the Geometry Buffer.
- * 
- * \return Whether the GBuffer could be Rendered
+ * Render the Geometry Data onto a Frame Buffer.
+ *
+ * \return Whether the Geometry could be Rendered
  */
-bool Renderer::renderGBuffer()
+bool Renderer::renderGeometry(FrameBuffer* a_Framebuffer, bool a_DepthOnly)
 {
-	// Use Geometry Frame Buffer as Render Target
-	if (!m_GeometryBuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)) {
-		Logger::log("Could not Use Geometry Buffer as Framebuffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+	GLuint clearFlags = GL_DEPTH_BUFFER_BIT;
+	if (!a_DepthOnly)
+		clearFlags |= GL_COLOR_BUFFER_BIT;
+
+	// Use Frame Buffer as Geometry Render Target
+	if (!a_Framebuffer->UseFrameBufferObject(Eigen::Vector4f::Zero(), clearFlags)) {
+		Logger::log("Could not Use Framebuffer Buffer for Geometry", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
 	// Loop Through and Render each of the Geometry Batches
 	for (auto geometryBatch : m_GeometryBatches) {
-	// Render All Geometry Batch Instances to GBuffer Textures
-	if (!geometryBatch->DrawBatchObjects(m_MeshTransformBuffer)) {
-		Logger::log("Could not Draw Geometry Batch Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-	}}
+		// Render All Geometry Batch Instances to Textures
+		if (!geometryBatch->DrawBatchObjects(m_MeshTransformBuffer, a_DepthOnly)) {
+			Logger::log("Could not Draw Geometry Batch Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		}
+	}
 
 	return true;
 }
@@ -563,7 +588,7 @@ bool Renderer::renderDeferredBuffer()
 		{	auto light = _pointLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight()) {
+			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
 				Logger::log(std::format("Could not Load Point Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
@@ -589,7 +614,7 @@ bool Renderer::renderDeferredBuffer()
 			auto light = _directionLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight()) {
+			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
 				Logger::log(std::format("Could not Load Direction Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
@@ -615,7 +640,7 @@ bool Renderer::renderDeferredBuffer()
 			auto light = _spotLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight()) {
+			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
 				Logger::log(std::format("Could not Load Spot Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
@@ -708,6 +733,12 @@ bool Renderer::useCamera(const EntitySystem::CameraComponent& a_Camera)
 	return true;
 }
 
+/**  */
+void Renderer::setCentrePosition(Eigen::Vector3f a_CentrePosition)
+{
+	m_CentrePosition = a_CentrePosition;
+}
+
 /**
  * Render the Current Frame.
  * 
@@ -727,16 +758,23 @@ bool Renderer::renderFrame()
 	glEnable(GL_DEPTH_TEST);
 
 	// Render Scene to the Geometry Buffer
-	if (!m_GeometryBuffer || !renderGBuffer()) {
+	if (!m_GeometryBuffer || !renderGeometry(m_GeometryBuffer, false)) {
 		Logger::log("Could not Render to Geometry Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
-	glDisable(GL_DEPTH_TEST);
-
-
 	// TODO:
 	// Render Shadow Maps for All Lights
+	for (auto light : _directionLights)
+	{
+		light->BindShadowRendererCamera(m_CentrePosition);
+		if (!light->ShadowRenderer() || !renderGeometry(light->ShadowRenderer(), true)) {
+			Logger::log("Could not Render Light Shadow Map to Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			continue;
+		}
+	}
+
+	glDisable(GL_DEPTH_TEST);
 
 
 	// Enable Additive Blending for Overlapping Fragments
@@ -769,7 +807,6 @@ bool Renderer::renderFrame()
 	m_MeshTransformBuffer->SetMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity());
 
 	// Load Framebuffer Output Texture
-	//auto FBOutputTexture = m_GeometryBuffer->GetColourAttachmentTexture(4);
 	auto FBOutputTexture = m_DeferredBuffer->GetColourAttachmentTexture(0);
 	if (!FBOutputTexture || !FBOutputTexture->BindTexture(0)) {
 		Logger::log("Could not Bind Framebuffer Output Texture", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
@@ -784,7 +821,6 @@ bool Renderer::renderFrame()
 	// Draw Framebuffer Texture to Screen
 	renderDisplayScreen();
 
-
 	// Reset Renderer for Next Frame
 	resetRendererFrame();
 
@@ -797,6 +833,7 @@ void Renderer::renderDisplayScreen()
 		Logger::log("Could not Bind Display Screen Mesh's VAO", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return;
 	}
+	//glDrawArrays(GL_TRIANGLES, 0, k_DisplayScreenMesh->NumVertices() * 3);
 	glDrawElements(GL_TRIANGLES, k_DisplayScreenMesh->NumIndices(), GL_UNSIGNED_INT, nullptr);
 }
 }

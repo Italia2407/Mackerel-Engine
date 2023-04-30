@@ -5,8 +5,8 @@
 #include <iostream>
 
 namespace MCK {
-FrameBuffer::FrameBuffer(std::string a_FrameBufferName) :
-	m_FrameBufferObject(GL_ZERO), m_FrameBufferName(a_FrameBufferName), m_ExternalDepthBufferTexture(false), m_DepthBufferTexture(nullptr) {}
+FrameBuffer::FrameBuffer(GLuint a_Width, GLuint a_Height) :
+	m_FrameBufferObject(GL_ZERO), m_Width(a_Width), m_Height(a_Height), m_ExternalDepthBufferTexture(false), m_DepthBufferTexture(nullptr) {}
 FrameBuffer::~FrameBuffer()
 {
 	// Delete the Framebuffer Object
@@ -30,17 +30,12 @@ bool FrameBuffer::CreateFrameBuffer()
 {
 	// Ensure FBO is not Already Created
 	if (m_FrameBufferObject != GL_ZERO) {
-		std::cout << "ERROR: Cannot Recreate " << m_FrameBufferName << " FBO" << std::endl;
+		std::cout << "ERROR: Cannot Recreate Framebuffer Object" << std::endl;
 		return false;
 	}
 	// Ensure Depth Buffer Texture Exists
 	if (!m_DepthBufferTexture) {
-		std::cout << "ERROR: " << m_FrameBufferName << " Needs an Assigned Depth Texture" << std::endl;
-		return false;
-	}
-	// Ensure at Least 1 Colour Attachment Exists
-	if (m_ColourAttachmentTextures.size() < 1) {
-		std::cout << "ERROR: " << m_FrameBufferName << " Needs at least 1 Assigned Colour Attachment Texture" << std::endl;
+		std::cout << "ERROR: Framebuffer Needs an Assigned Depth Texture" << std::endl;
 		return false;
 	}
 
@@ -56,9 +51,11 @@ bool FrameBuffer::CreateFrameBuffer()
 	// Add Colour Attachment Textures
 	for (int i = 0; i < m_ColourAttachmentTextures.size(); i++)
 	{
-		if (i > maxColourAttachments) {
+		if (i >= maxColourAttachments) {
 			std::cout << "ERROR: Cannot Add Colour Attachment " << i << " to Framebuffer." " "
 				"Reached Maximum Number(" << maxColourAttachments << ") of Colour Attachments Supported by Current OpenGL Implementation" << std::endl;
+
+			break;
 		}
 		auto colourAttachmentTexture = m_ColourAttachmentTextures[i];
 
@@ -81,13 +78,16 @@ bool FrameBuffer::CreateFrameBuffer()
 	// Add Depth Attachment Texture
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthBufferTexture->getTextureID(), 0);
 
-	glDrawBuffers(maxColourAttachments, colourAttachmentSlots.data());
+	if (colourAttachmentSlots.size() == 0)
+		glDrawBuffer(GL_NONE);
+	else
+		glDrawBuffers((GLsizei)colourAttachmentSlots.size(), colourAttachmentSlots.data());
 
 	// Check if Framebuffer was Created Properly
 	auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
 	{
-		std::cout << "ERROR: " << m_FrameBufferName << " FBO Could not be Properly Created" << std::endl;
+		std::cout << "ERROR: Framebuffer Object Could not be Properly Created" << std::endl;
 		std::cout << "Obtained Status: " << fboStatus << std::endl;
 	}
 
@@ -102,8 +102,9 @@ bool FrameBuffer::UseFrameBufferObject(Eigen::Vector4f clearColour, GLuint clear
 		std::cout << "ERROR: Cannot Use Unexistant Framebuffer Object" << std::endl;
 		return false;
 	}
-	// Bind the Frame Buffer
+	// Bind the Frame Buffer & Resize Viewport
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
+	glViewport(0, 0, m_Width, m_Height);
 
 	// Clear the Frame Buffer
 	glClearColor(clearColour.x(), clearColour.y(), clearColour.z(), clearColour.w());
@@ -112,7 +113,7 @@ bool FrameBuffer::UseFrameBufferObject(Eigen::Vector4f clearColour, GLuint clear
 	return true;
 }
 
-bool FrameBuffer::AddFloatColourAttachment(GLuint width, GLuint height)
+bool FrameBuffer::AddFloatColourAttachment()
 {
 	if (m_ColourAttachmentTextures.size() > 32)
 	{
@@ -123,7 +124,7 @@ bool FrameBuffer::AddFloatColourAttachment(GLuint width, GLuint height)
 
 	// Create, Generate, and Add Float Colour Attachment Texture
 	AssetType::Texture* colourAttachemntTexture = new AssetType::Texture();
-	if (!colourAttachemntTexture->GenerateFloatTexture(width, height))
+	if (!colourAttachemntTexture->GenerateFloatTexture(m_Width, m_Height))
 	{
 		std::cout << "ERROR: Could not Create Float Colour Attachment Texture" << std::endl;
 		delete colourAttachemntTexture;
@@ -135,7 +136,7 @@ bool FrameBuffer::AddFloatColourAttachment(GLuint width, GLuint height)
 
 	return true;
 }
-bool FrameBuffer::AddIntColourAttachment(GLuint width, GLuint height)
+bool FrameBuffer::AddIntColourAttachment()
 {
 	if (m_ColourAttachmentTextures.size() > 32)
 	{
@@ -146,7 +147,7 @@ bool FrameBuffer::AddIntColourAttachment(GLuint width, GLuint height)
 
 	// Create, Generate, and Add Int Colour Attachment Texture
 	AssetType::Texture* colourAttachemntTexture = new AssetType::Texture();
-	if (!colourAttachemntTexture->GenerateIntTexture(width, height))
+	if (!colourAttachemntTexture->GenerateIntTexture(m_Width, m_Height))
 	{
 		std::cout << "ERROR: Could not Create Int Colour Attachment Texture" << std::endl;
 		delete colourAttachemntTexture;
@@ -158,7 +159,7 @@ bool FrameBuffer::AddIntColourAttachment(GLuint width, GLuint height)
 
 	return true;
 }
-bool FrameBuffer::AddUIntColourAttachment(GLuint width, GLuint height)
+bool FrameBuffer::AddUIntColourAttachment()
 {
 	if (m_ColourAttachmentTextures.size() > 32)
 	{
@@ -169,7 +170,7 @@ bool FrameBuffer::AddUIntColourAttachment(GLuint width, GLuint height)
 
 	// Create, Generate, and Add UInt Colour Attachment Texture
 	AssetType::Texture* colourAttachemntTexture = new AssetType::Texture();
-	if (!colourAttachemntTexture->GenerateUIntTexture(width, height))
+	if (!colourAttachemntTexture->GenerateUIntTexture(m_Width, m_Height))
 	{
 		std::cout << "ERROR: Could not Create UInt Colour Attachment Texture" << std::endl;
 		delete colourAttachemntTexture;
@@ -181,7 +182,7 @@ bool FrameBuffer::AddUIntColourAttachment(GLuint width, GLuint height)
 
 	return true;
 }
-bool FrameBuffer::AddDepthBufferTexture(GLuint a_Width, GLuint a_Height)
+bool FrameBuffer::AddDepthBufferTexture()
 {
 	if (m_DepthBufferTexture != nullptr)
 	{
@@ -192,7 +193,7 @@ bool FrameBuffer::AddDepthBufferTexture(GLuint a_Width, GLuint a_Height)
 
 	// Create, Generate, and Add Depth Buffer Texture
 	m_DepthBufferTexture = new AssetType::Texture();
-	if (!m_DepthBufferTexture->GenerateDepthTexture(a_Width, a_Height))
+	if (!m_DepthBufferTexture->GenerateDepthTexture(m_Width, m_Height))
 	{
 		std::cout << "ERROR: Could not Generate Framebuffer's Depth Buffer Texture" << std::endl;
 	}
@@ -200,18 +201,21 @@ bool FrameBuffer::AddDepthBufferTexture(GLuint a_Width, GLuint a_Height)
 	return true;
 }
 
-bool FrameBuffer::ResizeFramebuffer(GLuint width, GLuint height)
+bool FrameBuffer::ResizeFramebuffer(GLuint a_Width, GLuint a_Height)
 {
+	m_Width = a_Width;
+	m_Height = a_Height;
+
 	// Resize all Colour Attachment Textures
 	for (auto texture : m_ColourAttachmentTextures)
 	{
-		texture->ResizeTexture(width, height);
+		texture->ResizeTexture(m_Width, m_Height);
 	}
 
 	// Resize Depth Buffer Texture, if not Assigned Externally
 	if (!m_ExternalDepthBufferTexture)
 	{
-		m_DepthBufferTexture->ResizeTexture(width, height);
+		m_DepthBufferTexture->ResizeTexture(m_Width, m_Height);
 	}
 
 	return true;

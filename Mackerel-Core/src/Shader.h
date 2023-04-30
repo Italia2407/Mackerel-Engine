@@ -10,6 +10,8 @@ public:
 	Shader(std::string a_Name);
 	~Shader();
 
+	static Shader* k_DepthOnlyShader;
+
 private:
 	// Vertex Shader
 	static GLuint k_ProjectionShaderID;
@@ -17,8 +19,8 @@ private:
 	static bool loadShaderSource(std::string a_FilePath, GLuint a_ShaderType, GLuint& o_ShaderID);
 
 public:
-	static bool LoadVertexShaders();
-	static bool DeleteVertexShaders();
+	static bool LoadDefaultShaders();
+	static bool DeleteDefaultShaders();
 
 private:
 	std::string m_Name;
