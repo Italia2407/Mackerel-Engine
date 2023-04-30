@@ -96,9 +96,9 @@ namespace MCK::EntitySystem
 	 * \param key The key specifying the type of component
 	 * \return A pointer to the component
 	 */
-	Component* Scene::CreateComponent(std::string key)
+	ComponentBase* Scene::CreateComponent(std::string key)
 	{
-		return componentFactory.CreateComponent(key);
+		return ComponentManager::AllocateComponent(key);
 	}
 
 	/**
@@ -106,9 +106,9 @@ namespace MCK::EntitySystem
 	 *
 	 * \param component The component to free
 	 */
-	void Scene::FreeComponent(Component* component)
+	void Scene::FreeComponent(ComponentBase* component)
 	{
-		componentFactory.FreeComponent(component);
+		ComponentManager::DeallocateComponent(component);
 	}
 
 	/**

@@ -6,7 +6,7 @@
 
 namespace MCK::EntitySystem
 {
-	class InputComponent : public Component
+	class InputComponent : public Component<InputComponent>
 	{
 	private:
 		Eigen::Vector2f keyboardDirection;
@@ -41,7 +41,5 @@ namespace MCK::EntitySystem
 		void OnUpdate() override;
 		void OnDestroy() override;
 		bool Deserialise(json data) override;
-
-		TypeInfoRef GetType() override;
 	};
 }

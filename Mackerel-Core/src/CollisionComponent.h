@@ -8,7 +8,7 @@
 
 namespace MCK::Physics
 {
-	class CollisionComponent : public MCK::EntitySystem::Component
+	class CollisionComponent : public MCK::EntitySystem::Component<CollisionComponent>
 	{
 	private:
 
@@ -28,7 +28,5 @@ namespace MCK::Physics
 		void OnDestroy();
 
 		bool Deserialise(json data) override;
-
-		TypeInfoRef GetType();
 	};
 }

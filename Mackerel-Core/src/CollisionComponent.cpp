@@ -9,16 +9,6 @@
 namespace MCK::Physics
 {
 
-    /**
-    * Returns the type id of this component
-    *
-    * \return The type id
-    */
-    TypeInfoRef CollisionComponent::GetType()
-    {
-        return typeid(RigidbodyComponent);
-    }
-
 	void CollisionComponent::UpdateColliderTransform()
 	{
 		btTransform transformation{};

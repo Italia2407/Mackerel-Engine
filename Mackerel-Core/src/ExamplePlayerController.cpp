@@ -66,11 +66,6 @@ namespace MCK::ExamplePlayer
 
 	}
 
-	TypeInfoRef ExamplePlayerController::GetType()
-	{
-		return typeid(ExamplePlayerController);
-	}
-
 	bool ExamplePlayerController::Deserialise(json data)
 	{
 		return true;

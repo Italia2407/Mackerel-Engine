@@ -9,7 +9,7 @@
 
 namespace MCK::Physics
 {
-	class RigidbodyComponent : public MCK::EntitySystem::Component
+	class RigidbodyComponent : public MCK::EntitySystem::Component<RigidbodyComponent>
 	{
 
 	private:
@@ -41,8 +41,6 @@ namespace MCK::Physics
 		void OnDestroy();
 
 		bool Deserialise(json data) override;
-
-		TypeInfoRef GetType();
 	};
 }
 

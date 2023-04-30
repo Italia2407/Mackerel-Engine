@@ -30,11 +30,6 @@ namespace MCK::EntitySystem
 
 	}
 
-	TypeInfoRef AudioListener::GetType()
-	{
-		return typeid(AudioListener);
-	}
-
 	bool AudioListener::Deserialise(json data)
 	{
 		return true;

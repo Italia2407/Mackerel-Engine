@@ -4,7 +4,7 @@
 
 namespace MCK::EntitySystem
 {
-	class AudioListener : public Component
+	class AudioListener : public Component<AudioListener>
 	{
 	private:
 		TransformComponent* transform;
@@ -14,8 +14,6 @@ namespace MCK::EntitySystem
 		void OnCreate() override;
 		void OnUpdate() override;
 		void OnDestroy() override;
-
-		TypeInfoRef GetType() override;
 
 		bool Deserialise(json data) override;
 	};

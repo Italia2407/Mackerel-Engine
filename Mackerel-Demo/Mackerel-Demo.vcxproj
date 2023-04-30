@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ComponentRegistrar.cpp" />
     <ClCompile Include="src\DemoApp.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\PlatformerDemo.cpp" />
     <ClCompile Include="src\TestApp.cpp" />
+    <ClCompile Include="src\TestDemoComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mackerel-Core\Mackerel-Core.vcxproj">
@@ -150,9 +152,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ComponentRegistrar.h" />
     <ClInclude Include="src\DemoApp.h" />
     <ClInclude Include="src\PlatformerDemo.h" />
     <ClInclude Include="src\TestApp.h" />
+    <ClInclude Include="src\TestDemoComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

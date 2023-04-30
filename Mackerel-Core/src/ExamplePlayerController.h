@@ -7,7 +7,7 @@
 
 namespace MCK::ExamplePlayer
 {
-	class ExamplePlayerController : public EntitySystem::Component
+	class ExamplePlayerController : public EntitySystem::Component<ExamplePlayerController>
 	{
 	private:
 		float moveForceMag = 30;
@@ -24,7 +24,6 @@ namespace MCK::ExamplePlayer
 		void OnUpdate() override;
 		void OnDestroy() override;
 
-		TypeInfoRef GetType() override;
 		bool Deserialise(json data) override;
 	};
 }

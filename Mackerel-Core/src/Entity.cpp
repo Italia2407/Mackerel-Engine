@@ -22,7 +22,7 @@ namespace MCK::EntitySystem
 	 *
 	 * \param component: An instance of the component to add
 	 */
-	void Entity::AddComponent(Component* component)
+	void Entity::AddComponent(ComponentBase* component)
 	{
 		components.push_back(component);
 		component->entity = this;
@@ -37,7 +37,7 @@ namespace MCK::EntitySystem
 	 */
 	void Entity::AddComponent(std::string componentKey, json data)
 	{
-		Component* component = scene->CreateComponent(componentKey);
+		ComponentBase* component = scene->CreateComponent(componentKey);
 
 		if (component != nullptr)
 		{
@@ -52,7 +52,7 @@ namespace MCK::EntitySystem
 	 *
 	 * \param Component: The instance of the component
 	 */
-	void Entity::RemoveComponent(Component* component)
+	void Entity::RemoveComponent(ComponentBase* component)
 	{
 		int componentIndex;
 		for (componentIndex = 0; componentIndex < components.size(); ++componentIndex)

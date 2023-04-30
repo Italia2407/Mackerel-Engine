@@ -105,7 +105,7 @@ namespace MCK::Physics
 				CollisionData colData{};
 				colData.collidedEntity = entities[other];
 
-				EntitySystem::Component* dynamicsComponent = PhysicsHelpers::GetDynamicsComponent(btCollisionObjects[i]);
+				EntitySystem::ComponentBase* dynamicsComponent = PhysicsHelpers::GetDynamicsComponent(btCollisionObjects[i]);
 				
 				if (rigidbodyStatus[i])
 				{

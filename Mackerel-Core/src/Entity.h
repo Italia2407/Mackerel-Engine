@@ -41,7 +41,7 @@ public:
 	/**
 		* The components attached to this entity.
 		*/
-	std::vector<Component*> components;
+	std::vector<ComponentBase*> components;
 
 	/**
 		* The default constructor for this entity.
@@ -80,7 +80,7 @@ public:
 		* 
 		* \param component: An instance of the component to add
 		*/
-	void AddComponent(Component* component);
+	void AddComponent(ComponentBase* component);
 
 	/**
 		* Serialises and adds a component from JSON.
@@ -113,7 +113,7 @@ public:
 		* 
 		* \param Component: The instance of the component
 		*/
-	void RemoveComponent(Component* component);
+	void RemoveComponent(ComponentBase* component);
 
 	/**
 		* Test function. TODO remove

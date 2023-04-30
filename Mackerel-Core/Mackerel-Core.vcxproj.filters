@@ -240,7 +240,7 @@
     <ClCompile Include="src\Shader.cpp">
       <Filter>Source Files\AssetTypes\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\Component.cpp">
+    <ClCompile Include="src\ComponentBase.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
     <ClCompile Include="src\TransformComponent.cpp">
@@ -259,9 +259,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CameraComponent.cpp">
-      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BoxColliderComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\CollisionComponent.cpp">
@@ -302,6 +299,12 @@
     </ClCompile>
     <ClCompile Include="src\CollisionCallbackManager.cpp">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component.cpp">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CoreComponentRegistrar.cpp">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,7 +368,7 @@
     <ClInclude Include="ext\nlohmann\json.hpp">
       <Filter>External Files\nlohmann</Filter>
     </ClInclude>
-    <ClInclude Include="src\Component.h">
+    <ClInclude Include="src\ComponentBase.h">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClInclude>
     <ClInclude Include="src\Entity.h">
@@ -514,9 +517,6 @@
     </ClInclude>
     <ClInclude Include="src\CreateCollisionShapeInfo.h">
       <Filter>Source Files\Systems\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BoxColliderComponent.h">
-      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\RaycastHitInfo.h">
       <Filter>Source Files\Systems\Physics</Filter>
@@ -1612,6 +1612,18 @@
     </ClInclude>
     <ClInclude Include="src\CollisionCallbackReceipt.h">
       <Filter>Source Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RegisteredComponentData.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CoreComponentRegistrar.h">
+      <Filter>Source Files\Systems\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CoreComponents.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

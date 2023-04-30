@@ -176,14 +176,6 @@ namespace MCK::EntitySystem
 		UnloadSound();
 	}
 
-	/**
-	* Returns the type id of this component
-	*/
-	TypeInfoRef AudioEmitter::GetType()
-	{
-		return typeid(AudioEmitter);
-	}
-
 	bool AudioEmitter::Deserialise(json data)
 	{
 		return true;

@@ -26,14 +26,6 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 }
 
 	/**
-	* Returns the type id of this component
-	*/
-	TypeInfoRef TransformComponent::GetType()
-	{
-		return typeid(TransformComponent);
-	}
-
-	/**
 	 * Invoked when the entity holding the component is created.
 	 *
 	 */

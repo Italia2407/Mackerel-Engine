@@ -7,7 +7,7 @@
 
 namespace MCK::EntitySystem
 {
-class TransformComponent : public Component
+class TransformComponent : public Component<TransformComponent>
 {
 private:
 	Transform m_Transform;
@@ -28,7 +28,5 @@ public:
 	void OnUpdate() override;
 	void OnDestroy() override;
 	bool Deserialise(json data) override;
-
-	TypeInfoRef GetType() override;
 };
 }

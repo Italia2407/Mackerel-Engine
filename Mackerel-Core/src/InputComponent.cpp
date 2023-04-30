@@ -9,16 +9,6 @@
 namespace MCK::EntitySystem
 {
 	/**
-	* Returns the type id of this component
-	*
-	* \return The name as a C string.
-	*/
-	TypeInfoRef InputComponent::GetType()
-	{
-		return typeid(InputComponent);
-	}
-
-	/**
 	 * Invoked when the entity holding the component is created.
 	 *
 	 */

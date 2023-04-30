@@ -22,6 +22,7 @@
 #include "InputComponent.h"
 #include "ExamplePlayerController.h"
 #include "AudioEmitter.h"
+#include "ComponentRegistrar.h"
 
 using namespace MCK;
 

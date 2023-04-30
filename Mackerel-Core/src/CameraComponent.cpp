@@ -8,6 +8,10 @@
 #include "Renderer.h"
 
 namespace MCK::EntitySystem {
+
+CameraComponent::CameraComponent() :
+	m_Position(Eigen::Vector3f::Zero()), m_FrontDirection(Eigen::Vector3f(0.0f, 0.0f, 1.0f)), m_UpDirection(Eigen::Vector3f(0.0f, 1.0f, 0.0f)),
+	m_AspectRatio(1.78f), m_FarPlane(300.0f), m_NearPlane(1.f) {}
 CameraComponent::CameraComponent(float a_AspectRatio) :
 	m_Position(Eigen::Vector3f::Zero()), m_FrontDirection(Eigen::Vector3f(0.0f, 0.0f, 1.0f)), m_UpDirection(Eigen::Vector3f(0.0f, 1.0f, 0.0f)),
 	m_AspectRatio(a_AspectRatio), m_FarPlane(300.0f), m_NearPlane(1.f) {}
@@ -58,9 +62,16 @@ void CameraComponent::OnUpdate()
 {
 	Rendering::Renderer::UseCamera(*this);
 }
+
+//void CameraComponent::OnCreate(){}
+//void CameraComponent::OnDestroy(){}
+//bool CameraComponent::Deserialise(json data) { return true; }
 }
 
 namespace MCK::EntitySystem {
+OrthographicCamera::OrthographicCamera() :
+	CameraComponent(),
+	m_Right(1.0f), m_Left(-1.0f), m_Top(1.0f), m_Bottom(-1.0f) {}
 OrthographicCamera::OrthographicCamera(float a_AspectRatio) :
 	CameraComponent(a_AspectRatio),
 	m_Right(1.0f), m_Left(-1.0f), m_Top(1.0f), m_Bottom(-1.0f) {}
@@ -99,13 +110,23 @@ bool OrthographicCamera::Deserialise(json data)
 {
 	return false;
 }
+
 TypeInfoRef OrthographicCamera::GetType()
 {
 	return typeid(OrthographicCamera);
 }
+
+void OrthographicCamera::Reset(void* componentLoc)
+{
+	OrthographicCamera* componentPtr = static_cast<OrthographicCamera*>(componentLoc);
+	*componentPtr = OrthographicCamera();
+}
+
 }
 
 namespace MCK::EntitySystem {
+PerspectiveCamera::PerspectiveCamera() :
+	CameraComponent(), m_FOVAngle(45.0f) {}
 PerspectiveCamera::PerspectiveCamera(float a_AspectRatio) :
 	CameraComponent(a_AspectRatio), m_FOVAngle(45.0f) {}
 PerspectiveCamera::PerspectiveCamera(float a_AspectRatio, float a_FOVAngle, float a_FarPlane, float a_NearPlane) :
@@ -144,8 +165,16 @@ bool PerspectiveCamera::Deserialise(json data)
 {
 	return false;
 }
+
 TypeInfoRef PerspectiveCamera::GetType()
 {
 	return typeid(PerspectiveCamera);
 }
+
+void PerspectiveCamera::Reset(void* componentLoc)
+{
+	PerspectiveCamera* componentPtr = static_cast<PerspectiveCamera*>(componentLoc);
+	*componentPtr = PerspectiveCamera();
+}
+
 }

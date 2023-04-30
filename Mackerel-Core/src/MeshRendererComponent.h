@@ -16,9 +16,10 @@ class TransformComponent;
 }
 
 namespace MCK::EntitySystem {
-class MeshRendererComponent : public Component
+class MeshRendererComponent : public Component<MeshRendererComponent>
 {
 public:
+	MeshRendererComponent();
 	MeshRendererComponent(MeshEnum a_MeshEnum, ShaderEnum a_ShaderEnum, MaterialEnum a_MaterialEnum);
 	MeshRendererComponent(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material);
 	~MeshRendererComponent();
@@ -37,7 +38,6 @@ private:
 	AssetType::Material* m_Material;
 
 public:
-	TypeInfoRef GetType() override;
 
 	void OnCreate() override;
 	void OnDestroy() override;

@@ -5,6 +5,7 @@ namespace MCK::EntitySystem {
 class PerspectiveCamera : public CameraComponent
 {
 public:
+	PerspectiveCamera();
 	PerspectiveCamera(float a_AspectRatio);
 	PerspectiveCamera(float a_AspectRatio, float a_FOVAngle, float a_FarPlane, float a_NearPlane);
 	PerspectiveCamera(float a_AspectRatio, float a_FOVAngle, float a_FarPlane, float a_NearPlane, Eigen::Vector3f a_Position, Eigen::Vector3f a_FrontDirection, Eigen::Vector3f a_UpDirection);
@@ -18,8 +19,8 @@ public:
 
 	Eigen::Matrix4f GetProjectionMatrix() const override;
 
+	virtual TypeInfoRef GetType() override;
 	bool Deserialise(json data) override;
-
-	TypeInfoRef GetType() override;
+	static void Reset(void* componentLoc);
 };
 }

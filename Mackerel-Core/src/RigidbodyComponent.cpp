@@ -174,16 +174,6 @@ namespace MCK::Physics
 			rigidbody->setAngularFactor(angularFactor);
 	}
 
-    /**
-    * Returns the type id of this component
-    *
-    * \return The name as a C string.
-    */
-    TypeInfoRef RigidbodyComponent::GetType()
-    {
-        return typeid(RigidbodyComponent);
-    }
-
 	/**
 	 * Invoked when the entity holding the component is created.
 	 * The transform component of the entity rigidbody is part of is retrieved 

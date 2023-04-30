@@ -7,6 +7,7 @@ namespace MCK::EntitySystem {
 class OrthographicCamera : public CameraComponent
 {
 public:
+	OrthographicCamera();
 	OrthographicCamera(float a_AspectRatio);
 	OrthographicCamera(float a_AspectRatio, float a_Right, float a_Left, float a_Top, float a_Bottom, float a_Far, float a_Near);
 	OrthographicCamera(float a_AspectRatio, float a_Right, float a_Left, float a_Top, float a_Bottom, float a_Far, float a_Near,
@@ -30,8 +31,8 @@ public:
 
 	Eigen::Matrix4f GetProjectionMatrix() const override;
 
+	virtual TypeInfoRef GetType() override;
 	bool Deserialise(json data) override;
-
-	TypeInfoRef GetType() override;
+	static void Reset(void* componentLoc);
 };
 }

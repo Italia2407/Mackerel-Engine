@@ -5,7 +5,7 @@
 
 namespace MCK::EntitySystem
 {
-	class AudioEmitter : public Component
+	class AudioEmitter : public Component<AudioEmitter>
 	{
 	private:
 		unsigned int emitterSeed = 0;
@@ -42,7 +42,5 @@ namespace MCK::EntitySystem
 		void OnUpdate() override;
 		void OnDestroy() override;
 		bool Deserialise(json data) override;
-
-		TypeInfoRef GetType() override;
 	};
 }

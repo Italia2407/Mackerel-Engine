@@ -4,9 +4,10 @@
 #include "Eigen/Eigen.h"
 
 namespace MCK::EntitySystem {
-class CameraComponent : public Component
+class CameraComponent : public ComponentBase
 {
 public:
+	CameraComponent();
 	CameraComponent(float a_AspectRatio);
 	CameraComponent(float a_AspectRatio, float a_FarPlane, float a_NearPlane);
 	CameraComponent(float a_AspectRatio, Eigen::Vector3f a_Position, Eigen::Vector3f a_FrontDirection, Eigen::Vector3f a_UpDirection);
@@ -42,5 +43,8 @@ public:
 	virtual Eigen::Matrix4f GetProjectionMatrix() const = 0;
 
 	void OnUpdate() override;
+	//void OnCreate() override;
+	//void OnDestroy() override;
+	//bool Deserialise(json data) override;
 };
 }

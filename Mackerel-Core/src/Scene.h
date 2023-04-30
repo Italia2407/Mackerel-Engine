@@ -11,7 +11,7 @@
 // Forward declarations
 namespace MCK::EntitySystem {
 	class Entity;
-	class Component;
+	class ComponentBase;
 	class EntityFactory;
 	class ComponentFactory;
 }
@@ -81,14 +81,14 @@ namespace MCK::EntitySystem
 		 * \param key The key specifying the type of component
 		 * \return A pointer to the component
 		 */
-		Component* CreateComponent(std::string key);
+		ComponentBase* CreateComponent(std::string key);
 
 		/**
 		 * Frees a component from memory.
 		 * 
 		 * \param component The component to free
 		 */
-		void FreeComponent(Component* component);
+		void FreeComponent(ComponentBase* component);
 
 		void UnloadScene();
 

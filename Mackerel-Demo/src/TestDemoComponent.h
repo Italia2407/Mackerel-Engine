@@ -3,20 +3,22 @@
 #include "Component.h"
 #include "TransformComponent.h"
 
-namespace MCK::EntitySystem
+namespace MCK::EntitySystem::Demo
 {
-	class TestComponent : public Component<TestComponent>
+	class TestDemoComponent : public ComponentBase
 	{
 	private:
-		TransformComponent* transform;
 		float t = 0;
 
 	public:
-		Eigen::Vector2f input;
 
 		void OnCreate();
 		void OnUpdate();
 		void OnDestroy();
 		bool Deserialise(json data);
+
+		TypeInfoRef GetType();
+
+		static void Reset(void* component);
 	};
 }

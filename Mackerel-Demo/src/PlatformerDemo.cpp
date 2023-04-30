@@ -7,6 +7,7 @@ PlatformerApp::~PlatformerApp()
 
 void PlatformerApp::Start()
 {
+    RegisterComponents();
 
 #pragma region Scene Init
     scene.InitialiseScene();
