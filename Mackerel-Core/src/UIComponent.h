@@ -9,7 +9,7 @@
 
 namespace MCK::EntitySystem
 {
-	class UIComponent : public Component
+	class UIComponent : public Component<UIComponent>
 	{
 	private:
 
@@ -44,7 +44,5 @@ namespace MCK::EntitySystem
 		void OnUpdate() override;
 		void OnDestroy() override;
 		bool Deserialise(json data) override;
-
-		TypeInfoRef GetType() override;
 	};
 }

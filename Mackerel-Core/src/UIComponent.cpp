@@ -10,15 +10,6 @@
 
 namespace MCK::EntitySystem
 {
-	/**
-	* Returns the type id of this component
-	*
-	* \return The name as a C string.
-	*/
-	TypeInfoRef UIComponent::GetType()
-	{
-		return typeid(UIComponent);
-	}
 
 	/**
 	 * Invoked when the entity holding the component is created.

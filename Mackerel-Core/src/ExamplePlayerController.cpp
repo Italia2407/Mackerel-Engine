@@ -57,8 +57,6 @@ namespace MCK::ExamplePlayer
 			velocity.y() = jumpVel;
 			rigidbody->SetLinearVelocity(velocity);
 		}
-
-
 	}
 
 	void ExamplePlayerController::OnDestroy() 
