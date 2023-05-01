@@ -14,5 +14,5 @@ namespace MCK::Helpers
 	 * 
 	 * \return json object, either empty or read from file
 	 */
-	json getJsonObject(std::string path);
+	json ParseJson(std::string path);
 }

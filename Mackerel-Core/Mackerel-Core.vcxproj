@@ -526,6 +526,7 @@
     <ClInclude Include="src\Context.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="build\AssetAcquisition.py" />
     <None Include="res\Shaders\fragmentHeader.glsl" />
     <None Include="res\Shaders\frag\monoColour.glsl" />
     <None Include="res\Shaders\frag\unlitShadows.glsl" />
@@ -742,6 +743,9 @@
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\lib-vc2022;$(SolutionDIR)\Mackerel-Core\ext\FMOD\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
+    <PreBuildEvent>
+      <Command>python $(SolutionDir)Mackerel-Core\build\AssetAcquisition.py  $(SolutionDir)  $(OutDir) $(SolutionDir)Mackerel-Core\src -i x64 x86 ext -r res</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

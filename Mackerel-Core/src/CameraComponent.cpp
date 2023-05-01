@@ -163,7 +163,37 @@ Eigen::Matrix4f PerspectiveCamera::GetProjectionMatrix() const
 
 bool PerspectiveCamera::Deserialise(json data)
 {
-	return false;
+	data = data["data"];
+
+	for (auto itt = data.begin(); itt != data.end(); ++itt)
+	{
+		if (itt.key() == "aspectRatio")
+		{
+			m_AspectRatio = data["aspectRatio"];
+		}
+		else if (itt.key() == "farPlane")
+		{
+			m_FarPlane = data["farPlane"];
+		}
+		else if (itt.key() == "nearPlane")
+		{
+			m_NearPlane = data["nearPlane"];
+		}
+	}
+
+	m_Position.x() = data["positionX"];
+	m_Position.y() = data["positionY"];
+	m_Position.z() = data["positionZ"];
+
+	m_FrontDirection.x() = data["frontX"];
+	m_FrontDirection.y() = data["frontY"];
+	m_FrontDirection.z() = data["frontZ"];
+
+	m_UpDirection.x() = data["upX"];
+	m_UpDirection.y() = data["upY"];
+	m_UpDirection.z() = data["upZ"];
+
+	return true;
 }
 
 TypeInfoRef PerspectiveCamera::GetType()

@@ -249,6 +249,33 @@ namespace MCK::Physics
 
 	bool RigidbodyComponent::Deserialise(json data)
 	{
+		data = data["data"];
+
+		CreateCollisionShapeInfo shapeInfo{};
+		shapeInfo.colliderType = data["type"];
+
+		for (auto itt = data.begin(); itt != data.end(); ++itt)
+		{
+			if (itt.key() == "radius")
+			{
+				shapeInfo.radius = data["radius"];
+			}
+			else if (itt.key() == "width")
+			{
+				shapeInfo.width = data["width"];
+			}
+			else if (itt.key() == "height")
+			{
+				shapeInfo.height = data["height"];
+			}
+			else if (itt.key() == "depth")
+			{
+				shapeInfo.depth = data["depth"];
+			}
+		}
+
+		SetCollisionShape(shapeInfo);
+
 		return true;
 	}
 }

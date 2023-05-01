@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "Scene.h"
 #include "TimeManager.h"
-
+#include "JsonHelpers.h"
 
 #include <iostream>
 
@@ -124,6 +124,19 @@ namespace MCK::EntitySystem
 			Entity* newEntity = CreateEntity();
 			newEntity->Deserialise(entityJson);
 		}
+	}
+
+	void Scene::LoadScene(std::string path)
+	{
+		if (sceneLoaded)
+		{
+			UnloadScene();
+		}
+
+		sceneLoaded = true;
+
+		json sceneJson = Helpers::ParseJson(path);
+		Deserialise(sceneJson);
 	}
 
 	void Scene::UnloadScene()

@@ -1,7 +1,7 @@
 #include "LoggingSystem.h"
 #include "JsonHelpers.h"
 
-json MCK::Helpers::getJsonObject(std::string path)
+json MCK::Helpers::ParseJson(std::string path)
 {
 	json data;
 

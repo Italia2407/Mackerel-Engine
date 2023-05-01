@@ -63,25 +63,52 @@ bool TransformComponent::Deserialise(json data)
 	Position().z() = data["positionZ"];
 
 	// Get Transform Component's Rotation
-	Rotation().x() = data["rotationAxisX"];
-	Rotation().y() = data["rotationAxisY"];
-	Rotation().z() = data["rotationAxisZ"];
-	Rotation().w() = data["rotationAmount"];
+	auto it = data.find("rotationX");
+	if (it != data.end())
+	{
+		Rotation().x() = data["rotationX"];
+		Rotation().y() = data["rotationY"];
+		Rotation().z() = data["rotationZ"];
+		Rotation().w() = data["rotationW"];
+	}
+
 
 	// Get Transform Component's Scale
-	Scale().x() = data["scaleX"];
-	Scale().y() = data["scaleY"];
-	Scale().z() = data["scaleZ"];
+	it = data.find("scaleX");
+	if (it != data.end())
+	{
+		Scale().x() = data["scaleX"];
+		Scale().y() = data["scaleY"];
+		Scale().z() = data["scaleZ"];
+	}
+	else
+	{
+		Scale() = Eigen::Vector3f(1, 1, 1);
+	}
+
 
 	// Get Transform Component's Shear
-	YZPlaneShear().x() = data["YZPlaneShearY"];
-	YZPlaneShear().y() = data["YZPlaneShearZ"];
+	it = data.find("YZPlaneShearY");
+	if (it != data.end())
+	{
+		YZPlaneShear().x() = data["YZPlaneShearY"];
+		YZPlaneShear().y() = data["YZPlaneShearZ"];
+	}
 
-	XZPlaneShear().x() = data["XZPlaneShearX"];
-	XZPlaneShear().y() = data["XZPlaneShearZ"];
+	it = data.find("XZPlaneShearX");
+	if (it != data.end())
+	{
+		XZPlaneShear().x() = data["XZPlaneShearX"];
+		XZPlaneShear().y() = data["XZPlaneShearZ"];
+	}
 
-	XYPlaneShear().x() = data["XYPlaneShearX"];
-	XYPlaneShear().y() = data["XYPlaneShearY"];
+	it = data.find("XYPlaneShearX");
+	if (it != data.end())
+	{
+		XYPlaneShear().x() = data["XYPlaneShearX"];
+		XYPlaneShear().y() = data["XYPlaneShearY"];
+	}
+
 
 	return true;
 }

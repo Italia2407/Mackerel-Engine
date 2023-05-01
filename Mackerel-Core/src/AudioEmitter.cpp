@@ -18,7 +18,7 @@ namespace MCK::EntitySystem
 			UnloadSound();
 
 		// load the sound by calling LoadSound in the audio engine
-		loadedSound = audioEngine->LoadSound(soundFileName, emitterID, sound3D, soundLoop, false);		
+		loadedSound = audioEngine->LoadSound(soundFileName.c_str(), emitterID, sound3D, soundLoop, false);
 	}
 
 	/**
@@ -104,7 +104,7 @@ namespace MCK::EntitySystem
 	 * 
 	 * \param filename
 	 */
-	void AudioEmitter::SetSoundFileName(const char* filename)
+	void AudioEmitter::SetSoundFileName(std::string filename)
 	{
 		soundFileName = filename;
 	}
@@ -178,6 +178,17 @@ namespace MCK::EntitySystem
 
 	bool AudioEmitter::Deserialise(json data)
 	{
+		data = data["data"];
+
+		auto it = data.find("filename");
+		if (it != data.end())
+		{
+			soundFileName = data["filename"].get<std::string>();
+		}
+
+		soundLoop = data["loop"];
+		sound3D = data["3d"];
+
 		return true;
 	}
 

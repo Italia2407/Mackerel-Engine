@@ -32,6 +32,7 @@ namespace MCK::EntitySystem
 		ComponentFactory componentFactory;
 
 		entityId idSeed = 0;
+		bool sceneLoaded = false;
 
 		/**
 		 * Generates a unique ID for an entity.
@@ -75,6 +76,13 @@ namespace MCK::EntitySystem
 		 * \param sceneJson The JSON object
 		 */
 		void Deserialise(json sceneJson);
+
+		/**
+		 * Loads a scene from a file.
+		 * 
+		 * \param path
+		 */
+		void LoadScene(std::string path);
 
 		/**
 		 * Creates a component of a given type, specified by the key.

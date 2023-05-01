@@ -13,7 +13,7 @@ namespace MCK::EntitySystem
 		unsigned int emitterID = 0;
 		unsigned int currentChannelID = 0;
 
-		const char* soundFileName = "";
+		std::string soundFileName = "";
 		bool soundLoop = false;
 		bool sound3D = true;
 
@@ -33,7 +33,7 @@ namespace MCK::EntitySystem
 		bool IsPaused();
 		bool IsPlaying();
 
-		void SetSoundFileName(const char* filename);
+		void SetSoundFileName(std::string filename);
 		void SetSoundLoop(bool loop);
 		void SetSound3D(bool s3D);
 

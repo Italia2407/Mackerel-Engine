@@ -142,6 +142,9 @@
     <Filter Include="Source Files\Systems\User Interface\UI Elements">
       <UniqueIdentifier>{1d951c6b-237a-415b-8c2c-89d9870752ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Build">
+      <UniqueIdentifier>{8559a933-43c1-4be2-a333-c5ecc3df0851}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLAD\src\glad.c">
@@ -1722,6 +1725,9 @@
     </None>
     <None Include="res\Shaders\frag\unlitShadows.glsl">
       <Filter>Resource Files\Shaders\Vertex Shaders</Filter>
+    </None>
+    <None Include="build\AssetAcquisition.py">
+      <Filter>Source Files\Build</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
