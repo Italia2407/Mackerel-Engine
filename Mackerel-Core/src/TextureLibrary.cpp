@@ -6,6 +6,12 @@
 
 #include <format>
 
+#include "CacheReader.h"
+
+#include "Paths.h"
+
+const std::string TEXTURE_CACHE_NAME = "textureCache.csv";
+
 // Static/Singleton Functions
 namespace MCK {
 TextureLibrary* TextureLibrary::k_Instance = nullptr;
@@ -74,6 +80,28 @@ bool TextureLibrary::LoadTexture(TextureEnum a_Asset, std::string a_FilePath)
 
 	return Instance()->loadTexture(a_Asset, a_FilePath);
 }
+
+/**
+* Attempt to Load Specified Texture from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Texture
+* \return Whether the Texture could be Loaded
+*/
+bool TextureLibrary::LoadTexture(TextureEnum a_Asset)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	std::string path;
+	if (!GetPath(a_Asset, &path))
+	{
+		return false;
+	}
+
+	return Instance()->loadTexture(a_Asset, path);
+}
 /**
 * Attempt to Relase Specified Texture from Memory.
 *
@@ -89,11 +117,26 @@ bool TextureLibrary::FreeTexture(TextureEnum a_Asset)
 
 	return Instance()->freeTexture(a_Asset);
 }
+
+bool TextureLibrary::getPath(TextureEnum a_Asset, std::string* stringOutput)
+{
+	auto search = m_FileMap.find(static_cast<int>(a_Asset));
+	if (search != m_FileMap.end())
+	{
+		*stringOutput = search->second;
+		return true;
+	}
+
+	return false;
+}
 }
 
 namespace MCK {
 TextureLibrary::TextureLibrary()
 {
+	// Load map
+	MCK::ResourceManagement::ReadCache((MCK::Paths::CACHES_PATH + TEXTURE_CACHE_NAME).c_str(), m_FileMap);
+
 	// TODO: Load Engine Reserved Textures to the Data
 
 	/* Example:

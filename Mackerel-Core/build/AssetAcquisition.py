@@ -69,7 +69,7 @@ def write_asset_cache(a_cahce_save_path, a_root_path, a_assets):
 	f = open(a_cahce_save_path, "w")
 	i = 0
 
-	line = "id,path"
+	line = "id,path\n"
 	f.write(line)
 
 	for asset in a_assets:
@@ -146,6 +146,12 @@ resource_names = []
 folder_ignores = []
 
 print("Running Asset Acquisiton.... Root={0}".format(root_path))
+
+if not os.path.isdir(build_path):
+	os.mkdir(build_path)
+
+if not os.path.isdir(enum_path):
+	os.mkdir(enum_path)
 
 # Parse arguments
 arg_state = 0

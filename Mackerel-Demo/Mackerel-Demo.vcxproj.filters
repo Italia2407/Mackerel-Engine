@@ -36,6 +36,9 @@
     <ClCompile Include="src\TestDemoComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestJsonApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DemoApp.h">
@@ -53,10 +56,8 @@
     <ClInclude Include="src\ComponentRegistrar.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TestScene.scn">
-      <Filter>Resource Files</Filter>
-    </None>
+    <ClInclude Include="src\TestJsonApp.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

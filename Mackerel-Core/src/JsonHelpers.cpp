@@ -3,8 +3,6 @@
 
 json MCK::Helpers::ParseJson(std::string path)
 {
-	json data;
-
 	// check the path is valid
 	std::ifstream test(path);
 	if (!test)
@@ -20,7 +18,8 @@ json MCK::Helpers::ParseJson(std::string path)
 
 		// try to parse the json file
 		try {
-			data = json::parse(file);
+			json data = json::parse(file);
+			return data;
 		}
 		catch (const std::exception& e)
 		{
@@ -28,5 +27,6 @@ json MCK::Helpers::ParseJson(std::string path)
 		}
 	}
 
-	return data;	
+	json empty = {};
+	return empty;
 }

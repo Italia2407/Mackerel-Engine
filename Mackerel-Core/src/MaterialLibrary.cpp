@@ -5,6 +5,12 @@
 
 #include <format>
 
+#include "CacheReader.h"
+
+#include "Paths.h"
+
+const std::string MATERIAL_CACHE_NAME = "materialCache.csv";
+
 // Static/Singleton Functions
 namespace MCK {
 MaterialLibrary* MaterialLibrary::k_Instance = nullptr;
@@ -73,6 +79,28 @@ bool MaterialLibrary::LoadMaterial(MaterialEnum a_Asset, std::string a_FilePath)
 
 	return Instance()->loadMaterial(a_Asset, a_FilePath);
 }
+
+/**
+* Attempt to Load Specified Material from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Material
+* \return Whether the Material could be Loaded
+*/
+bool MaterialLibrary::LoadMaterial(MaterialEnum a_Asset)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	std::string path;
+	if (!GetPath(a_Asset, &path))
+	{
+		return false;
+	}
+
+	return Instance()->loadMaterial(a_Asset, path);
+}
 /**
 * Attempt to Relase Specified Material from Memory.
 *
@@ -88,11 +116,24 @@ bool MaterialLibrary::FreeMaterial(MaterialEnum a_Asset)
 
 	return Instance()->freeMaterial(a_Asset);
 }
+
+bool MaterialLibrary::getPath(MaterialEnum a_Asset, std::string* stringOutput)
+{
+	auto search = m_FileMap.find(static_cast<int>(a_Asset));
+	if (search != m_FileMap.end())
+	{
+		*stringOutput = search->second;
+		return true;
+	}
+
+	return false;
+}
 }
 
 namespace MCK {
 MaterialLibrary::MaterialLibrary()
 {
+	MCK::ResourceManagement::ReadCache((MCK::Paths::CACHES_PATH + MATERIAL_CACHE_NAME).c_str(), m_FileMap);
 	// TODO: Load Engine Reserved Materials to the Data
 
 	/* Example:

@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "TimeManager.h"
 #include "JsonHelpers.h"
+#include "Assets.h"
 
 #include <iostream>
 
@@ -62,7 +63,7 @@ namespace MCK::EntitySystem
 			}
 		}
 
-		entityFactory.Recycle(entity);
+		//entityFactory.Recycle(entity);
 	}
 
 	/**
@@ -142,6 +143,16 @@ namespace MCK::EntitySystem
 	void Scene::UnloadScene()
 	{
 		physicsWorld.TeardownWorld();
+
+		for (unsigned int i = unsigned int(entities.size()); i > 0; --i)
+		{
+			entities[i-1]->Deallocate();
+		}
+
+		TextureLibrary::ReleaseLibrary();
+		ShaderLibrary::ReleaseLibrary();
+		MaterialLibrary::ReleaseLibrary();
+		MeshLibrary::ReleaseLibrary();
 	}
 
 	/**

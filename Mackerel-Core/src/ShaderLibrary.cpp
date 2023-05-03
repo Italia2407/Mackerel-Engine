@@ -3,7 +3,13 @@
 
 #include "Shader.h"
 
+#include "CacheReader.h"
+
 #include <format>
+
+#include "Paths.h"
+
+const std::string SHADER_CACHE_NAME = "shaderCache.csv";
 
 // Static/Singleton Functions
 namespace MCK {
@@ -73,6 +79,29 @@ bool ShaderLibrary::LoadShader(ShaderEnum a_Asset, std::string a_FilePath)
 
 	return Instance()->loadShader(a_Asset, a_FilePath);
 }
+
+/**
+* Attempt to Load Specified Shader from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Shader
+* \return Whether the Shader could be Loaded
+*/
+bool ShaderLibrary::LoadShader(ShaderEnum a_Asset)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	std::string path;
+	if (!GetPath(a_Asset, &path))
+	{
+		return false;
+	}
+
+	return Instance()->loadShader(a_Asset, path);
+}
+
 /**
 * Attempt to Relase Specified Shader from Memory.
 *
@@ -88,11 +117,25 @@ bool ShaderLibrary::FreeShader(ShaderEnum a_Asset)
 
 	return Instance()->freeShader(a_Asset);
 }
+
+bool ShaderLibrary::getPath(ShaderEnum a_Asset, std::string* stringOutput)
+{
+	auto search = m_FileMap.find(static_cast<int>(a_Asset));
+	if (search != m_FileMap.end())
+	{
+		*stringOutput = search->second;
+		return true;
+	}
+
+	return false;
+}
 }
 
 namespace MCK {
 ShaderLibrary::ShaderLibrary()
 {
+	MCK::ResourceManagement::ReadCache((MCK::Paths::CACHES_PATH + SHADER_CACHE_NAME).c_str(), m_FileMap);
+
 	// Load Vertex Shaders for Shader Program Compilation
 	AssetType::Shader::LoadDefaultShaders();
 	

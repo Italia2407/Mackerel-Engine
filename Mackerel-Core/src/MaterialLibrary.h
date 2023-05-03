@@ -30,18 +30,26 @@ private:
 	// Member Variables
 private:
 	std::unordered_map<MaterialEnum, AssetType::Material*> m_LibraryData;
+	std::map<int, std::string> m_FileMap;
 
 	// Member Methods
 private:
 	bool getMaterial(MaterialEnum a_Asset, AssetType::Material*& o_Material);
 	bool loadMaterial(MaterialEnum a_Asset, std::string a_FilePath);
 	bool freeMaterial(MaterialEnum a_Asset);
+	bool getPath(MaterialEnum a_Asset, std::string* stringOutput);
 
 public:
 	static bool ReleaseLibrary();
 
 	static bool GetMaterial(MaterialEnum a_Asset, AssetType::Material*& o_Material);
 	static bool LoadMaterial(MaterialEnum a_Asset, std::string a_FilePath);
+	static bool LoadMaterial(MaterialEnum a_Asset);
 	static bool FreeMaterial(MaterialEnum a_Asset);
+
+	static inline bool GetPath(MaterialEnum a_Asset, std::string* stringOutput)
+	{
+		return Instance()->getPath(a_Asset, stringOutput);
+	}
 };
 }

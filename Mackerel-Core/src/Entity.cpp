@@ -73,7 +73,8 @@ namespace MCK::EntitySystem
 	void Entity::Deserialise(json entity)
 	{
 		// Get the entities components
-		json comps = entity["entity"]["components"];
+		std::string j = entity.dump();
+		json comps = entity["components"];
 
 		for (int i = 0; i < comps.size(); ++i)
 		{

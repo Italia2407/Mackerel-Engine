@@ -5,6 +5,12 @@
 
 #include <format>
 
+#include "CacheReader.h"
+
+#include "Paths.h"
+
+const std::string MESH_CACHE_NAME = "meshCache.csv";
+
 // Static/Singleton Functions
 namespace MCK {
 MeshLibrary* MeshLibrary::k_Instance = nullptr;
@@ -73,6 +79,28 @@ bool MeshLibrary::LoadMesh(MeshEnum a_Asset, std::string a_FilePath)
 
 	return Instance()->loadMesh(a_Asset, a_FilePath);
 }
+
+/**
+* Attempt to Load Specified Mesh from Disk into Memory.
+*
+* \param a_Asset: Enum Identifier of Desired Mesh
+* \return Whether the Mesh could be Loaded
+*/
+bool MeshLibrary::LoadMesh(MeshEnum a_Asset)
+{
+	if (static_cast<int>(a_Asset) < 0)
+	{// Engine Reserved Values
+		return false;
+	}
+
+	std::string path;
+	if (!GetPath(a_Asset, &path))
+	{
+		return false;
+	}
+
+	return Instance()->loadMesh(a_Asset, path);
+}
 /**
 * Attempt to Relase Specified Mesh from Memory.
 *
@@ -88,11 +116,26 @@ bool MeshLibrary::FreeMesh(MeshEnum a_Asset)
 
 	return Instance()->freeMesh(a_Asset);
 }
+
+bool MeshLibrary::getPath(MeshEnum a_Asset, std::string* stringOutput)
+{
+	auto search = m_FileMap.find(static_cast<int>(a_Asset));
+	if (search != m_FileMap.end())
+	{
+		*stringOutput = search->second;
+		return true;
+	}
+
+	return false;
+}
 }
 
 namespace MCK {
 MeshLibrary::MeshLibrary()
 {
+	MCK::ResourceManagement::ReadCache((MCK::Paths::CACHES_PATH + MESH_CACHE_NAME).c_str(), m_FileMap);
+
+
 	// TODO: Load Engine Reserved Meshes to the Data
 	loadMesh(MeshEnum::__MCK_DISPLAY_SCREEN, "../Mackerel-Core/res/Meshes/DisplayScreen.obj");
 	/* Example:

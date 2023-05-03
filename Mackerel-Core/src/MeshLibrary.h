@@ -30,18 +30,26 @@ private:
 	// Member Variables
 private:
 	std::unordered_map<MeshEnum, AssetType::Mesh*> m_LibraryData;
+	std::map<int, std::string> m_FileMap;
 
 	// Member Methods
 private:
 	bool getMesh(MeshEnum a_Asset, AssetType::Mesh*& o_Mesh);
 	bool loadMesh(MeshEnum a_Asset, std::string a_FilePath);
 	bool freeMesh(MeshEnum a_Asset);
+	bool getPath(MeshEnum a_Asset, std::string* stringOutput);
 
 public:
 	static bool ReleaseLibrary();
 
 	static bool GetMesh(MeshEnum a_Asset, AssetType::Mesh*& o_Mesh);
 	static bool LoadMesh(MeshEnum a_Asset, std::string a_FilePath);
+	static bool LoadMesh(MeshEnum a_Asset);
 	static bool FreeMesh(MeshEnum a_Asset);
+
+	static inline bool GetPath(MeshEnum a_Asset, std::string* stringOutput)
+	{
+		return Instance()->getPath(a_Asset, stringOutput);
+	}
 };
 }

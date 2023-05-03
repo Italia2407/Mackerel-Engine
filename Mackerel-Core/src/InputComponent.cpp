@@ -185,19 +185,6 @@ namespace MCK::EntitySystem
 
 	bool InputComponent::Deserialise(json data)
 	{
-		// Get Entity's Input Component Data.
-		data = data["data"];
-
-		// Get Input Component's Direction as a Vector2f
-		Direction().x() = data["directionX"];
-		Direction().y() = data["directionY"];
-
-		// Get Input Component's jump pressed variable
-		JumpPressed() = data["jumpPressed"];
-
-		// Get Input Component's jump held variable
-		JumpHeld() = data["jumpHeld"];
-
 		return true;
 	}
 }

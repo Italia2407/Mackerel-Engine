@@ -1,0 +1,17 @@
+{
+	"scene":{
+		"entities":{
+			"entity":{
+				"name":"entity1",
+				"components":[
+					{
+						"type":"InputComponent",
+						"data":{
+							"exampleAtt1":5
+						}
+					}
+				]
+			}
+		}
+	}
+}

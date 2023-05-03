@@ -33,6 +33,7 @@
     <ClCompile Include="src\AudioEngine.cpp" />
     <ClCompile Include="src\AudioListener.cpp" />
     <ClCompile Include="src\ButtonElement.cpp" />
+    <ClCompile Include="src\CacheReader.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
     <ClCompile Include="src\CollisionCallbackManager.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
@@ -453,6 +454,7 @@
     <ClInclude Include="src\AudioEngine.h" />
     <ClInclude Include="src\AudioListener.h" />
     <ClInclude Include="src\ButtonElement.h" />
+    <ClInclude Include="src\CacheReader.h" />
     <ClInclude Include="src\CameraComponent.h" />
     <ClInclude Include="src\ColliderTypes.h" />
     <ClInclude Include="src\CollisionCallbackManager.h" />
@@ -464,6 +466,7 @@
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\CoreComponentRegistrar.h" />
     <ClInclude Include="src\CoreComponents.h" />
+    <ClInclude Include="src\Paths.h" />
     <ClInclude Include="src\RegisteredComponentData.h" />
     <ClInclude Include="src\ComponentState.h" />
     <ClInclude Include="src\CreateCollisionShapeInfo.h" />
@@ -664,6 +667,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0</PublicIncludeDirectories>
+    <CustomBuildBeforeTargets>
+    </CustomBuildBeforeTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -744,8 +749,12 @@
       <AdditionalLibraryDirectories>$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\lib-vc2022;$(SolutionDIR)\Mackerel-Core\ext\FMOD\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>python $(SolutionDir)Mackerel-Core\build\AssetAcquisition.py  $(SolutionDir)  $(OutDir) $(SolutionDir)Mackerel-Core\src -i x64 x86 ext -r res</Command>
+      <Command>python $(SolutionDir)Mackerel-Core\build\AssetAcquisition.py  $(SolutionDir) $(SolutionDir)/caches $(SolutionDir)Mackerel-Core\src -i x64 x86 ext -r res</Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

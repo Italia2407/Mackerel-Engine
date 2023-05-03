@@ -42,6 +42,10 @@ MeshRendererComponent::~MeshRendererComponent()
 void MeshRendererComponent::OnCreate()
 {
 	// Load Mesh Renderer Assets
+	MeshLibrary::LoadMesh(m_MeshEnum);
+	ShaderLibrary::LoadShader(m_ShaderEnum);
+	MaterialLibrary::LoadMaterial(m_MaterialEnum);
+
 	MeshLibrary::GetMesh(m_MeshEnum, m_Mesh);
 	ShaderLibrary::GetShader(m_ShaderEnum, m_Shader);
 	MaterialLibrary::GetMaterial(m_MaterialEnum, m_Material);
@@ -77,6 +81,18 @@ void MeshRendererComponent::OnUpdate()
 
 bool MeshRendererComponent::Deserialise(json a_Data)
 {
-	return false;
+	// Get Entity's Transform Component Data.
+	a_Data = a_Data["data"];
+
+	// Get Transform Component's Position
+	int meshId = a_Data["meshID"];
+	int shaderId = a_Data["shaderID"];
+	int materialId = a_Data["materialID"];
+
+	m_MeshEnum = static_cast<MeshEnum>(meshId);
+	m_ShaderEnum = static_cast<ShaderEnum>(meshId);
+	m_MaterialEnum = static_cast<MaterialEnum>(meshId);
+
+	return true;
 }
 }

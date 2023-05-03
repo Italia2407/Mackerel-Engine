@@ -339,6 +339,9 @@
     <ClCompile Include="src\CoreComponentRegistrar.cpp">
       <Filter>Source Files\Systems\EntitySystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\CacheReader.cpp">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -1684,6 +1687,12 @@
     </ClInclude>
     <ClInclude Include="src\CoreComponents.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CacheReader.h">
+      <Filter>Source Files\Systems\Resource Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Paths.h">
+      <Filter>Source Files\Include Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

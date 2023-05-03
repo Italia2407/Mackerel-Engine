@@ -1,5 +1,6 @@
 #pragma once
 #include "ComponentBase.h"
+#include "CreateCollisionShapeInfo.h"
 
 namespace MCK::EntitySystem
 {
@@ -11,8 +12,10 @@ namespace MCK::EntitySystem
 
 		static void Reset(void* componentLoc)
 		{
-			T* componentPtr = static_cast<T*>(componentLoc);
-			*componentPtr = T();
+
+			//T* componentPtr = static_cast<T*>(componentLoc);
+			//componentPtr = new T();
+			new (componentLoc) T();
 		}
 
 		TypeInfoRef GetType() override

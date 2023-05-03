@@ -146,6 +146,7 @@
     <ClCompile Include="src\PlatformerDemo.cpp" />
     <ClCompile Include="src\TestApp.cpp" />
     <ClCompile Include="src\TestDemoComponent.cpp" />
+    <ClCompile Include="src\TestJsonApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mackerel-Core\Mackerel-Core.vcxproj">
@@ -158,9 +159,7 @@
     <ClInclude Include="src\PlatformerDemo.h" />
     <ClInclude Include="src\TestApp.h" />
     <ClInclude Include="src\TestDemoComponent.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TestScene.scn" />
+    <ClInclude Include="src\TestJsonApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

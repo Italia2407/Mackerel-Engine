@@ -1,0 +1,10 @@
+id,path
+0, Mackerel-Core\res\Shaders\frag\monoColour.glsl
+1, Mackerel-Core\res\Shaders\frag\unlitShadows.glsl
+2, Mackerel-Core\res\Shaders\fragmentHeader.glsl
+3, Mackerel-Core\res\Shaders\light\unlit.glsl
+4, Mackerel-Core\res\Shaders\lightsHeader.glsl
+5, Mackerel-Core\res\Shaders\static\depthOnly.glsl
+6, Mackerel-Core\res\Shaders\static\FBDisplayer.glsl
+7, Mackerel-Core\res\Shaders\vert\projection.vert
+8, Mackerel-Core\res\Shaders\vertexHeader.glsl
