@@ -155,6 +155,42 @@ namespace MCK::EntitySystem
 		MeshLibrary::ReleaseLibrary();
 	}
 
+	Entity* Scene::FindEntityWithTag(std::string tag)
+	{
+		for (unsigned int i = 0; i < entities.size(); ++i)
+		{
+			Entity* e = FindEntityWithTag(tag, entities[i]);
+			if (e != nullptr)
+			{
+				return e;
+			}
+		}
+
+		return nullptr;
+	}
+
+	Entity* Scene::FindEntityWithTag(std::string tag, Entity* root)
+	{
+		if (root->HasTag(tag))
+		{
+			return root;
+		}
+		else if(root->childEntities.size() > 0)
+		{
+			for (unsigned int i = 0; i < root->childEntities.size(); ++i)
+			{
+				Entity* e = FindEntityWithTag(tag, root->childEntities[i]);
+				
+				if (e != nullptr)
+				{
+					return e;
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
 	/**
 	 * Generates a unique ID for an entity.
 	 * 

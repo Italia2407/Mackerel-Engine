@@ -66,6 +66,39 @@ namespace MCK::EntitySystem
 	}
 
 	/**
+	 * Adds a tag to this entities set of tag.
+	 *
+	 * \param tag: The tag
+	 */
+	void Entity::AddTag(std::string tag)
+	{
+		tags.push_back(tag);
+	}
+
+	/**
+	 * Removes a tag.
+	 *
+	 * \param tag: The tag
+	 */
+	void Entity::RemoveTag(std::string tag)
+	{
+		tags.erase(std::remove(tags.begin(), tags.end(), tag), tags.end());
+	}
+
+	/**
+	 * Returns whether an entity has a given tag.
+	 *
+	 * \param tag: The tag
+	 * \return: True if the entity has the tag, false otherwise
+	 */
+	bool Entity::HasTag(std::string tag)
+	{
+		auto it = std::find(tags.begin(), tags.end(), tag);
+		return it != tags.end();
+	}
+
+
+	/**
 	* Deserialises an entity from a JSON object, adding all listed components.
 	*
 	* \param entity: The entity in JSON
@@ -80,6 +113,12 @@ namespace MCK::EntitySystem
 		{
 			AddComponent(comps[i]["type"].get<std::string>(), comps[i]["data"]);
 		}
+
+		json tags = entity["tags"];
+		for (int i = 0; i < tags.size(); ++i)
+		{
+			AddTag(tags[i]);
+		}
 	}
 
 	/**
@@ -90,7 +129,7 @@ namespace MCK::EntitySystem
 	{
 		for (unsigned int i = 0; i < components.size(); ++i)
 		{
-			components[i]->OnCreate();
+			//components[i]->OnCreate();
 		}
 	}
 
@@ -174,5 +213,6 @@ namespace MCK::EntitySystem
 		childEntities.clear();
 		components.clear();
 		scene->FreeEntity(this);
+		tags.clear();
 	}
 }

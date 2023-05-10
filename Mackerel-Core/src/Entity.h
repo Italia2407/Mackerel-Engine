@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <algorithm>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -23,6 +23,7 @@ namespace MCK::EntitySystem
 class Entity
 {
 private:
+	std::vector<std::string> tags;
 public:
 	entityId id;
 
@@ -114,6 +115,28 @@ public:
 		* \param Component: The instance of the component
 		*/
 	void RemoveComponent(ComponentBase* component);
+
+	/**
+	 * Adds a tag to this entities set of tag.
+	 * 
+	 * \param tag: The tag
+	 */
+	void AddTag(std::string tag);
+
+	/**
+	 * Removes a tag.
+	 * 
+	 * \param tag: The tag
+	 */
+	void RemoveTag(std::string tag);
+
+	/**
+	 * Returns whether an entity has a given tag.
+	 * 
+	 * \param tag: The tag
+	 * \return: True if the entity has the tag, false otherwise
+	 */
+	bool HasTag(std::string tag);
 
 	/**
 		* Test function. TODO remove
