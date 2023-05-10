@@ -63,7 +63,7 @@ namespace MCK::EntitySystem
 			}
 		}
 
-		//entityFactory.Recycle(entity);
+		entityFactory.Recycle(entity);
 	}
 
 	/**
