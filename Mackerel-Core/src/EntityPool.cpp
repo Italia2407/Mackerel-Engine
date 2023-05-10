@@ -53,8 +53,8 @@ namespace MCK::EntitySystem::Pooling
 		{
 			// TODO: reinitialise/reset the data of the instance once this
 			//           functionality is implemented in the entity class.
-			live.erase(loc); // remove from live set
 			pool.push(*loc); // push back to stack
+			live.erase(loc); // remove from live set
 		}
 
 		return success;
