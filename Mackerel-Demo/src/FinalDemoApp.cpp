@@ -93,7 +93,8 @@ void FinalDemoApp::LoadRenderingDemo()
     std::cout << "Loading Rendering Demo" << std::endl;
     
     // Unload current scene
-    //scene.UnloadScene();
+    if (loadedDemo)
+        scene.UnloadScene();
 
     // Load new scene
     scene.InitialiseScene();
@@ -107,7 +108,8 @@ void FinalDemoApp::LoadPhysicsDemo()
     std::cout << "Loading Physics Demo" << std::endl;
 
     // Unload current scene
-    //scene.UnloadScene();
+    if (loadedDemo)
+        scene.UnloadScene();
 
     // Load new scene
     scene.InitialiseScene();
@@ -121,7 +123,8 @@ void FinalDemoApp::LoadAnimationDemo()
     std::cout << "Loading Animation Demo" << std::endl;
 
     // Unload current scene
-    //scene.UnloadScene();
+    if (loadedDemo)
+        scene.UnloadScene();
 
     // Load new scene
     scene.InitialiseScene();
@@ -135,7 +138,8 @@ void FinalDemoApp::LoadAudioDemo()
     std::cout << "Loading Audio Demo" << std::endl;
 
     // Unload current scene
-    //scene.UnloadScene();
+    if (loadedDemo)
+        scene.UnloadScene();
 
     // Load new scene
     scene.InitialiseScene();
@@ -159,7 +163,8 @@ void FinalDemoApp::Update()
 
 void FinalDemoApp::End()
 {
-    scene.UnloadScene();
+    if (loadedDemo)
+        scene.UnloadScene();
     constantScene.UnloadScene();
 }
 
