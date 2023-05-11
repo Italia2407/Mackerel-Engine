@@ -21,7 +21,7 @@ namespace MCK::EntitySystem
 		std::vector<MCK::AssetType::Texture*> loadedImages;
 
 	public:
-		void CreateStandardHUD();
+		void CreateStandardHUD(bool display);
 		void CreateStandardMenu(); 
 
 		void CreateButton(bool visible = true, const ImVec2& position = ImVec2(0, 0), float scale = 1.0f, const ImVec4& colour = ImVec4(1, 1, 1, 1), float transparency = 1.0f, 

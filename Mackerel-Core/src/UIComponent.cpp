@@ -75,16 +75,29 @@ namespace MCK::EntitySystem
 		}
 	}
 
-	void UIComponent::CreateStandardHUD()
+	void UIComponent::CreateStandardHUD(bool display) 
 	{
-		ImVec2 windowSize = ImVec2(1280, 720);//ImGui::GetWindowSize(); 
+		ImVec2 windowSize;
+		GLFWwindow* window = glfwGetCurrentContext(); // Get current context
+		if (window) // Check if window is not nullptr
+		{
+			int width, height;
+			glfwGetFramebufferSize(window, &width, &height);
+
+			// Now width and height variables contain the current window size
+			windowSize = ImVec2(static_cast<float>(width), static_cast<float>(height));
+		}
+		else
+		{
+			ImVec2 windowSize = ImVec2(1280, 720);
+		}
 
 		// Define the position and size of the minimap
 		ImVec2 minimapPosition = ImVec2(10, 10);
 		ImVec2 minimapSize = ImVec2(200, 200);
 
 		// Create a circle shape for the minimap
-		CreateShape(false, minimapPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Circle, minimapSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f);
+		CreateShape(display, minimapPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Circle, minimapSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f);
 
 		// Define the position and size of the information boxes
 		ImVec2 infoBoxSize = ImVec2(windowSize.x / 4, windowSize.y / 6);
@@ -92,10 +105,10 @@ namespace MCK::EntitySystem
 		ImVec2 rightInfoBoxPosition = ImVec2(windowSize.x - infoBoxSize.x - 10, windowSize.y - infoBoxSize.y - 10);
 
 		// Create a rectangle shape for the left information box
-		CreateShape(false, leftInfoBoxPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, infoBoxSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f);
+		CreateShape(display, leftInfoBoxPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, infoBoxSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f);
 
 		// Create a rectangle shape for the right information box
-		CreateShape(false, rightInfoBoxPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, infoBoxSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f);
+		CreateShape(display, rightInfoBoxPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, infoBoxSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f);
 
 		// Define the positions and texts for the text elements
 		ImVec2 fpsTextPosition = ImVec2(10, leftInfoBoxPosition.y - 30);
@@ -103,15 +116,29 @@ namespace MCK::EntitySystem
 		ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		// Create a text element for the FPS counter
-		CreateText(false, fpsTextPosition, 1.0f, textColor, 1.0f, "FPS: ");
+		CreateText(display, fpsTextPosition, 1.0f, textColor, 1.0f, "FPS: ");
 
 		// Create a text element for the score
-		CreateText(false, scoreTextPosition, 1.0f, textColor, 1.0f, "Score: ");
+		CreateText(display, scoreTextPosition, 1.0f, textColor, 1.0f, "Score: ");
 	}
 
 	void UIComponent::CreateStandardMenu()
 	{
-		ImVec2 windowSize = ImVec2(1280, 720); //ImGui::GetWindowSize(); 
+		ImVec2 windowSize;
+		GLFWwindow* window = glfwGetCurrentContext(); // Get current context
+		if (window) // Check if window is not nullptr
+		{
+			int width, height;
+			glfwGetFramebufferSize(window, &width, &height);
+
+			// Now width and height variables contain the current window size
+			windowSize = ImVec2(static_cast<float>(width), static_cast<float>(height));
+		}
+		else
+		{
+			ImVec2 windowSize = ImVec2(1280, 720);
+		}
+
 		ImVec2 menuSize = ImVec2(400, 500);
 		ImVec2 menuPosition = ImVec2((windowSize.x - menuSize.x) / 2, (windowSize.y - menuSize.y) / 2);
 

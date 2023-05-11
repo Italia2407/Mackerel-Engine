@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{6ee0d9e1-966f-4d0b-8499-8503dbe9a432}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Demos">
+      <UniqueIdentifier>{dda32d20-80c6-4b00-a3a8-f444aaa1eb91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -39,6 +42,21 @@
     <ClCompile Include="src\TestJsonApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\FinalDemoApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderingDemo.cpp">
+      <Filter>Source Files\Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimationDemo.cpp">
+      <Filter>Source Files\Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AudioDemo.cpp">
+      <Filter>Source Files\Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicsDemo.cpp">
+      <Filter>Source Files\Demos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DemoApp.h">
@@ -58,6 +76,21 @@
     </ClInclude>
     <ClInclude Include="src\TestJsonApp.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FinalDemoApp.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderingDemo.h">
+      <Filter>Source Files\Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationDemo.h">
+      <Filter>Source Files\Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AudioDemo.h">
+      <Filter>Source Files\Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicsDemo.h">
+      <Filter>Source Files\Demos</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
