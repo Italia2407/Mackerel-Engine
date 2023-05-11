@@ -101,6 +101,9 @@ namespace MCK::EntitySystem
 
 		void UnloadScene();
 
+		Entity* FindEntityWithTag(std::string tag);
+		Entity* FindEntityWithTag(std::string tag, Entity* root);
+
 		/**
 		 * Test JSON for a scene. TODO remove
 		 * 

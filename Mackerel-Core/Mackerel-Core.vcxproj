@@ -749,7 +749,7 @@
       <AdditionalLibraryDirectories>$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\lib-vc2022;$(SolutionDIR)\Mackerel-Core\ext\FMOD\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>python $(SolutionDir)Mackerel-Core\build\AssetAcquisition.py  $(SolutionDir) $(SolutionDir)/caches $(SolutionDir)Mackerel-Core\src -i x64 x86 ext -r res</Command>
+      <Command>python "$(SolutionDir)Mackerel-Core\build\AssetAcquisition.py" "$(SolutionDir)\" "$(SolutionDir)caches" "$(SolutionDir)Mackerel-Core\src" -i x64 x86 ext -r res</Command>
     </PreBuildEvent>
     <CustomBuildStep>
       <Command>
