@@ -49,9 +49,9 @@ void FinalDemoApp::Start()
             // Create a vector of button titles
             std::vector<MCK::AssetType::Texture*> buttonImages = {
                 renderingIMG,
+                physicsIMG,
                 animationIMG,
                 audioIMG,
-                physicsIMG,
                 quitIMG
             };
 
