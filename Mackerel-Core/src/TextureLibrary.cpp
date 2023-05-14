@@ -191,7 +191,7 @@ bool TextureLibrary::loadTexture(TextureEnum a_Asset, std::string a_FilePath)
 
 	// Load Texture Asset
 	AssetType::Texture* loadTexture = new AssetType::Texture();
-	if (!loadTexture->LoadFromFile(a_FilePath))
+	if (!loadTexture->LoadFromFile(a_FilePath, false))
 	{// Texture Failed to Load
 
 		return false;

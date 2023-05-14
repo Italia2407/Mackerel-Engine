@@ -145,6 +145,9 @@
     <Filter Include="Source Files\Build">
       <UniqueIdentifier>{8559a933-43c1-4be2-a333-c5ecc3df0851}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\UI">
+      <UniqueIdentifier>{a678da01-aa4b-4183-abb9-895d3662ef6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLAD\src\glad.c">
@@ -1753,5 +1756,25 @@
     <Media Include="res\Sounds\Voyager.mp3">
       <Filter>Resource Files</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\UI\ButtonRenderingSmall.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
+    <Image Include="res\UI\ButtonAnimationSmall.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
+    <Image Include="res\UI\ButtonAudioSmall.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
+    <Image Include="res\UI\ButtonPhysicsSmall.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
+    <Image Include="res\UI\ButtonQuitSmall.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
+    <Image Include="res\UI\MenuSmall.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
   </ItemGroup>
 </Project>

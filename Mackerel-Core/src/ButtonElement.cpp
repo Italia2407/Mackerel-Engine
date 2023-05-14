@@ -65,13 +65,26 @@ namespace MCK::UI
 			ImVec2 absPosition = GetAbsolutePosition();
 			ImGui::SetCursorPos(absPosition);
 
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(colour.x, colour.y, colour.z, GetTransparency()));
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(labelColour.x, labelColour.y, labelColour.z, GetTransparency()));
-
 			// Check if the button is pressed
 			if (textureID != 0)
 			{
-				if (ImGui::ImageButton((void*)(intptr_t)textureID, GetSize()))
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+
+				ImVec2 scaledSize = GetSize();
+				if (ImGui::IsMouseHoveringRect(absPosition, ImVec2(absPosition.x + scaledSize.x, absPosition.y + scaledSize.y)))
+				{
+					scaledSize.x *= 1.1f; // Scale size by 10% when hovered
+					scaledSize.y *= 1.1f;
+
+					// Adjust position to scale from the center
+					absPosition.x -= (scaledSize.x - GetSize().x) / 2;
+					absPosition.y -= (scaledSize.y - GetSize().y) / 2;
+					ImGui::SetCursorPos(absPosition);
+				}
+
+				if (ImGui::ImageButton((void*)(intptr_t)textureID, scaledSize))
 				{
 					// Call the onClickCallback if it is set
 					if (onClickCallback)
@@ -79,9 +92,15 @@ namespace MCK::UI
 						onClickCallback();
 					}
 				}
+				ImGui::PopStyleColor();
+				ImGui::PopStyleColor();
+				ImGui::PopStyleColor();
+
 			}
 			else
 			{
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(colour.x, colour.y, colour.z, GetTransparency()));
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(labelColour.x, labelColour.y, labelColour.z, GetTransparency()));
 				if (ImGui::Button(GetLabel().c_str(), GetSize()))
 				{
 					// Call the onClickCallback if it is set
@@ -90,11 +109,9 @@ namespace MCK::UI
 						onClickCallback();
 					}
 				}
+				ImGui::PopStyleColor();
+				ImGui::PopStyleColor();
 			}
-
-
-			ImGui::PopStyleColor(); 
-			ImGui::PopStyleColor();
 		}
 	}
 }

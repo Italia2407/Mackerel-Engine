@@ -1,1 +1,13 @@
 id,path
+0, Mackerel-Core\res\UI\ButtonAnimation.png
+1, Mackerel-Core\res\UI\ButtonAnimationSmall.png
+2, Mackerel-Core\res\UI\ButtonAudio.png
+3, Mackerel-Core\res\UI\ButtonAudioSmall.png
+4, Mackerel-Core\res\UI\ButtonPhysics.png
+5, Mackerel-Core\res\UI\ButtonPhysicsSmall.png
+6, Mackerel-Core\res\UI\ButtonQuit.png
+7, Mackerel-Core\res\UI\ButtonQuitSmall.png
+8, Mackerel-Core\res\UI\ButtonRendering.png
+9, Mackerel-Core\res\UI\ButtonRenderingSmall.png
+10, Mackerel-Core\res\UI\Menu.png
+11, Mackerel-Core\res\UI\MenuSmall.png
