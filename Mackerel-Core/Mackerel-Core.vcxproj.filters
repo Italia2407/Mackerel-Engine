@@ -1776,5 +1776,17 @@
     <Image Include="res\UI\MenuSmall.png">
       <Filter>Resource Files\UI</Filter>
     </Image>
+    <Image Include="res\UI\PlayRendering.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
+    <Image Include="res\UI\PlayAnimation.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
+    <Image Include="res\UI\PlayAudio.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
+    <Image Include="res\UI\PlayPhysics.png">
+      <Filter>Resource Files\UI</Filter>
+    </Image>
   </ItemGroup>
 </Project>

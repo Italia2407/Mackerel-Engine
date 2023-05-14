@@ -14,5 +14,9 @@ enum class TextureEnum
     ButtonRendering = 8,
     ButtonRenderingSmall = 9,
     Menu = 10,
-    MenuSmall = 11
+    MenuSmall = 11,
+    PlayAnimation = 12,
+    PlayAudio = 13,
+    PlayPhysics = 14,
+    PlayRendering = 15
 };

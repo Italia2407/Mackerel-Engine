@@ -11,3 +11,7 @@ id,path
 9, Mackerel-Core\res\UI\ButtonRenderingSmall.png
 10, Mackerel-Core\res\UI\Menu.png
 11, Mackerel-Core\res\UI\MenuSmall.png
+12, Mackerel-Core\res\UI\PlayAnimation.png
+13, Mackerel-Core\res\UI\PlayAudio.png
+14, Mackerel-Core\res\UI\PlayPhysics.png
+15, Mackerel-Core\res\UI\PlayRendering.png

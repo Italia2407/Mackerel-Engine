@@ -76,10 +76,6 @@ void FinalDemoApp::Start()
             uiComponent->CreateShape(true, ImVec2(0, 0), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 1.0f), 0.5f, MCK::UI::ShapeElement::ShapeType::Rectangle, windowSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 0.0f);
             uiComponent->CreateShape(true, menuPosition, 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, menuSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, menuIMG);
 
-            // Create a title text element
-            //ImVec2 titlePosition = ImVec2(menuPosition.x + (menuSize.x / 2) - 15, menuPosition.y + 40);
-            //uiComponent->CreateText(true, titlePosition, 5.0f, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, "MENU");
-
             // Create button elements
             ImVec2 buttonSize = ImVec2(166, 61);
             int buttonOffset = 80; // Offset
@@ -88,7 +84,6 @@ void FinalDemoApp::Start()
                 ImVec2 buttonPosition = ImVec2(menuPosition.x + (menuSize.x - buttonSize.x) / 2, startY + menuPosition.y + (menuSize.y - buttonSize.y) / 5 + i * buttonOffset);
                 uiComponent->CreateButton(true, buttonPosition, 1.0f, ImVec4(0.6f, 0.0f, 1.0f, 0.0f), 1.0f, "", buttonSize, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), callbacks[i], true, buttonImages[i]);
             }
-
 
             EntitySystem::Entity* uiEntity = constantScene.CreateEntity();
             uiEntity->AddComponent(uiComponent);
