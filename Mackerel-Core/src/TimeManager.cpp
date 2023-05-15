@@ -1,6 +1,7 @@
 #include "TimeManager.h"
 #include "GLinclude.h"
-
+#include <chrono>
+#include <thread>
 using namespace MCK;
 
 TimeManager* TimeManager::instance = nullptr;
@@ -43,6 +44,14 @@ double MCK::TimeManager::privGetUpTime()
 double MCK::TimeManager::privGetScaledUpTime()
 {
 	return scaledUpTime;
+}
+
+void MCK::TimeManager::privWaitForEnforcedFrameTime(double minFrameTime)
+{
+	double curTime = glfwGetTime();
+	double waitTime = minFrameTime - (curTime - upTime);
+
+	std::this_thread::sleep_for(std::chrono::duration<double>(waitTime));
 }
 
 
@@ -113,6 +122,9 @@ double MCK::TimeManager::privGetUnscaledFrameTime()
 
 void MCK::TimeManager::privUpdate()
 {
+	// Enforce wait
+	privWaitForEnforcedFrameTime(0.006);
+
 	// update unscaled time
 	lastFrame = upTime;
 	upTime = glfwGetTime();

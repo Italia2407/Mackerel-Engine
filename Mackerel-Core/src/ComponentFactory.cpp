@@ -50,15 +50,18 @@ namespace MCK::EntitySystem
 
 	ComponentBase* ComponentManager::privAllocateComponent(size_t componentSize, void (*resetFunction)(void*))
 	{
-		void* componentPtr = malloc(componentSize);
+		void* componentPtr = componentAllocator.Allocate(componentSize);
 		(*resetFunction)(componentPtr);
 
-		return static_cast<ComponentBase*>(componentPtr);
+		ComponentBase* comp = static_cast<ComponentBase*>(componentPtr);
+		comp->customAllocated = true;
+		return comp;
 	}
 
 	void ComponentManager::privDeallocateComponent(ComponentBase* componentPtr)
 	{
-		free(componentPtr);
+		if(componentPtr->customAllocated)
+			componentAllocator.Deallocate(componentPtr);
 	}
 
 	void ComponentManager::privRegisterComponent(std::string jsonKey, size_t componentSize, void (*resetFunction)(void*))

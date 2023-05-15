@@ -3,6 +3,7 @@
 #include "RegisteredComponentData.h"
 #include <string>
 #include <vector>
+#include "BlockAllocator.h"
 
 // Forward Declarations
 namespace MCK::EntitySystem {
@@ -58,6 +59,8 @@ namespace MCK::EntitySystem
 		void privDeallocateComponent(ComponentBase* componentPtr);
 		void privRegisterComponent(std::string jsonKey, size_t componentSize, void (*resetFunction)(void*));
 		ComponentBase* privAllocateComponent(std::string jsonKey);
+
+		MemoryManagement::BlockAllocator componentAllocator;
 
 	public:
 

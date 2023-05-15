@@ -17,6 +17,11 @@ public:
 	GLuint NumVertices() const { return m_NumVertices; }
 	const GLuint& NumIndices() const { return m_NumIndices; }
 
+	// Mesh CPU Data
+	std::vector<float> vertexPositions;
+	std::vector<float> vertexNormals;
+	std::vector<GLuint> vertexIndices;
+
 private:
 	std::string m_Name;
 

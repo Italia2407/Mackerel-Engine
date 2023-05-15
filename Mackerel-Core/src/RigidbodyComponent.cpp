@@ -204,7 +204,7 @@ namespace MCK::Physics
 		initialTransformation.setRotation(rot);
 
 		// Collision shape
-		if(collisionShape == nullptr)
+		//if(collisionShape == nullptr)
 			collisionShape = new btBoxShape(btVector3({ 1,1,1 }));
 
 		// Construct the rigidbody
@@ -218,7 +218,7 @@ namespace MCK::Physics
 		
 		rigidbody = new btRigidBody(info);
 		rigidbody->setUserPointer(static_cast<void*>(this));
-		rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+		//rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 		//rigidbody->setAngularFactor(angularFactor);
 
 		//rigidbody->setLinearFactor()

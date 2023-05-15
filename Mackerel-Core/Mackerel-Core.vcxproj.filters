@@ -345,6 +345,12 @@
     <ClCompile Include="src\CacheReader.cpp">
       <Filter>Source Files\Systems\Resource Management</Filter>
     </ClCompile>
+    <ClCompile Include="src\BlockAllocator.cpp">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MemoryChunk.cpp">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -1696,6 +1702,12 @@
     </ClInclude>
     <ClInclude Include="src\Paths.h">
       <Filter>Source Files\Include Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MemoryChunk.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockAllocator.h">
+      <Filter>Source Files\Systems\Memory Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
