@@ -6,6 +6,7 @@ namespace MCK::Physics
 	{
 		Box,
 		Sphere,
-		Capsule
+		Capsule,
+		Mesh
 	};
 }

@@ -19,6 +19,7 @@ namespace MCK::EntitySystem
 
 		void UpdateComponent();
 	public:
+		bool customAllocated = false;
 		
 		/** A pointer to the entity that holds this component */
 		Entity* entity;
@@ -67,5 +68,6 @@ namespace MCK::EntitySystem
 
 		
 		friend class Entity;
+
 	};
 }

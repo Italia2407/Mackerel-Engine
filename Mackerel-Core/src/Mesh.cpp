@@ -150,12 +150,8 @@ bool Mesh::LoadFromFile(std::string a_FilePath)
 	auto& shapes = fileReader.GetShapes();
 
 	// Store OBJ Data in Float Arrays
-	std::vector<float> vertexPositions;
-	std::vector<float> vertexNormals;
 	std::vector<float> vertexTextureCoords;
 	std::vector<float> vertexTints;
-
-	std::vector<GLuint> vertexIndices;
 
 	std::vector<MeshVertex> uniqueVertices;
 	for (const auto& shape : shapes) {

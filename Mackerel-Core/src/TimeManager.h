@@ -3,6 +3,7 @@
 #include <map>
 #include <functional>
 
+
 namespace MCK
 {
 	/**
@@ -113,6 +114,11 @@ namespace MCK
 		 *
 		 */
 		void privUpdate();
+
+		/**
+		 * Initiates a sleep to enforce a minimum frame time.
+		 */
+		void privWaitForEnforcedFrameTime(double minFrameTime);
 
 
 	public:

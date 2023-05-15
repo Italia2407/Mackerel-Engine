@@ -24,6 +24,7 @@ public:
 	MeshRendererComponent(AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material);
 	~MeshRendererComponent();
 
+	AssetType::Mesh* m_Mesh;
 private:
 	// Reference to Entity Transform Component
 	TransformComponent* m_EntityTransformComponent;
@@ -33,7 +34,7 @@ private:
 	ShaderEnum m_ShaderEnum;
 	MaterialEnum m_MaterialEnum;
 
-	AssetType::Mesh* m_Mesh;
+	
 	AssetType::Shader* m_Shader;
 	AssetType::Material* m_Material;
 

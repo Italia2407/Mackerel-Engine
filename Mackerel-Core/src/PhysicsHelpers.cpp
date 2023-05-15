@@ -1,4 +1,5 @@
 #include "PhysicsHelpers.h"
+#include "Assets.h"
 
 namespace MCK::Physics::PhysicsHelpers
 {
@@ -41,6 +42,28 @@ namespace MCK::Physics::PhysicsHelpers
 		return static_cast<btCollisionShape*>(capsule);
 	}
 
+	btCollisionShape* CreateMeshColliderShape(MCK::AssetType::Mesh* mesh)
+	{
+		if (mesh == nullptr)
+			return nullptr;
+
+		// Setup the indexed mesh
+		btIndexedMesh btMesh;
+		btMesh.m_numTriangles = mesh->NumIndices() / 3;
+		btMesh.m_triangleIndexBase = (const unsigned char*)mesh->vertexIndices.data();
+		btMesh.m_triangleIndexStride = 3 * sizeof(GLuint);
+
+		btMesh.m_numVertices = mesh->NumVertices();
+		btMesh.m_vertexBase = (const unsigned char*)mesh->vertexPositions.data();
+		btMesh.m_vertexStride = 3 * sizeof(float);
+
+		btTriangleIndexVertexArray* vertArray = new btTriangleIndexVertexArray();
+		vertArray->addIndexedMesh(btMesh);
+
+		btBvhTriangleMeshShape* meshColliderShape = new btBvhTriangleMeshShape(vertArray, false);
+		return meshColliderShape;
+	}
+
 	void InitialiseCollider(CreateCollisionShapeInfo shapeInfo, btCollisionShape*& collisionShape)
 	{
 		switch (shapeInfo.colliderType)
@@ -54,6 +77,8 @@ namespace MCK::Physics::PhysicsHelpers
 		case (Capsule):
 			collisionShape = CreateCapsuleShape(shapeInfo.width, shapeInfo.height);
 			break;
+		case (Mesh):
+			collisionShape = CreateMeshColliderShape(shapeInfo.mesh);
 		};
 	}
 }

@@ -2,7 +2,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "PhysicsHelpers.h"
-
+#include "MeshRendererComponent.h"
 #include <typeinfo>
 #include <iostream>
 
@@ -42,6 +42,17 @@ namespace MCK::Physics
 		if (collisionShape != nullptr)
 		{
 			delete collisionShape;
+		}
+
+		if (shapeInfo.colliderType == MCK::Physics::ColliderTypes::Mesh)
+		{
+			MCK::EntitySystem::MeshRendererComponent* renderComp = 
+				static_cast<MCK::EntitySystem::MeshRendererComponent*>(entity->GetComponent<MCK::EntitySystem::MeshRendererComponent>());
+
+			if (renderComp != nullptr)
+			{
+				shapeInfo.mesh = renderComp->m_Mesh;
+			}
 		}
 
 		PhysicsHelpers::InitialiseCollider(shapeInfo, collisionShape);

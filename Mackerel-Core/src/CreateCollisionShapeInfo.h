@@ -1,6 +1,7 @@
 #pragma once
 #include "../bullet3-master/src/btBulletDynamicsCommon.h"
 #include "ColliderTypes.h"
+#include "Assets.h"
 
 namespace MCK::Physics
 {
@@ -14,6 +15,7 @@ namespace MCK::Physics
 		float height;
 		/** Size z */
 		float depth;
+		MCK::AssetType::Mesh* mesh = nullptr;
 	};
 }
 
