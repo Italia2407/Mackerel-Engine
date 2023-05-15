@@ -90,7 +90,7 @@ namespace MCK::UI
 	 * Creates a UIElement of type text
 	 *
 	 */
-	UIElement* UISystem::CreateText(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& text)
+	UIElement* UISystem::CreateText(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& text, const std::function<std::string()>& updateFunc)
 	{
 		TextElement* textElement = new TextElement();
 		if (!visible)
@@ -100,6 +100,7 @@ namespace MCK::UI
 		textElement->SetColour(colour);
 		textElement->SetTransparency(transparency);
 		textElement->SetText(text);
+		textElement->SetUpdateFunction(updateFunc);
 
 		return textElement;
 	}
@@ -125,45 +126,5 @@ namespace MCK::UI
 			shapeElement->SetTextureID(image->getTextureID());
 
 		return shapeElement;
-	}
-
-
-	void UISystem::LoadUIImage(const char* filename, unsigned int imageID)
-	{
-		//auto found = loadedImages.find(imageID);
-		//if (found != loadedImages.end())
-			//return found->second;
-
-		//Image* newImage = nullptr;
-		//auto result = imageLoader->createImage(filename, nullptr, &newImage);
-
-		//if (result == True && newImage)
-		//{
-			//Image image = { imageID, newImage };
-			//loadedImages[imageID] = image;
-			//return image;
-		//}
-		//else
-		//{
-			//std::ostringstream output; 
-			//output << "ImageID: " << imageID << " could not be loaded"; 
-			//std::string outputStr = output.str();
-
-			//MCK::Logger::log(outputStr, MCK::Logger::LogLevel::Error, std::source_location::current()); 
-
-		//Image emptyImage = { 0 };
-		//return emptyImage;
-		//}
-	}
-
-	void UISystem::GetImage(unsigned int imageID)
-	{
-		//return 0;
-	}
-
-	void UISystem::UnloadImage(unsigned int imageID)
-	{
-		// Unload the image
-
 	}
 }

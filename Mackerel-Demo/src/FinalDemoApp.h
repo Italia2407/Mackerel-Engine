@@ -69,6 +69,8 @@ public:
 	void Update() override;
 	void End() override;
 
+	std::string GetCurrentRuntime();
+
 	void LoadRenderingDemo();
 	void LoadPhysicsDemo();
 	void LoadAnimationDemo();
