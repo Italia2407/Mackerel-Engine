@@ -15,7 +15,7 @@ namespace MCK::EntitySystem
 		transform = player->GetComponent<MCK::EntitySystem::TransformComponent>();
 
 		// define an offset
-		offset = Eigen::Vector3f(5.f, 2.f, 2.f);
+		offset = Eigen::Vector3f(1.f, 5.5f, 10.5f);
 
 		// set x for smoothing, greater than zero, default to 7
 		x = 7.f;
@@ -28,11 +28,22 @@ namespace MCK::EntitySystem
 		Eigen::Vector3f position = transform->Position() + offset;
 
 		// get delta (scaled frame time)
-		float delta = TimeManager::getScaledFrameTime();
+		float delta = (float)TimeManager::getScaledFrameTime();
 
 		// set target position of camera with smoothing
 		// (camera + (position + offset) * x * delta)
-		camera->Position() = camera->Position() + position * x * delta;
+		//camera->Position() = camera->Position() + position * x * delta;
+		camera->Position() = position;
+	}
+
+	void CameraFollowComponent::OnDestroy()
+	{
+
+	}
+
+	bool CameraFollowComponent::Deserialise(json data)
+	{
+		return true;
 	}
 
 }

@@ -8,7 +8,7 @@
 #include "Eigen/Eigen.h"
 
 namespace MCK::EntitySystem {
-	class CameraFollowComponent : public ComponentBase
+	class CameraFollowComponent : public Component<CameraFollowComponent>
 	{
 	private:
 		PerspectiveCamera* camera;
@@ -22,7 +22,7 @@ namespace MCK::EntitySystem {
 
 		void OnCreate() override;
 		void OnUpdate() override;
-		//void OnDestroy() override;
-		//bool Deserialise(json data) override;
+		void OnDestroy() override;
+		bool Deserialise(json data) override;
 	};
 }

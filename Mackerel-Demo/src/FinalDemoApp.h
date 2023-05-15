@@ -14,6 +14,7 @@
 #include "TransformComponent.h"
 #include "ShaderLibrary.h"
 #include "PerspectiveCamera.h"
+#include "CameraFollowComponent.h"
 #include "Renderer.h"
 #include "MeshRendererComponent.h"
 #include "TimeManager.h"
