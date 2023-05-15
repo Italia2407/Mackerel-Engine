@@ -16,7 +16,8 @@ namespace MCK::EntitySystem {
 		Entity* player;
 
 		Eigen::Vector3f offset;
-		float x;
+		Eigen::Vector3f position;
+		float multiplier = 7.0f;
 
 	public:
 

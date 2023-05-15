@@ -13,6 +13,7 @@
 #include "TransformComponent.h"
 #include "ShaderLibrary.h"
 #include "PerspectiveCamera.h"
+#include "CameraFollowComponent.h"
 #include "Renderer.h"
 #include "MeshRendererComponent.h"
 #include "TimeManager.h"
@@ -51,6 +52,7 @@ namespace MCK
             Physics::CollisionComponent* floorCollider;
 
             EntitySystem::PerspectiveCamera* cameraComponent;
+            EntitySystem::CameraFollowComponent* cameraFollowComponent;
 
             EntitySystem::TransformComponent* playerTransform;
             Physics::RigidbodyComponent* playerBody;
