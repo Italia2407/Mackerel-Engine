@@ -351,6 +351,9 @@
     <ClCompile Include="src\MemoryChunk.cpp">
       <Filter>Source Files\Systems\Memory Management</Filter>
     </ClCompile>
+    <ClCompile Include="src\CameraFollowComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -1708,6 +1711,9 @@
     </ClInclude>
     <ClInclude Include="src\BlockAllocator.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CameraFollowComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

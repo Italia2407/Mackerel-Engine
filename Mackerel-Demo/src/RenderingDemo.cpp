@@ -106,6 +106,7 @@ namespace MCK
         cameraEnttiy->AddComponent(cameraComponent);
 
         EntitySystem::Entity* playerEntity = scene.CreateEntity();
+        playerEntity->AddTag("Player");
         playerEntity->AddComponent(playerTransform);
         playerEntity->AddComponent(playerBody);
         playerEntity->AddComponent(playerRenderer);
