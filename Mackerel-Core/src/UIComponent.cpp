@@ -198,7 +198,7 @@ namespace MCK::EntitySystem
 	MCK::AssetType::Texture* UIComponent::LoadUIImage(const std::string& filename)
 	{
 		MCK::AssetType::Texture* loadedImage = new MCK::AssetType::Texture();
-		if (loadedImage->LoadFromFile(filename)) {
+		if (loadedImage->LoadFromFile(filename, true)) {
 			
 			loadedImages.push_back(loadedImage);
 			return loadedImage;

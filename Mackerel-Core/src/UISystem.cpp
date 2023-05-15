@@ -20,7 +20,9 @@ namespace MCK::UI
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.Colors[ImGuiCol_WindowBg].w = 0.0f; // Set alpha to 0.0f for full transparency
 		style.Colors[ImGuiCol_TitleBg].w = 0.0f; // Set alpha to 0.0f for full transparency
-		style.Colors[ImGuiCol_TitleBgActive].w = 0.0f; // Set alpha to 0.0f for full transparency		
+		style.Colors[ImGuiCol_TitleBgActive].w = 0.0f; // Set alpha to 0.0f for full transparency	
+
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 1.0f);
 
 		// Initialize ImGui bindings for GLFW and OpenGL
 		ImGui_ImplGlfw_InitForOpenGL(**context, true);

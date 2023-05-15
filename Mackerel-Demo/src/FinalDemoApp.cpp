@@ -1,5 +1,7 @@
 #include "FinalDemoApp.h"
 
+
+
 FinalDemoApp::FinalDemoApp()
 {
 
@@ -26,9 +28,14 @@ void FinalDemoApp::Start()
         #pragma endregion
 
         #pragma region UI Init
-            //MCK::AssetType::Texture* image = uiComponent->LoadUIImage("../Mackerel-Core/res/Textures/TestImage.png");
-
+            
             EntitySystem::UIComponent* uiComponent = new EntitySystem::UIComponent();
+            MCK::AssetType::Texture* renderingIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/ButtonRenderingSmall.png");
+            MCK::AssetType::Texture* animationIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/ButtonAnimationSmall.png");
+            MCK::AssetType::Texture* audioIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/ButtonAudioSmall.png");
+            MCK::AssetType::Texture* physicsIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/ButtonPhysicsSmall.png");
+            MCK::AssetType::Texture* quitIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/ButtonQuitSmall.png");
+            MCK::AssetType::Texture* menuIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/MenuSmall.png");
 
             // Create a vector of callbacks
             std::vector<std::function<void()>> callbacks = {
@@ -40,12 +47,12 @@ void FinalDemoApp::Start()
             };
 
             // Create a vector of button titles
-            std::vector<std::string> buttonTitles = {
-                "Rendering Demo",
-                "Physics Demo",
-                "Animation Demo",
-                "Audio Demo",
-                "Exit"
+            std::vector<MCK::AssetType::Texture*> buttonImages = {
+                renderingIMG,
+                physicsIMG,
+                animationIMG,
+                audioIMG,
+                quitIMG
             };
 
             ImVec2 windowSize;
@@ -62,23 +69,20 @@ void FinalDemoApp::Start()
 		        ImVec2 windowSize = ImVec2(1280, 720);
 	        }
 
-            ImVec2 menuSize = ImVec2(400, 500);
+            ImVec2 menuSize = ImVec2(404, 524);
             ImVec2 menuPosition = ImVec2((windowSize.x - menuSize.x) / 2, (windowSize.y - menuSize.y) / 2);
 
             // Create a background shape
             uiComponent->CreateShape(true, ImVec2(0, 0), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 1.0f), 0.5f, MCK::UI::ShapeElement::ShapeType::Rectangle, windowSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 0.0f);
-            uiComponent->CreateShape(true, menuPosition, 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::RoundedRectangle, menuSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f);
-
-            // Create a title text element
-            ImVec2 titlePosition = ImVec2(menuPosition.x + (menuSize.x / 2) - 15, menuPosition.y + 40);
-            uiComponent->CreateText(true, titlePosition, 5.0f, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, "MENU");
+            uiComponent->CreateShape(true, menuPosition, 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, menuSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, menuIMG);
 
             // Create button elements
-            ImVec2 buttonSize = ImVec2(120, 40);
-            int buttonOffset = 60; // Offset
+            ImVec2 buttonSize = ImVec2(166, 61);
+            int buttonOffset = 80; // Offset
+            float startY = 15;
             for (int i = 0; i < 5; i++) {
-                ImVec2 buttonPosition = ImVec2(menuPosition.x + (menuSize.x - buttonSize.x) / 2, menuPosition.y + (menuSize.y - buttonSize.y) / 4 + i * buttonOffset);
-                uiComponent->CreateButton(true, buttonPosition, 1.0f, ImVec4(0.2f, 0.6f, 1.0f, 1.0f), 1.0f, buttonTitles[i], buttonSize, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), callbacks[i], true);
+                ImVec2 buttonPosition = ImVec2(menuPosition.x + (menuSize.x - buttonSize.x) / 2, startY + menuPosition.y + (menuSize.y - buttonSize.y) / 5 + i * buttonOffset);
+                uiComponent->CreateButton(true, buttonPosition, 1.0f, ImVec4(0.6f, 0.0f, 1.0f, 0.0f), 1.0f, "", buttonSize, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), callbacks[i], true, buttonImages[i]);
             }
 
             EntitySystem::Entity* uiEntity = constantScene.CreateEntity();

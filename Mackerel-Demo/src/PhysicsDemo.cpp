@@ -90,8 +90,8 @@ namespace MCK
 
         #pragma region UI Init
                 uiComponent = new EntitySystem::UIComponent();
-                //MCK::AssetType::Texture* image = uiComponent->LoadUIImage("../Mackerel-Core/res/Textures/TestImage.png");
-                uiComponent->CreateStandardHUD(true);
+                MCK::AssetType::Texture* hudIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/PlayPhysics.png");
+                uiComponent->CreateShape(true, ImVec2(10, 10), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, ImVec2(276, 100), ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, hudIMG);
         #pragma endregion
     }
 

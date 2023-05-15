@@ -17,7 +17,7 @@ private:
 public:
 	GLuint getTextureID() { return _textureID; }
 
-	bool LoadFromFile(std::string a_FilePath);
+	bool LoadFromFile(std::string a_FilePath, bool isFor2DObject);
 
 	bool GenerateFloatTexture(GLuint width, GLuint height);
 	bool GenerateIntTexture(GLuint width, GLuint height);

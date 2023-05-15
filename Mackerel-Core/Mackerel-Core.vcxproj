@@ -617,6 +617,18 @@
   <ItemGroup>
     <Media Include="res\Sounds\Voyager.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\UI\ButtonAnimationSmall.png" />
+    <Image Include="res\UI\ButtonAudioSmall.png" />
+    <Image Include="res\UI\ButtonPhysicsSmall.png" />
+    <Image Include="res\UI\ButtonQuitSmall.png" />
+    <Image Include="res\UI\ButtonRenderingSmall.png" />
+    <Image Include="res\UI\MenuSmall.png" />
+    <Image Include="res\UI\PlayAnimation.png" />
+    <Image Include="res\UI\PlayAudio.png" />
+    <Image Include="res\UI\PlayPhysics.png" />
+    <Image Include="res\UI\PlayRendering.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
