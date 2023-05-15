@@ -10,10 +10,10 @@ namespace MCK::ExamplePlayer
 	class ExamplePlayerController : public EntitySystem::Component<ExamplePlayerController>
 	{
 	private:
-		float moveForceMag = 30;
-		float horizontalDamping =1.f;
-		float deceleration = 90;
-		float jumpVel = 4;
+		float moveForceMag = 40;
+		float horizontalDamping =1.1f;
+		float deceleration = 90; 
+		float jumpVel = 8;
 
 		EntitySystem::TransformComponent* transform;
 		Physics::RigidbodyComponent* rigidbody;
