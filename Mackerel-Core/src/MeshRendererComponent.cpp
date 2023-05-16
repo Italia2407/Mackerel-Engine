@@ -42,7 +42,7 @@ MeshRendererComponent::~MeshRendererComponent()
 void MeshRendererComponent::OnCreate()
 {
 	// Load Mesh Renderer Assets
-	MeshLibrary::LoadMesh(m_MeshEnum);
+	// MeshLibrary::LoadMesh(m_MeshEnum);
 	ShaderLibrary::LoadShader(m_ShaderEnum);
 	MaterialLibrary::LoadMaterial(m_MaterialEnum);
 
