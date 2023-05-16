@@ -44,7 +44,7 @@ void TestApp::Start()
     m_MeshTransform.Position() = Eigen::Vector3f(0.0f, 0.0f, 0.0f);
     //m_MeshTransform.Scale() = Eigen::Vector3f(1.0f, 1.0f, 0.1f);
 
-    light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(0.0, -1.0f, 0.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero());
+    light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(0.0, -1.0f, 0.0f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
 }
 
 void TestApp::Update()
