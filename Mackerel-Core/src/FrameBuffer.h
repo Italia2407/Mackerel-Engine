@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LoggingSystem.h"
+
 #include "GLinclude.h"
 #include <Eigen/Eigen.h>
 

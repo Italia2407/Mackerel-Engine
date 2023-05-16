@@ -93,6 +93,8 @@ void FinalDemoApp::Start()
             EntitySystem::Entity* uiEntity = constantScene.CreateEntity();
             uiEntity->AddComponent(uiComponent);
 
+            MCK::Logger::log("SETUP COMPLETED", MCK::Logger::LogLevel::Info, std::source_location::current());
+
         #pragma endregion
 
 }
@@ -116,7 +118,7 @@ std::string FinalDemoApp::GetCurrentRuntime() {
 
 void FinalDemoApp::LoadRenderingDemo()
 {
-    std::cout << "Loading Rendering Demo" << std::endl;
+    MCK::Logger::log("Loading Rendering Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
     
     // Unload current scene
     if (loadedDemo)
@@ -131,7 +133,7 @@ void FinalDemoApp::LoadRenderingDemo()
 
 void FinalDemoApp::LoadPhysicsDemo()
 {
-    std::cout << "Loading Physics Demo" << std::endl;
+    MCK::Logger::log("Loading Physics Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
 
     // Unload current scene
     if (loadedDemo)
@@ -146,7 +148,7 @@ void FinalDemoApp::LoadPhysicsDemo()
 
 void FinalDemoApp::LoadAnimationDemo()
 {
-    std::cout << "Loading Animation Demo" << std::endl;
+    MCK::Logger::log("Loading Animation Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
 
     // Unload current scene
     if (loadedDemo)
@@ -161,7 +163,7 @@ void FinalDemoApp::LoadAnimationDemo()
 
 void FinalDemoApp::LoadAudioDemo()
 {
-    std::cout << "Loading Audio Demo" << std::endl;
+    MCK::Logger::log("Loading Audio Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
 
     // Unload current scene
     if (loadedDemo)
@@ -190,6 +192,8 @@ void FinalDemoApp::Update()
 
 void FinalDemoApp::End()
 {
+    MCK::Logger::log("EXITING", MCK::Logger::LogLevel::Info, std::source_location::current());
+
     if (loadedDemo)
         scene.UnloadScene();
     constantScene.UnloadScene();
