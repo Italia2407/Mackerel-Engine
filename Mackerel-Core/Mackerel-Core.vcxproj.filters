@@ -148,6 +148,12 @@
     <Filter Include="Resource Files\UI">
       <UniqueIdentifier>{a678da01-aa4b-4183-abb9-895d3662ef6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Files\tinygltf">
+      <UniqueIdentifier>{abe13e8a-e7d4-48c6-b090-922d9f59c796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Rendering\Animation">
+      <UniqueIdentifier>{a3fbd506-8485-402a-878d-2fee9c74ad1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLAD\src\glad.c">
@@ -350,6 +356,9 @@
     </ClCompile>
     <ClCompile Include="src\MemoryChunk.cpp">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SkinnedMeshRendererComponenet.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1708,6 +1717,27 @@
     </ClInclude>
     <ClInclude Include="src\BlockAllocator.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SkinnedMeshRendererComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\tinygltf\json.hpp">
+      <Filter>External Files\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\tinygltf\stb_image.h">
+      <Filter>External Files\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\tinygltf\stb_image_write.h">
+      <Filter>External Files\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\tinygltf\tiny_gltf.h">
+      <Filter>External Files\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="src\STBIinclude.hpp">
+      <Filter>Source Files\Include Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SkinnedMeshData.h">
+      <Filter>Source Files\Systems\Rendering\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

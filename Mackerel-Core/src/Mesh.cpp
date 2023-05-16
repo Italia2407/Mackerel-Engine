@@ -1,12 +1,31 @@
 #include "LoggingSystem.h"
 #include "Mesh.h"
 
+#include "SkinnedMeshData.h"
+
+#include <algorithm>
+
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+
+/* need to be #undef'd for the next two includes... */
+#undef max
+#undef min
+
+/* tinygltf - general gltf loading */
+#define TINYGLTF_IMPLEMENTATION
+#include "tiny_gltf.h"
+
+/* ozz - animation loading and handling */
+#include "ozz/animation/offline/tools/import2ozz.h"
 
 // Loggin Headers
 #include "LoggingSystem.h"
 #include <format>
+
+const std::vector<std::string> MCK::AssetType::Mesh::obj_ext = { "obj" };
+const std::vector<std::string> MCK::AssetType::Mesh::gltf_ascii_ext = { "gltf" };
+const std::vector<std::string> MCK::AssetType::Mesh::gltf_binary_ext = { "glb" };
 
 // Module Only Structures
 struct MeshVertex
@@ -29,7 +48,10 @@ namespace MCK::AssetType {
 Mesh::Mesh(std::string a_Name = "") :
 	m_Name(a_Name),
 	m_NumVertices(0), m_NumIndices(0),
-	m_VertexArrayObject(GL_ZERO), m_VertexBufferObjects({}), m_IndexBufferObject(GL_ZERO) {}
+	m_VertexArrayObject(GL_ZERO), m_VertexBufferObjects({}), m_IndexBufferObject(GL_ZERO)
+{
+	m_VertexBufferObjects.resize(4, {});
+}
 Mesh::~Mesh()
 {
 	// Delete Vertex Array Object
@@ -45,6 +67,10 @@ Mesh::~Mesh()
 	// Delete Vertex Index Object
 	if (m_IndexBufferObject != GL_ZERO)
 		glDeleteBuffers(1, &m_IndexBufferObject);
+
+	// Delete skinned mesh daata if applicable
+	if (m_animData != nullptr)
+		delete m_animData;
 }
 
 /**
@@ -137,6 +163,36 @@ bool Mesh::generateVertexObjects(
  */
 bool Mesh::LoadFromFile(std::string a_FilePath)
 {
+	// Get the extension of the mesh file to deduce it's file type.
+	std::string ext = a_FilePath.substr(a_FilePath.find_last_of(".") + 1);
+
+	// Is it an obj file?
+	if (std::find(obj_ext.begin(), obj_ext.end(), ext) != obj_ext.end())
+	{
+		return LoadObj(a_FilePath);
+	}
+	
+	// Is it an ascii gltf file?
+	if (std::find(gltf_ascii_ext.begin(), gltf_ascii_ext.end(), ext) != gltf_ascii_ext.end())
+	{
+		return LoadGltf(a_FilePath, false);
+	}
+
+	// Is it a binary gltf file?
+	if (std::find(gltf_binary_ext.begin(), gltf_binary_ext.end(), ext) != gltf_binary_ext.end())
+	{
+		return LoadGltf(a_FilePath, true);
+	}
+
+	// Unrecognized file type
+	Logger::log(std::format("Mesh: Unsupported file type with extension: .{}", ext), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+	return false;
+}
+
+bool Mesh::LoadObj(std::string& a_FilePath)
+{
+	m_hasRig = false;
+
 	// Open Mesh File with TinyOBJ
 	tinyobj::ObjReader fileReader;
 
@@ -155,73 +211,74 @@ bool Mesh::LoadFromFile(std::string a_FilePath)
 
 	std::vector<MeshVertex> uniqueVertices;
 	for (const auto& shape : shapes) {
-	for (const auto& index : shape.mesh.indices)
-	{
-		MeshVertex vertex{};
-
-		// Read Positon & Colour Values
-		if (index.vertex_index >= 0) {
-			vertex.position.x() = attributes.vertices[(3 * index.vertex_index) + 0];
-			vertex.position.y() = attributes.vertices[(3 * index.vertex_index) + 1];
-			vertex.position.z() = attributes.vertices[(3 * index.vertex_index) + 2];
-
-			auto colourIndex = (3 * index.vertex_index) + 2;
-			if (colourIndex < attributes.colors.size()) {
-				vertex.tint.x() = attributes.colors[colourIndex - 2];
-				vertex.tint.y() = attributes.colors[colourIndex - 1];
-				vertex.tint.z() = attributes.colors[colourIndex - 0];
-			}
-			else {
-				vertex.tint = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
-			}
-		}
-		// Read Normal Value
-		if (index.normal_index >= 0) {
-			vertex.normal.x() = attributes.normals[(3 * index.normal_index) + 0];
-			vertex.normal.y() = attributes.normals[(3 * index.normal_index) + 1];
-			vertex.normal.z() = attributes.normals[(3 * index.normal_index) + 2];
-		}
-		// Read Texture Coord Value
-		if (index.texcoord_index >= 0) {
-			vertex.textureCoord.x() = attributes.texcoords[(2 * index.texcoord_index) + 0];
-			vertex.textureCoord.y() = attributes.texcoords[(2 * index.texcoord_index) + 1];
-		}
-
-		// TODO: Perhaps use Unordered Set, with Hash Function instead
-		GLuint vertexIndex = (GLuint)uniqueVertices.size();
-		bool duplicateVertex = false;
-		for (size_t i = 0; i < uniqueVertices.size(); i++) {
-			auto uniqueVertex = uniqueVertices[i];
-			if (uniqueVertex == vertex) {
-				vertexIndex = (GLuint)i;
-				duplicateVertex = true;
-				break;
-			}
-		}
-
-		// Add Vertex to Unique Set
-		if (!duplicateVertex)
+		for (const auto& index : shape.mesh.indices)
 		{
-			uniqueVertices.push_back(vertex);
+			MeshVertex vertex{};
 
-			// Add Vertex Params to Arrays
-			vertexPositions.push_back(vertex.position.x());
-			vertexPositions.push_back(vertex.position.y());
-			vertexPositions.push_back(vertex.position.z());
+			// Read Positon & Colour Values
+			if (index.vertex_index >= 0) {
+				vertex.position.x() = attributes.vertices[(3 * index.vertex_index) + 0];
+				vertex.position.y() = attributes.vertices[(3 * index.vertex_index) + 1];
+				vertex.position.z() = attributes.vertices[(3 * index.vertex_index) + 2];
 
-			vertexNormals.push_back(vertex.normal.x());
-			vertexNormals.push_back(vertex.normal.y());
-			vertexNormals.push_back(vertex.normal.z());
+				auto colourIndex = (3 * index.vertex_index) + 2;
+				if (colourIndex < attributes.colors.size()) {
+					vertex.tint.x() = attributes.colors[colourIndex - 2];
+					vertex.tint.y() = attributes.colors[colourIndex - 1];
+					vertex.tint.z() = attributes.colors[colourIndex - 0];
+				}
+				else {
+					vertex.tint = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
+				}
+			}
+			// Read Normal Value
+			if (index.normal_index >= 0) {
+				vertex.normal.x() = attributes.normals[(3 * index.normal_index) + 0];
+				vertex.normal.y() = attributes.normals[(3 * index.normal_index) + 1];
+				vertex.normal.z() = attributes.normals[(3 * index.normal_index) + 2];
+			}
+			// Read Texture Coord Value
+			if (index.texcoord_index >= 0) {
+				vertex.textureCoord.x() = attributes.texcoords[(2 * index.texcoord_index) + 0];
+				vertex.textureCoord.y() = attributes.texcoords[(2 * index.texcoord_index) + 1];
+			}
 
-			vertexTextureCoords.push_back(vertex.textureCoord.x());
-			vertexTextureCoords.push_back(vertex.textureCoord.y());
+			// TODO: Perhaps use Unordered Set, with Hash Function instead
+			GLuint vertexIndex = (GLuint)uniqueVertices.size();
+			bool duplicateVertex = false;
+			for (size_t i = 0; i < uniqueVertices.size(); i++) {
+				auto uniqueVertex = uniqueVertices[i];
+				if (uniqueVertex == vertex) {
+					vertexIndex = (GLuint)i;
+					duplicateVertex = true;
+					break;
+				}
+			}
 
-			vertexTints.push_back(vertex.tint.x());
-			vertexTints.push_back(vertex.tint.y());
-			vertexTints.push_back(vertex.tint.z());
+			// Add Vertex to Unique Set
+			if (!duplicateVertex)
+			{
+				uniqueVertices.push_back(vertex);
+
+				// Add Vertex Params to Arrays
+				vertexPositions.push_back(vertex.position.x());
+				vertexPositions.push_back(vertex.position.y());
+				vertexPositions.push_back(vertex.position.z());
+
+				vertexNormals.push_back(vertex.normal.x());
+				vertexNormals.push_back(vertex.normal.y());
+				vertexNormals.push_back(vertex.normal.z());
+
+				vertexTextureCoords.push_back(vertex.textureCoord.x());
+				vertexTextureCoords.push_back(vertex.textureCoord.y());
+
+				vertexTints.push_back(vertex.tint.x());
+				vertexTints.push_back(vertex.tint.y());
+				vertexTints.push_back(vertex.tint.z());
+			}
+			vertexIndices.push_back(vertexIndex);
 		}
-		vertexIndices.push_back(vertexIndex);
-	}}
+	}
 
 	m_NumVertices = (GLuint)uniqueVertices.size();
 	m_NumIndices = (GLuint)vertexIndices.size();
@@ -233,6 +290,135 @@ bool Mesh::LoadFromFile(std::string a_FilePath)
 	}
 
 	return true;
+}
+
+bool Mesh::LoadGltf(std::string& a_FilePath, bool isBinary)
+{
+	if (m_animData != nullptr)
+		delete m_animData;
+	m_animData = new SkinnedMeshData();
+
+	tinygltf::TinyGLTF gltfLoader;
+
+	/* attempt to load the mesh data */
+	if (!LoadGltfData(a_FilePath, isBinary, &m_animData->gltfModel, &gltfLoader))
+		return false;
+
+	/* determine if the model is animated and extract data */
+	std::vector<float> texture
+	GltfSetup();
+
+	return true;
+}
+bool Mesh::LoadGltfData(std::string& a_FilePath, bool isBinary, tinygltf::Model* gltfModel, tinygltf::TinyGLTF* gltfLoader)
+{
+	std::string gltfErr;
+	std::string gltfWarn;
+
+	bool ret = false;
+	if (isBinary)
+		ret = gltfLoader->LoadBinaryFromFile(gltfModel, &gltfErr, &gltfWarn, a_FilePath);
+	else
+		ret = gltfLoader->LoadASCIIFromFile(gltfModel, &gltfErr, &gltfWarn, a_FilePath);
+
+	if (!gltfWarn.empty())
+	{
+		Logger::log(std::format("tinygltf: {}", gltfWarn), Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+	}
+
+	if (!gltfErr.empty())
+	{
+		Logger::log(std::format("tinygltf: {}", gltfErr), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+	}
+
+	if (!ret)
+	{
+		Logger::log(std::format("tinygltf: Failed to parse glTF file at: {}", a_FilePath), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	return true;
+}
+void Mesh::GltfSetup()
+{
+	// checking if the loaded model has an associated skeleton
+	m_hasRig = false;
+	for (auto mesh : m_animData->gltfModel.meshes)
+	{
+		for (auto primitive : mesh.primitives)
+		{
+			/* extract position data... */
+			uint32_t accessor_ind = primitive.attributes["POSITION"];
+
+			tinygltf::Accessor accessor = m_animData->gltfModel.accessors[accessor_ind];
+			tinygltf::BufferView bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
+			tinygltf::Buffer buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+
+			float* positions = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
+			size_t dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
+			vertexPositions.clear();
+			for (uint32_t i = 0; i < dataLength; i++)
+				vertexPositions.push_back(positions[i]);
+
+			/* ...then get normal data... */
+			accessor_ind = primitive.attributes["NORMAL"];
+
+			accessor = m_animData->gltfModel.accessors[accessor_ind];
+			bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
+			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+
+			float* normals = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
+			dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
+			vertexNormals.clear();
+			for (uint32_t i = 0; i < dataLength; i++)
+				vertexNormals.push_back(normals[i]);
+
+			/* ...and finally the vertex indices. */
+			accessor = m_animData->gltfModel.accessors[primitive.indices];
+			bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
+			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+
+			uint16_t* indices = reinterpret_cast<uint16_t*>(buffer.data.data() + bufferView.byteOffset);
+			dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
+			vertexIndices.clear();
+			for (uint32_t i = 0; i < dataLength; i++)
+				vertexIndices.push_back(indices[i]);
+
+			/* store the final tallies */
+			m_NumVertices = vertexPositions.size();
+			m_NumIndices = vertexIndices.size();
+
+			// is the first joints slot filled?
+			if (primitive.attributes.contains("JOINTS_0"))
+			{
+				// this model has a rig
+				m_hasRig = true;
+				// load its animations
+				LoadGltfAnimations();
+
+				break;
+			}
+		}
+	}
+}
+void Mesh::GltfUploadToGPU()
+{
+	
+}
+void Mesh::LoadGltfAnimations()
+{
+	for (auto animation = m_animData->gltfModel.animations.begin(); animation != m_animData->gltfModel.animations.end(); animation++)
+	{
+		m_animData->animationIndices.emplace(
+			std::pair<std::string, uint16_t>(
+				(*animation).name,
+				static_cast<uint16_t>(animation - m_animData->gltfModel.animations.begin())));
+	}
+}
+
+void Mesh::SetAnimationPose(std::string animation, float time)
+{
+	
 }
 
 /**

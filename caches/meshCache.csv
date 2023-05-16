@@ -3,3 +3,7 @@ id,path
 1, Mackerel-Core\res\Meshes\Primitives\cube.obj
 2, Mackerel-Core\res\Meshes\Suzanne.obj
 3, Mackerel-Core\res\Meshes\TestMesh.obj
+4, Mackerel-Core\res\Meshes\three_bone.glb
+5, Mackerel-Core\res\Meshes\three_bone_2.gltf
+6, Mackerel-Core\res\Meshes\three_bone_embedded.gltf
+7, Mackerel-Core\res\Meshes\three_bone_no_skeleton.gltf

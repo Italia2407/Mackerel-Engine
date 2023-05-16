@@ -194,7 +194,7 @@ material_assets.build(root_path, resource_names, folder_ignores)
 
 # Meshes
 mesh_assets = AssetType(
-	formats=[".obj"],
+	formats=[".obj", ".glb", ".gltf"],
 	cache_output=os.path.join(build_path, "meshCache.csv"),
 	enum_output=os.path.join(enum_path, "MeshEnum.h"),
 	enum_name="MeshEnum",

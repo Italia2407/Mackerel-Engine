@@ -61,8 +61,13 @@ namespace MCK
             EntitySystem::TransformComponent* audioTransform;
             EntitySystem::AudioEmitter* audioComponent;
 
+            //
+
             EntitySystem::UIComponent* uiComponent;
 
+            //
+
+            AssetType::Mesh* animMesh;
         };
     }
 }

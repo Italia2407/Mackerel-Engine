@@ -3,8 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "STBIinclude.hpp"
 
 namespace MCK::AssetType {
 bool Texture::GenerateFloatTexture(GLuint width, GLuint height)
