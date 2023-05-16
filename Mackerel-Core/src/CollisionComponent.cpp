@@ -30,6 +30,8 @@ namespace MCK::Physics
 		transformation.setRotation(rot);
 
 		collider->setWorldTransform(transformation);
+		btTransform colT = collider->getWorldTransform();
+		pos = colT.getOrigin();
 	}
 
 	/**
@@ -44,7 +46,7 @@ namespace MCK::Physics
 			delete collisionShape;
 		}
 
-		if (shapeInfo.colliderType == MCK::Physics::ColliderTypes::Mesh)
+		if (shapeInfo.colliderType == MCK::Physics::ColliderTypes::Mesh && shapeInfo.mesh == nullptr)
 		{
 			MCK::EntitySystem::MeshRendererComponent* renderComp = 
 				static_cast<MCK::EntitySystem::MeshRendererComponent*>(entity->GetComponent<MCK::EntitySystem::MeshRendererComponent>());

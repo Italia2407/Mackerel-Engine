@@ -52,8 +52,8 @@ bool FrameBuffer::CreateFrameBuffer()
 	for (int i = 0; i < m_ColourAttachmentTextures.size(); i++)
 	{
 		if (i >= maxColourAttachments) {
-			std::cout << "ERROR: Cannot Add Colour Attachment " << i << " to Framebuffer." " "
-				"Reached Maximum Number(" << maxColourAttachments << ") of Colour Attachments Supported by Current OpenGL Implementation" << std::endl;
+			MCK::Logger::log(std::string("Cannot Add Colour Attachment") + std::to_string(i) + std::string(" to Framebuffer." " "
+				"Reached Maximum Number(") + std::to_string(maxColourAttachments) + std::string(") of Colour Attachments Supported by Current OpenGL Implementation"), MCK::Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 
 			break;
 		}

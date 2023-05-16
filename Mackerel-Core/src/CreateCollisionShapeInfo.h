@@ -15,6 +15,7 @@ namespace MCK::Physics
 		float height;
 		/** Size z */
 		float depth;
+		/** For mesh colliders, leave null and the collider will extract the mesh from the renderer */
 		MCK::AssetType::Mesh* mesh = nullptr;
 	};
 }

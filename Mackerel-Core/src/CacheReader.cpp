@@ -37,7 +37,7 @@ namespace MCK::ResourceManagement
 
 	void ReadCache(const char* cachePath, std::map<int, std::string>& cacheOutput)
 	{
-		std::cout << "Current path is " << std::filesystem::current_path() << '\n'; 
+		MCK::Logger::log(std::string("Current path is ") + std::filesystem::current_path().string(), MCK::Logger::LogLevel::Info, std::source_location::current(), "ENGINE");
 
 		std::string line;
 		std::ifstream cacheFile(cachePath);
