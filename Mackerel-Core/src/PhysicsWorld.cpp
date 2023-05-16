@@ -1,6 +1,13 @@
 #include "PhysicsWorld.h"
 #include "CollisionData.h"
 #include "RigidbodyComponent.h"
+
+#define DEBUG_WIN
+
+#ifdef DEBUG_WIN
+
+#endif // DEBUG_WIN
+
 namespace MCK::Physics
 {
 	/**
@@ -27,6 +34,12 @@ namespace MCK::Physics
 		dynamicsWorld -> setGravity(btVector3(0, -10, 0));
 
 		gContactAddedCallback = OnCollision;
+
+#ifdef DEBUG_WIN
+
+
+#endif // DEBUG_WIN
+
 	}
 
 	void PhysicsWorld::AddRigidbody(entityId id, RigidbodyComponent* rigidbody)

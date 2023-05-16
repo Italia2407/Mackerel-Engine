@@ -15,6 +15,10 @@ void PlatformerApp::Start()
 #pragma endregion
 
 #pragma region Rendering Init
+
+    bridgeMesh = new MCK::AssetType::Mesh("Bridge Mesh");
+    bridgeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/bridge.obj");
+
     cubeMesh = new MCK::AssetType::Mesh("Cube Mesh");
     cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj"); 
     //cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
@@ -38,23 +42,26 @@ void PlatformerApp::Start()
 #pragma endregion
 
 #pragma region Floor Init
-    floorTransform.Position() = Eigen::Vector3f(0,-8, -2);
-    floorTransform.Scale() = Eigen::Vector3f(6, 6, 6);
+    floorTransform.Position() = Eigen::Vector3f(0,-2, -0);
+    floorTransform.Scale() = Eigen::Vector3f(1, 1, 1);
 
+    //floorMesh = new EntitySystem::MeshRendererComponent(bridgeMesh, m_MonoColourShader, greyMaterial);
     floorMesh = new EntitySystem::MeshRendererComponent(cubeMesh, m_MonoColourShader, greyMaterial);
 
     Physics::CreateCollisionShapeInfo floorShape{};
     floorShape.colliderType = Physics::ColliderTypes::Box;
-    floorShape.width = 6;
-    floorShape.height = 6;
-    floorShape.depth = 6;
+    floorShape.width = 0.5;
+    floorShape.height = 0.5;
+    floorShape.depth = 0.5;
+    floorShape.mesh = cubeMesh;
 
     Physics::CollisionComponent* floorCollider = new Physics::CollisionComponent();
-    floorCollider->SetCollisionShape(floorShape);
+    
 
     EntitySystem::Entity* floorEntity = scene.CreateEntity();
     floorEntity->AddComponent(&floorTransform);
     floorEntity->AddComponent(floorMesh);
+    floorCollider->SetCollisionShape(floorShape);
     floorEntity->AddComponent(floorCollider);
 #pragma endregion
 
@@ -77,9 +84,9 @@ void PlatformerApp::Start()
     // Physics
     Physics::CreateCollisionShapeInfo playerShape{};
     playerShape.colliderType = Physics::ColliderTypes::Box;
-    playerShape.width = 0.3f;
-    playerShape.height = 0.3f;
-    playerShape.depth = 0.3f;
+    playerShape.width = 0.15f;
+    playerShape.height = 0.15f;
+    playerShape.depth = 0.15f;
 
     Physics::RigidbodyComponent* playerBody = new Physics::RigidbodyComponent();
     playerBody->SetCollisionShape(playerShape);

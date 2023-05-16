@@ -1,5 +1,7 @@
 id,path
-0, Mackerel-Core\res\Meshes\DisplayScreen.obj
-1, Mackerel-Core\res\Meshes\Primitives\cube.obj
-2, Mackerel-Core\res\Meshes\Suzanne.obj
-3, Mackerel-Core\res\Meshes\TestMesh.obj
+0, Mackerel-Core\res\Meshes\bridge.obj
+1, Mackerel-Core\res\Meshes\DisplayScreen.obj
+2, Mackerel-Core\res\Meshes\Primitives\cube.obj
+3, Mackerel-Core\res\Meshes\Suzanne.obj
+4, Mackerel-Core\res\Meshes\TestMesh.obj
+5, Mackerel-Core\res\Meshes\TexturedGround.obj

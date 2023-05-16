@@ -140,6 +140,14 @@ namespace MCK::EntitySystem
 		Deserialise(sceneJson);
 	}
 
+	void Scene::LoadSceneAdditive(std::string path)
+	{
+		sceneLoaded = true;
+
+		json sceneJson = Helpers::ParseJson(path);
+		Deserialise(sceneJson);
+	}
+
 	void Scene::UnloadScene()
 	{
 		physicsWorld.TeardownWorld();
