@@ -46,9 +46,12 @@ void MeshRendererComponent::OnCreate()
 	ShaderLibrary::LoadShader(m_ShaderEnum);
 	MaterialLibrary::LoadMaterial(m_MaterialEnum);
 
-	MeshLibrary::GetMesh(m_MeshEnum, m_Mesh);
-	ShaderLibrary::GetShader(m_ShaderEnum, m_Shader);
-	MaterialLibrary::GetMaterial(m_MaterialEnum, m_Material);
+	if(m_Mesh == nullptr)
+		MeshLibrary::GetMesh(m_MeshEnum, m_Mesh);
+	if(m_Shader == nullptr)
+		ShaderLibrary::GetShader(m_ShaderEnum, m_Shader);
+	if(m_Material == nullptr)
+		MaterialLibrary::GetMaterial(m_MaterialEnum, m_Material);
 
 	uint32_t tempID = 42;
 	std::string tempName = "Answer to the Universe";
