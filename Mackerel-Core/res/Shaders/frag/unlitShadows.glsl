@@ -59,7 +59,7 @@ void main()
 	vec3 normShadowCoord = (shadowCoord + vec3(1.0f, 1.0f, 1.0f)) / 2.0f;
 
 	float occluderDistance = texture(shadowMap, normShadowCoord.xy).z;
-	if (normShadowCoord.z > occluderDistance)
+	if (normShadowCoord.z > occluderDistance + 0.001)
 		discard;
 
 	// Compare Light Direction with normal

@@ -16,9 +16,9 @@ namespace MCK
     {
         #pragma region Rendering Init
                 cubeMesh = new AssetType::Mesh("Cube Mesh");
-                cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
+                // cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
                 // cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
-                // cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/MackerelText.glb");
+                cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/MackerelText.glb");
 
                 greyMaterial = new AssetType::Material();
                 greyMaterial->addUInt16Uniform("lightShaderID", 0);
@@ -61,8 +61,8 @@ namespace MCK
 
         #pragma region Player Init
                 playerTransform = new EntitySystem::TransformComponent();
-                playerTransform->Position() = Eigen::Vector3f(0, 20, 0);
-                playerTransform->Scale() = Eigen::Vector3f(0.3f, 0.3f, 0.3f);
+                playerTransform->Position() = Eigen::Vector3f(-5, 20, 0);
+                playerTransform->Scale() = Eigen::Vector3f(3.f, 3.f, 3.f);
 
                 // Physics
                 Physics::CreateCollisionShapeInfo playerShape{};
