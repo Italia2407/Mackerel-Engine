@@ -285,7 +285,7 @@ bool Mesh::LoadObj(std::string& a_FilePath)
 
 	// Generate Mesh GPU Data
 	if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {
-		Logger::log("Failed to Generate Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		Logger::log("Failed to Generate OBJ Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -305,8 +305,8 @@ bool Mesh::LoadGltf(std::string& a_FilePath, bool isBinary)
 		return false;
 
 	/* determine if the model is animated and extract data */
-	std::vector<float> texture
-	GltfSetup();
+	if (!GltfExtractUpload())
+		return false;
 
 	return true;
 }
@@ -339,15 +339,24 @@ bool Mesh::LoadGltfData(std::string& a_FilePath, bool isBinary, tinygltf::Model*
 
 	return true;
 }
-void Mesh::GltfSetup()
+bool Mesh::GltfExtractUpload()
 {
+	std::vector<float> vertexTextureCoords;
+	std::vector<float> vertexTints;
+
+	vertexPositions.clear();
+	vertexTints.clear();
+	vertexNormals.clear();
+	vertexTextureCoords.clear();
+	vertexIndices.clear();
+
 	// checking if the loaded model has an associated skeleton
 	m_hasRig = false;
 	for (auto mesh : m_animData->gltfModel.meshes)
 	{
 		for (auto primitive : mesh.primitives)
 		{
-			/* extract position data... */
+			/* extract POSITION data... (and flub the tint data */
 			uint32_t accessor_ind = primitive.attributes["POSITION"];
 
 			tinygltf::Accessor accessor = m_animData->gltfModel.accessors[accessor_ind];
@@ -356,11 +365,13 @@ void Mesh::GltfSetup()
 
 			float* positions = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
 			size_t dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
-			vertexPositions.clear();
 			for (uint32_t i = 0; i < dataLength; i++)
+			{
 				vertexPositions.push_back(positions[i]);
+				vertexTints.push_back(1.0f);
+			}
 
-			/* ...then get normal data... */
+			/* ...then get NORMAL data... */
 			accessor_ind = primitive.attributes["NORMAL"];
 
 			accessor = m_animData->gltfModel.accessors[accessor_ind];
@@ -369,41 +380,54 @@ void Mesh::GltfSetup()
 
 			float* normals = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
 			dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
-			vertexNormals.clear();
 			for (uint32_t i = 0; i < dataLength; i++)
 				vertexNormals.push_back(normals[i]);
 
-			/* ...and finally the vertex indices. */
+			/* ...then get TEXCOORD data... */
+			accessor_ind = primitive.attributes["TEXCOORD_0"];
+
+			accessor = m_animData->gltfModel.accessors[accessor_ind];
+			bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
+			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+
+			float* uvs = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
+			dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
+			for (uint32_t i = 0; i < dataLength; i++)
+				vertexTextureCoords.push_back(uvs[i]);
+
+			/* ...then the vertex indices. */
 			accessor = m_animData->gltfModel.accessors[primitive.indices];
 			bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
 			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
 
 			uint16_t* indices = reinterpret_cast<uint16_t*>(buffer.data.data() + bufferView.byteOffset);
 			dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
-			vertexIndices.clear();
 			for (uint32_t i = 0; i < dataLength; i++)
 				vertexIndices.push_back(indices[i]);
 
 			/* store the final tallies */
-			m_NumVertices = vertexPositions.size();
-			m_NumIndices = vertexIndices.size();
+			m_NumVertices = static_cast<GLuint>(vertexPositions.size());
+			m_NumIndices = static_cast<GLuint>(vertexIndices.size());
 
-			// is the first joints slot filled?
-			if (primitive.attributes.contains("JOINTS_0"))
+			/* is the first joints slot filled? */
+			if (primitive.attributes.contains("JOINTS_0") && m_hasRig == false)
 			{
-				// this model has a rig
+				/* this model has a rig */
 				m_hasRig = true;
-				// load its animations
-				LoadGltfAnimations();
 
-				break;
+				/* load its animations */
+				LoadGltfAnimations();
 			}
 		}
 	}
-}
-void Mesh::GltfUploadToGPU()
-{
-	
+
+	// Generate Mesh GPU Data
+	if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {
+		Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	return true;
 }
 void Mesh::LoadGltfAnimations()
 {
@@ -418,7 +442,12 @@ void Mesh::LoadGltfAnimations()
 
 void Mesh::SetAnimationPose(std::string animation, float time)
 {
-	
+	if (!m_hasRig)
+		Logger::log(std::format("SetAnimationPose() was called on a mesh without a rig!"
+			"Did you mistakenly assign a non-skinned mesh to a SkinnedMeshRenderer component?"),
+			Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+
+
 }
 
 /**

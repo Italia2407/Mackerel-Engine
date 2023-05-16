@@ -64,8 +64,7 @@ public:
 
 	bool LoadGltf(std::string& a_FilePath, bool isBinary);
 	bool LoadGltfData(std::string& a_FilePath, bool isBinary, tinygltf::Model* gltfModel, tinygltf::TinyGLTF* gltfLoader);
-	void GltfSetup();
-	void GltfUploadToGPU();
+	bool GltfExtractUpload();
 	void LoadGltfAnimations();
 
 	void SetAnimationPose(std::string animation, float time);
