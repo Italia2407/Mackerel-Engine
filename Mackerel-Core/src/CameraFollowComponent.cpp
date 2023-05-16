@@ -53,12 +53,16 @@ namespace MCK::EntitySystem
 		Eigen::Vector3f new_offset = Eigen::Vector3f();
 
 		// get offset values
-		new_offset.x() = data["offsetX"];
-		new_offset.y() = data["offsetY"];
-		new_offset.z() = data["offsetZ"];
+		auto it = data.find("offsetX");
+		if (it != data.end())
+		{
+			new_offset.x() = data["offsetX"];
+			new_offset.y() = data["offsetY"];
+			new_offset.z() = data["offsetZ"];
 
-		// update the offset
-		SetOffset(new_offset);
+			// update the offset
+			SetOffset(new_offset);
+		}
 
 		return true;
 	}
