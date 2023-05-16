@@ -36,6 +36,7 @@
     <ClCompile Include="src\ButtonElement.cpp" />
     <ClCompile Include="src\CacheReader.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
+    <ClCompile Include="src\CameraFollowComponent.cpp" />
     <ClCompile Include="src\CollisionCallbackManager.cpp" />
     <ClCompile Include="src\CollisionComponent.cpp" />
     <ClCompile Include="src\ComponentBase.cpp" />
@@ -459,6 +460,7 @@
     <ClInclude Include="src\ButtonElement.h" />
     <ClInclude Include="src\CacheReader.h" />
     <ClInclude Include="src\CameraComponent.h" />
+    <ClInclude Include="src\CameraFollowComponent.h" />
     <ClInclude Include="src\ColliderTypes.h" />
     <ClInclude Include="src\CollisionCallbackManager.h" />
     <ClInclude Include="src\CollisionCallbackReceipt.h" />

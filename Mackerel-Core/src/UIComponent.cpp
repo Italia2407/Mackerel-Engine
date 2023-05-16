@@ -31,7 +31,7 @@ namespace MCK::EntitySystem
 	*/
 	void UIComponent::OnUpdate()
 	{
-		// Loop through all the children and call Draw() for each of them
+		// Loop through all the elements and call Draw() for each of them
 		for (MCK::UI::UIElement* element : UIElements)
 		{
 			element->Draw();
@@ -45,9 +45,6 @@ namespace MCK::EntitySystem
 	void UIComponent::OnDestroy()
 	{
 		UIElements.clear();
-
-		//Unload Images
-
 	}
 
 	void UIComponent::PausedCallback(int32_t key, MCK::ButtonEvents ButtonEvents)
@@ -188,11 +185,11 @@ namespace MCK::EntitySystem
 		UIElements.push_back(shapeElement);
 	}
 
-	void UIComponent::CreateText(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& text)
+	void UIComponent::CreateText(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& text, const std::function<std::string()>& updateFunc)
 	{
-		MCK::UI::UIElement* shapeElement = MCK::UI::UISystem::CreateText(visible, position, scale, colour, transparency, text);
+		MCK::UI::UIElement* textElement = MCK::UI::UISystem::CreateText(visible, position, scale, colour, transparency, text, updateFunc);
 
-		UIElements.push_back(shapeElement);
+		UIElements.push_back(textElement);
 	}
 
 	MCK::AssetType::Texture* UIComponent::LoadUIImage(const std::string& filename)

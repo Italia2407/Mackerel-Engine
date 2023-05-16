@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 namespace MCK::UI
 {

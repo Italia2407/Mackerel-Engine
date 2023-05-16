@@ -31,7 +31,7 @@ namespace MCK::EntitySystem
 			MCK::UI::ShapeElement::ShapeType type = MCK::UI::ShapeElement::ShapeType::Rectangle, const ImVec2& size = ImVec2(100, 100), const ImVec4& borderColour = ImVec4(1, 1, 1, 1), float borderThickness = 0.0f, MCK::AssetType::Texture* image = nullptr);
 
 		void CreateText(bool visible = true, const ImVec2& position = ImVec2(0, 0), float scale = 1.0f, const ImVec4& colour = ImVec4(1, 1, 1, 1), float transparency = 1.0f, 
-			const std::string& text = "Text");
+			const std::string& text = "Text", const std::function<std::string()>& updateFunc = nullptr);
 
 		MCK::AssetType::Texture* LoadUIImage(const std::string& filename);
 
