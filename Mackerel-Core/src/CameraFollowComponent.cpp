@@ -2,6 +2,10 @@
 
 namespace MCK::EntitySystem 
 {
+	void CameraFollowComponent::SetOffset(Eigen::Vector3f new_offset)
+	{
+		offset = new_offset;
+	}
 
 	void CameraFollowComponent::OnCreate()
 	{
@@ -43,6 +47,19 @@ namespace MCK::EntitySystem
 
 	bool CameraFollowComponent::Deserialise(json data)
 	{
+		// Get Entity's Component Data.
+		data = data["data"];
+
+		Eigen::Vector3f new_offset = Eigen::Vector3f();
+
+		// get offset values
+		new_offset.x() = data["offsetX"];
+		new_offset.y() = data["offsetY"];
+		new_offset.z() = data["offsetZ"];
+
+		// update the offset
+		SetOffset(new_offset);
+
 		return true;
 	}
 

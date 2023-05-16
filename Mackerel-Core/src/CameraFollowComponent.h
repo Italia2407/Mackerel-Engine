@@ -21,6 +21,8 @@ namespace MCK::EntitySystem {
 
 	public:
 
+		void SetOffset(Eigen::Vector3f new_offset);
+
 		void OnCreate() override;
 		void OnUpdate() override;
 		void OnDestroy() override;
