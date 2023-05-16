@@ -46,14 +46,14 @@ void PlatformerApp::Start()
     floorTransform.Scale() = Eigen::Vector3f(1, 1, 1);
 
     //floorMesh = new EntitySystem::MeshRendererComponent(bridgeMesh, m_MonoColourShader, greyMaterial);
-    floorMesh = new EntitySystem::MeshRendererComponent(cubeMesh, m_MonoColourShader, greyMaterial);
+    floorMesh = new EntitySystem::MeshRendererComponent(bridgeMesh, m_MonoColourShader, greyMaterial);
 
     Physics::CreateCollisionShapeInfo floorShape{};
-    floorShape.colliderType = Physics::ColliderTypes::Box;
-    floorShape.width = 0.5;
-    floorShape.height = 0.5;
-    floorShape.depth = 0.5;
-    floorShape.mesh = cubeMesh;
+    floorShape.colliderType = Physics::ColliderTypes::Mesh;
+    floorShape.width = 1;
+    floorShape.height = 1;
+    floorShape.depth = 1;
+    floorShape.mesh = bridgeMesh;
 
     Physics::CollisionComponent* floorCollider = new Physics::CollisionComponent();
     
@@ -84,9 +84,9 @@ void PlatformerApp::Start()
     // Physics
     Physics::CreateCollisionShapeInfo playerShape{};
     playerShape.colliderType = Physics::ColliderTypes::Box;
-    playerShape.width = 0.15f;
-    playerShape.height = 0.15f;
-    playerShape.depth = 0.15f;
+    playerShape.width = 0.3f;
+    playerShape.height = 0.3f;
+    playerShape.depth = 0.3f;
 
     Physics::RigidbodyComponent* playerBody = new Physics::RigidbodyComponent();
     playerBody->SetCollisionShape(playerShape);
