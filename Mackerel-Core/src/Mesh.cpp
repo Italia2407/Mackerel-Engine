@@ -364,8 +364,7 @@ bool Mesh::GltfExtractUpload()
 			tinygltf::Buffer buffer = m_animData->gltfModel.buffers[bufferView.buffer];
 
 			float* positions = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
-			size_t dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
-			for (uint32_t i = 0; i < dataLength; i++)
+			for (uint32_t i = 0; i < accessor.count * 3; i++)
 			{
 				vertexPositions.push_back(positions[i]);
 				vertexTints.push_back(1.0f);
@@ -379,8 +378,7 @@ bool Mesh::GltfExtractUpload()
 			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
 
 			float* normals = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
-			dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
-			for (uint32_t i = 0; i < dataLength; i++)
+			for (uint32_t i = 0; i < accessor.count * 3; i++)
 				vertexNormals.push_back(normals[i]);
 
 			/* ...then get TEXCOORD data... */
@@ -391,8 +389,7 @@ bool Mesh::GltfExtractUpload()
 			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
 
 			float* uvs = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
-			dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
-			for (uint32_t i = 0; i < dataLength; i++)
+			for (uint32_t i = 0; i < accessor.count * 2; i++)
 				vertexTextureCoords.push_back(uvs[i]);
 
 			/* ...then the vertex indices. */
@@ -401,8 +398,7 @@ bool Mesh::GltfExtractUpload()
 			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
 
 			uint16_t* indices = reinterpret_cast<uint16_t*>(buffer.data.data() + bufferView.byteOffset);
-			dataLength = bufferView.byteLength / accessor.ByteStride(bufferView);
-			for (uint32_t i = 0; i < dataLength; i++)
+			for (uint32_t i = 0; i < accessor.count; i++)
 				vertexIndices.push_back(indices[i]);
 
 			/* store the final tallies */
