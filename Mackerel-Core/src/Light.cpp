@@ -13,7 +13,7 @@ Light::Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eige
 	m_ShadowRenderer(nullptr), m_LightParameters(nullptr), m_ShadowRendererParameters(nullptr)
 {
 	// Initialise & Create Shadow Map Renderer Framebuffer
-	m_ShadowRenderer = new FrameBuffer(4096, 4096);
+	m_ShadowRenderer = new FrameBuffer(8192, 8192);
 
 	m_ShadowRenderer->AddDepthBufferTexture();
 	m_ShadowRenderer->CreateFrameBuffer();
@@ -104,9 +104,9 @@ Eigen::Matrix4f DirectionLight::getMVPMatrix(Eigen::Vector3f a_CentrePosition)
 	}
 
 	Eigen::Matrix4f projectionMatrix = Eigen::Matrix4f::Identity(); {
-		projectionMatrix.coeffRef(0, 0) = 2.0f / (100.0f);
+		projectionMatrix.coeffRef(0, 0) = 2.0f / (20.0f);
 
-		projectionMatrix.coeffRef(1, 1) = 2.0f / (100.0f);
+		projectionMatrix.coeffRef(1, 1) = 2.0f / (20.0f);
 
 		projectionMatrix.coeffRef(2, 2) = 1.0f / (100.0f - 0.0001f);
 		projectionMatrix.coeffRef(2, 3) = -(0.0001f) / (100.0f - 0.0001f);
