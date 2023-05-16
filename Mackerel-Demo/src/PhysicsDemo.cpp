@@ -56,6 +56,7 @@ namespace MCK
                 cameraComponent->Position() = Eigen::Vector3f(0, 5, 10);
                 cameraComponent->FrontDirection() = Eigen::Vector3f(0, -.7f, -1).normalized();
                 cameraComponent->UpDirection() = Eigen::Vector3f(0, 1, 0).normalized();
+                cameraFollowComponent = new EntitySystem::CameraFollowComponent();
         #pragma endregion
 
         #pragma region Player Init
@@ -102,10 +103,12 @@ namespace MCK
         floorEntity->AddComponent(floorMesh);
         floorEntity->AddComponent(floorCollider);
 
-        EntitySystem::Entity* cameraEnttiy = scene.CreateEntity();
-        cameraEnttiy->AddComponent(cameraComponent);
+        EntitySystem::Entity* cameraEntity = scene.CreateEntity();
+        cameraEntity->AddComponent(cameraFollowComponent);
+        cameraEntity->AddComponent(cameraComponent);
 
         EntitySystem::Entity* playerEntity = scene.CreateEntity();
+        playerEntity->AddTag("Player");
         playerEntity->AddComponent(playerTransform);
         playerEntity->AddComponent(playerBody);
         playerEntity->AddComponent(playerRenderer);

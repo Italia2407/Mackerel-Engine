@@ -14,6 +14,7 @@
 #include "TransformComponent.h"
 #include "ShaderLibrary.h"
 #include "PerspectiveCamera.h"
+#include "CameraFollowComponent.h"
 #include "Renderer.h"
 #include "MeshRendererComponent.h"
 #include "TimeManager.h"
@@ -68,6 +69,8 @@ public:
 	void Start() override;
 	void Update() override;
 	void End() override;
+
+	std::string GetCurrentRuntime();
 
 	void LoadRenderingDemo();
 	void LoadPhysicsDemo();

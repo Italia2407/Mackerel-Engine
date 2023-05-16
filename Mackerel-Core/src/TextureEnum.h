@@ -18,5 +18,6 @@ enum class TextureEnum
     PlayAnimation = 12,
     PlayAudio = 13,
     PlayPhysics = 14,
-    PlayRendering = 15
+    PlayRendering = 15,
+    Time = 16
 };

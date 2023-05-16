@@ -36,6 +36,7 @@ void FinalDemoApp::Start()
             MCK::AssetType::Texture* physicsIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/ButtonPhysicsSmall.png");
             MCK::AssetType::Texture* quitIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/ButtonQuitSmall.png");
             MCK::AssetType::Texture* menuIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/MenuSmall.png");
+            MCK::AssetType::Texture* hudIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/Time.png");
 
             // Create a vector of callbacks
             std::vector<std::function<void()>> callbacks = {
@@ -76,6 +77,10 @@ void FinalDemoApp::Start()
             uiComponent->CreateShape(true, ImVec2(0, 0), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 1.0f), 0.5f, MCK::UI::ShapeElement::ShapeType::Rectangle, windowSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 0.0f);
             uiComponent->CreateShape(true, menuPosition, 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, menuSize, ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, menuIMG);
 
+            // Create HUD time elapsed
+            uiComponent->CreateShape(false, ImVec2(windowSize.x - 10 - 276, 10), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, ImVec2(276, 100), ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, hudIMG);
+            uiComponent->CreateText(false, ImVec2(windowSize.x - 10 - 276 + 82, 65), 2.0f, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, "", [this]() { return this->GetCurrentRuntime(); });
+
             // Create button elements
             ImVec2 buttonSize = ImVec2(166, 61);
             int buttonOffset = 80; // Offset
@@ -91,6 +96,23 @@ void FinalDemoApp::Start()
         #pragma endregion
 
 }
+
+std::string FinalDemoApp::GetCurrentRuntime() {
+    // Get the up time in seconds.
+    double upTime = MCK::TimeManager::GetUpTime(); 
+
+    // Convert to hours, minutes, and seconds.
+    int hours = static_cast<int>(upTime) / 3600;
+    upTime -= hours * 3600;
+    int minutes = static_cast<int>(upTime) / 60;
+    int seconds = static_cast<int>(upTime) % 60;
+
+    // Format string.
+    char buffer[100];
+    sprintf(buffer, "%02d:%02d:%02d", hours, minutes, seconds);
+    return std::string(buffer);
+}
+
 
 void FinalDemoApp::LoadRenderingDemo()
 {
@@ -162,6 +184,7 @@ void FinalDemoApp::Update()
         Rendering::Renderer::QueueDirectionLight(light);
         scene.UpdateScene();
     }
+
     constantScene.UpdateScene();
 }
 
