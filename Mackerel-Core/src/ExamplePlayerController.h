@@ -5,6 +5,8 @@
 #include "Entity.h"
 #include "InputComponent.h"
 #include "CollisionData.h"
+//#include "LoggingSystem.h"
+
 
 namespace MCK::ExamplePlayer
 {
@@ -21,7 +23,7 @@ namespace MCK::ExamplePlayer
 		EntitySystem::InputComponent* input;
 
 		std::function<void(MCK::Physics::CollisionData)> playerCollisionCallback;
-		MCK::Physics::CollisionCallbackReceipt& receipt;
+		MCK::Physics::CollisionCallbackReceipt receipt;
 
 	public:
 

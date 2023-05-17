@@ -1,6 +1,7 @@
 #include "ExamplePlayerController.h"
 #include "InputComponent.h"
 #include "TimeManager.h"
+#include <iostream>
 
 using namespace MCK::EntitySystem;
 
@@ -8,7 +9,8 @@ namespace MCK::ExamplePlayer
 {
 	void ExamplePlayerController::OnPlayerCollision(MCK::Physics::CollisionData data)
 	{
-		// write to log to test
+		// test collision
+		std::cout << "Collision" << std::endl;
 	}
 
 	void ExamplePlayerController::OnCreate()
