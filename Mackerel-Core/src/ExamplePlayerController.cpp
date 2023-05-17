@@ -30,7 +30,7 @@ namespace MCK::ExamplePlayer
 		playerCollisionCallback = std::bind(&ExamplePlayerController::OnPlayerCollision, this, std::placeholders::_1);
 		receipt = rigidbody->onCollisionHandler.Register(playerCollisionCallback);
 
-		Eigen::Vector3f startPosition = rigidbody->GetPosition();
+		startPosition = rigidbody->GetPosition();
 	}
 
 	void ExamplePlayerController::OnUpdate()

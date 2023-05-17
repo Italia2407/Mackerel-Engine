@@ -55,7 +55,6 @@ namespace MCK
 
                 floorMesh = new EntitySystem::MeshRendererComponent(meshMap["groundMesh"], shaderMap["m_MonoColourShader"], materialMap["greyMaterial"]);
 
-
                 Physics::CreateCollisionShapeInfo floorShape{};
                 floorShape.colliderType = Physics::ColliderTypes::Box;
                 floorShape.width = 6;
