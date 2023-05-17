@@ -8,16 +8,13 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-/* need to be #undef'd for the next two includes... */
-#undef max
-#undef min
-
 /* tinygltf - general gltf loading */
+#undef max
 #define TINYGLTF_IMPLEMENTATION
 #include "tiny_gltf.h"
 
 /* ozz - animation loading and handling */
-#include "ozz/animation/offline/tools/import2ozz.h"
+// #include <ozz/animation/runtime/animation.h>
 
 // Loggin Headers
 #include "LoggingSystem.h"
@@ -305,7 +302,7 @@ bool Mesh::LoadGltf(std::string& a_FilePath, bool isBinary)
 		return false;
 
 	/* determine if the model is animated and extract data */
-	if (!GltfExtractUpload())
+	if (!GltfExtractUpload(a_FilePath))
 		return false;
 
 	return true;
@@ -339,7 +336,7 @@ bool Mesh::LoadGltfData(std::string& a_FilePath, bool isBinary, tinygltf::Model*
 
 	return true;
 }
-bool Mesh::GltfExtractUpload()
+bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 {
 	std::vector<float> vertexTextureCoords;
 	std::vector<float> vertexTints;
@@ -412,7 +409,7 @@ bool Mesh::GltfExtractUpload()
 				m_hasRig = true;
 
 				/* load its animations */
-				LoadGltfAnimations();
+				GltfLoadAnimationData();
 			}
 		}
 	}
@@ -425,8 +422,9 @@ bool Mesh::GltfExtractUpload()
 
 	return true;
 }
-void Mesh::LoadGltfAnimations()
+void Mesh::GltfLoadAnimationData()
 {
+	m_animData->animationIndices.clear();
 	for (auto animation = m_animData->gltfModel.animations.begin(); animation != m_animData->gltfModel.animations.end(); animation++)
 	{
 		m_animData->animationIndices.emplace(
@@ -443,7 +441,7 @@ void Mesh::SetAnimationPose(std::string animation, float time)
 			"Did you mistakenly assign a non-skinned mesh to a SkinnedMeshRenderer component?"),
 			Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 
-
+	
 }
 
 /**

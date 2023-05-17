@@ -1733,9 +1733,6 @@
     <ClInclude Include="ext\tinygltf\tiny_gltf.h">
       <Filter>External Files\tinygltf</Filter>
     </ClInclude>
-    <ClInclude Include="src\STBIinclude.hpp">
-      <Filter>Source Files\Include Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="src\SkinnedMeshData.h">
       <Filter>Source Files\Systems\Rendering\Animation</Filter>
     </ClInclude>

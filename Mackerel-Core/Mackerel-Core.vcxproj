@@ -524,7 +524,6 @@
     <ClInclude Include="src\SkinnedMeshData.h" />
     <ClInclude Include="src\SkinnedMeshRendererComponent.h" />
     <ClInclude Include="src\Sound.h" />
-    <ClInclude Include="src\STBIinclude.hpp" />
     <ClInclude Include="src\TestComponent.h" />
     <ClInclude Include="src\TextElement.h" />
     <ClInclude Include="src\Texture.h" />
