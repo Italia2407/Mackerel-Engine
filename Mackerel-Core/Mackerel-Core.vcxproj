@@ -52,6 +52,7 @@
     <ClCompile Include="src\JsonHelpers.cpp" />
     <ClCompile Include="src\ButtonEvents.h" />
     <ClCompile Include="src\ButtonHandler.cpp" />
+    <ClCompile Include="src\LightComponent.cpp" />
     <ClCompile Include="src\LoggingSystem.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
@@ -470,6 +471,7 @@
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\CoreComponentRegistrar.h" />
     <ClInclude Include="src\CoreComponents.h" />
+    <ClInclude Include="src\LightComponent.h" />
     <ClInclude Include="src\MemoryChunk.h" />
     <ClInclude Include="src\Paths.h" />
     <ClInclude Include="src\RegisteredComponentData.h" />

@@ -143,6 +143,7 @@ bool Mesh::LoadFromFile(std::string a_FilePath)
 	if (!fileReader.ParseFromFile(a_FilePath)) {
 		if (!fileReader.Error().empty()) {
 			Logger::log(std::format("TinyOBJ Reader: {}", fileReader.Error()), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
 		}
 	}
 
