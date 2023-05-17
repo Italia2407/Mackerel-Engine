@@ -55,7 +55,10 @@ private:
 	GLuint m_IndexBufferObject{};
 
 	bool generateVertexObjects(
-		const std::vector<float>& positions, const std::vector<float>& normals, const std::vector<float>& textureCoords, const std::vector<float>& tints, const std::vector<GLuint>& a_Indices);
+		const std::vector<float>& positions, const std::vector<float>& normals,
+		const std::vector<float>& textureCoords, const std::vector<float>& tints,
+		const std::vector<GLuint>& a_Indices,
+		const std::vector<float>& a_Weights = {}, const std::vector<uint32_t> a_Joints = {});
 
 public:
 	bool LoadFromFile(std::string a_FilePath);

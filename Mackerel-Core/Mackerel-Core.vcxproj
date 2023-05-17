@@ -550,6 +550,7 @@
     <None Include="res\Shaders\static\FBDisplayer.glsl" />
     <None Include="res\Shaders\vertexHeader.glsl" />
     <None Include="res\Shaders\vert\projection.vert" />
+    <None Include="res\Shaders\vert\skinned_projection.vert" />
     <None Include="src\MaterialDiagram.cd" />
   </ItemGroup>
   <ItemGroup>

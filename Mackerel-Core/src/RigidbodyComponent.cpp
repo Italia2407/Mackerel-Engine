@@ -18,7 +18,6 @@ namespace MCK::Physics
 	*/
 	void RigidbodyComponent::AddCentralForce(const Eigen::Vector3f force)
 	{
-		printf("%f, %f, %f \n", force.x(), force.y(), force.z());
 		rigidbody->applyCentralForce(btVector3(force.x(), force.y(), force.z()));
 	}
 

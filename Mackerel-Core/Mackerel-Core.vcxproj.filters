@@ -1780,6 +1780,9 @@
     <None Include="build\AssetAcquisition.py">
       <Filter>Source Files\Build</Filter>
     </None>
+    <None Include="res\Shaders\vert\skinned_projection.vert">
+      <Filter>Resource Files\Shaders\Vertex Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\LoggingSystem.conf">
