@@ -33,6 +33,8 @@ public:
 	// Asset Management Functions
 	bool LoadFromFile(std::string a_FilePath);
 
+	GLint GetShaderUniformLocation(std::string a_UniformName);
+
 	// Shader Program Binders
 	bool UseShaderProgram();
 };

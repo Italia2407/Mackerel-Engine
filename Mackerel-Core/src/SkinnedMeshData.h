@@ -2,25 +2,23 @@
 
 #include <cinttypes>
 #include <string>
-#include <unordered_map>
+#include <map>
 
 #undef max
 #define TINYGLTF_IMPLEMENTATION
 #include "tiny_gltf.h"
 
 #include <ozz/animation/runtime/skeleton.h>
+#include <ozz/animation/runtime/animation.h>
 
 namespace MCK
 {
-	struct MeshNode
-	{
-		MeshNode* parent = nullptr;
-		std::vector<MeshNode*> children{};
-	};
 	struct SkinnedMeshData
 	{
 		tinygltf::Model gltfModel;
-		std::unordered_map<std::string, uint16_t> animationIndices = {};
+
+		std::map<std::string, ozz::animation::Animation> animations = {};
+		uint32_t max_channels = 0;
 
 		ozz::animation::Skeleton skeleton;
 	};

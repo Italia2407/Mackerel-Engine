@@ -39,10 +39,10 @@ public:
 
 	// Gltf Data
 	SkinnedMeshData* m_animData = nullptr;
+	bool m_hasRig = false;
 
 private:
 	std::string m_Name = "";
-	bool m_hasRig = false;
 
 	// Mesh Properties
 	GLuint m_NumVertices{};

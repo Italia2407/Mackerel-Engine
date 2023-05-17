@@ -195,6 +195,11 @@ bool Shader::LoadFromFile(std::string a_FilePath)
 	return true;
 }
 
+GLint Shader::GetShaderUniformLocation(std::string a_UniformName)
+{
+	return glGetUniformLocation(m_ShaderProgramID, a_UniformName.c_str());
+}
+
 bool Shader::UseShaderProgram()
 {
 	if (m_ShaderProgramID == GL_ZERO)

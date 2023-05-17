@@ -71,7 +71,7 @@
     <ClCompile Include="src\ShaderLibrary.cpp" />
     <ClCompile Include="src\Context.cpp" />
     <ClCompile Include="src\ShapeElement.cpp" />
-    <ClCompile Include="src\SkinnedMeshRendererComponenet.cpp" />
+    <ClCompile Include="src\SkinnedMeshRendererComponent.cpp" />
     <ClCompile Include="src\TestComponent.cpp" />
     <ClCompile Include="src\TextElement.cpp" />
     <ClCompile Include="src\Texture.cpp" />

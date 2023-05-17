@@ -647,13 +647,14 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 bool Mesh::GltfLoadAnimationData(std::string& a_FilePath)
 {
 	/* acquire animations */
-	m_animData->animationIndices.clear();
+	m_animData->animations.clear();
 	for (auto animation = m_animData->gltfModel.animations.begin(); animation != m_animData->gltfModel.animations.end(); animation++)
 	{
-		m_animData->animationIndices.emplace(
-			std::pair<std::string, uint16_t>(
-				(*animation).name,
-				static_cast<uint16_t>(animation - m_animData->gltfModel.animations.begin())));
+		m_animData->animations.emplace(
+			std::pair<std::string, ozz::animation::Animation>((*animation).name, ozz::animation::Animation()));
+
+		if ((*animation).channels.size() > m_animData->max_channels)
+			m_animData->max_channels = (*animation).channels.size();
 	}
 
 	/* load skeleton */
@@ -669,17 +670,23 @@ bool Mesh::GltfLoadAnimationData(std::string& a_FilePath)
 
 	archive >> m_animData->skeleton;
 
+	/* load animations */
+	for (auto animation = m_animData->animations.begin(); animation != m_animData->animations.end(); animation++)
+	{
+		std::string animPath = a_FilePath.substr(0, a_FilePath.find_last_of(".")) + "_" + (*animation).first + ".ozz";
+		ozz::io::File animFile(animPath.c_str(), "rb");
+		ozz::io::IArchive animArchive(&animFile);
+
+		if (!animArchive.TestTag<ozz::animation::Animation>())
+		{
+			Logger::log("Animation .ozz file does not contain an animation!", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+
+		animArchive >> m_animData->animations[(*animation).first];
+	}
+
 	return true;
-}
-
-void Mesh::SetAnimationPose(std::string animation, float time)
-{
-	if (!m_hasRig)
-		Logger::log(std::format("SetAnimationPose() was called on a mesh without a rig!"
-			"Did you mistakenly assign a non-skinned mesh to a SkinnedMeshRenderer component?"),
-			Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
-
-	
 }
 
 int Mesh::NumberOfSoaJoints()

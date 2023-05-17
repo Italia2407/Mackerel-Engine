@@ -8,7 +8,7 @@
     [
       {
         "clip" : "*",
-        "filename" : "*.ozz"
+        "filename" : "three_bone_*.ozz"
       }
     ]
 }
