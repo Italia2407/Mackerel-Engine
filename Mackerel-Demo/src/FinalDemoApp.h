@@ -66,6 +66,7 @@ public:
 	void End() override;
 
 	std::string GetCurrentRuntime();
+	std::string GetCurrentFPS();
 
 	void LoadRenderingDemo();
 	void LoadPhysicsDemo();
