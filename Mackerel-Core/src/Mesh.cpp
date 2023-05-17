@@ -14,7 +14,9 @@
 #include "tiny_gltf.h"
 
 /* ozz - animation loading and handling */
-// #include <ozz/animation/runtime/animation.h>
+#include <ozz/animation/runtime/animation.h>
+#include <ozz/base/io/stream.h>
+#include <ozz/base/io/archive.h>
 
 // Loggin Headers
 #include "LoggingSystem.h"
@@ -409,7 +411,8 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 				m_hasRig = true;
 
 				/* load its animations */
-				GltfLoadAnimationData();
+				if (!GltfLoadAnimationData(a_FilePath))
+					return false;
 			}
 		}
 	}
@@ -422,8 +425,9 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 
 	return true;
 }
-void Mesh::GltfLoadAnimationData()
+bool Mesh::GltfLoadAnimationData(std::string& a_FilePath)
 {
+	/* acquire animations */
 	m_animData->animationIndices.clear();
 	for (auto animation = m_animData->gltfModel.animations.begin(); animation != m_animData->gltfModel.animations.end(); animation++)
 	{
@@ -432,6 +436,21 @@ void Mesh::GltfLoadAnimationData()
 				(*animation).name,
 				static_cast<uint16_t>(animation - m_animData->gltfModel.animations.begin())));
 	}
+
+	/* load skeleton */
+	std::string ozzPath = a_FilePath.substr(0, a_FilePath.find_last_of(".")) + ".ozz";
+	ozz::io::File skeleFile(ozzPath.c_str(), "rb");
+	ozz::io::IArchive archive(&skeleFile);
+
+	if (!archive.TestTag<ozz::animation::Skeleton>())
+	{
+		Logger::log("Mesh .ozz file does not contain a skeleton!", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	archive >> m_animData->skeleton;
+
+	return true;
 }
 
 void Mesh::SetAnimationPose(std::string animation, float time)
@@ -442,6 +461,33 @@ void Mesh::SetAnimationPose(std::string animation, float time)
 			Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 
 	
+}
+
+int Mesh::NumberOfSoaJoints()
+{
+	if (m_hasRig)
+	{
+		assert(m_animData != nullptr);
+
+		return m_animData->skeleton.num_soa_joints();
+	}
+	else
+	{
+		return 0;
+	}
+}
+int Mesh::NumberOfModelJoints()
+{
+	if (m_hasRig)
+	{
+		assert(m_animData != nullptr);
+
+		return m_animData->skeleton.num_joints();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 /**

@@ -65,9 +65,12 @@ public:
 	bool LoadGltf(std::string& a_FilePath, bool isBinary);
 	bool LoadGltfData(std::string& a_FilePath, bool isBinary, tinygltf::Model* gltfModel, tinygltf::TinyGLTF* gltfLoader);
 	bool GltfExtractUpload(std::string& a_FilePath);
-	void GltfLoadAnimationData();
+	bool GltfLoadAnimationData(std::string& a_FilePath);
 
 	void SetAnimationPose(std::string animation, float time);
+
+	int NumberOfSoaJoints();
+	int NumberOfModelJoints();
 
 	bool BindVertexArrayObject();
 };

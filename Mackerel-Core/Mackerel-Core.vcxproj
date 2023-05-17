@@ -754,7 +754,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\STBI;$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;$(SolutionDIR)\Mackerel-Core\ext\ozz;$(SolutionDIR)\Mackerel-Core\ext\tinygltf</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\STBI;$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;$(SolutionDIR)\Mackerel-Core\ext\ozz\include;$(SolutionDIR)\Mackerel-Core\ext\tinygltf</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -767,10 +767,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;fmodL_vc.lib;fmodstudioL_vc.lib;</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;fmodL_vc.lib;fmodstudioL_vc.lib;glfw_d.lib;gtest_d.lib;json_d.lib;ozz_animation_d.lib;ozz_animation_offline_d.lib;ozz_animation_tools_d.lib;ozz_base_d.lib;ozz_geometry_d.lib;ozz_options_d.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\lib-vc2022;$(SolutionDIR)\Mackerel-Core\ext\FMOD\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\lib-vc2022;$(SolutionDIR)\Mackerel-Core\ext\FMOD\Lib;$(SolutionDIR)\Mackerel-Core\ext\ozz\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
       <Command>python "$(SolutionDir)Mackerel-Core\build\AssetAcquisition.py" "$(SolutionDir)\" "$(SolutionDir)caches" "$(SolutionDir)Mackerel-Core\src" -i x64 x86 ext -r res</Command>
