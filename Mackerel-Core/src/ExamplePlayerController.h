@@ -4,6 +4,7 @@
 #include "TransformComponent.h"
 #include "Entity.h"
 #include "InputComponent.h"
+#include "CollisionData.h"
 
 namespace MCK::ExamplePlayer
 {
@@ -18,7 +19,13 @@ namespace MCK::ExamplePlayer
 		EntitySystem::TransformComponent* transform;
 		Physics::RigidbodyComponent* rigidbody;
 		EntitySystem::InputComponent* input;
+
+		std::function<void(MCK::Physics::CollisionData)> playerCollisionCallback;
+		MCK::Physics::CollisionCallbackReceipt& receipt;
+
 	public:
+
+		void OnPlayerCollision(MCK::Physics::CollisionData data);
 
 		void OnCreate() override;
 		void OnUpdate() override;

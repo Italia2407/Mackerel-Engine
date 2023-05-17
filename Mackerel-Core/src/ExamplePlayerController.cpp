@@ -6,11 +6,19 @@ using namespace MCK::EntitySystem;
 
 namespace MCK::ExamplePlayer
 {
+	void ExamplePlayerController::OnPlayerCollision(MCK::Physics::CollisionData data)
+	{
+		// write to log to test
+	}
+
 	void ExamplePlayerController::OnCreate()
 	{
 		transform = entity->GetComponent<TransformComponent>();
 		rigidbody = entity->GetComponent<Physics::RigidbodyComponent>();
 		input = entity->GetComponent<InputComponent>();
+
+		playerCollisionCallback = std::bind(&ExamplePlayerController::OnPlayerCollision, this, std::placeholders::_1);
+		receipt = rigidbody->onCollisionHandler.Register(playerCollisionCallback);
 	}
 
 	void ExamplePlayerController::OnUpdate()
@@ -61,7 +69,7 @@ namespace MCK::ExamplePlayer
 
 	void ExamplePlayerController::OnDestroy() 
 	{
-
+		rigidbody->onCollisionHandler.Deregister(receipt);
 	}
 
 	bool ExamplePlayerController::Deserialise(json data)
