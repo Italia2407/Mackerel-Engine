@@ -327,9 +327,6 @@
     <ClCompile Include="src\UISystem.cpp">
       <Filter>Source Files\Systems\User Interface</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImageLoader.cpp">
-      <Filter>Source Files\Systems\User Interface</Filter>
-    </ClCompile>
     <ClCompile Include="src\UIElement.cpp">
       <Filter>Source Files\Systems\User Interface</Filter>
     </ClCompile>
@@ -1672,9 +1669,6 @@
     </ClInclude>
     <ClInclude Include="src\ShapeElement.h">
       <Filter>Source Files\Systems\User Interface\UI Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImageLoader.h">
-      <Filter>Source Files\Systems\User Interface</Filter>
     </ClInclude>
     <ClInclude Include="src\UISystem.h">
       <Filter>Source Files\Systems\User Interface</Filter>
