@@ -17,9 +17,11 @@ namespace MCK::ExamplePlayer
 		float horizontalDamping =1.1f;
 		float deceleration = 90; 
 		float jumpVel = 8;
+		double lastGroundTime;
 
 		EntitySystem::TransformComponent* transform;
 		Physics::RigidbodyComponent* rigidbody;
+		Eigen::Vector3f startPosition;
 		EntitySystem::InputComponent* input;
 
 		std::function<void(MCK::Physics::CollisionData)> playerCollisionCallback;

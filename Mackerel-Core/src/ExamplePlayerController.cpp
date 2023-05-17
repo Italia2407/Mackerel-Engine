@@ -11,6 +11,14 @@ namespace MCK::ExamplePlayer
 	{
 		// test collision
 		std::cout << "Collision" << std::endl;
+
+		if (data.collidedEntity->HasTag("death"))
+		{
+			rigidbody->SetPosition(startPosition);
+			std::cout << "Player died: Respawning" << std::endl;
+		}
+		else
+			lastGroundTime = TimeManager::GetUpTime();
 	}
 
 	void ExamplePlayerController::OnCreate()
@@ -21,6 +29,8 @@ namespace MCK::ExamplePlayer
 
 		playerCollisionCallback = std::bind(&ExamplePlayerController::OnPlayerCollision, this, std::placeholders::_1);
 		receipt = rigidbody->onCollisionHandler.Register(playerCollisionCallback);
+
+		Eigen::Vector3f startPosition = rigidbody->GetPosition();
 	}
 
 	void ExamplePlayerController::OnUpdate()
@@ -62,7 +72,7 @@ namespace MCK::ExamplePlayer
 		}
 	
 		// Jump
-		if (input->JumpPressed())
+		if (input->JumpPressed() && (TimeManager::GetUpTime() - lastGroundTime < 0.2))
 		{
 			velocity.y() = jumpVel;
 			rigidbody->SetLinearVelocity(velocity);
