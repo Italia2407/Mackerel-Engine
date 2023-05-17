@@ -16,8 +16,8 @@
 #include <format>
 
 namespace MCK::Rendering {
-RenderBatch::RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader) :
-	m_Mesh(mesh), m_Shader(shader) {}
+RenderBatch::RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader, bool isAnimated) :
+	m_Mesh(mesh), m_Shader(shader), isAnimated(isAnimated) {}
 RenderBatch::~RenderBatch()
 {
 	// Clear all Mesh Instances
@@ -45,7 +45,7 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_Dept
 	}
 
 	// Bind Mesh's VAO to the GPU
-	if (!m_Mesh->BindVertexArrayObject()) {
+	if (!m_Mesh->BindVertexArrayObject(isAnimated)) {
 		Logger::log("Cannot Bind Mesh's VAO", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}

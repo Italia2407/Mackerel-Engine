@@ -5,6 +5,8 @@
 #include "ShaderEnum.h"
 #include "MaterialEnum.h"
 
+#include <list>
+
 // ozz animation library
 #define OZZ_BULLET_COMPATIBILITY
 #include <ozz/animation/runtime/animation.h>
@@ -36,6 +38,18 @@ namespace MCK::EntitySystem {
 
 
 	private:
+		
+		// Data used for animation queue
+		ozz::animation::Animation* default_anim = nullptr;
+		struct AnimationItem
+		{
+			ozz::animation::Animation* animation = nullptr;
+			std::string animation_name = "";
+			float offset_time = 0.0f;
+			bool loop = false;
+		};
+		std::list<AnimationItem> animationQueue{};
+
 		// Reference to Entity Transform Component
 		TransformComponent* m_EntityTransformComponent;
 
@@ -53,11 +67,17 @@ namespace MCK::EntitySystem {
 		std::vector<ozz::math::SoaTransform> localTransforms = {};
 		std::vector<ozz::math::Float4x4> modelTransforms = {};
 		GLint jointTransformShaderLoc{};
+		double start_time = 0.0;
+		double target_fps = 30.0;
+		std::function<void()> do_frame_callback{};
 
 		ozz::animation::SamplingJob smplJob;
 		ozz::animation::LocalToModelJob ltmJob;
 
 		void CreateAndUploadJointTransforms();
+		void DefaultPose(float time = 0.0f);
+		void DoFrame();
+		bool SetAnimationPose(ozz::animation::Animation* animation, float time, bool* out_finished, bool loop = false);
 
 	public:
 
@@ -68,6 +88,6 @@ namespace MCK::EntitySystem {
 		bool Deserialise(json a_Data) override;
 
 		void PlayAnimation(std::string animation, float time = 0.0f, bool interrupt = true, bool queue = false, bool loop = false);
-		bool SetAnimationPose(std::string animation, float time);
+		bool SetDefaultAnimation(std::string animation);
 	};
 }

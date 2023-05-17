@@ -96,7 +96,7 @@ private:
 	bool renderDeferredBuffer();
 
 	// Functions to tell the Renderer what needs to be Rendered
-	bool queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material);
+	bool queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, bool a_isAnimated = false);
 
 	bool queuePointLight(PointLight* pointLight);
 	bool queueDirectionLight(DirectionLight* directionLight);
@@ -121,7 +121,7 @@ public:
 
 	static bool QueueMeshInstance(const EntitySystem::TransformComponent& a_Transform,
 		AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material,
-		bool a_HasTransparency);
+		bool a_HasTransparency, bool a_isAnimated = false);
 
 	static bool QueuePointLight(PointLight* a_PointLight);
 	static bool QueueDirectionLight(DirectionLight* a_DirectionLight);

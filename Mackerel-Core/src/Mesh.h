@@ -50,6 +50,7 @@ private:
 
 	// Mesh GPU Data
 	GLuint m_VertexArrayObject{};
+	GLuint m_SkinnedVertexArrayObject{};
 
 	std::vector<GLuint> m_VertexBufferObjects{};
 	GLuint m_IndexBufferObject{};
@@ -75,6 +76,6 @@ public:
 	int NumberOfSoaJoints();
 	int NumberOfModelJoints();
 
-	bool BindVertexArrayObject();
+	bool BindVertexArrayObject(bool withAnimation = false);
 };
 }

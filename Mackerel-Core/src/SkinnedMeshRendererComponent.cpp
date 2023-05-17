@@ -4,6 +4,7 @@
 
 // System Headers
 #include "Renderer.h"
+#include "TimeManager.h"
 
 #include <format>
 
@@ -56,6 +57,122 @@ namespace MCK::EntitySystem {
 			reinterpret_cast<float*>(modelTransforms.data()));
 	}
 
+	void SkinnedMeshRendererComponent::DefaultPose(float time)
+	{
+		if (default_anim == nullptr)
+		{
+			for (uint32_t i = 0; i < localTransforms.size(); i++)
+				localTransforms[i] =ozz::math::SoaTransform();
+
+			ltmJob.input = ozz::span<const ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
+			ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
+			ltmJob.Run();
+
+			glUniformMatrix4fv(jointTransformShaderLoc,
+				static_cast<GLsizei>(modelTransforms.size()),
+				GL_TRUE,
+				reinterpret_cast<float*>(modelTransforms.data()));
+		}
+		else
+		{
+			bool finished = false;
+			SetAnimationPose(default_anim, time, &finished, true);
+		}
+	}
+
+	void SkinnedMeshRendererComponent::DoFrame()
+	{
+		/* set timer for next animation update */
+		TimeManager::setScaledTimer(std::pair<double, std::function<void()>>(1.0f / target_fps, do_frame_callback));
+
+		/* calculate run time of the current animation */
+		double time = TimeManager::GetScaledUpTime();
+		double progress = time - start_time;
+
+		/* are we currently playing an animation? */
+		if (animationQueue.empty())
+		{
+			DefaultPose();
+		}
+		else
+		{
+			bool is_finished = false;
+			SetAnimationPose(animationQueue.front().animation, static_cast<float>(progress) + animationQueue.front().offset_time, &is_finished, animationQueue.front().loop);
+
+			/* is this animation finished */
+			if (is_finished)
+			{
+				if (animationQueue.size() > 1 || animationQueue.front().loop == false) /* if the last item in the list is set to loop, loop it */
+				{
+					/* animation is finished */
+					animationQueue.pop_front();
+					
+					/* setup next animation */
+					while (animationQueue.empty() == false)
+					{
+						/* is the next queued animation valid? */
+						if (m_Mesh->m_animData->animations.contains(animationQueue.front().animation_name))
+						{
+							/* yes, set it up so it can be played next animation frame */
+							animationQueue.front().animation = &m_Mesh->m_animData->animations[animationQueue.front().animation_name];
+							break;
+						}
+						else
+						{
+							/* no, discard it */
+							animationQueue.pop_front();
+						}
+					}
+				}	
+			}
+		}
+	}
+
+	bool SkinnedMeshRendererComponent::SetAnimationPose(ozz::animation::Animation* animation, float time, bool* out_finished, bool loop)
+	{
+		//if (!m_Mesh->m_hasRig)
+		//	Logger::log(std::format("SetAnimationPose() was called with a mesh without a rig!"
+		//		"Did you mistakenly assign a non-skinned mesh to a SkinnedMeshRenderer component?"),
+		//		Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+
+		ozz::animation::SamplingJob::Context smplContext(m_Mesh->m_animData->max_channels);
+
+		float ratio = time / smplJob.animation->duration();
+		if (ratio > 1.0f)
+		{
+			ratio = (loop) ? fmod(ratio, 1.0f) : 1.0f;
+			*out_finished = true;
+		}
+		else
+		{
+			*out_finished = false;
+		}
+
+		smplJob.animation = animation;
+		smplJob.ratio = ratio;
+		smplJob.context = &smplContext;
+		smplJob.output = ozz::span<ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
+
+		if (smplJob.Validate())
+			smplJob.Run();
+		else
+		{
+			*out_finished = false;
+			return false;
+		}
+
+		ltmJob.input = ozz::span<const ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
+		ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
+		ltmJob.Run();
+
+		glUniformMatrix4fv(jointTransformShaderLoc,
+			static_cast<GLsizei>(modelTransforms.size()),
+			GL_TRUE,
+			reinterpret_cast<float*>(modelTransforms.data()));
+
+		return true;
+	}
+
 	void SkinnedMeshRendererComponent::OnCreate()
 	{
 		// Load Mesh Renderer Assets
@@ -80,10 +197,16 @@ namespace MCK::EntitySystem {
 				Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		}
 
-		// Create buffers needed for animation
+		/* Create buffers needed for animation */
 		assert(m_Mesh->m_hasRig);
 		jointTransformShaderLoc = m_Shader->GetShaderUniformLocation("joint_data");
 		CreateAndUploadJointTransforms();
+
+		/* create animation update callback */
+		do_frame_callback = std::bind(&SkinnedMeshRendererComponent::DoFrame, this);
+
+		/* start the animation loop */
+		TimeManager::setScaledTimer(std::pair<double, std::function<void()>>(1.0f / target_fps, do_frame_callback));
 	}
 	void SkinnedMeshRendererComponent::OnDestroy()
 	{
@@ -92,7 +215,7 @@ namespace MCK::EntitySystem {
 	void SkinnedMeshRendererComponent::OnUpdate()
 	{
 		// Queue the Data for the Rendering
-		Rendering::Renderer::QueueMeshInstance(*m_EntityTransformComponent, m_Mesh, m_Shader, m_Material, false);
+		Rendering::Renderer::QueueMeshInstance(*m_EntityTransformComponent, m_Mesh, m_Shader, m_Material, false, true);
 	}
 
 	bool SkinnedMeshRendererComponent::Deserialise(json a_Data)
@@ -114,38 +237,27 @@ namespace MCK::EntitySystem {
 
 	void SkinnedMeshRendererComponent::PlayAnimation(std::string animation, float time, bool interrupt, bool queue, bool loop)
 	{
+		if (interrupt == true)
+			/* if we're interrupting, clear the queue. this guarantees it will be played next animation frame */
+			animationQueue.clear();
+		else if (animationQueue.empty() == false && queue == false)
+			/* if there are queued animations and the animation is set to not be enqueued, discard it */
+			return;
+
+		/* add the new animation to the queue (it will be the only animation in the queue if interrupt is true) */
+		animationQueue.push_back({});
+		animationQueue.back().animation_name = animation;
+		animationQueue.back().offset_time = time;
+		animationQueue.back().loop = loop;
 	}
-
-	bool SkinnedMeshRendererComponent::SetAnimationPose(std::string animation, float time)
+	bool SkinnedMeshRendererComponent::SetDefaultAnimation(std::string animation)
 	{
-		//if (!m_Mesh->m_hasRig)
-		//	Logger::log(std::format("SetAnimationPose() was called with a mesh without a rig!"
-		//		"Did you mistakenly assign a non-skinned mesh to a SkinnedMeshRenderer component?"),
-		//		Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
-
-		assert(m_Mesh->m_animData->animations.contains(animation));
-
-		ozz::animation::SamplingJob::Context smplContext(m_Mesh->m_animData->max_channels);
-
-		smplJob.animation = &(m_Mesh->m_animData->animations[animation]);
-		smplJob.ratio = fmod((time / smplJob.animation->duration()), 1.0f);
-		smplJob.context = &smplContext;
-		smplJob.output = ozz::span<ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
-
-		if (smplJob.Validate())
-			smplJob.Run();
+		if (m_Mesh->m_animData->animations.contains(animation))
+		{
+			default_anim = &m_Mesh->m_animData->animations[animation];
+			return true;
+		}
 		else
 			return false;
-
-		ltmJob.input = ozz::span<const ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
-		ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
-		ltmJob.Run();
-
-		glUniformMatrix4fv(jointTransformShaderLoc,
-			static_cast<GLsizei>(modelTransforms.size()),
-			GL_TRUE,
-			reinterpret_cast<float*>(modelTransforms.data()));
-
-		return true;
 	}
 }

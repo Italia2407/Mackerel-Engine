@@ -151,6 +151,51 @@ bool Mesh::generateVertexObjects(
 
 	if (m_hasRig)
 	{
+		// Unbind Global OpenGL States
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		// Create & Bind VAO
+		glGenVertexArrays(1, &m_SkinnedVertexArrayObject);
+		glBindVertexArray(m_SkinnedVertexArrayObject);
+
+		// Create VBOs
+		glCreateBuffers(4, m_VertexBufferObjects.data());
+
+		// Create & Bind Positions VBO
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[0]);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Positions.size(), a_Positions.data(), GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+
+		// Bind Normals VBO
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[1]);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Normals.size(), &a_Normals[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 3), nullptr);
+
+		// Bind Texture Coords VBO
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[2]);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_TextureCoords.size(), &a_TextureCoords[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 2), nullptr);
+
+		// Bind Tints VBO
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[3]);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Tints.size(), &a_Tints[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 3), nullptr);
+
+		// Bind IBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferObject);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * a_Indices.size(), &a_Indices[0], GL_STATIC_DRAW);
+
+		// Bind Weights and Joints VBOs
 		m_VertexBufferObjects.push_back({});
 		m_VertexBufferObjects.push_back({});
 
@@ -630,18 +675,19 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 	// Generate Mesh GPU Data
 	if (m_hasRig)
 	{
+		/* build rigged vao */
 		if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices, vertexWeights, vertexJoints)) {
 			Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
 		}
 	}
-	else
-	{
-		if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {
-			Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-			return false;
-		}
+
+	/* build static vao */
+	if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {
+		Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
 	}
+
 
 	return true;
 }
@@ -722,15 +768,29 @@ int Mesh::NumberOfModelJoints()
  * 
  * \return Whether the Mesh's VAO could be Bound
  */
-bool Mesh::BindVertexArrayObject()
+bool Mesh::BindVertexArrayObject(bool withAnimation)
 {
-	// Bind the Vertex Array Object
-	if (m_VertexArrayObject == GL_ZERO) {
-		Logger::log("Vertex Array Object does not Exist", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-		return false;
-	}
-	glBindVertexArray(m_VertexArrayObject);
+	if (withAnimation)
+	{
+		// Bind the Rigged Vertex Array Object
+		if (m_SkinnedVertexArrayObject == GL_ZERO) {
+			Logger::log("Vertex Array Object does not Exist", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+		glBindVertexArray(m_SkinnedVertexArrayObject);
 
-	return true;
+		return true;
+	}
+	else
+	{
+		// Bind the Static Vertex Array Object
+		if (m_VertexArrayObject == GL_ZERO) {
+			Logger::log("Vertex Array Object does not Exist", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+		glBindVertexArray(m_VertexArrayObject);
+
+		return true;
+	}
 }
 }
