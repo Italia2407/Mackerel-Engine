@@ -1994,6 +1994,7 @@ OZZ_INLINE ozz::math::Float4x4 operator-(const ozz::math::Float4x4& _a,
 }  // namespace ozz
 
 #if !defined(OZZ_DISABLE_SSE_NATIVE_OPERATORS)
+#ifndef OZZ_BULLET_COMPATIBILITY
 OZZ_INLINE ozz::math::SimdFloat4 operator+(ozz::math::_SimdFloat4 _a,
                                            ozz::math::_SimdFloat4 _b) {
   return _mm_add_ps(_a, _b);
@@ -2012,6 +2013,7 @@ OZZ_INLINE ozz::math::SimdFloat4 operator*(ozz::math::_SimdFloat4 _a,
                                            ozz::math::_SimdFloat4 _b) {
   return _mm_mul_ps(_a, _b);
 }
+#endif
 
 OZZ_INLINE ozz::math::SimdFloat4 operator/(ozz::math::_SimdFloat4 _a,
                                            ozz::math::_SimdFloat4 _b) {

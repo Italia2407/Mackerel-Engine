@@ -1,0 +1,1 @@
+python "D:\Storage\School Work\Team Mackerel\Mackerel-Engine\Mackerel-Core\build\AssetAcquisition.py" "D:\Storage\School Work\Team Mackerel\Mackerel-Engine\\" "D:\Storage\School Work\Team Mackerel\Mackerel-Engine\caches" "D:\Storage\School Work\Team Mackerel\Mackerel-Engine\Mackerel-Core\src" -i x64 x86 ext -r res

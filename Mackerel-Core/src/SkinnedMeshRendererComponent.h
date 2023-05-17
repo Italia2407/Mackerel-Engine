@@ -6,7 +6,10 @@
 #include "MaterialEnum.h"
 
 // ozz animation library
+#define OZZ_BULLET_COMPATIBILITY
 #include <ozz/animation/runtime/animation.h>
+#include <ozz/animation/runtime/local_to_model_job.h>
+#include <ozz/animation/runtime/sampling_job.h>
 #include <ozz/base/maths/soa_float4x4.h>
 #include <ozz/base/maths/soa_transform.h>
 

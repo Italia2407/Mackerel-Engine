@@ -23,10 +23,6 @@
 // Skinned Mesh Data
 #include "SkinnedMeshData.h"
 
-// ozz animation library
-#include <ozz/animation/runtime/sampling_job.h>
-#include <ozz/animation/runtime/local_to_model_job.h>
-
 namespace MCK::EntitySystem {
 
 	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent() :
@@ -54,7 +50,10 @@ namespace MCK::EntitySystem {
 		ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
 		ltmJob.Run();
 
-		glUniformMatrix4fv(jointTransformShaderLoc, modelTransforms.size(), GL_TRUE, reinterpret_cast<float*>(modelTransforms.data()));
+		glUniformMatrix4fv(jointTransformShaderLoc,
+			static_cast<GLsizei>(modelTransforms.size()),
+			GL_TRUE,
+			reinterpret_cast<float*>(modelTransforms.data()));
 	}
 
 	void SkinnedMeshRendererComponent::OnCreate()
@@ -142,7 +141,10 @@ namespace MCK::EntitySystem {
 		ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
 		ltmJob.Run();
 
-		glUniformMatrix4fv(jointTransformShaderLoc, modelTransforms.size(), GL_TRUE, reinterpret_cast<float*>(modelTransforms.data()));
+		glUniformMatrix4fv(jointTransformShaderLoc,
+			static_cast<GLsizei>(modelTransforms.size()),
+			GL_TRUE,
+			reinterpret_cast<float*>(modelTransforms.data()));
 
 		return true;
 	}

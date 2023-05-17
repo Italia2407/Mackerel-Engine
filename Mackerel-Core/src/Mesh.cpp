@@ -14,6 +14,7 @@
 #include "tiny_gltf.h"
 
 /* ozz - animation loading and handling */
+#define OZZ_BULLET_COMPATIBILITY
 #include <ozz/animation/runtime/animation.h>
 #include <ozz/base/io/stream.h>
 #include <ozz/base/io/archive.h>
@@ -654,7 +655,7 @@ bool Mesh::GltfLoadAnimationData(std::string& a_FilePath)
 			std::pair<std::string, ozz::animation::Animation>((*animation).name, ozz::animation::Animation()));
 
 		if ((*animation).channels.size() > m_animData->max_channels)
-			m_animData->max_channels = (*animation).channels.size();
+			m_animData->max_channels = static_cast<uint32_t>((*animation).channels.size());
 	}
 
 	/* load skeleton */
