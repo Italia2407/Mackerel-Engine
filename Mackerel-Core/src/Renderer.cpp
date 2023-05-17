@@ -588,7 +588,7 @@ bool Renderer::renderDeferredBuffer()
 		{	auto light = _pointLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
+			if (!light || !light->UseLight(m_CentrePosition)) {
 				Logger::log(std::format("Could not Load Point Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
@@ -614,7 +614,7 @@ bool Renderer::renderDeferredBuffer()
 			auto light = _directionLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
+			if (!light || !light->UseLight(m_CentrePosition)) {
 				Logger::log(std::format("Could not Load Direction Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
@@ -640,7 +640,7 @@ bool Renderer::renderDeferredBuffer()
 			auto light = _spotLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
+			if (!light || !light->UseLight(m_CentrePosition)) {
 				Logger::log(std::format("Could not Load Spot Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
