@@ -770,7 +770,7 @@ int Mesh::NumberOfModelJoints()
  */
 bool Mesh::BindVertexArrayObject(bool withAnimation)
 {
-	if (withAnimation)
+	if (withAnimation && m_hasRig)
 	{
 		// Bind the Rigged Vertex Array Object
 		if (m_SkinnedVertexArrayObject == GL_ZERO) {
