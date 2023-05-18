@@ -123,14 +123,15 @@ namespace MCK::Physics
 			transform->Rotation() = Eigen::Quaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
 		else
 		{
-			rbTransform.setRotation(btQuaternion
+			btTransform trueTransform = rigidbody->getCenterOfMassTransform();
+			trueTransform.setRotation(btQuaternion
 				(
 					transform->Rotation().x(),
 					transform->Rotation().y(),
 					transform->Rotation().z(),
 					transform->Rotation().w()
 				));
-			rigidbody->setCenterOfMassTransform(rbTransform);
+			rigidbody->setCenterOfMassTransform(trueTransform);
 		}
 	}
 
@@ -223,8 +224,9 @@ namespace MCK::Physics
 		rigidbody->setUserPointer(static_cast<void*>(this));
 		rigidbody->setActivationState(DISABLE_DEACTIVATION);
 		rigidbody->setMotionState(motionState);
+		SetMass(mass);
 		//rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
-		//rigidbody->setAngularFactor(angularFactor);
+		rigidbody->setAngularFactor(angularFactor);
 
 		//rigidbody->setLinearFactor()
 
@@ -251,6 +253,16 @@ namespace MCK::Physics
 		if (rigidbody != nullptr)
 		{
 			rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CHARACTER_OBJECT);
+		}
+	}
+
+	void RigidbodyComponent::SetMass(float m)
+	{
+		mass = m;
+
+		if (rigidbody != nullptr)
+		{
+			rigidbody->setMassProps((btScalar)mass, btVector3(1, 1, 1));
 		}
 	}
 
@@ -290,6 +302,10 @@ namespace MCK::Physics
 			else if (itt.key() == "depth")
 			{
 				shapeInfo.depth = data["depth"];
+			}
+			else if (itt.key() == "mass")
+			{
+				mass = data["mass"];
 			}
 		}
 

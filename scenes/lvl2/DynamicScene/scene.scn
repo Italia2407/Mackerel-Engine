@@ -1,0 +1,846 @@
+{
+    "scene": {
+        "entities": [
+            {
+                "entity": {
+                    "name": "Crate",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.699901282787323,
+                                "positionY": 1.4675971269607544,
+                                "positionZ": -29.555566787719727,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 12.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.001",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.699901282787323,
+                                "positionY": 2.560702323913574,
+                                "positionZ": -29.555566787719727,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.002",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -1.7210378646850586,
+                                "positionY": 1.4675971269607544,
+                                "positionZ": -29.555566787719727,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.003",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -1.7210378646850586,
+                                "positionY": 2.560702323913574,
+                                "positionZ": -29.555566787719727,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.004",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -3.7288126945495605,
+                                "positionY": 1.4675971269607544,
+                                "positionZ": -26.731504440307617,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.005",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -3.7288126945495605,
+                                "positionY": 2.560702323913574,
+                                "positionZ": -26.731504440307617,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.006",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -1.749798059463501,
+                                "positionY": 1.4082683324813843,
+                                "positionZ": -5.844387054443359,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Ball",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -3.031848907470703,
+                                "positionY": 2.467226028442383,
+                                "positionZ": -3.3025155067443848,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
+                                "texturePath": "../scenes/lvl2/ball.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 1,
+                                "radius": 0.5,
+                                "width": 1.0,
+                                "depth": 1.0,
+                                "height": 1.0,
+                                "mass": 1.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Box",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -2.9985368251800537,
+                                "positionY": 3.0419132709503174,
+                                "positionZ": 1.2939155101776123,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/box.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 0.10000000149011612
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Box.001",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 1.557582974433899,
+                                "positionY": 1.5720150470733643,
+                                "positionZ": 19.273365020751953,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/box.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 0.10000000149011612
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Box.002",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 1.557582974433899,
+                                "positionY": 2.602724313735962,
+                                "positionZ": 19.273365020751953,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/box.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 0.10000000149011612
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Box.003",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 1.557582974433899,
+                                "positionY": 3.6563518047332764,
+                                "positionZ": 19.273365020751953,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/box.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 0.10000000149011612
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Ball.001",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -2.2751259803771973,
+                                "positionY": 2.939093589782715,
+                                "positionZ": -1.9595712423324585,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
+                                "texturePath": "../scenes/lvl2/ball.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 1,
+                                "radius": 0.5,
+                                "width": 1.0,
+                                "depth": 1.0,
+                                "height": 1.0,
+                                "mass": 1.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Ball.002",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -3.6486010551452637,
+                                "positionY": 1.9807782173156738,
+                                "positionZ": 20.21149253845215,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
+                                "texturePath": "../scenes/lvl2/ball.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 1,
+                                "radius": 0.5,
+                                "width": 1.0,
+                                "depth": 1.0,
+                                "height": 1.0,
+                                "mass": 1.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Ball.003",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -3.359981060028076,
+                                "positionY": 2.019003391265869,
+                                "positionZ": 18.25664710998535,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
+                                "texturePath": "../scenes/lvl2/ball.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 1,
+                                "radius": 0.5,
+                                "width": 1.0,
+                                "depth": 1.0,
+                                "height": 1.0,
+                                "mass": 1.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Ball.004",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -1.2940715551376343,
+                                "positionY": 2.019003391265869,
+                                "positionZ": 19.52098274230957,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
+                                "texturePath": "../scenes/lvl2/ball.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 1,
+                                "radius": 0.5,
+                                "width": 1.0,
+                                "depth": 1.0,
+                                "height": 1.0,
+                                "mass": 1.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Ball.005",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 0.4649723768234253,
+                                "positionY": 2.019003391265869,
+                                "positionZ": 18.023359298706055,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
+                                "texturePath": "../scenes/lvl2/ball.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 1,
+                                "radius": 0.5,
+                                "width": 1.0,
+                                "depth": 1.0,
+                                "height": 1.0,
+                                "mass": 1.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.007",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.1528630256652832,
+                                "positionY": 2.8624119758605957,
+                                "positionZ": 8.08852767944336,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 12.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.008",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.1528630256652832,
+                                "positionY": 3.955517292022705,
+                                "positionZ": 8.08852767944336,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.009",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -1.173999547958374,
+                                "positionY": 2.8624119758605957,
+                                "positionZ": 8.08852767944336,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Crate.010",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -1.173999547958374,
+                                "positionY": 3.955517292022705,
+                                "positionZ": 8.08852767944336,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
+                                "texturePath": "../scenes/lvl2/crate.png"
+                            }
+                        },
+                        {
+                            "type": "RigidbodyComponent",
+                            "data": {
+                                "type": 0,
+                                "radius": 1.0,
+                                "width": 0.5,
+                                "depth": 0.5,
+                                "height": 0.5,
+                                "mass": 4.0
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "body"
+                    ]
+                }
+            }
+        ]
+    }
+}

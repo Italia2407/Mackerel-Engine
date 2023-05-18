@@ -79,7 +79,7 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_Dept
 		if (!a_DepthOnly) {
 		// Load Instance's Material Uniforms
 		if (!instance.material || !instance.material->UseMaterial()) {
-			Logger::log(std::format("Cannot Load Instance #{} Material", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			//Logger::log(std::format("Cannot Load Instance #{} Material", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		}}
 
 		// Draw Mesh Instance
