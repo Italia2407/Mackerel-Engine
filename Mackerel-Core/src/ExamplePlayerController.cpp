@@ -10,7 +10,6 @@ namespace MCK::ExamplePlayer
 	void ExamplePlayerController::OnPlayerCollision(MCK::Physics::CollisionData data)
 	{
 		// test collision
-		std::cout << "Collision" << std::endl;
 
 		if (data.collidedEntity->HasTag("death"))
 		{
