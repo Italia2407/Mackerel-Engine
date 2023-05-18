@@ -1,0 +1,35 @@
+{
+  "entity": {
+    "name": "$name",
+    "components": [
+      {
+        "type": "TransformComponent",
+        "data": {
+          "positionX": $posX,
+          "positionY": $posY,
+          "positionZ": $posZ,
+          "rotationX": $rotX,
+          "rotationY": $rotY,
+          "rotationZ": $rotZ,
+          "rotationW": $rotW
+        }
+      },
+      {
+        "type": "MeshRendererComponent",
+        "data": {
+          "modelPath": "$modPath",
+          "texturePath": "$texPath"
+        }
+      },
+      {
+        "type": "CollisionComponent",
+        "data": {
+          "type": 3
+        }
+      }
+    ],
+    "tags": [
+      "level_geo"
+    ]
+  }
+}
