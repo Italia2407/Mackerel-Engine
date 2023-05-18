@@ -188,7 +188,7 @@ bool MaterialLibrary::loadMaterial(MaterialEnum a_Asset, std::string a_FilePath)
 
 	// Load Material Asset
 	AssetType::Material* loadMaterial = new AssetType::Material();
-	if (!loadMaterial->LoadFromFile(a_FilePath))
+	if (!loadMaterial->LoadFromFile(a_FilePath, 0))
 	{// Material Failed to Load
 
 		return false;

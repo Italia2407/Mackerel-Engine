@@ -21,11 +21,12 @@ namespace MCK::Rendering {
 class RenderBatch
 {
 public:
-	RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader);
+	RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader, bool isAnimated = false);
 	~RenderBatch();
 
 	AssetType::Mesh* Mesh() const { return m_Mesh; }
 	AssetType::Shader* Shader() const { return m_Shader; }
+	inline bool IsAnimated() const { return isAnimated; }
 
 private:
 	struct Instance
@@ -37,6 +38,7 @@ private:
 private:
 	AssetType::Mesh* m_Mesh;
 	AssetType::Shader* m_Shader;
+	bool isAnimated = false;
 
 	std::vector<Instance> m_Instances;
 

@@ -7,4 +7,5 @@ id,path
 5, Mackerel-Core\res\Shaders\static\depthOnly.glsl
 6, Mackerel-Core\res\Shaders\static\FBDisplayer.glsl
 7, Mackerel-Core\res\Shaders\vert\projection.vert
-8, Mackerel-Core\res\Shaders\vertexHeader.glsl
+8, Mackerel-Core\res\Shaders\vert\skinned_projection.vert
+9, Mackerel-Core\res\Shaders\vertexHeader.glsl

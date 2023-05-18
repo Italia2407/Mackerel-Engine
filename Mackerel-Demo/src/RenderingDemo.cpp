@@ -24,6 +24,9 @@ namespace MCK
                 meshMap["groundMesh"] = groundMesh;
                 meshMap["playerMesh"] = playerMesh;
 
+                MCK::AssetType::Material* test = new MCK::AssetType::Material();
+                test->LoadFromFile("../Mackerel-Core/res/Materials/TestMat.mtl", 0);
+
                 AssetType::Material* greyMaterial = new AssetType::Material();
                 greyMaterial->addUInt16Uniform("lightShaderID", 0);
                 greyMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.8f, 0.8f));
@@ -34,6 +37,7 @@ namespace MCK
 
                 materialMap["greyMaterial"] = greyMaterial;
                 materialMap["blueMaterial"] = blueMaterial;
+                materialMap["test"] = test;
 
                 AssetType::Shader* m_UnlitShader;
                 AssetType::Shader* m_MonoColourShader;
@@ -53,7 +57,7 @@ namespace MCK
                 floorTransform.Position() = Eigen::Vector3f(0, -8, -2);
                 floorTransform.Scale() = Eigen::Vector3f(6, 6, 6);
 
-                floorMesh = new EntitySystem::MeshRendererComponent(meshMap["groundMesh"], shaderMap["m_MonoColourShader"], materialMap["greyMaterial"]);
+                floorMesh = new EntitySystem::MeshRendererComponent(meshMap["groundMesh"], shaderMap["m_MonoColourShader"], materialMap["test"]);
 
                 Physics::CreateCollisionShapeInfo floorShape{};
                 floorShape.colliderType = Physics::ColliderTypes::Box;
