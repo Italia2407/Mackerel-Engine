@@ -17,8 +17,8 @@ namespace MCK
         #pragma region Rendering Init
                 cubeMesh = new AssetType::Mesh("Cube Mesh");
                 // cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
-                // cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
-                cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/three_bone.glb");
+                cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne_GLTF.gltf");
+                // cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/three_bone.glb");
 
                 greyMaterial = new AssetType::Material();
                 greyMaterial->addUInt16Uniform("lightShaderID", 0);

@@ -53,14 +53,14 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_Dept
 	// Load Shader Program to GPU
 	if (!a_DepthOnly)
 	{// Use Regular Shader Program
-		if (!m_Shader->UseShaderProgram(m_Mesh->m_hasRig)) {
+		if (!m_Shader->UseShaderProgram(isAnimated)) {
 			Logger::log("Cannot Use Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
 		}
 	}
 	else
 	{// Use Depth Only Shader Program
-		if (!AssetType::Shader::k_DepthOnlyShader->UseShaderProgram(m_Mesh->m_hasRig)) {
+		if (!AssetType::Shader::k_DepthOnlyShader->UseShaderProgram(isAnimated)) {
 			Logger::log("Cannot Use Depth Only Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
 		}

@@ -37,14 +37,14 @@ uniform mat4 joint_data[256];
 void main()
 {
 	// Joint Transform
-	mat4 jointTransform = joint_data[vertexJoints.x];
+	mat4 jointTransform = joint_data[vertexJoints[0]];
 
 	// Compute Transformed Position
 	vec4 transformedPosition = mesh.transformMatrix * jointTransform * vec4(vertexPosition, 1.0f);
 	v2fPosition = transformedPosition.xyz / transformedPosition.w;
 
 	// Compute Transformed Normal
-	vec4 transformedNormal = transpose(inverse(mesh.transformMatrix)) * transpose(inverse(jointTransform)) * vec4(vertexNormal, 1.0f);
+	vec4 transformedNormal = transpose(inverse(mesh.transformMatrix)) * transpose(inverse(jointTransform)) * vec4(vertexNormal, 0.0f);
 	v2fNormal = normalize(transformedNormal.xyz);
 
 	gl_Position = camera.cameraProjectionMatrix * transformedPosition;

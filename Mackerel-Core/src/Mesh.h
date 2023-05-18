@@ -39,6 +39,7 @@ public:
 
 	// Gltf Data
 	SkinnedMeshData* m_animData = nullptr;
+	tinygltf::Model* m_gltfModel;
 	bool m_hasRig = false;
 
 private:

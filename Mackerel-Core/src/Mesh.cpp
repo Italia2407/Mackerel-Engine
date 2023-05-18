@@ -8,16 +8,16 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-/* tinygltf - general gltf loading */
-#undef max
-#define TINYGLTF_IMPLEMENTATION
-#include "tiny_gltf.h"
-
 /* ozz - animation loading and handling */
 #define OZZ_BULLET_COMPATIBILITY
 #include <ozz/animation/runtime/animation.h>
 #include <ozz/base/io/stream.h>
 #include <ozz/base/io/archive.h>
+
+/* tinygltf - gltf parsing and loading */
+#undef max
+#define TINYGLTF_IMPLEMENTATION
+#include "tiny_gltf.h"
 
 // Loggin Headers
 #include "LoggingSystem.h"
@@ -50,7 +50,7 @@ Mesh::Mesh(std::string a_Name = "") :
 	m_NumVertices(0), m_NumIndices(0),
 	m_VertexArrayObject(GL_ZERO), m_VertexBufferObjects({}), m_IndexBufferObject(GL_ZERO)
 {
-	m_VertexBufferObjects.resize(4, {});
+	m_VertexBufferObjects.resize(6, {});
 }
 Mesh::~Mesh()
 {
@@ -68,9 +68,13 @@ Mesh::~Mesh()
 	if (m_IndexBufferObject != GL_ZERO)
 		glDeleteBuffers(1, &m_IndexBufferObject);
 
-	// Delete skinned mesh daata if applicable
+	// Delete skinned mesh data if applicable
 	if (m_animData != nullptr)
 		delete m_animData;
+
+	// Delete skinned mesh data if applicable
+	if (m_gltfModel != nullptr)
+		delete m_gltfModel;
 }
 
 /**
@@ -114,14 +118,14 @@ bool Mesh::generateVertexObjects(
 	glBindVertexArray(m_VertexArrayObject);
 
 	// Create VBOs
-	glCreateBuffers(4, m_VertexBufferObjects.data());
+	glCreateBuffers(6, m_VertexBufferObjects.data());
 
 	// Create & Bind Positions VBO
 	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[0]);
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Positions.size(), a_Positions.data(), GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 3), nullptr);
 
 	// Bind Normals VBO
 	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[1]);
@@ -160,52 +164,44 @@ bool Mesh::generateVertexObjects(
 		glGenVertexArrays(1, &m_SkinnedVertexArrayObject);
 		glBindVertexArray(m_SkinnedVertexArrayObject);
 
-		// Create VBOs
-		glCreateBuffers(4, m_VertexBufferObjects.data());
-
 		// Create & Bind Positions VBO
 		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[0]);
-
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Positions.size(), a_Positions.data(), GL_STATIC_DRAW);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float)) * 3, nullptr);
 
 		// Bind Normals VBO
 		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[1]);
-
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Normals.size(), &a_Normals[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 3), nullptr);
 
 		// Bind Texture Coords VBO
 		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[2]);
-
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_TextureCoords.size(), &a_TextureCoords[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 2), nullptr);
 
 		// Bind Tints VBO
 		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[3]);
-
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Tints.size(), &a_Tints[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 3), nullptr);
 
-		// Bind IBO
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferObject);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * a_Indices.size(), &a_Indices[0], GL_STATIC_DRAW);
-
 		// Bind Weights and Joints VBOs
-		m_VertexBufferObjects.push_back({});
-		m_VertexBufferObjects.push_back({});
-
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Weights.size(), a_Weights.data(), GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[4]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Weights.size(), &a_Weights[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(4);
 		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 4), nullptr);
-
-		glBufferData(GL_ARRAY_BUFFER, sizeof(uint32_t) * a_Joints.size(), a_Joints.data(), GL_STATIC_DRAW);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[5]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint32_t) * a_Joints.size(), &a_Joints[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(5);
 		glVertexAttribPointer(5, 4, GL_UNSIGNED_INT, GL_FALSE, (GLsizei)(sizeof(uint32_t) * 4), nullptr);
+
+		// Bind IBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferObject);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)* a_Indices.size(), &a_Indices[0], GL_STATIC_DRAW);
 	}
 
 	// Unbind Global OpenGL States
@@ -359,10 +355,14 @@ bool Mesh::LoadGltf(std::string& a_FilePath, bool isBinary)
 		delete m_animData;
 	m_animData = new SkinnedMeshData();
 
+	if (m_gltfModel != nullptr)
+		delete m_gltfModel;
+	m_gltfModel = new tinygltf::Model();
+
 	tinygltf::TinyGLTF gltfLoader;
 
 	/* attempt to load the mesh data */
-	if (!LoadGltfData(a_FilePath, isBinary, &m_animData->gltfModel, &gltfLoader))
+	if (!LoadGltfData(a_FilePath, isBinary, m_gltfModel, &gltfLoader))
 		return false;
 
 	/* determine if the model is animated and extract data */
@@ -419,16 +419,16 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 
 	// checking if the loaded model has an associated skeleton
 	m_hasRig = false;
-	for (auto mesh : m_animData->gltfModel.meshes)
+	for (auto mesh : m_gltfModel->meshes)
 	{
 		for (auto primitive : mesh.primitives)
 		{
 			/* extract POSITION data... (and flub the tint data */
 			uint32_t accessor_ind = primitive.attributes["POSITION"];
 
-			tinygltf::Accessor accessor = m_animData->gltfModel.accessors[accessor_ind];
-			tinygltf::BufferView bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-			tinygltf::Buffer buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+			tinygltf::Accessor accessor = m_gltfModel->accessors[accessor_ind];
+			tinygltf::BufferView bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+			tinygltf::Buffer buffer = m_gltfModel->buffers[bufferView.buffer];
 
 			float* positions = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
 			for (uint32_t i = 0; i < accessor.count * 3; i++)
@@ -440,9 +440,9 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 			/* ...then get NORMAL data... */
 			accessor_ind = primitive.attributes["NORMAL"];
 
-			accessor = m_animData->gltfModel.accessors[accessor_ind];
-			bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+			accessor = m_gltfModel->accessors[accessor_ind];
+			bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+			buffer = m_gltfModel->buffers[bufferView.buffer];
 
 			float* normals = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
 			for (uint32_t i = 0; i < accessor.count * 3; i++)
@@ -451,9 +451,9 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 			/* ...then get TEXCOORD data... */
 			accessor_ind = primitive.attributes["TEXCOORD_0"];
 
-			accessor = m_animData->gltfModel.accessors[accessor_ind];
-			bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+			accessor = m_gltfModel->accessors[accessor_ind];
+			bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+			buffer = m_gltfModel->buffers[bufferView.buffer];
 
 			float* uvs = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
 			for (uint32_t i = 0; i < accessor.count * 2; i++)
@@ -465,17 +465,14 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 			{
 				accessor_ind = primitive.attributes["JOINTS_0"];
 
-				accessor = m_animData->gltfModel.accessors[accessor_ind];
-				bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-				buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+				accessor = m_gltfModel->accessors[accessor_ind];
+				bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+				buffer = m_gltfModel->buffers[bufferView.buffer];
 
 				unsigned char* joints_0 = reinterpret_cast<unsigned char*>(buffer.data.data() + bufferView.byteOffset);
-				for (uint32_t i = 0; i < accessor.count; i++)
+				for (uint32_t i = 0; i < accessor.count * 4; i++)
 				{
-					vertexJoints.push_back(joints_0[i]);
-					vertexJoints.push_back(0);
-					vertexJoints.push_back(0);
-					vertexJoints.push_back(0);
+					vertexJoints.push_back(static_cast<uint32_t>(joints_0[i]));
 				}
 			}
 			else
@@ -483,72 +480,6 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
 				{
 					vertexJoints.push_back(0);
-					vertexJoints.push_back(0);
-					vertexJoints.push_back(0);
-					vertexJoints.push_back(0);
-				}
-			}
-
-				/* JOINTS_1 */
-			if (primitive.attributes.contains("JOINTS_1"))
-			{
-				accessor_ind = primitive.attributes["JOINTS_1"];
-
-				accessor = m_animData->gltfModel.accessors[accessor_ind];
-				bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-				buffer = m_animData->gltfModel.buffers[bufferView.buffer];
-
-				unsigned char* joints_1 = reinterpret_cast<unsigned char*>(buffer.data.data() + bufferView.byteOffset);
-				for (uint32_t i = 0; i < accessor.count; i++)
-					vertexJoints[i * 4 + 1] = joints_1[i];
-			}
-			else
-			{
-				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
-				{
-					vertexJoints[i * 4 + 1] = 0;
-				}
-			}
-
-				/* JOINTS_2 */
-			if (primitive.attributes.contains("JOINTS_2"))
-			{
-				accessor_ind = primitive.attributes["JOINTS_2"];
-
-				accessor = m_animData->gltfModel.accessors[accessor_ind];
-				bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-				buffer = m_animData->gltfModel.buffers[bufferView.buffer];
-
-				unsigned char* joints_2 = reinterpret_cast<unsigned char*>(buffer.data.data() + bufferView.byteOffset);
-				for (uint32_t i = 0; i < accessor.count; i++)
-					vertexJoints[i * 4 + 2] = joints_2[i];
-			}
-			else
-			{
-				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
-				{
-					vertexJoints[i * 4 + 2] = 0;
-				}
-			}
-
-				/* JOINTS_3 */
-			if (primitive.attributes.contains("JOINTS_3"))
-			{
-				accessor_ind = primitive.attributes["JOINTS_3"];
-
-				accessor = m_animData->gltfModel.accessors[accessor_ind];
-				bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-				buffer = m_animData->gltfModel.buffers[bufferView.buffer];
-
-				unsigned char* joints_3 = reinterpret_cast<unsigned char*>(buffer.data.data() + bufferView.byteOffset);
-				for (uint32_t i = 0; i < accessor.count; i++)
-					vertexJoints[i * 4 + 3] = joints_3[i];
-			}
-			else
-			{
-				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
-				{
-					vertexJoints[i * 4 + 3] = 0;
 				}
 			}
 
@@ -558,105 +489,32 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 			{
 				accessor_ind = primitive.attributes["WEIGHTS_0"];
 
-				accessor = m_animData->gltfModel.accessors[accessor_ind];
-				bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-				buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+				accessor = m_gltfModel->accessors[accessor_ind];
+				bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+				buffer = m_gltfModel->buffers[bufferView.buffer];
 
 				float* weights_0 = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
-				for (uint32_t i = 0; i < accessor.count; i++)
-				{
+				for (uint32_t i = 0; i < accessor.count * 4; i++)
 					vertexWeights.push_back(weights_0[i]);
-					vertexWeights.push_back(0.0f);
-					vertexWeights.push_back(0.0f);
-					vertexWeights.push_back(0.0f);
-				}
 			}
 			else
 			{
-				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
-				{
+				for (uint32_t i = 0; i < vertexPositions.size() * 4 / 3; i++)
 					vertexWeights.push_back(0.0f);
-					vertexWeights.push_back(0.0f);
-					vertexWeights.push_back(0.0f);
-					vertexWeights.push_back(0.0f);
-				}
-
-			}
-
-				/* WEIGHTS_1 */
-			if (primitive.attributes.contains("WEIGHTS_1"))
-			{
-				accessor_ind = primitive.attributes["WEIGHTS_1"];
-
-				accessor = m_animData->gltfModel.accessors[accessor_ind];
-				bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-				buffer = m_animData->gltfModel.buffers[bufferView.buffer];
-
-				float* weights_1 = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
-				for (uint32_t i = 0; i < accessor.count; i++)
-					vertexWeights[i * 4 + 1] = weights_1[i];
-			}
-			else
-			{
-				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
-				{
-					vertexWeights[i * 4 + 1] = 0.0f;
-				}
-			}
-
-				/* WEIGHTS_2 */
-			if (primitive.attributes.contains("WEIGHTS_2"))
-			{
-				accessor_ind = primitive.attributes["WEIGHTS_2"];
-
-				accessor = m_animData->gltfModel.accessors[accessor_ind];
-				bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-				buffer = m_animData->gltfModel.buffers[bufferView.buffer];
-
-				float* weights_2 = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
-				for (uint32_t i = 0; i < accessor.count; i++)
-					vertexWeights[i * 4 + 2] = weights_2[i];
-			}
-			else
-			{
-				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
-				{
-					vertexWeights[i * 4 + 2] = 0.0f;
-				}
-			}
-
-				/* WEIGHTS_3 */
-			if (primitive.attributes.contains("WEIGHTS_3"))
-			{
-				accessor_ind = primitive.attributes["WEIGHTS_3"];
-
-				accessor = m_animData->gltfModel.accessors[accessor_ind];
-				bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-				buffer = m_animData->gltfModel.buffers[bufferView.buffer];
-
-				float* weights_3 = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
-				for (uint32_t i = 0; i < accessor.count; i++)
-					vertexWeights[i * 4 + 3] = weights_3[i];
-			}
-			else
-			{
-				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
-				{
-					vertexWeights[i * 4 + 3] = 0.0f;
-				}
 			}
 
 			/* ...then the vertex indices. */
-			accessor = m_animData->gltfModel.accessors[primitive.indices];
-			bufferView = m_animData->gltfModel.bufferViews[accessor.bufferView];
-			buffer = m_animData->gltfModel.buffers[bufferView.buffer];
+			accessor_ind = primitive.indices;
+			accessor = m_gltfModel->accessors[accessor_ind];
+			bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+			buffer = m_gltfModel->buffers[bufferView.buffer];
 
 			uint16_t* indices = reinterpret_cast<uint16_t*>(buffer.data.data() + bufferView.byteOffset);
 			for (uint32_t i = 0; i < accessor.count; i++)
 				vertexIndices.push_back(indices[i]);
 
 			/* store the final tallies */
-			m_NumVertices = static_cast<GLuint>(vertexPositions.size());
+			m_NumVertices = static_cast<GLuint>(vertexPositions.size() / 3);
 			m_NumIndices = static_cast<GLuint>(vertexIndices.size());
 
 			/* is the first joints slot filled? */
@@ -675,7 +533,7 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 	// Generate Mesh GPU Data
 	if (m_hasRig)
 	{
-		/* build rigged vao */
+		/* build static and rigged vao */
 		if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices, vertexWeights, vertexJoints)) {
 			Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
@@ -696,7 +554,7 @@ bool Mesh::GltfLoadAnimationData(std::string& a_FilePath)
 {
 	/* acquire animations */
 	m_animData->animations.clear();
-	for (auto animation = m_animData->gltfModel.animations.begin(); animation != m_animData->gltfModel.animations.end(); animation++)
+	for (auto animation = m_gltfModel->animations.begin(); animation != m_gltfModel->animations.end(); animation++)
 	{
 		m_animData->animations.emplace(
 			std::pair<std::string, ozz::animation::Animation>((*animation).name, ozz::animation::Animation()));

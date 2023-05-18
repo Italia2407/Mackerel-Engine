@@ -24,6 +24,10 @@
 // Skinned Mesh Data
 #include "SkinnedMeshData.h"
 
+// ozz animation library
+#define OZZ_BULLET_COMPATIBILITY
+#include <ozz/animation/runtime/animation.h>
+
 namespace MCK::EntitySystem {
 
 	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent() :
@@ -44,12 +48,20 @@ namespace MCK::EntitySystem {
 
 	void SkinnedMeshRendererComponent::CreateAndUploadJointTransforms()
 	{
-		localTransforms.resize(m_Mesh->NumberOfSoaJoints(), ozz::math::SoaTransform());
-		modelTransforms.resize(m_Mesh->NumberOfModelJoints(), ozz::math::Float4x4());
+		localTransforms.resize(m_Mesh->NumberOfSoaJoints(), ozz::math::SoaTransform::identity());
+		modelTransforms.resize(m_Mesh->NumberOfModelJoints(), ozz::math::Float4x4::identity());
 
+		ltmJob.skeleton = &m_Mesh->m_animData->skeleton;
 		ltmJob.input = ozz::span<const ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
 		ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
-		ltmJob.Run();
+
+		if (ltmJob.Validate())
+			ltmJob.Run();
+		else
+		{
+			Logger::log(std::format("Animation local-to-model job failed!"),
+				Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		}
 
 		glUniformMatrix4fv(jointTransformShaderLoc,
 			static_cast<GLsizei>(modelTransforms.size()),
@@ -62,11 +74,19 @@ namespace MCK::EntitySystem {
 		if (default_anim == nullptr)
 		{
 			for (uint32_t i = 0; i < localTransforms.size(); i++)
-				localTransforms[i] =ozz::math::SoaTransform();
+				localTransforms[i] =ozz::math::SoaTransform::identity();
 
+			ltmJob.skeleton = &m_Mesh->m_animData->skeleton;
 			ltmJob.input = ozz::span<const ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
 			ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
-			ltmJob.Run();
+
+			if (ltmJob.Validate())
+				ltmJob.Run();
+			else
+			{
+				Logger::log(std::format("Animation local-to-model job failed!"),
+					Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+			}
 
 			glUniformMatrix4fv(jointTransformShaderLoc,
 				static_cast<GLsizei>(modelTransforms.size()),
@@ -137,6 +157,8 @@ namespace MCK::EntitySystem {
 
 		ozz::animation::SamplingJob::Context smplContext(m_Mesh->m_animData->max_channels);
 
+		smplJob.animation = animation;
+
 		float ratio = time / smplJob.animation->duration();
 		if (ratio > 1.0f)
 		{
@@ -148,7 +170,6 @@ namespace MCK::EntitySystem {
 			*out_finished = false;
 		}
 
-		smplJob.animation = animation;
 		smplJob.ratio = ratio;
 		smplJob.context = &smplContext;
 		smplJob.output = ozz::span<ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
@@ -157,17 +178,51 @@ namespace MCK::EntitySystem {
 			smplJob.Run();
 		else
 		{
+			Logger::log(std::format("Animation sampling job failed!"),
+				Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+
 			*out_finished = false;
 			return false;
 		}
 
+		////
+		//for (uint32_t i = 0; i < localTransforms.size(); i++)
+		//	localTransforms[i] = ozz::math::SoaTransform::identity();
+		////
+
+		ltmJob.skeleton = &m_Mesh->m_animData->skeleton;
 		ltmJob.input = ozz::span<const ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
 		ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
-		ltmJob.Run();
+		if (ltmJob.Validate())
+			ltmJob.Run();
+		else
+		{
+			Logger::log(std::format("Animation local-to-model job failed!"),
+				Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+
+			*out_finished = false;
+			return false;
+		}
+
+		printf("><><><>< %f\n", ratio);
+		auto fi = reinterpret_cast<float*>(modelTransforms.data());
+		for (uint32_t i = 0; i < 16 * modelTransforms.size(); i++)
+		{
+			if (i % 4 == 0)
+				printf("\n");
+
+			if (i % 16 == 0)
+				printf("\n");
+
+			printf("%f ", fi[i]);
+		}
+		printf("\n=====================\n");
+
+		m_Shader->UseShaderProgram(true);
 
 		glUniformMatrix4fv(jointTransformShaderLoc,
-			static_cast<GLsizei>(modelTransforms.size()),
-			GL_TRUE,
+			static_cast<GLsizei>(modelTransforms.size() * 16),
+			GL_FALSE,
 			reinterpret_cast<float*>(modelTransforms.data()));
 
 		return true;
@@ -177,12 +232,12 @@ namespace MCK::EntitySystem {
 	{
 		// Load Mesh Renderer Assets
 		// MeshLibrary::LoadMesh(m_MeshEnum);
-		ShaderLibrary::LoadShader(m_ShaderEnum);
-		MaterialLibrary::LoadMaterial(m_MaterialEnum);
+		// ShaderLibrary::LoadShader(m_ShaderEnum);
+		// MaterialLibrary::LoadMaterial(m_MaterialEnum);
 
-		MeshLibrary::GetMesh(m_MeshEnum, m_Mesh);
-		ShaderLibrary::GetShader(m_ShaderEnum, m_Shader);
-		MaterialLibrary::GetMaterial(m_MaterialEnum, m_Material);
+		// MeshLibrary::GetMesh(m_MeshEnum, m_Mesh);
+		// ShaderLibrary::GetShader(m_ShaderEnum, m_Shader);
+		// MaterialLibrary::GetMaterial(m_MaterialEnum, m_Material);
 
 		uint32_t tempID = 42;
 		std::string tempName = "Answer to the Universe";
@@ -245,8 +300,11 @@ namespace MCK::EntitySystem {
 			return;
 
 		/* add the new animation to the queue (it will be the only animation in the queue if interrupt is true) */
+		assert(m_Mesh->m_animData->animations.contains(animation));
+
 		animationQueue.push_back({});
 		animationQueue.back().animation_name = animation;
+		animationQueue.back().animation = &m_Mesh->m_animData->animations[animation];
 		animationQueue.back().offset_time = time;
 		animationQueue.back().loop = loop;
 	}
