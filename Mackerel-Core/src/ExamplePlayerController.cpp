@@ -29,6 +29,8 @@ namespace MCK::ExamplePlayer
 		playerCollisionCallback = std::bind(&ExamplePlayerController::OnPlayerCollision, this, std::placeholders::_1);
 		receipt = rigidbody->onCollisionHandler.Register(playerCollisionCallback);
 
+		rigidbody->SetCharacter();
+
 		startPosition = rigidbody->GetPosition();
 	}
 

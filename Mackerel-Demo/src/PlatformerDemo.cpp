@@ -12,15 +12,16 @@ void PlatformerApp::Start()
 
 #pragma region Scene Init
     scene.InitialiseScene();
-    //scene.LoadScene("../scenes/lvl1/scene.scn");
+    scene.LoadScene("../scenes/lvl1/scene.scn");
     //MCK::Logger::initialize();
 #pragma endregion
 
 #pragma region Rendering Init
 
     bridgeMesh = new MCK::AssetType::Mesh("Bridge Mesh");
-    //bridgeMesh->LoadFromFile("../scenes/lvl1/SingleIlsland.obj");
-    bridgeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/bridge.obj");
+    //bridgeMesh->LoadFromFile("../scenes/lvl1/IslandGeo.obj");
+   // bridgeMesh->LoadFromFile("../scenes/lvl1/Bridge.obj");
+    bridgeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
 
     cubeMesh = new MCK::AssetType::Mesh("Cube Mesh");
     cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj"); 
@@ -40,7 +41,7 @@ void PlatformerApp::Start()
     //MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
     MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
 
-    light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero());
+    light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f::Ones(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Ones() / 2.f);
 #pragma endregion
 
 #pragma region Floor Init
