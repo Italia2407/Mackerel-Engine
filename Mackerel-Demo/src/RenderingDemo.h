@@ -41,11 +41,9 @@ namespace MCK
             void Init();
 
         private:
-            AssetType::Mesh* cubeMesh;
-            AssetType::Material* greyMaterial;
-            AssetType::Material* blueMaterial;
-            AssetType::Shader* m_UnlitShader;
-            AssetType::Shader* m_MonoColourShader;
+            std::unordered_map<std::string, AssetType::Mesh*> meshMap;
+            std::unordered_map<std::string, AssetType::Material*> materialMap;
+            std::unordered_map<std::string, AssetType::Shader*> shaderMap;
 
             EntitySystem::TransformComponent floorTransform;
             EntitySystem::MeshRendererComponent* floorMesh;

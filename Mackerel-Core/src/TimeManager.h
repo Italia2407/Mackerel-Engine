@@ -37,6 +37,7 @@ namespace MCK
 		double lastScaledFrame;
 		double upTime;
 		double scaledUpTime;
+		double fps;
 
 		// list of key-value pairs that holds the timers
 		std::list<std::pair<double, std::function<void()>>> timers;
@@ -120,6 +121,12 @@ namespace MCK
 		 */
 		void privWaitForEnforcedFrameTime(double minFrameTime);
 
+		/**
+		 * Private implementation of the TimeManager::GetFPS() fuction.
+		 * Returns current fps
+		 */
+		double privGetFPS();
+
 
 	public:
 		/**
@@ -199,6 +206,16 @@ namespace MCK
 		static double getFrameTime()
 		{
 			return Instance()->privGetUnscaledFrameTime();
+		}
+
+		/**
+		 * Function to get the unscaled fps
+		 *
+		 * \return the fps
+		 */
+		static double getFPS()
+		{
+			return Instance()->privGetFPS();
 		}
 
 		/**

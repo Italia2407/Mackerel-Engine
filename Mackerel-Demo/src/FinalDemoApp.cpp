@@ -23,7 +23,7 @@ void FinalDemoApp::Start()
 
         #pragma region Scene Init
             constantScene.InitialiseScene();
-            light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero());
+            light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
             //MCK::Logger::initialize();
         #pragma endregion
 
@@ -81,6 +81,9 @@ void FinalDemoApp::Start()
             uiComponent->CreateShape(false, ImVec2(windowSize.x - 10 - 276, 10), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, ImVec2(276, 100), ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, hudIMG);
             uiComponent->CreateText(false, ImVec2(windowSize.x - 10 - 276 + 82, 65), 2.0f, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, "", [this]() { return this->GetCurrentRuntime(); });
 
+            // Create FPS counter in bottom left
+            uiComponent->CreateText(false, ImVec2(10, windowSize.y - 20), 1.0f, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, "", [this]() { return this->GetCurrentFPS(); });
+
             // Create button elements
             ImVec2 buttonSize = ImVec2(166, 61);
             int buttonOffset = 80; // Offset
@@ -112,6 +115,16 @@ std::string FinalDemoApp::GetCurrentRuntime() {
     // Format string.
     char buffer[100];
     sprintf(buffer, "%02d:%02d:%02d", hours, minutes, seconds);
+    return std::string(buffer);
+}
+
+std::string FinalDemoApp::GetCurrentFPS() {
+    // Get the current frames per second.
+    double fps = MCK::TimeManager::getFPS();
+
+    // Format string.
+    char buffer[100];
+    sprintf(buffer, "FPS: %.0f", fps);
     return std::string(buffer);
 }
 

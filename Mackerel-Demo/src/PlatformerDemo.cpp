@@ -1,4 +1,5 @@
 #include "PlatformerDemo.h"
+#include "CameraFollowComponent.h"
 
 PlatformerApp::PlatformerApp() 
 {}
@@ -11,17 +12,18 @@ void PlatformerApp::Start()
 
 #pragma region Scene Init
     scene.InitialiseScene();
+    //scene.LoadScene("../scenes/lvl1/scene.scn");
     //MCK::Logger::initialize();
 #pragma endregion
 
 #pragma region Rendering Init
 
     bridgeMesh = new MCK::AssetType::Mesh("Bridge Mesh");
+    //bridgeMesh->LoadFromFile("../scenes/lvl1/SingleIlsland.obj");
     bridgeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/bridge.obj");
 
     cubeMesh = new MCK::AssetType::Mesh("Cube Mesh");
     cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj"); 
-    //cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
 
     greyMaterial = new MCK::AssetType::Material();
     greyMaterial->addUInt16Uniform("lightShaderID", 0);
@@ -67,18 +69,20 @@ void PlatformerApp::Start()
 
 #pragma region Camera Init
     cameraComponent = new EntitySystem::PerspectiveCamera(1280.0f / 720.0f);
-    cameraComponent->Position() = Eigen::Vector3f(0, 5, 10);
+    cameraComponent->Position() = Eigen::Vector3f(0, 4, -10);
     cameraComponent->FrontDirection() = Eigen::Vector3f(0, -.7f, -1).normalized();
     cameraComponent->UpDirection() = Eigen::Vector3f(0, 1, 0).normalized();
+    EntitySystem::CameraFollowComponent* cameraFollowComponent = new EntitySystem::CameraFollowComponent();
 
     EntitySystem::Entity* cameraEnttiy = scene.CreateEntity();
     cameraEnttiy->AddComponent(cameraComponent);
+    cameraEnttiy->AddComponent(cameraFollowComponent);
     
 #pragma endregion
 
 #pragma region Player Init
     EntitySystem::TransformComponent* playerTransform = new EntitySystem::TransformComponent();
-    playerTransform->Position() = Eigen::Vector3f(0, 20, 0);
+    playerTransform->Position() = Eigen::Vector3f(0, 10, 0);
     playerTransform->Scale() = Eigen::Vector3f(0.3f, 0.3f, 0.3f);
 
     // Physics
@@ -100,6 +104,7 @@ void PlatformerApp::Start()
         = new ExamplePlayer::ExamplePlayerController();
 
     EntitySystem::Entity* playerEntity = scene.CreateEntity();
+    playerEntity->AddTag("Player");
     playerEntity->AddComponent(playerTransform);
     playerEntity->AddComponent(playerBody);
     playerEntity->AddComponent(playerRenderer);

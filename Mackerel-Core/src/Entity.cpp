@@ -41,9 +41,8 @@ namespace MCK::EntitySystem
 
 		if (component != nullptr)
 		{
-			component->Deserialise(data);
-
 			AddComponent(component);
+			component->Deserialise(data);
 		}
 	}
 
@@ -111,7 +110,8 @@ namespace MCK::EntitySystem
 
 		for (int i = 0; i < comps.size(); ++i)
 		{
-			AddComponent(comps[i]["type"].get<std::string>(), comps[i]["data"]);
+			std::string t = comps[i]["type"].dump();
+			AddComponent(comps[i]["type"].get<std::string>(), comps[i]);
 		}
 
 		json tags = entity["tags"];

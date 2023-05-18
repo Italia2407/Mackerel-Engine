@@ -123,7 +123,7 @@ namespace MCK::EntitySystem
 		for (json& entityJson : entitiesJson)
 		{
 			Entity* newEntity = CreateEntity();
-			newEntity->Deserialise(entityJson);
+			newEntity->Deserialise(entityJson["entity"]);
 		}
 	}
 
