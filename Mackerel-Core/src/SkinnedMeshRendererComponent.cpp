@@ -63,10 +63,17 @@ namespace MCK::EntitySystem {
 				Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		}
 
+		m_Shader->UseShaderProgram(true);
+
 		glUniformMatrix4fv(jointTransformShaderLoc,
 			static_cast<GLsizei>(modelTransforms.size()),
-			GL_TRUE,
+			GL_FALSE,
 			reinterpret_cast<float*>(modelTransforms.data()));
+
+		glUniformMatrix4fv(invBindShaderLoc,
+			static_cast<GLsizei>(m_Mesh->m_animData->inverseBindMatrices.size()),
+			GL_FALSE,
+			reinterpret_cast<float*>(m_Mesh->m_animData->inverseBindMatrices.data()));
 	}
 
 	void SkinnedMeshRendererComponent::DefaultPose(float time)
@@ -185,11 +192,6 @@ namespace MCK::EntitySystem {
 			return false;
 		}
 
-		////
-		//for (uint32_t i = 0; i < localTransforms.size(); i++)
-		//	localTransforms[i] = ozz::math::SoaTransform::identity();
-		////
-
 		ltmJob.skeleton = &m_Mesh->m_animData->skeleton;
 		ltmJob.input = ozz::span<const ozz::math::SoaTransform>(localTransforms.data(), localTransforms.size());
 		ltmJob.output = ozz::span<ozz::math::Float4x4>(modelTransforms.data(), modelTransforms.size());
@@ -204,24 +206,24 @@ namespace MCK::EntitySystem {
 			return false;
 		}
 
-		printf("><><><>< %f\n", ratio);
-		auto fi = reinterpret_cast<float*>(modelTransforms.data());
-		for (uint32_t i = 0; i < 16 * modelTransforms.size(); i++)
-		{
-			if (i % 4 == 0)
-				printf("\n");
+		//printf("><><><>< %f\n", ratio);
+		//auto fi = reinterpret_cast<float*>(modelTransforms.data());
+		//for (uint32_t i = 0; i < 16 * modelTransforms.size(); i++)
+		//{
+		//	if (i % 4 == 0)
+		//		printf("\n");
 
-			if (i % 16 == 0)
-				printf("\n");
+		//	if (i % 16 == 0)
+		//		printf("\n");
 
-			printf("%f ", fi[i]);
-		}
-		printf("\n=====================\n");
+		//	printf("%f ", fi[i]);
+		//}
+		//printf("\n=====================\n");
 
 		m_Shader->UseShaderProgram(true);
 
 		glUniformMatrix4fv(jointTransformShaderLoc,
-			static_cast<GLsizei>(modelTransforms.size() * 16),
+			static_cast<GLsizei>(modelTransforms.size()),
 			GL_FALSE,
 			reinterpret_cast<float*>(modelTransforms.data()));
 
@@ -255,6 +257,7 @@ namespace MCK::EntitySystem {
 		/* Create buffers needed for animation */
 		assert(m_Mesh->m_hasRig);
 		jointTransformShaderLoc = m_Shader->GetShaderUniformLocation("joint_data", m_Mesh->m_hasRig);
+		invBindShaderLoc = m_Shader->GetShaderUniformLocation("inv_bind", m_Mesh->m_hasRig);
 		CreateAndUploadJointTransforms();
 
 		/* create animation update callback */
@@ -317,5 +320,9 @@ namespace MCK::EntitySystem {
 		}
 		else
 			return false;
+	}
+	void SkinnedMeshRendererComponent::SetTargetFPS(float fps)
+	{
+		target_fps = fps;
 	}
 }

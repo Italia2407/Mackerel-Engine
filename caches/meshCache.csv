@@ -11,3 +11,5 @@ id,path
 9, Mackerel-Core\res\Meshes\three_bone_2.gltf
 10, Mackerel-Core\res\Meshes\three_bone_embedded.gltf
 11, Mackerel-Core\res\Meshes\three_bone_no_skeleton.gltf
+12, Mackerel-Core\res\Meshes\xbot.gltf
+13, Mackerel-Core\res\Meshes\xbot_binary.glb

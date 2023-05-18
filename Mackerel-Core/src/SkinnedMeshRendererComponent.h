@@ -24,7 +24,7 @@ namespace MCK::EntitySystem {
 	class TransformComponent;
 }
 
-const static uint32_t MAX_JOINTS = 256; /* this needs to match the size of the joint_data array in vertex shaders that utilise animated meshes! */
+const static uint32_t MAX_JOINTS = 128; /* this needs to match the size of the joint_data array in vertex shaders that utilise animated meshes! */
 
 namespace MCK::EntitySystem {
 	class SkinnedMeshRendererComponent : public Component<SkinnedMeshRendererComponent>
@@ -66,6 +66,7 @@ namespace MCK::EntitySystem {
 		std::vector<ozz::math::SoaTransform> localTransforms = {};
 		std::vector<ozz::math::Float4x4> modelTransforms = {};
 		GLint jointTransformShaderLoc{};
+		GLint invBindShaderLoc{};
 		double start_time = 0.0;
 		double target_fps = 30.0;
 		std::function<void()> do_frame_callback{};
@@ -88,5 +89,6 @@ namespace MCK::EntitySystem {
 
 		void PlayAnimation(std::string animation, float time = 0.0f, bool interrupt = true, bool queue = false, bool loop = false);
 		bool SetDefaultAnimation(std::string animation);
+		void SetTargetFPS(float fps);
 	};
 }

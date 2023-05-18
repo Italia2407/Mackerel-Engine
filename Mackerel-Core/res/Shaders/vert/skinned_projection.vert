@@ -32,19 +32,24 @@ layout(std140, binding = 1) uniform MeshTransform
 } mesh;
 
 // Joint Data
-uniform mat4 joint_data[256];
+uniform mat4 joint_data[128];
+uniform mat4 inv_bind[128];
 
 void main()
 {
 	// Joint Transform (plus two is needed)
-	mat4 jointTransform = joint_data[vertexJoints[0] + 2];
+//	mat4 jointTransform = joint_data[vertexJoints[0] + 2] * vertexWeights[0];
+//	jointTransform = jointTransform + (joint_data[vertexJoints[1] + 2] * vertexWeights[1]);
+//	jointTransform = jointTransform + (joint_data[vertexJoints[2] + 2] * vertexWeights[2]);
+//	jointTransform = jointTransform + (joint_data[vertexJoints[3] + 2] * vertexWeights[3]);
+	mat4 jointTransform = joint_data[vertexJoints[0] + 2] * inv_bind[vertexJoints[0]];
 
 	// Compute Transformed Position
-	vec4 transformedPosition = mesh.transformMatrix * jointTransform * vec4(vertexPosition, 1.0f);
+	vec4 transformedPosition = mesh.transformMatrix * (jointTransform * vec4(vertexPosition, 1.0f));
 	v2fPosition = transformedPosition.xyz / transformedPosition.w;
 
 	// Compute Transformed Normal
-	vec4 transformedNormal = transpose(inverse(mesh.transformMatrix)) * transpose(inverse(jointTransform)) * vec4(vertexNormal, 0.0f);
+	vec4 transformedNormal = transpose(inverse(mesh.transformMatrix)) * (transpose(inverse(jointTransform)) * vec4(vertexNormal, 0.0f));
 	v2fNormal = normalize(transformedNormal.xyz);
 
 	gl_Position = camera.cameraProjectionMatrix * transformedPosition;

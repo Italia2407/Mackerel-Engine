@@ -1,0 +1,14 @@
+{
+    "skeleton" : 
+    {
+      "filename" : "xbot_binary.ozz"
+    },
+
+    "animations" : 
+    [
+      {
+        "clip" : "*",
+        "filename" : "xbot_binary_*.ozz"
+      }
+    ]
+}

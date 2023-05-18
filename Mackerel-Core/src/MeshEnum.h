@@ -15,5 +15,7 @@ enum class MeshEnum
     three_bone = 8,
     three_bone_2 = 9,
     three_bone_embedded = 10,
-    three_bone_no_skeleton = 11
+    three_bone_no_skeleton = 11,
+    xbot = 12,
+    xbot_binary = 13
 };

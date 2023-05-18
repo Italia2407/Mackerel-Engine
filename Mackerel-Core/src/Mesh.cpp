@@ -197,7 +197,7 @@ bool Mesh::generateVertexObjects(
 		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[5]);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(uint32_t) * a_Joints.size(), &a_Joints[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(5);
-		glVertexAttribPointer(5, 4, GL_UNSIGNED_INT, GL_FALSE, (GLsizei)(sizeof(uint32_t) * 4), nullptr);
+		glVertexAttribIPointer(5, 4, GL_UNSIGNED_INT, (GLsizei)(sizeof(uint32_t) * 4), nullptr);
 
 		// Bind IBO
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferObject);
@@ -414,6 +414,8 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 	vertexTextureCoords.clear();
 	vertexIndices.clear();
 
+	uint32_t index_offset = 0;
+
 	vertexWeights.clear();
 	vertexJoints.clear();
 
@@ -530,6 +532,21 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 		}
 	}
 
+	// extract inverse bind matrices
+	m_animData->inverseBindMatrices.clear();
+	for (auto inverseBind : m_gltfModel->skins)
+	{
+		uint32_t accessor_ind = inverseBind.inverseBindMatrices;
+
+		tinygltf::Accessor accessor = m_gltfModel->accessors[accessor_ind];
+		tinygltf::BufferView bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+		tinygltf::Buffer buffer = m_gltfModel->buffers[bufferView.buffer];
+
+		ozz::math::Float4x4* invBinds = reinterpret_cast<ozz::math::Float4x4*>(buffer.data.data() + bufferView.byteOffset);
+		for (uint32_t i = 0; i < accessor.count; i++)
+			m_animData->inverseBindMatrices.push_back(invBinds[i]);
+	}
+
 	// Generate Mesh GPU Data
 	if (m_hasRig)
 	{
@@ -591,6 +608,8 @@ bool Mesh::GltfLoadAnimationData(std::string& a_FilePath)
 
 		animArchive >> m_animData->animations[(*animation).first];
 	}
+
+	
 
 	return true;
 }
