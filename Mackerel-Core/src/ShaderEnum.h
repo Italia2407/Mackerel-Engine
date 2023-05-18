@@ -15,5 +15,6 @@ enum class ShaderEnum
     depthOnly = 5,
     FBDisplayer = 6,
     projection = 7,
-    vertexHeader = 8
+    skinned_projection = 8,
+    vertexHeader = 9
 };

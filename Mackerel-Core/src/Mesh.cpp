@@ -1,12 +1,31 @@
 #include "LoggingSystem.h"
 #include "Mesh.h"
 
+#include "SkinnedMeshData.h"
+
+#include <algorithm>
+
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+
+/* ozz - animation loading and handling */
+#define OZZ_BULLET_COMPATIBILITY
+#include <ozz/animation/runtime/animation.h>
+#include <ozz/base/io/stream.h>
+#include <ozz/base/io/archive.h>
+
+/* tinygltf - gltf parsing and loading */
+#undef max
+#define TINYGLTF_IMPLEMENTATION
+#include "tiny_gltf.h"
 
 // Loggin Headers
 #include "LoggingSystem.h"
 #include <format>
+
+const std::vector<std::string> MCK::AssetType::Mesh::obj_ext = { "obj" };
+const std::vector<std::string> MCK::AssetType::Mesh::gltf_ascii_ext = { "gltf" };
+const std::vector<std::string> MCK::AssetType::Mesh::gltf_binary_ext = { "glb" };
 
 // Module Only Structures
 struct MeshVertex
@@ -29,7 +48,10 @@ namespace MCK::AssetType {
 Mesh::Mesh(std::string a_Name = "") :
 	m_Name(a_Name),
 	m_NumVertices(0), m_NumIndices(0),
-	m_VertexArrayObject(GL_ZERO), m_VertexBufferObjects({}), m_IndexBufferObject(GL_ZERO) {}
+	m_VertexArrayObject(GL_ZERO), m_VertexBufferObjects({}), m_IndexBufferObject(GL_ZERO)
+{
+	m_VertexBufferObjects.resize(6, {});
+}
 Mesh::~Mesh()
 {
 	// Delete Vertex Array Object
@@ -45,6 +67,14 @@ Mesh::~Mesh()
 	// Delete Vertex Index Object
 	if (m_IndexBufferObject != GL_ZERO)
 		glDeleteBuffers(1, &m_IndexBufferObject);
+
+	// Delete skinned mesh data if applicable
+	if (m_animData != nullptr)
+		delete m_animData;
+
+	// Delete skinned mesh data if applicable
+	if (m_gltfModel != nullptr)
+		delete m_gltfModel;
 }
 
 /**
@@ -62,7 +92,9 @@ bool Mesh::generateVertexObjects(
 	const std::vector<float>& a_Normals,
 	const std::vector<float>& a_TextureCoords,
 	const std::vector<float>& a_Tints,
-	const std::vector<GLuint>& a_Indices)
+	const std::vector<GLuint>& a_Indices,
+	const std::vector<float>& a_Weights,
+	const std::vector<uint32_t> a_Joints)
 {
 	// Check that VAO does not Already Exist
 	if (m_VertexArrayObject != GL_ZERO) {
@@ -86,14 +118,14 @@ bool Mesh::generateVertexObjects(
 	glBindVertexArray(m_VertexArrayObject);
 
 	// Create VBOs
-	glCreateBuffers(4, m_VertexBufferObjects.data());
+	glCreateBuffers(6, m_VertexBufferObjects.data());
 
 	// Create & Bind Positions VBO
 	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[0]);
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Positions.size(), a_Positions.data(), GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 3), nullptr);
 
 	// Bind Normals VBO
 	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[1]);
@@ -121,6 +153,57 @@ bool Mesh::generateVertexObjects(
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferObject);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * a_Indices.size(), &a_Indices[0], GL_STATIC_DRAW);
 
+	if (m_hasRig)
+	{
+		// Unbind Global OpenGL States
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		// Create & Bind VAO
+		glGenVertexArrays(1, &m_SkinnedVertexArrayObject);
+		glBindVertexArray(m_SkinnedVertexArrayObject);
+
+		// Create & Bind Positions VBO
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[0]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Positions.size(), a_Positions.data(), GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float)) * 3, nullptr);
+
+		// Bind Normals VBO
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[1]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Normals.size(), &a_Normals[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 3), nullptr);
+
+		// Bind Texture Coords VBO
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[2]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_TextureCoords.size(), &a_TextureCoords[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 2), nullptr);
+
+		// Bind Tints VBO
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[3]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Tints.size(), &a_Tints[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 3), nullptr);
+
+		// Bind Weights and Joints VBOs
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[4]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * a_Weights.size(), &a_Weights[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, (GLsizei)(sizeof(float) * 4), nullptr);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferObjects[5]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint32_t) * a_Joints.size(), &a_Joints[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(5);
+		glVertexAttribIPointer(5, 4, GL_UNSIGNED_INT, (GLsizei)(sizeof(uint32_t) * 4), nullptr);
+
+		// Bind IBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferObject);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)* a_Indices.size(), &a_Indices[0], GL_STATIC_DRAW);
+	}
+
 	// Unbind Global OpenGL States
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -137,6 +220,36 @@ bool Mesh::generateVertexObjects(
  */
 bool Mesh::LoadFromFile(std::string a_FilePath)
 {
+	// Get the extension of the mesh file to deduce it's file type.
+	std::string ext = a_FilePath.substr(a_FilePath.find_last_of(".") + 1);
+
+	// Is it an obj file?
+	if (std::find(obj_ext.begin(), obj_ext.end(), ext) != obj_ext.end())
+	{
+		return LoadObj(a_FilePath);
+	}
+	
+	// Is it an ascii gltf file?
+	if (std::find(gltf_ascii_ext.begin(), gltf_ascii_ext.end(), ext) != gltf_ascii_ext.end())
+	{
+		return LoadGltf(a_FilePath, false);
+	}
+
+	// Is it a binary gltf file?
+	if (std::find(gltf_binary_ext.begin(), gltf_binary_ext.end(), ext) != gltf_binary_ext.end())
+	{
+		return LoadGltf(a_FilePath, true);
+	}
+
+	// Unrecognized file type
+	Logger::log(std::format("Mesh: Unsupported file type with extension: .{}", ext), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+	return false;
+}
+
+bool Mesh::LoadObj(std::string& a_FilePath)
+{
+	m_hasRig = false;
+
 	// Open Mesh File with TinyOBJ
 	tinyobj::ObjReader fileReader;
 
@@ -155,84 +268,377 @@ bool Mesh::LoadFromFile(std::string a_FilePath)
 
 	std::vector<MeshVertex> uniqueVertices;
 	for (const auto& shape : shapes) {
-	for (const auto& index : shape.mesh.indices)
-	{
-		MeshVertex vertex{};
-
-		// Read Positon & Colour Values
-		if (index.vertex_index >= 0) {
-			vertex.position.x() = attributes.vertices[(3 * index.vertex_index) + 0];
-			vertex.position.y() = attributes.vertices[(3 * index.vertex_index) + 1];
-			vertex.position.z() = attributes.vertices[(3 * index.vertex_index) + 2];
-
-			auto colourIndex = (3 * index.vertex_index) + 2;
-			if (colourIndex < attributes.colors.size()) {
-				vertex.tint.x() = attributes.colors[colourIndex - 2];
-				vertex.tint.y() = attributes.colors[colourIndex - 1];
-				vertex.tint.z() = attributes.colors[colourIndex - 0];
-			}
-			else {
-				vertex.tint = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
-			}
-		}
-		// Read Normal Value
-		if (index.normal_index >= 0) {
-			vertex.normal.x() = attributes.normals[(3 * index.normal_index) + 0];
-			vertex.normal.y() = attributes.normals[(3 * index.normal_index) + 1];
-			vertex.normal.z() = attributes.normals[(3 * index.normal_index) + 2];
-		}
-		// Read Texture Coord Value
-		if (index.texcoord_index >= 0) {
-			vertex.textureCoord.x() = attributes.texcoords[(2 * index.texcoord_index) + 0];
-			vertex.textureCoord.y() = attributes.texcoords[(2 * index.texcoord_index) + 1];
-		}
-
-		// TODO: Perhaps use Unordered Set, with Hash Function instead
-		GLuint vertexIndex = (GLuint)uniqueVertices.size();
-		bool duplicateVertex = false;
-		for (size_t i = 0; i < uniqueVertices.size(); i++) {
-			auto uniqueVertex = uniqueVertices[i];
-			if (uniqueVertex == vertex) {
-				vertexIndex = (GLuint)i;
-				duplicateVertex = true;
-				break;
-			}
-		}
-
-		// Add Vertex to Unique Set
-		if (!duplicateVertex)
+		for (const auto& index : shape.mesh.indices)
 		{
-			uniqueVertices.push_back(vertex);
+			MeshVertex vertex{};
 
-			// Add Vertex Params to Arrays
-			vertexPositions.push_back(vertex.position.x());
-			vertexPositions.push_back(vertex.position.y());
-			vertexPositions.push_back(vertex.position.z());
+			// Read Positon & Colour Values
+			if (index.vertex_index >= 0) {
+				vertex.position.x() = attributes.vertices[(3 * index.vertex_index) + 0];
+				vertex.position.y() = attributes.vertices[(3 * index.vertex_index) + 1];
+				vertex.position.z() = attributes.vertices[(3 * index.vertex_index) + 2];
 
-			vertexNormals.push_back(vertex.normal.x());
-			vertexNormals.push_back(vertex.normal.y());
-			vertexNormals.push_back(vertex.normal.z());
+				auto colourIndex = (3 * index.vertex_index) + 2;
+				if (colourIndex < attributes.colors.size()) {
+					vertex.tint.x() = attributes.colors[colourIndex - 2];
+					vertex.tint.y() = attributes.colors[colourIndex - 1];
+					vertex.tint.z() = attributes.colors[colourIndex - 0];
+				}
+				else {
+					vertex.tint = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
+				}
+			}
+			// Read Normal Value
+			if (index.normal_index >= 0) {
+				vertex.normal.x() = attributes.normals[(3 * index.normal_index) + 0];
+				vertex.normal.y() = attributes.normals[(3 * index.normal_index) + 1];
+				vertex.normal.z() = attributes.normals[(3 * index.normal_index) + 2];
+			}
+			// Read Texture Coord Value
+			if (index.texcoord_index >= 0) {
+				vertex.textureCoord.x() = attributes.texcoords[(2 * index.texcoord_index) + 0];
+				vertex.textureCoord.y() = attributes.texcoords[(2 * index.texcoord_index) + 1];
+			}
 
-			vertexTextureCoords.push_back(vertex.textureCoord.x());
-			vertexTextureCoords.push_back(vertex.textureCoord.y());
+			// TODO: Perhaps use Unordered Set, with Hash Function instead
+			GLuint vertexIndex = (GLuint)uniqueVertices.size();
+			bool duplicateVertex = false;
+			for (size_t i = 0; i < uniqueVertices.size(); i++) {
+				auto uniqueVertex = uniqueVertices[i];
+				if (uniqueVertex == vertex) {
+					vertexIndex = (GLuint)i;
+					duplicateVertex = true;
+					break;
+				}
+			}
 
-			vertexTints.push_back(vertex.tint.x());
-			vertexTints.push_back(vertex.tint.y());
-			vertexTints.push_back(vertex.tint.z());
+			// Add Vertex to Unique Set
+			if (!duplicateVertex)
+			{
+				uniqueVertices.push_back(vertex);
+
+				// Add Vertex Params to Arrays
+				vertexPositions.push_back(vertex.position.x());
+				vertexPositions.push_back(vertex.position.y());
+				vertexPositions.push_back(vertex.position.z());
+
+				vertexNormals.push_back(vertex.normal.x());
+				vertexNormals.push_back(vertex.normal.y());
+				vertexNormals.push_back(vertex.normal.z());
+
+				vertexTextureCoords.push_back(vertex.textureCoord.x());
+				vertexTextureCoords.push_back(vertex.textureCoord.y());
+
+				vertexTints.push_back(vertex.tint.x());
+				vertexTints.push_back(vertex.tint.y());
+				vertexTints.push_back(vertex.tint.z());
+			}
+			vertexIndices.push_back(vertexIndex);
 		}
-		vertexIndices.push_back(vertexIndex);
-	}}
+	}
 
 	m_NumVertices = (GLuint)uniqueVertices.size();
 	m_NumIndices = (GLuint)vertexIndices.size();
 
 	// Generate Mesh GPU Data
 	if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {
-		Logger::log("Failed to Generate Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		Logger::log("Failed to Generate OBJ Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
 	return true;
+}
+
+bool Mesh::LoadGltf(std::string& a_FilePath, bool isBinary)
+{
+	if (m_animData != nullptr)
+		delete m_animData;
+	m_animData = new SkinnedMeshData();
+
+	if (m_gltfModel != nullptr)
+		delete m_gltfModel;
+	m_gltfModel = new tinygltf::Model();
+
+	tinygltf::TinyGLTF gltfLoader;
+
+	/* attempt to load the mesh data */
+	if (!LoadGltfData(a_FilePath, isBinary, m_gltfModel, &gltfLoader))
+		return false;
+
+	/* determine if the model is animated and extract data */
+	if (!GltfExtractUpload(a_FilePath))
+		return false;
+
+	return true;
+}
+bool Mesh::LoadGltfData(std::string& a_FilePath, bool isBinary, tinygltf::Model* gltfModel, tinygltf::TinyGLTF* gltfLoader)
+{
+	std::string gltfErr;
+	std::string gltfWarn;
+
+	bool ret = false;
+	if (isBinary)
+		ret = gltfLoader->LoadBinaryFromFile(gltfModel, &gltfErr, &gltfWarn, a_FilePath);
+	else
+		ret = gltfLoader->LoadASCIIFromFile(gltfModel, &gltfErr, &gltfWarn, a_FilePath);
+
+	if (!gltfWarn.empty())
+	{
+		Logger::log(std::format("tinygltf: {}", gltfWarn), Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+	}
+
+	if (!gltfErr.empty())
+	{
+		Logger::log(std::format("tinygltf: {}", gltfErr), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+	}
+
+	if (!ret)
+	{
+		Logger::log(std::format("tinygltf: Failed to parse glTF file at: {}", a_FilePath), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	return true;
+}
+bool Mesh::GltfExtractUpload(std::string& a_FilePath)
+{
+	std::vector<float> vertexTextureCoords;
+	std::vector<float> vertexTints;
+
+	std::vector<float> vertexWeights;
+	std::vector<uint32_t> vertexJoints;
+
+	vertexPositions.clear();
+	vertexTints.clear();
+	vertexNormals.clear();
+	vertexTextureCoords.clear();
+	vertexIndices.clear();
+
+	uint32_t index_offset = 0;
+
+	vertexWeights.clear();
+	vertexJoints.clear();
+
+	// checking if the loaded model has an associated skeleton
+	m_hasRig = false;
+	for (auto mesh : m_gltfModel->meshes)
+	{
+		for (auto primitive : mesh.primitives)
+		{
+			/* extract POSITION data... (and flub the tint data */
+			uint32_t accessor_ind = primitive.attributes["POSITION"];
+
+			tinygltf::Accessor accessor = m_gltfModel->accessors[accessor_ind];
+			tinygltf::BufferView bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+			tinygltf::Buffer buffer = m_gltfModel->buffers[bufferView.buffer];
+
+			float* positions = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
+			for (uint32_t i = 0; i < accessor.count * 3; i++)
+			{
+				vertexPositions.push_back(positions[i]);
+				vertexTints.push_back(1.0f);
+			}
+
+			/* ...then get NORMAL data... */
+			accessor_ind = primitive.attributes["NORMAL"];
+
+			accessor = m_gltfModel->accessors[accessor_ind];
+			bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+			buffer = m_gltfModel->buffers[bufferView.buffer];
+
+			float* normals = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
+			for (uint32_t i = 0; i < accessor.count * 3; i++)
+				vertexNormals.push_back(normals[i]);
+
+			/* ...then get TEXCOORD data... */
+			accessor_ind = primitive.attributes["TEXCOORD_0"];
+
+			accessor = m_gltfModel->accessors[accessor_ind];
+			bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+			buffer = m_gltfModel->buffers[bufferView.buffer];
+
+			float* uvs = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
+			for (uint32_t i = 0; i < accessor.count * 2; i++)
+				vertexTextureCoords.push_back(uvs[i]);
+
+			/* ...then get JOINT_* data... */
+				/* JOINTS_0 */
+			if (primitive.attributes.contains("JOINTS_0"))
+			{
+				accessor_ind = primitive.attributes["JOINTS_0"];
+
+				accessor = m_gltfModel->accessors[accessor_ind];
+				bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+				buffer = m_gltfModel->buffers[bufferView.buffer];
+
+				unsigned char* joints_0 = reinterpret_cast<unsigned char*>(buffer.data.data() + bufferView.byteOffset);
+				for (uint32_t i = 0; i < accessor.count * 4; i++)
+				{
+					vertexJoints.push_back(static_cast<uint32_t>(joints_0[i]));
+				}
+			}
+			else
+			{
+				for (uint32_t i = 0; i < vertexPositions.size() / 3; i++)
+				{
+					vertexJoints.push_back(0);
+				}
+			}
+
+			/* ...then get WEIGHT_* data... */
+				/* WEIGHTS_0 */
+			if (primitive.attributes.contains("WEIGHTS_0"))
+			{
+				accessor_ind = primitive.attributes["WEIGHTS_0"];
+
+				accessor = m_gltfModel->accessors[accessor_ind];
+				bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+				buffer = m_gltfModel->buffers[bufferView.buffer];
+
+				float* weights_0 = reinterpret_cast<float*>(buffer.data.data() + bufferView.byteOffset);
+				for (uint32_t i = 0; i < accessor.count * 4; i++)
+					vertexWeights.push_back(weights_0[i]);
+			}
+			else
+			{
+				for (uint32_t i = 0; i < vertexPositions.size() * 4 / 3; i++)
+					vertexWeights.push_back(0.0f);
+			}
+
+			/* ...then the vertex indices. */
+			accessor_ind = primitive.indices;
+			accessor = m_gltfModel->accessors[accessor_ind];
+			bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+			buffer = m_gltfModel->buffers[bufferView.buffer];
+
+			uint16_t* indices = reinterpret_cast<uint16_t*>(buffer.data.data() + bufferView.byteOffset);
+			for (uint32_t i = 0; i < accessor.count; i++)
+				vertexIndices.push_back(indices[i]);
+
+			/* store the final tallies */
+			m_NumVertices = static_cast<GLuint>(vertexPositions.size() / 3);
+			m_NumIndices = static_cast<GLuint>(vertexIndices.size());
+
+			/* is the first joints slot filled? */
+			if (primitive.attributes.contains("JOINTS_0") && m_hasRig == false)
+			{
+				/* this model has a rig */
+				m_hasRig = true;
+
+				/* load its animations */
+				if (!GltfLoadAnimationData(a_FilePath))
+					return false;
+			}
+		}
+	}
+
+	// extract inverse bind matrices
+	m_animData->inverseBindMatrices.clear();
+	for (auto inverseBind : m_gltfModel->skins)
+	{
+		uint32_t accessor_ind = inverseBind.inverseBindMatrices;
+
+		tinygltf::Accessor accessor = m_gltfModel->accessors[accessor_ind];
+		tinygltf::BufferView bufferView = m_gltfModel->bufferViews[accessor.bufferView];
+		tinygltf::Buffer buffer = m_gltfModel->buffers[bufferView.buffer];
+
+		ozz::math::Float4x4* invBinds = reinterpret_cast<ozz::math::Float4x4*>(buffer.data.data() + bufferView.byteOffset);
+		for (uint32_t i = 0; i < accessor.count; i++)
+			m_animData->inverseBindMatrices.push_back(invBinds[i]);
+	}
+
+	// Generate Mesh GPU Data
+	if (m_hasRig)
+	{
+		/* build static and rigged vao */
+		if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices, vertexWeights, vertexJoints)) {
+			Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+	}
+	else
+	{
+		/* build static vao */
+		if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {
+			Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+	}
+
+	return true;
+}
+bool Mesh::GltfLoadAnimationData(std::string& a_FilePath)
+{
+	/* acquire animations */
+	m_animData->animations.clear();
+	for (auto animation = m_gltfModel->animations.begin(); animation != m_gltfModel->animations.end(); animation++)
+	{
+		m_animData->animations.emplace(
+			std::pair<std::string, ozz::animation::Animation>((*animation).name, ozz::animation::Animation()));
+
+		if ((*animation).channels.size() > m_animData->max_channels)
+			m_animData->max_channels = static_cast<uint32_t>((*animation).channels.size());
+	}
+
+	/* load skeleton */
+	std::string ozzPath = a_FilePath.substr(0, a_FilePath.find_last_of(".")) + ".ozz";
+	ozz::io::File skeleFile(ozzPath.c_str(), "rb");
+	ozz::io::IArchive archive(&skeleFile);
+
+	if (!archive.TestTag<ozz::animation::Skeleton>())
+	{
+		Logger::log("Mesh .ozz file does not contain a skeleton!", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	archive >> m_animData->skeleton;
+
+	/* load animations */
+	for (auto animation = m_animData->animations.begin(); animation != m_animData->animations.end(); animation++)
+	{
+		std::string animPath = a_FilePath.substr(0, a_FilePath.find_last_of(".")) + "_" + (*animation).first + ".ozz";
+		ozz::io::File animFile(animPath.c_str(), "rb");
+		ozz::io::IArchive animArchive(&animFile);
+
+		if (!animArchive.TestTag<ozz::animation::Animation>())
+		{
+			Logger::log("Animation .ozz file does not contain an animation!", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+
+		animArchive >> m_animData->animations[(*animation).first];
+	}
+
+	
+
+	return true;
+}
+
+int Mesh::NumberOfSoaJoints()
+{
+	if (m_hasRig)
+	{
+		assert(m_animData != nullptr);
+
+		return m_animData->skeleton.num_soa_joints();
+	}
+	else
+	{
+		return 0;
+	}
+}
+int Mesh::NumberOfModelJoints()
+{
+	if (m_hasRig)
+	{
+		assert(m_animData != nullptr);
+
+		return m_animData->skeleton.num_joints();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 /**
@@ -240,15 +646,29 @@ bool Mesh::LoadFromFile(std::string a_FilePath)
  * 
  * \return Whether the Mesh's VAO could be Bound
  */
-bool Mesh::BindVertexArrayObject()
+bool Mesh::BindVertexArrayObject(bool withAnimation)
 {
-	// Bind the Vertex Array Object
-	if (m_VertexArrayObject == GL_ZERO) {
-		Logger::log("Vertex Array Object does not Exist", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-		return false;
-	}
-	glBindVertexArray(m_VertexArrayObject);
+	if (withAnimation && m_hasRig)
+	{
+		// Bind the Rigged Vertex Array Object
+		if (m_SkinnedVertexArrayObject == GL_ZERO) {
+			Logger::log("Vertex Array Object does not Exist", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+		glBindVertexArray(m_SkinnedVertexArrayObject);
 
-	return true;
+		return true;
+	}
+	else
+	{
+		// Bind the Static Vertex Array Object
+		if (m_VertexArrayObject == GL_ZERO) {
+			Logger::log("Vertex Array Object does not Exist", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+		glBindVertexArray(m_VertexArrayObject);
+
+		return true;
+	}
 }
 }

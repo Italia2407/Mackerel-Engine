@@ -170,12 +170,12 @@ bool Renderer::AddSpotLightShader(AssetType::Shader* a_Shader)
 /**  */
 bool Renderer::QueueMeshInstance(const EntitySystem::TransformComponent& a_Transform,
 	AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material,
-	bool a_HasTransparency)
+	bool a_HasTransparency, bool a_isAnimated)
 {
 	bool result = false;
 	if (!a_HasTransparency)
 	{
-		result = Instance()->queueGeometryBatchInstance(a_Transform, a_Mesh, a_Shader, a_Material);
+		result = Instance()->queueGeometryBatchInstance(a_Transform, a_Mesh, a_Shader, a_Material, a_isAnimated);
 	}
 
 	return result;
@@ -564,7 +564,7 @@ bool Renderer::renderDeferredBuffer()
 	{	auto unlitShader = m_UnlitShaders[i];
 
 		// Start Unlit Shader Program
-		if (!unlitShader || !unlitShader->UseShaderProgram()) {
+		if (!unlitShader || !unlitShader->UseShaderProgram(false)) {
 			Logger::log(std::format("Could not Start Unlit Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -578,7 +578,7 @@ bool Renderer::renderDeferredBuffer()
 	{	auto lightShader = _pointLightShaders[i];
 
 		// Start Point Light Shader Program
-		if (!lightShader || !lightShader->UseShaderProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram(false)) {
 			Logger::log(std::format("Could not Start Point Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -603,7 +603,7 @@ bool Renderer::renderDeferredBuffer()
 		auto lightShader = _directionLightShaders[i];
 
 		// Start Direction Light Shader Program
-		if (!lightShader || !lightShader->UseShaderProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram(false)) {
 			Logger::log(std::format("Could not Start Direction Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -629,7 +629,7 @@ bool Renderer::renderDeferredBuffer()
 		auto lightShader = _spotLightShaders[i];
 
 		// Start Spot Light Shader Program
-		if (!lightShader || !lightShader->UseShaderProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram(false)) {
 			Logger::log(std::format("Could not Start Spot Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -662,7 +662,7 @@ bool Renderer::renderDeferredBuffer()
  * \param a_Transform: The Geometry Instance's Transform Matrix
  * \return Whether the Geometry Instance was Successfully Added
  */
-bool Renderer::queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material)
+bool Renderer::queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, bool a_isAnimated)
 {
 	RenderBatch* geometryBatch = nullptr;
 
@@ -675,13 +675,16 @@ bool Renderer::queueGeometryBatchInstance(const EntitySystem::TransformComponent
 		if (batch->Shader() != a_Shader)
 			continue;
 
+		if (batch->IsAnimated() != a_isAnimated)
+			continue;
+
 		geometryBatch = batch;
 		break;
 	}
 	// Create New Geometry Batch if no Match Exists
 	if (!geometryBatch)
 	{
-		geometryBatch = new RenderBatch(a_Mesh, a_Shader);
+		geometryBatch = new RenderBatch(a_Mesh, a_Shader, a_isAnimated);
 		m_GeometryBatches.push_back(geometryBatch);
 	}
 
@@ -817,7 +820,7 @@ bool Renderer::renderFrame()
 	}
 
 	// Load Frame Buffer Display Shader
-	if (!k_DisplayScreenShader->UseShaderProgram()) {
+	if (!k_DisplayScreenShader->UseShaderProgram(false)) {
 		Logger::log("Could not Start Framebuffer Display Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}

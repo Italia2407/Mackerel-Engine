@@ -16,6 +16,7 @@
 #include "CameraFollowComponent.h"
 #include "Renderer.h"
 #include "MeshRendererComponent.h"
+#include "SkinnedMeshRendererComponent.h"
 #include "TimeManager.h"
 #include "PhysicsWorld.h"
 #include "PhysicsHelpers.h"
@@ -41,9 +42,10 @@ namespace MCK
             void Init();
 
         private:
+            AssetType::Mesh* boneMesh;
             AssetType::Mesh* cubeMesh;
             AssetType::Material* greyMaterial;
-            AssetType::Material* blueMaterial;
+            AssetType::Material* yellowMaterial;
             AssetType::Shader* m_UnlitShader;
             AssetType::Shader* m_MonoColourShader;
 
@@ -56,7 +58,7 @@ namespace MCK
 
             EntitySystem::TransformComponent* playerTransform;
             Physics::RigidbodyComponent* playerBody;
-            EntitySystem::MeshRendererComponent* playerRenderer;
+            EntitySystem::SkinnedMeshRendererComponent* playerRenderer;
             EntitySystem::InputComponent* playerInput;
             ExamplePlayer::ExamplePlayerController* playerController;
 
