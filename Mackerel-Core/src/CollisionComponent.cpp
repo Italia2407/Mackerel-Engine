@@ -76,8 +76,17 @@ namespace MCK::Physics
 		transform = entity->GetComponent<MCK::EntitySystem::TransformComponent>();
 
 		// Collision shape
-		if(collisionShape == nullptr)
-			collisionShape = new btBoxShape(btVector3({ 7,7,7 }));
+		if (collisionShape == nullptr)
+		{
+			CreateCollisionShapeInfo shapeInfo{};
+			shapeInfo.depth = 1;
+			shapeInfo.height = 1;
+			shapeInfo.width = 1;
+			shapeInfo.radius = 1;
+			shapeInfo.colliderType = Mesh;
+
+			SetCollisionShape(shapeInfo);
+		}
 
 		collider = new btCollisionObject();
 		collider->setCollisionShape(collisionShape);
@@ -118,7 +127,12 @@ namespace MCK::Physics
 		data = data["data"];
 
 		CreateCollisionShapeInfo shapeInfo{};
-		shapeInfo.colliderType = data["type"];
+		shapeInfo.radius = 1;
+		shapeInfo.width = 1;
+		shapeInfo.height = 1;
+		shapeInfo.depth = 1;
+
+		shapeInfo.colliderType = (Physics::ColliderTypes)data["type"];
 
 		for (auto itt = data.begin(); itt != data.end(); ++itt)
 		{

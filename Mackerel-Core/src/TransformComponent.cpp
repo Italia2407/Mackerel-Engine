@@ -54,6 +54,7 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 bool TransformComponent::Deserialise(json data)
 {
 	// Get Entity's Transform Component Data.
+	std::string j = data.dump();
 	data = data["data"];
 
 	// Get Transform Component's Position

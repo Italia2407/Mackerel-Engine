@@ -42,9 +42,12 @@ MeshRendererComponent::~MeshRendererComponent()
 void MeshRendererComponent::OnCreate()
 {
 	// Load Mesh Renderer Assets
-	MeshLibrary::LoadMesh(m_MeshEnum);
-	ShaderLibrary::LoadShader(m_ShaderEnum);
-	MaterialLibrary::LoadMaterial(m_MaterialEnum);
+	if (m_Mesh == nullptr)
+		MeshLibrary::LoadMesh(m_MeshEnum);
+	if (m_Shader == nullptr)
+		ShaderLibrary::LoadShader(m_ShaderEnum);
+	if (m_Material == nullptr)
+		MaterialLibrary::LoadMaterial(m_MaterialEnum);
 
 	if(m_Mesh == nullptr)
 		MeshLibrary::GetMesh(m_MeshEnum, m_Mesh);
@@ -87,14 +90,38 @@ bool MeshRendererComponent::Deserialise(json a_Data)
 	// Get Entity's Transform Component Data.
 	a_Data = a_Data["data"];
 
-	// Get Transform Component's Position
-	int meshId = a_Data["meshID"];
-	int shaderId = a_Data["shaderID"];
-	int materialId = a_Data["materialID"];
+	for (auto itt = a_Data.begin(); itt != a_Data.end(); ++itt)
+	{
+		if (itt.key() == "meshID")
+		{
+			int meshId = a_Data["meshID"];
+			m_MeshEnum = static_cast<MeshEnum>(meshId);
+		}
+		else if (itt.key() == "shaderID")
+		{
+			int shaderId = a_Data["shaderID"];
+			m_ShaderEnum = static_cast<ShaderEnum>(shaderId);
+		}
+		else if (itt.key() == "materialID")
+		{
+			int materialId = a_Data["materialID"];
+			m_MaterialEnum = static_cast<MaterialEnum>(materialId);
+		}
+		else if (itt.key() == "modelPath")
+		{
+			std::string path = a_Data["modelPath"];
+			m_Mesh = new AssetType::Mesh(path);
+			m_Mesh->LoadFromFile(path);
+		}
+		else if (itt.key() == "texturePath")
+		{
 
-	m_MeshEnum = static_cast<MeshEnum>(meshId);
-	m_ShaderEnum = static_cast<ShaderEnum>(meshId);
-	m_MaterialEnum = static_cast<MaterialEnum>(meshId);
+		}
+		else if (itt.key() == "meshID")
+		{
+
+		}
+	}
 
 	return true;
 }
