@@ -12,7 +12,7 @@ void PlatformerApp::Start()
 
 #pragma region Scene Init
     scene.InitialiseScene();
-    scene.LoadScene("../scenes/lvl1/scene.scn");
+    //scene.LoadScene("../scenes/lvl1/scene.scn");
     //MCK::Logger::initialize();
 #pragma endregion
 
