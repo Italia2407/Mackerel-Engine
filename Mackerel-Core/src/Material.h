@@ -1,11 +1,15 @@
 #pragma once
 
+#include "LoggingSystem.h"
+
 #include <glad/glad.h>
 #include <Eigen/Eigen.h>
 
 #include <string>
 #include <map>
 #include <optional>
+#include <fstream>
+#include <sstream>
 
 // Forward Declarations
 namespace MCK {
@@ -54,7 +58,7 @@ public:
 	void ResetMaterial();
 
 public:
-	bool LoadFromFile(std::string a_FilePath);
+	bool LoadFromFile(std::string a_FilePath, int materialIndex);
 	
 	std::optional<uint8_t> GetUInt08Uniform(std::string name);
 	bool SetUInt08Uniform(std::string name, uint8_t value);
