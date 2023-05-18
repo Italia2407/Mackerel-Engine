@@ -59,25 +59,7 @@ namespace MCK::UI
 			 *
 			 */
 			static UIElement* CreateText(bool visible = true, const ImVec2& position = ImVec2(0, 0), float scale = 1.0f, const ImVec4& colour = ImVec4(1, 1, 1, 1), float transparency = 1.0f,
-				const std::string& text = "Text");
-
-			/**
-			 * Loads the requested image and stores it
-			 *
-			 */
-			static void LoadUIImage(const char* filename, unsigned int imageID);
-
-			/**
-			 * Gets the requested image using its id
-			 *
-			 */
-			static void GetImage(unsigned int imageID) ;
-
-			/**
-			 * Unloads the image, for teardown
-			 *
-			 */
-			static void UnloadImage(unsigned int imageID);
+				const std::string& text = "Text", const std::function<std::string()>& updateFunc = nullptr);
 	};
 
 }

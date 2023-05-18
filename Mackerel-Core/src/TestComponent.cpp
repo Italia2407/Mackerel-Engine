@@ -16,7 +16,6 @@ namespace MCK::EntitySystem
 	 */
 	void TestComponent::OnCreate() 
 	{
-		std::cout << "I was created" << std::endl;
 		transform = entity->GetComponent<TransformComponent>();
 		transform->Position().z() = 3;
 	}

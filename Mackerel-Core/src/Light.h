@@ -27,6 +27,7 @@ protected:
 	FrameBuffer* m_ShadowRenderer;
 
 	UniformBuffer* m_LightParameters;
+	UniformBuffer* m_LightParams;
 	UniformBuffer* m_ShadowRendererParameters;
 
 	virtual Eigen::Matrix4f getMVPMatrix(Eigen::Vector3f a_CentrePosition) = 0;

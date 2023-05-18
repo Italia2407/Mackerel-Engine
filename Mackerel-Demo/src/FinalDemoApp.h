@@ -14,6 +14,7 @@
 #include "TransformComponent.h"
 #include "ShaderLibrary.h"
 #include "PerspectiveCamera.h"
+#include "CameraFollowComponent.h"
 #include "Renderer.h"
 #include "MeshRendererComponent.h"
 #include "TimeManager.h"
@@ -57,17 +58,15 @@ private:
 	bool loadedDemo;
 
 	// Rendering
-	AssetType::Mesh* cubeMesh;
-	AssetType::Material* greyMaterial;
-	AssetType::Material* blueMaterial;
-	AssetType::Shader* m_UnlitShader;
-	AssetType::Shader* m_MonoColourShader;
 	Rendering::DirectionLight* light;
 
 public:
 	void Start() override;
 	void Update() override;
 	void End() override;
+
+	std::string GetCurrentRuntime();
+	std::string GetCurrentFPS();
 
 	void LoadRenderingDemo();
 	void LoadPhysicsDemo();

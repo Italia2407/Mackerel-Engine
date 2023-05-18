@@ -8,6 +8,7 @@ namespace MCK::UI
 	{
 	private:
 		std::string text;
+		std::function<std::string()> updateFunction;
 
 	public:
 		TextElement();
@@ -15,6 +16,9 @@ namespace MCK::UI
 
 		void SetText(const std::string& newText);
 		const std::string& GetText() const;
+
+		void SetUpdateFunction(const std::function<std::string()>& func);
+		void UpdateText();
 
 		virtual void Draw() override;
 	};

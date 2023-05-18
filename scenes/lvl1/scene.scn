@@ -1,0 +1,111 @@
+{
+    "scene": {
+        "entities": [
+            {
+                "entity": {
+                    "name": "IslandGeo",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.0,
+                                "positionY": 0.0,
+                                "positionZ": 0.0,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/IslandGeo.obj",
+                                "texturePath": "../scenes/lvl1/colors.png"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Bridge",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -2.8850364685058594,
+                                "positionY": 2.4266469478607178,
+                                "positionZ": -4.472527980804443,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/Bridge.obj",
+                                "texturePath": "../scenes/lvl1/colors.png"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "SingleIlsland",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -16.396358489990234,
+                                "positionY": -2.714904308319092,
+                                "positionZ": -4.073690414428711,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/SingleIlsland.obj",
+                                "texturePath": "../scenes/lvl1/colors.png"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            }
+        ]
+    }
+}

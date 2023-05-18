@@ -333,9 +333,6 @@
     <ClCompile Include="src\UISystem.cpp">
       <Filter>Source Files\Systems\User Interface</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImageLoader.cpp">
-      <Filter>Source Files\Systems\User Interface</Filter>
-    </ClCompile>
     <ClCompile Include="src\UIElement.cpp">
       <Filter>Source Files\Systems\User Interface</Filter>
     </ClCompile>
@@ -356,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="src\MemoryChunk.cpp">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CameraFollowComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\SkinnedMeshRendererComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
@@ -1679,9 +1679,6 @@
     <ClInclude Include="src\ShapeElement.h">
       <Filter>Source Files\Systems\User Interface\UI Elements</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImageLoader.h">
-      <Filter>Source Files\Systems\User Interface</Filter>
-    </ClInclude>
     <ClInclude Include="src\UISystem.h">
       <Filter>Source Files\Systems\User Interface</Filter>
     </ClInclude>
@@ -1717,6 +1714,9 @@
     </ClInclude>
     <ClInclude Include="src\BlockAllocator.h">
       <Filter>Source Files\Systems\Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CameraFollowComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\SkinnedMeshRendererComponent.h">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>

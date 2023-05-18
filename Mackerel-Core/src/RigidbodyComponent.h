@@ -19,6 +19,7 @@ namespace MCK::Physics
 		float angularFactor = 1;
 	public:
 		btRigidBody* rigidbody = nullptr;
+		btMotionState* motionState = nullptr;
 		btCollisionShape* collisionShape = nullptr;
 		CollisionCallbackManager onCollisionHandler;
 
@@ -35,6 +36,7 @@ namespace MCK::Physics
 		void SetCollisionShape(CreateCollisionShapeInfo shapeInfo);
 		void EnableRotation();
 		void DisableRotation();
+		void SetCharacter();
 
 		void OnCreate();
 		void OnUpdate();

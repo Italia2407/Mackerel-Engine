@@ -13,6 +13,7 @@
 #include "TransformComponent.h"
 #include "ShaderLibrary.h"
 #include "PerspectiveCamera.h"
+#include "CameraFollowComponent.h"
 #include "Renderer.h"
 #include "MeshRendererComponent.h"
 #include "TimeManager.h"
@@ -40,17 +41,16 @@ namespace MCK
             void Init();
 
         private:
-            AssetType::Mesh* cubeMesh;
-            AssetType::Material* greyMaterial;
-            AssetType::Material* blueMaterial;
-            AssetType::Shader* m_UnlitShader;
-            AssetType::Shader* m_MonoColourShader;
+            std::unordered_map<std::string, AssetType::Mesh*> meshMap;
+            std::unordered_map<std::string, AssetType::Material*> materialMap;
+            std::unordered_map<std::string, AssetType::Shader*> shaderMap;
 
             EntitySystem::TransformComponent floorTransform;
             EntitySystem::MeshRendererComponent* floorMesh;
             Physics::CollisionComponent* floorCollider;
 
             EntitySystem::PerspectiveCamera* cameraComponent;
+            EntitySystem::CameraFollowComponent* cameraFollowComponent;
 
             EntitySystem::TransformComponent* playerTransform;
             Physics::RigidbodyComponent* playerBody;

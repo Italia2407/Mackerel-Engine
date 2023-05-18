@@ -111,7 +111,9 @@ namespace MCK::Physics
 	*/
 	void RigidbodyComponent::ApplyToTransformComponent()
 	{
-		btTransform rbTransform = rigidbody->getWorldTransform();
+		btMotionState* motionState = rigidbody->getMotionState();
+		btTransform rbTransform;
+		motionState->getWorldTransform(rbTransform);
 		btVector3 pos =  rbTransform.getOrigin();
 		btQuaternion rot = rbTransform.getRotation();
 		
@@ -204,7 +206,7 @@ namespace MCK::Physics
 		initialTransformation.setRotation(rot);
 
 		// Collision shape
-		//if(collisionShape == nullptr)
+		if(collisionShape == nullptr)
 			collisionShape = new btBoxShape(btVector3({ 1,1,1 }));
 
 		// Construct the rigidbody
@@ -216,8 +218,11 @@ namespace MCK::Physics
 		);
 		info.m_startWorldTransform = initialTransformation;
 		
+		motionState = new btDefaultMotionState(initialTransformation);
 		rigidbody = new btRigidBody(info);
 		rigidbody->setUserPointer(static_cast<void*>(this));
+		rigidbody->setActivationState(DISABLE_DEACTIVATION);
+		rigidbody->setMotionState(motionState);
 		//rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 		//rigidbody->setAngularFactor(angularFactor);
 
@@ -237,12 +242,26 @@ namespace MCK::Physics
 	}
 
 	/**
+	 * Sets a rigidbody to a character
+	 * 
+	 * \param isCharacter
+	 */
+	void RigidbodyComponent::SetCharacter()
+	{
+		if (rigidbody != nullptr)
+		{
+			rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CHARACTER_OBJECT);
+		}
+	}
+
+	/**
 	* Invoked before the entity holding this component is destroyed.
 	*
 	*/
 	void RigidbodyComponent::OnDestroy()
 	{
 		entity->scene->physicsWorld.RemoveRigidbody(entity->id);
+		delete motionState;
 		delete collisionShape;
 		delete rigidbody;
 	}

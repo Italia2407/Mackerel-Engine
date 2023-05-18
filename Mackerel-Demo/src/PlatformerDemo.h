@@ -42,6 +42,7 @@ public:
 
 private:
 	AssetType::Mesh* cubeMesh;
+	AssetType::Mesh* bridgeMesh;
 	AssetType::Material* greyMaterial;
 	AssetType::Material* blueMaterial;
 

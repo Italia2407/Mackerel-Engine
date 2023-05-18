@@ -1,16 +1,37 @@
 #include "ExamplePlayerController.h"
 #include "InputComponent.h"
 #include "TimeManager.h"
+#include <iostream>
 
 using namespace MCK::EntitySystem;
 
 namespace MCK::ExamplePlayer
 {
+	void ExamplePlayerController::OnPlayerCollision(MCK::Physics::CollisionData data)
+	{
+		// test collision
+
+		if (data.collidedEntity->HasTag("death"))
+		{
+			rigidbody->SetPosition(startPosition);
+			std::cout << "Player died: Respawning" << std::endl;
+		}
+		else
+			lastGroundTime = TimeManager::GetUpTime();
+	}
+
 	void ExamplePlayerController::OnCreate()
 	{
 		transform = entity->GetComponent<TransformComponent>();
 		rigidbody = entity->GetComponent<Physics::RigidbodyComponent>();
 		input = entity->GetComponent<InputComponent>();
+
+		playerCollisionCallback = std::bind(&ExamplePlayerController::OnPlayerCollision, this, std::placeholders::_1);
+		receipt = rigidbody->onCollisionHandler.Register(playerCollisionCallback);
+
+		rigidbody->SetCharacter();
+
+		startPosition = rigidbody->GetPosition();
 	}
 
 	void ExamplePlayerController::OnUpdate()
@@ -52,7 +73,7 @@ namespace MCK::ExamplePlayer
 		}
 	
 		// Jump
-		if (input->JumpPressed())
+		if ((input->JumpPressed() || input->JumpHeld()) && (TimeManager::GetUpTime() - lastGroundTime < 0.5) && velocity.y() < 0.8)
 		{
 			velocity.y() = jumpVel;
 			rigidbody->SetLinearVelocity(velocity);
@@ -61,7 +82,7 @@ namespace MCK::ExamplePlayer
 
 	void ExamplePlayerController::OnDestroy() 
 	{
-
+		rigidbody->onCollisionHandler.Deregister(receipt);
 	}
 
 	bool ExamplePlayerController::Deserialise(json data)

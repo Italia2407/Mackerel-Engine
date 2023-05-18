@@ -13,6 +13,7 @@ TimeManager::TimeManager()
 	lastScaledFrame = 0.0;
 	upTime = glfwGetTime();
 	scaledUpTime = 0.0f;
+	fps = 0.0;
 }
 
 TimeManager::~TimeManager() {}
@@ -119,11 +120,16 @@ double MCK::TimeManager::privGetUnscaledFrameTime()
 	return upTime - lastFrame;
 }
 
+double MCK::TimeManager::privGetFPS()
+{
+	return fps;
+}
+
 
 void MCK::TimeManager::privUpdate()
 {
 	// Enforce wait
-	privWaitForEnforcedFrameTime(0.006);
+	privWaitForEnforcedFrameTime(0.013);
 
 	// update unscaled time
 	lastFrame = upTime;
@@ -171,4 +177,12 @@ void MCK::TimeManager::privUpdate()
 
 		it = scaledTimers.begin();
 	}
+
+	double frameTime = privGetUnscaledFrameTime();
+
+	if (frameTime > 0.0)
+		fps = 1.0 / frameTime;
+	else
+		fps = 0.0;
+
 }

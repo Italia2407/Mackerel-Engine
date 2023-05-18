@@ -15,12 +15,12 @@ layout(binding = 0) uniform usampler2D gLightShaderID;
 layout(binding = 31) uniform sampler2D shadowMap;
 
 // Light Parameters
-layout(binding = 3) uniform LightParameters
+layout(std140, binding = 3) uniform LightParameters
 {
 	mat4 modelViewProjection;
 
-	vec3 position;
-	vec3 direction;
+	vec4 position;
+	vec4 direction;
 
 	float beamAngle;
 
@@ -29,6 +29,14 @@ layout(binding = 3) uniform LightParameters
 	vec4 ambientColour;
 } light;
 
+layout(std140, binding = 4) uniform LightParams
+{
+	float beamAngle;
+
+	vec3 diffuseColour;
+	vec3 specularColour;
+	vec3 ambientColour;
+} lightParams;
 // Function to Assert Correct Light Shader Used
 void AssertLightShader(uint a_LightShaderID)
 {
@@ -46,13 +54,16 @@ layout(binding = 3) uniform sampler2D gNormal;
 
 void main()
 {
-	AssertLightShader(0);
+	AssertLightShader(1);
 
 	// Extract Fragment Parameters
 	vec4 colour = texture(gAlbedoColour, v2fUV);
 
 	vec3 position = texture(gPosition, v2fUV).xyz;
 	vec3 normal = texture(gNormal, v2fUV).xyz;
+
+	oColour = vec4(light.ambientColour.rgb, 1.0f);
+	//oColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Compare Distance with Shadow-Map
 	vec3 shadowCoord = (light.modelViewProjection * vec4(position, 1.0f)).xyz;
@@ -63,9 +74,9 @@ void main()
 		discard;
 
 	// Compare Light Direction with normal
-	float incidenceAmount = dot(normal, -light.direction);
+	float incidenceAmount = dot(normal, -light.direction.xyz);
 	if (incidenceAmount <= 0.0f)
-		discard;
+		return;
 
-	oColour = colour * incidenceAmount;
+	oColour += colour * incidenceAmount * light.diffuseColour;
 }

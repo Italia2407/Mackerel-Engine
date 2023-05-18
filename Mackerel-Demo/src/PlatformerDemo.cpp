@@ -1,4 +1,5 @@
 #include "PlatformerDemo.h"
+#include "CameraFollowComponent.h"
 
 PlatformerApp::PlatformerApp() 
 {}
@@ -11,13 +12,19 @@ void PlatformerApp::Start()
 
 #pragma region Scene Init
     scene.InitialiseScene();
+    scene.LoadScene("../scenes/lvl1/scene.scn");
     //MCK::Logger::initialize();
 #pragma endregion
 
 #pragma region Rendering Init
+
+    bridgeMesh = new MCK::AssetType::Mesh("Bridge Mesh");
+    //bridgeMesh->LoadFromFile("../scenes/lvl1/IslandGeo.obj");
+   // bridgeMesh->LoadFromFile("../scenes/lvl1/Bridge.obj");
+    bridgeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
+
     cubeMesh = new MCK::AssetType::Mesh("Cube Mesh");
     cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj"); 
-    //cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
 
     greyMaterial = new MCK::AssetType::Material();
     greyMaterial->addUInt16Uniform("lightShaderID", 0);
@@ -34,44 +41,49 @@ void PlatformerApp::Start()
     //MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
     MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
 
-    light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero());
+    light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f::Ones(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Ones() / 2.f);
 #pragma endregion
 
 #pragma region Floor Init
-    floorTransform.Position() = Eigen::Vector3f(0,-8, -2);
-    floorTransform.Scale() = Eigen::Vector3f(6, 6, 6);
+    floorTransform.Position() = Eigen::Vector3f(0,-2, -0);
+    floorTransform.Scale() = Eigen::Vector3f(1, 1, 1);
 
-    floorMesh = new EntitySystem::MeshRendererComponent(cubeMesh, m_MonoColourShader, greyMaterial);
+    //floorMesh = new EntitySystem::MeshRendererComponent(bridgeMesh, m_MonoColourShader, greyMaterial);
+    floorMesh = new EntitySystem::MeshRendererComponent(bridgeMesh, m_MonoColourShader, greyMaterial);
 
     Physics::CreateCollisionShapeInfo floorShape{};
-    floorShape.colliderType = Physics::ColliderTypes::Box;
-    floorShape.width = 6;
-    floorShape.height = 6;
-    floorShape.depth = 6;
+    floorShape.colliderType = Physics::ColliderTypes::Mesh;
+    floorShape.width = 1;
+    floorShape.height = 1;
+    floorShape.depth = 1;
+    floorShape.mesh = bridgeMesh;
 
     Physics::CollisionComponent* floorCollider = new Physics::CollisionComponent();
-    floorCollider->SetCollisionShape(floorShape);
+    
 
     EntitySystem::Entity* floorEntity = scene.CreateEntity();
     floorEntity->AddComponent(&floorTransform);
     floorEntity->AddComponent(floorMesh);
+    floorCollider->SetCollisionShape(floorShape);
     floorEntity->AddComponent(floorCollider);
 #pragma endregion
 
 #pragma region Camera Init
     cameraComponent = new EntitySystem::PerspectiveCamera(1280.0f / 720.0f);
-    cameraComponent->Position() = Eigen::Vector3f(0, 5, 10);
+    cameraComponent->Position() = Eigen::Vector3f(0, 4, -10);
     cameraComponent->FrontDirection() = Eigen::Vector3f(0, -.7f, -1).normalized();
     cameraComponent->UpDirection() = Eigen::Vector3f(0, 1, 0).normalized();
+    EntitySystem::CameraFollowComponent* cameraFollowComponent = new EntitySystem::CameraFollowComponent();
 
     EntitySystem::Entity* cameraEnttiy = scene.CreateEntity();
     cameraEnttiy->AddComponent(cameraComponent);
+    cameraEnttiy->AddComponent(cameraFollowComponent);
     
 #pragma endregion
 
 #pragma region Player Init
     EntitySystem::TransformComponent* playerTransform = new EntitySystem::TransformComponent();
-    playerTransform->Position() = Eigen::Vector3f(0, 20, 0);
+    playerTransform->Position() = Eigen::Vector3f(0, 10, 0);
     playerTransform->Scale() = Eigen::Vector3f(0.3f, 0.3f, 0.3f);
 
     // Physics
@@ -93,6 +105,7 @@ void PlatformerApp::Start()
         = new ExamplePlayer::ExamplePlayerController();
 
     EntitySystem::Entity* playerEntity = scene.CreateEntity();
+    playerEntity->AddTag("Player");
     playerEntity->AddComponent(playerTransform);
     playerEntity->AddComponent(playerBody);
     playerEntity->AddComponent(playerRenderer);

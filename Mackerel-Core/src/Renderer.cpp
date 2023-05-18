@@ -759,7 +759,9 @@ bool Renderer::renderFrame()
 	m_MeshTransformBuffer->BindUniformBufferObject(1);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
+	glCullFace(GL_BACK);
 	// Render Scene to the Geometry Buffer
 	if (!m_GeometryBuffer || !renderGeometry(m_GeometryBuffer, false)) {
 		Logger::log("Could not Render to Geometry Buffer", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
@@ -768,6 +770,7 @@ bool Renderer::renderFrame()
 
 	// TODO:
 	// Render Shadow Maps for All Lights
+	glCullFace(GL_FRONT);
 	for (auto light : _directionLights)
 	{
 		light->BindShadowRendererCamera(m_CentrePosition);
@@ -777,6 +780,7 @@ bool Renderer::renderFrame()
 		}
 	}
 
+	glCullFace(GL_BACK);
 	glDisable(GL_DEPTH_TEST);
 
 

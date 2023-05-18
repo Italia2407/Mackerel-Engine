@@ -85,6 +85,13 @@ namespace MCK::EntitySystem
 		void LoadScene(std::string path);
 
 		/**
+		 * Adds the contents of a scene from a file.
+		 *
+		 * \param path
+		 */
+		void LoadSceneAdditive(std::string path);
+
+		/**
 		 * Creates a component of a given type, specified by the key.
 		 * 
 		 * \param key The key specifying the type of component
