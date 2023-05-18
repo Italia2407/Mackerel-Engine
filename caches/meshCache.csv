@@ -1,5 +1,15 @@
 id,path
 0, Mackerel-Core\res\Meshes\DisplayScreen.obj
-1, Mackerel-Core\res\Meshes\Primitives\cube.obj
-2, Mackerel-Core\res\Meshes\Suzanne.obj
-3, Mackerel-Core\res\Meshes\TestMesh.obj
+1, Mackerel-Core\res\Meshes\Icosphere.gltf
+2, Mackerel-Core\res\Meshes\MackerelText.glb
+3, Mackerel-Core\res\Meshes\MackerelText_embedded.gltf
+4, Mackerel-Core\res\Meshes\Primitives\cube.obj
+5, Mackerel-Core\res\Meshes\Suzanne.obj
+6, Mackerel-Core\res\Meshes\Suzanne_GLTF.gltf
+7, Mackerel-Core\res\Meshes\TestMesh.obj
+8, Mackerel-Core\res\Meshes\three_bone.glb
+9, Mackerel-Core\res\Meshes\three_bone_2.gltf
+10, Mackerel-Core\res\Meshes\three_bone_embedded.gltf
+11, Mackerel-Core\res\Meshes\three_bone_no_skeleton.gltf
+12, Mackerel-Core\res\Meshes\xbot.gltf
+13, Mackerel-Core\res\Meshes\xbot_binary.glb

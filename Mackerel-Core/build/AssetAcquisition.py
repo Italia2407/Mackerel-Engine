@@ -53,6 +53,12 @@ def build_asset_set(a_root, a_dir, a_file_formats, a_folder_ignores, resource_fo
 				if in_resource_path or len(resource_folder_names) == 0:
 					a_set.append(full_path)
 					print("Adding asset {0}".format(full_path))
+
+					# run ozz converter if necessary
+					if fext == ".gltf" or fext == ".glb":
+						ozz_path = os.path.join(sys.argv[0], os.pardir, "GenerateOzz.py")
+						os.system("python \"{0}\" \"{1}\"".format(ozz_path, full_path))
+
 				else:
 					print(path_split)
 					print(resource_folder_names)
@@ -194,7 +200,7 @@ material_assets.build(root_path, resource_names, folder_ignores)
 
 # Meshes
 mesh_assets = AssetType(
-	formats=[".obj"],
+	formats=[".obj", ".glb", ".gltf"],
 	cache_output=os.path.join(build_path, "meshCache.csv"),
 	enum_output=os.path.join(enum_path, "MeshEnum.h"),
 	enum_name="MeshEnum",

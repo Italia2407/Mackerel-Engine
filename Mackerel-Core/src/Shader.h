@@ -15,6 +15,7 @@ public:
 private:
 	// Vertex Shader
 	static GLuint k_ProjectionShaderID;
+	static GLuint k_SkinnedProjectionShaderID;
 
 	static bool loadShaderSource(std::string a_FilePath, GLuint a_ShaderType, GLuint& o_ShaderID);
 
@@ -26,6 +27,7 @@ private:
 	std::string m_Name;
 
 	GLuint m_ShaderProgramID;
+	GLuint m_SkinnedShaderProgramID;
 
 	void resetShader();
 	
@@ -33,7 +35,9 @@ public:
 	// Asset Management Functions
 	bool LoadFromFile(std::string a_FilePath);
 
+	GLint GetShaderUniformLocation(std::string a_UniformName, bool a_IsSkinned);
+
 	// Shader Program Binders
-	bool UseShaderProgram();
+	bool UseShaderProgram(bool a_IsSkinned);
 };
 }

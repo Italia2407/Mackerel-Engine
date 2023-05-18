@@ -138,6 +138,12 @@ public:
 	 */
 	bool HasTag(std::string tag);
 
+	void AddChild(Entity* child)
+	{
+		childEntities.push_back(child);
+		child->parent = this;
+	}
+
 	/**
 		* Test function. TODO remove
 		* 

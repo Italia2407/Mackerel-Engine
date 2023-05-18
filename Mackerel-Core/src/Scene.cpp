@@ -85,7 +85,7 @@ namespace MCK::EntitySystem
 		}
 
 		double delta = MCK::TimeManager::getFrameTime();
-
+		std::cout << TimeManager::getFPS() << std::endl;
 		physicsWorld.ApplySimulation(static_cast<float>(delta));
 		audioEngine.Update();
 	}
@@ -119,10 +119,12 @@ namespace MCK::EntitySystem
 	void Scene::Deserialise(json sceneJson)
 	{
 		json entitiesJson = sceneJson["scene"]["entities"];
+		Entity* parentEntity = CreateEntity();
 
 		for (json& entityJson : entitiesJson)
 		{
 			Entity* newEntity = CreateEntity();
+			parentEntity->AddChild(newEntity);
 			newEntity->Deserialise(entityJson["entity"]);
 		}
 	}
@@ -150,6 +152,7 @@ namespace MCK::EntitySystem
 
 	void Scene::UnloadScene()
 	{
+		sceneLoaded = false;
 		physicsWorld.TeardownWorld();
 
 		for (unsigned int i = unsigned int(entities.size()); i > 0; --i)

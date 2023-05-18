@@ -129,7 +129,7 @@ double MCK::TimeManager::privGetFPS()
 void MCK::TimeManager::privUpdate()
 {
 	// Enforce wait
-	privWaitForEnforcedFrameTime(0.006);
+	privWaitForEnforcedFrameTime(0.013);
 
 	// update unscaled time
 	lastFrame = upTime;
