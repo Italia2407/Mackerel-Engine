@@ -71,7 +71,7 @@ namespace MCK::ExamplePlayer
 		}
 	
 		// Jump
-		if (input->JumpPressed() && (TimeManager::GetUpTime() - lastGroundTime < 0.2))
+		if ((input->JumpPressed() || input->JumpHeld()) && (TimeManager::GetUpTime() - lastGroundTime < 0.5) && velocity.y() < 0.8)
 		{
 			velocity.y() = jumpVel;
 			rigidbody->SetLinearVelocity(velocity);

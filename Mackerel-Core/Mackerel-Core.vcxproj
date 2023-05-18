@@ -685,7 +685,7 @@
     <PublicIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0</PublicIncludeDirectories>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
