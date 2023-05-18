@@ -681,13 +681,14 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 			return false;
 		}
 	}
-
-	/* build static vao */
-	if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {
-		Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
-		return false;
+	else
+	{
+		/* build static vao */
+		if (!generateVertexObjects(vertexPositions, vertexNormals, vertexTextureCoords, vertexTints, vertexIndices)) {
+			Logger::log("Failed to Generate GLTF Mesh GPU Objects", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
 	}
-
 
 	return true;
 }

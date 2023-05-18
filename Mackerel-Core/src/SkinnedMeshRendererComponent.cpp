@@ -199,7 +199,7 @@ namespace MCK::EntitySystem {
 
 		/* Create buffers needed for animation */
 		assert(m_Mesh->m_hasRig);
-		jointTransformShaderLoc = m_Shader->GetShaderUniformLocation("joint_data");
+		jointTransformShaderLoc = m_Shader->GetShaderUniformLocation("joint_data", m_Mesh->m_hasRig);
 		CreateAndUploadJointTransforms();
 
 		/* create animation update callback */

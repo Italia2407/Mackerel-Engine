@@ -564,7 +564,7 @@ bool Renderer::renderDeferredBuffer()
 	{	auto unlitShader = m_UnlitShaders[i];
 
 		// Start Unlit Shader Program
-		if (!unlitShader || !unlitShader->UseShaderProgram()) {
+		if (!unlitShader || !unlitShader->UseShaderProgram(false)) {
 			Logger::log(std::format("Could not Start Unlit Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -578,7 +578,7 @@ bool Renderer::renderDeferredBuffer()
 	{	auto lightShader = _pointLightShaders[i];
 
 		// Start Point Light Shader Program
-		if (!lightShader || !lightShader->UseShaderProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram(false)) {
 			Logger::log(std::format("Could not Start Point Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -603,7 +603,7 @@ bool Renderer::renderDeferredBuffer()
 		auto lightShader = _directionLightShaders[i];
 
 		// Start Direction Light Shader Program
-		if (!lightShader || !lightShader->UseShaderProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram(false)) {
 			Logger::log(std::format("Could not Start Direction Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -629,7 +629,7 @@ bool Renderer::renderDeferredBuffer()
 		auto lightShader = _spotLightShaders[i];
 
 		// Start Spot Light Shader Program
-		if (!lightShader || !lightShader->UseShaderProgram()) {
+		if (!lightShader || !lightShader->UseShaderProgram(false)) {
 			Logger::log(std::format("Could not Start Spot Light Shader Program #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
 		}
@@ -816,7 +816,7 @@ bool Renderer::renderFrame()
 	}
 
 	// Load Frame Buffer Display Shader
-	if (!k_DisplayScreenShader->UseShaderProgram()) {
+	if (!k_DisplayScreenShader->UseShaderProgram(false)) {
 		Logger::log("Could not Start Framebuffer Display Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
