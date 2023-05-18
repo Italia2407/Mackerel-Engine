@@ -6,7 +6,7 @@ layout(location = 1) in vec3 vertexNormal;
 layout(location = 2) in vec2 vertexUV;
 layout(location = 3) in vec3 vertexTint;
 layout(location = 4) in vec4 vertexWeights;
-layout(location = 5) in ivec4 vertexJoints;
+layout(location = 5) in uvec4 vertexJoints;
 
 // Output Fragment Data
 layout(location = 0) out vec3 v2fPosition;
@@ -36,8 +36,8 @@ uniform mat4 joint_data[256];
 
 void main()
 {
-	// Joint Transform
-	mat4 jointTransform = joint_data[vertexJoints[0]];
+	// Joint Transform (plus two is needed)
+	mat4 jointTransform = joint_data[vertexJoints[0] + 2];
 
 	// Compute Transformed Position
 	vec4 transformedPosition = mesh.transformMatrix * jointTransform * vec4(vertexPosition, 1.0f);

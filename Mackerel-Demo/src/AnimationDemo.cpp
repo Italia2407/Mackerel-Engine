@@ -24,9 +24,9 @@ namespace MCK
             greyMaterial->addUInt16Uniform("lightShaderID", 0);
             greyMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.8f, 0.8f));
 
-            blueMaterial = new AssetType::Material();
-            blueMaterial->addUInt16Uniform("lightShaderID", 0);
-            blueMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.6f, 0.6f, 1.f));
+            yellowMaterial = new AssetType::Material();
+            yellowMaterial->addUInt16Uniform("lightShaderID", 0);
+            yellowMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.8f, 0.2f));
 
             //MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT, m_UnlitShader);
             MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
@@ -64,7 +64,7 @@ namespace MCK
             playerTransform->Position() = Eigen::Vector3f(0.0f, 0.0f, 5.0f);
             playerTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
 
-            playerRenderer = new EntitySystem::SkinnedMeshRendererComponent(boneMesh, m_MonoColourShader, blueMaterial);
+            playerRenderer = new EntitySystem::SkinnedMeshRendererComponent(boneMesh, m_MonoColourShader, yellowMaterial);
             playerRenderer->SetDefaultAnimation("three_bone_armatureAction");
             playerRenderer->PlayAnimation("three_bone_armatureAction", 0.0f, true, false, true);
         #pragma endregion

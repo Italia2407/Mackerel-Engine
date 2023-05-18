@@ -44,7 +44,7 @@ namespace MCK
             AssetType::Mesh* boneMesh;
             AssetType::Mesh* cubeMesh;
             AssetType::Material* greyMaterial;
-            AssetType::Material* blueMaterial;
+            AssetType::Material* yellowMaterial;
             AssetType::Shader* m_UnlitShader;
             AssetType::Shader* m_MonoColourShader;
 
