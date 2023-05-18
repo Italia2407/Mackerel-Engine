@@ -23,7 +23,7 @@ void FinalDemoApp::Start()
 
         #pragma region Scene Init
             constantScene.InitialiseScene();
-            light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero());
+            light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
             //MCK::Logger::initialize();
         #pragma endregion
 
@@ -81,6 +81,9 @@ void FinalDemoApp::Start()
             uiComponent->CreateShape(false, ImVec2(windowSize.x - 10 - 276, 10), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, ImVec2(276, 100), ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, hudIMG);
             uiComponent->CreateText(false, ImVec2(windowSize.x - 10 - 276 + 82, 65), 2.0f, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, "", [this]() { return this->GetCurrentRuntime(); });
 
+            // Create FPS counter in bottom left
+            uiComponent->CreateText(false, ImVec2(10, windowSize.y - 20), 1.0f, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, "", [this]() { return this->GetCurrentFPS(); });
+
             // Create button elements
             ImVec2 buttonSize = ImVec2(166, 61);
             int buttonOffset = 80; // Offset
@@ -92,6 +95,8 @@ void FinalDemoApp::Start()
 
             EntitySystem::Entity* uiEntity = constantScene.CreateEntity();
             uiEntity->AddComponent(uiComponent);
+
+            MCK::Logger::log("SETUP COMPLETED", MCK::Logger::LogLevel::Info, std::source_location::current());
 
         #pragma endregion
 
@@ -113,10 +118,20 @@ std::string FinalDemoApp::GetCurrentRuntime() {
     return std::string(buffer);
 }
 
+std::string FinalDemoApp::GetCurrentFPS() {
+    // Get the current frames per second.
+    double fps = MCK::TimeManager::getFPS();
+
+    // Format string.
+    char buffer[100];
+    sprintf(buffer, "FPS: %.0f", fps);
+    return std::string(buffer);
+}
+
 
 void FinalDemoApp::LoadRenderingDemo()
 {
-    std::cout << "Loading Rendering Demo" << std::endl;
+    MCK::Logger::log("Loading Rendering Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
     
     // Unload current scene
     if (loadedDemo)
@@ -131,7 +146,7 @@ void FinalDemoApp::LoadRenderingDemo()
 
 void FinalDemoApp::LoadPhysicsDemo()
 {
-    std::cout << "Loading Physics Demo" << std::endl;
+    MCK::Logger::log("Loading Physics Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
 
     // Unload current scene
     if (loadedDemo)
@@ -146,7 +161,7 @@ void FinalDemoApp::LoadPhysicsDemo()
 
 void FinalDemoApp::LoadAnimationDemo()
 {
-    std::cout << "Loading Animation Demo" << std::endl;
+    MCK::Logger::log("Loading Animation Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
 
     // Unload current scene
     if (loadedDemo)
@@ -161,7 +176,7 @@ void FinalDemoApp::LoadAnimationDemo()
 
 void FinalDemoApp::LoadAudioDemo()
 {
-    std::cout << "Loading Audio Demo" << std::endl;
+    MCK::Logger::log("Loading Audio Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
 
     // Unload current scene
     if (loadedDemo)
@@ -190,6 +205,8 @@ void FinalDemoApp::Update()
 
 void FinalDemoApp::End()
 {
+    MCK::Logger::log("EXITING", MCK::Logger::LogLevel::Info, std::source_location::current());
+
     if (loadedDemo)
         scene.UnloadScene();
     constantScene.UnloadScene();

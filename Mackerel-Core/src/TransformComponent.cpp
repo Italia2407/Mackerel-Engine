@@ -31,7 +31,6 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 	 */
 	void TransformComponent::OnCreate()
 	{
-		std::cout << "I was created" << std::endl;
 	}
 
 	/**

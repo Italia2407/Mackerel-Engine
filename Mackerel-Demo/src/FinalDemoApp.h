@@ -58,11 +58,6 @@ private:
 	bool loadedDemo;
 
 	// Rendering
-	AssetType::Mesh* cubeMesh;
-	AssetType::Material* greyMaterial;
-	AssetType::Material* blueMaterial;
-	AssetType::Shader* m_UnlitShader;
-	AssetType::Shader* m_MonoColourShader;
 	Rendering::DirectionLight* light;
 
 public:
@@ -71,6 +66,7 @@ public:
 	void End() override;
 
 	std::string GetCurrentRuntime();
+	std::string GetCurrentFPS();
 
 	void LoadRenderingDemo();
 	void LoadPhysicsDemo();

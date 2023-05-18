@@ -1,4 +1,5 @@
 #pragma once
+#include "LoggingSystem.h"
 #include <string>
 #include <map>
 

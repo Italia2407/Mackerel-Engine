@@ -26,7 +26,7 @@ namespace MCK::UI
 
 		// Initialize ImGui bindings for GLFW and OpenGL
 		ImGui_ImplGlfw_InitForOpenGL(**context, true);
-		const char* glsl_version = "#version 130"; // Use appropriate GLSL version string depending on your OpenGL version
+		const char* glsl_version = "#version 130";
 		ImGui_ImplOpenGL3_Init(glsl_version);
 
 		return true;
