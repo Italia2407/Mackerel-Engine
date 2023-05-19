@@ -42,12 +42,9 @@ namespace MCK
             void Init();
 
         private:
-            AssetType::Mesh* boneMesh;
-            AssetType::Mesh* cubeMesh;
-            AssetType::Material* greyMaterial;
-            AssetType::Material* yellowMaterial;
-            AssetType::Shader* m_UnlitShader;
-            AssetType::Shader* m_MonoColourShader;
+            std::unordered_map<std::string, AssetType::Mesh*> meshMap;
+            std::unordered_map<std::string, AssetType::Material*> materialMap;
+            std::unordered_map<std::string, AssetType::Shader*> shaderMap;
 
             EntitySystem::TransformComponent floorTransform;
             EntitySystem::MeshRendererComponent* floorMesh;
@@ -66,7 +63,6 @@ namespace MCK
             EntitySystem::AudioEmitter* audioComponent;
 
             EntitySystem::UIComponent* uiComponent;
-
         };
     }
 }
