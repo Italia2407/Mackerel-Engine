@@ -72,6 +72,7 @@
     <ClCompile Include="src\ShaderLibrary.cpp" />
     <ClCompile Include="src\Context.cpp" />
     <ClCompile Include="src\ShapeElement.cpp" />
+    <ClCompile Include="src\SkinnedMeshRendererComponent.cpp" />
     <ClCompile Include="src\TestComponent.cpp" />
     <ClCompile Include="src\TextElement.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -448,6 +449,10 @@
     <ClInclude Include="ext\nlohmann\json.hpp" />
     <ClInclude Include="ext\nlohmann\json_fwd.hpp" />
     <ClInclude Include="ext\STBI\stb_image.h" />
+    <ClInclude Include="ext\tinygltf\json.hpp" />
+    <ClInclude Include="ext\tinygltf\stb_image.h" />
+    <ClInclude Include="ext\tinygltf\stb_image_write.h" />
+    <ClInclude Include="ext\tinygltf\tiny_gltf.h" />
     <ClInclude Include="ext\TinyOBJ\tiny_obj_loader.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\AppAttorney.h" />
@@ -518,6 +523,8 @@
     <ClInclude Include="src\ShaderEnum.h" />
     <ClInclude Include="src\ShaderLibrary.h" />
     <ClInclude Include="src\ShapeElement.h" />
+    <ClInclude Include="src\SkinnedMeshData.h" />
+    <ClInclude Include="src\SkinnedMeshRendererComponent.h" />
     <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\TestComponent.h" />
     <ClInclude Include="src\TextElement.h" />
@@ -538,6 +545,7 @@
     <None Include="build\AssetAcquisition.py" />
     <None Include="res\Shaders\fragmentHeader.glsl" />
     <None Include="res\Shaders\frag\monoColour.glsl" />
+    <None Include="res\Shaders\frag\textured.glsl" />
     <None Include="res\Shaders\frag\unlitShadows.glsl" />
     <None Include="res\Shaders\lightsHeader.glsl" />
     <None Include="res\Shaders\light\unlit.glsl" />
@@ -545,6 +553,7 @@
     <None Include="res\Shaders\static\FBDisplayer.glsl" />
     <None Include="res\Shaders\vertexHeader.glsl" />
     <None Include="res\Shaders\vert\projection.vert" />
+    <None Include="res\Shaders\vert\skinned_projection.vert" />
     <None Include="src\MaterialDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -614,12 +623,14 @@
     <Resource Include="res\Meshes\Primitives\cube.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Resource>
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\Sounds\Voyager.mp3" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\Textures\survivorMaleB.png" />
     <Image Include="res\UI\ButtonAnimationSmall.png" />
     <Image Include="res\UI\ButtonAudioSmall.png" />
     <Image Include="res\UI\ButtonPhysicsSmall.png" />
@@ -687,7 +698,11 @@
     <PublicIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0</PublicIncludeDirectories>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PublicIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0</PublicIncludeDirectories>
+    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -749,7 +764,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\STBI;$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;C:\raylib\w64devkit\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\STBI;$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;$(SolutionDIR)\Mackerel-Core\ext\ozz\include;$(SolutionDIR)\Mackerel-Core\ext\tinygltf</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -762,10 +777,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;fmodL_vc.lib;fmodstudioL_vc.lib;</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;fmodL_vc.lib;fmodstudioL_vc.lib;glfw_d.lib;gtest_d.lib;json_d.lib;ozz_animation_d.lib;ozz_animation_offline_d.lib;ozz_animation_tools_d.lib;ozz_base_d.lib;ozz_geometry_d.lib;ozz_options_d.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\lib-vc2022;$(SolutionDIR)\Mackerel-Core\ext\FMOD\Lib;C:\raylib\w64devkit\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\lib-vc2022;$(SolutionDIR)\Mackerel-Core\ext\FMOD\Lib;$(SolutionDIR)\Mackerel-Core\ext\ozz\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
       <Command>python "$(SolutionDir)Mackerel-Core\build\AssetAcquisition.py" "$(SolutionDir)\" "$(SolutionDir)caches" "$(SolutionDir)Mackerel-Core\src" -i x64 x86 ext -r res</Command>
@@ -783,12 +798,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDIR)\Mackerel-Core\ext\STBI;$(SolutionDIR)\Mackerel-Core\ext\TinyOBJ;$(SolutionDIR)\Mackerel-Core\ext\bullet3-master\src;$(SolutionDIR)\Mackerel-Core\ext\nlohmann;$(SolutionDIR)\Mackerel-Core\ext\easyloggingpp-9.97.0;$(SolutionDIR)\Mackerel-Core\ext\Eigen 3.4.0;$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\include;$(SolutionDIR)\Mackerel-Core\ext\GLAD\include;$(SolutionDIR)\Mackerel-Core\ext\Dear-ImGui 1.89.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalModuleDependencies>%(AdditionalModuleDependencies)</AdditionalModuleDependencies>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -801,6 +818,9 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDIR)\Mackerel-Core\ext\GLFW 3.3.8\lib-vc2022;$(SolutionDIR)\Mackerel-Core\ext\FMOD\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
+    <PreBuildEvent>
+      <Command>python "$(SolutionDir)Mackerel-Core\build\AssetAcquisition.py" "$(SolutionDir)\" "$(SolutionDir)caches" "$(SolutionDir)Mackerel-Core\src" -i x64 x86 ext -r res</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,31 +19,34 @@ namespace MCK
                 groundMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
 
                 AssetType::Mesh* playerMesh = new AssetType::Mesh("Player Mesh");
-                playerMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Suzanne.obj");
+                playerMesh->LoadFromFile("../Mackerel-Core/res/Meshes/survivor.obj");
 
                 meshMap["groundMesh"] = groundMesh;
                 meshMap["playerMesh"] = playerMesh;
 
-                AssetType::Material* greyMaterial = new AssetType::Material();
-                greyMaterial->addUInt16Uniform("lightShaderID", 0);
-                greyMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.8f, 0.8f));
+                MCK::AssetType::Material* skin = new MCK::AssetType::Material();
+                skin->LoadFromFile("../Mackerel-Core/res/Materials/survivor.mtl", 0);
 
-                AssetType::Material* blueMaterial = new AssetType::Material();
-                blueMaterial->addUInt16Uniform("lightShaderID", 0);
-                blueMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.6f, 0.6f, 1.f));
+                AssetType::Material* greenMaterial = new AssetType::Material();
+                greenMaterial->addUInt16Uniform("lightShaderID", 0);
+                greenMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.8f, 0.0f));
 
-                materialMap["greyMaterial"] = greyMaterial;
-                materialMap["blueMaterial"] = blueMaterial;
+                materialMap["greenMaterial"] = greenMaterial;
+                materialMap["skin"] = skin;
 
                 AssetType::Shader* m_UnlitShader;
                 AssetType::Shader* m_MonoColourShader;
+                AssetType::Shader* m_texturedShader;
 
-                //MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT, m_UnlitShader);
                 MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
                 MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, m_MonoColourShader);
 
+                MCK::ShaderLibrary::LoadShader(ShaderEnum::textured, "../Mackerel-Core/res/Shaders/frag/textured.glsl");
+                MCK::ShaderLibrary::GetShader(ShaderEnum::textured, m_texturedShader);
+
                 shaderMap["m_UnlitShader"] = m_UnlitShader;
                 shaderMap["m_MonoColourShader"] = m_MonoColourShader;
+                shaderMap["m_texturedShader"] = m_texturedShader;
 
                 //MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
                 MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
@@ -53,7 +56,7 @@ namespace MCK
                 floorTransform.Position() = Eigen::Vector3f(0, -8, -2);
                 floorTransform.Scale() = Eigen::Vector3f(6, 6, 6);
 
-                floorMesh = new EntitySystem::MeshRendererComponent(meshMap["groundMesh"], shaderMap["m_MonoColourShader"], materialMap["greyMaterial"]);
+                floorMesh = new EntitySystem::MeshRendererComponent(meshMap["groundMesh"], shaderMap["m_MonoColourShader"], materialMap["greenMaterial"]);
 
                 Physics::CreateCollisionShapeInfo floorShape{};
                 floorShape.colliderType = Physics::ColliderTypes::Box;
@@ -89,7 +92,7 @@ namespace MCK
                 playerBody->SetCollisionShape(playerShape);
                 //playerBody->DisableRotation();
 
-                playerRenderer = new EntitySystem::MeshRendererComponent(meshMap["playerMesh"], shaderMap["m_MonoColourShader"], materialMap["blueMaterial"]);
+                playerRenderer = new EntitySystem::MeshRendererComponent(meshMap["playerMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
 
                 playerInput = new EntitySystem::InputComponent();
                 playerController = new ExamplePlayer::ExamplePlayerController();

@@ -16,8 +16,8 @@
 #include <format>
 
 namespace MCK::Rendering {
-RenderBatch::RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader) :
-	m_Mesh(mesh), m_Shader(shader) {}
+RenderBatch::RenderBatch(AssetType::Mesh* mesh, AssetType::Shader* shader, bool isAnimated) :
+	m_Mesh(mesh), m_Shader(shader), isAnimated(isAnimated) {}
 RenderBatch::~RenderBatch()
 {
 	// Clear all Mesh Instances
@@ -45,7 +45,7 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_Dept
 	}
 
 	// Bind Mesh's VAO to the GPU
-	if (!m_Mesh->BindVertexArrayObject()) {
+	if (!m_Mesh->BindVertexArrayObject(isAnimated)) {
 		Logger::log("Cannot Bind Mesh's VAO", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
@@ -53,14 +53,14 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_Dept
 	// Load Shader Program to GPU
 	if (!a_DepthOnly)
 	{// Use Regular Shader Program
-		if (!m_Shader->UseShaderProgram()) {
+		if (!m_Shader->UseShaderProgram(isAnimated)) {
 			Logger::log("Cannot Use Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
 		}
 	}
 	else
 	{// Use Depth Only Shader Program
-		if (!AssetType::Shader::k_DepthOnlyShader->UseShaderProgram()) {
+		if (!AssetType::Shader::k_DepthOnlyShader->UseShaderProgram(isAnimated)) {
 			Logger::log("Cannot Use Depth Only Shader Program", Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			return false;
 		}
@@ -79,7 +79,7 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_Dept
 		if (!a_DepthOnly) {
 		// Load Instance's Material Uniforms
 		if (!instance.material || !instance.material->UseMaterial()) {
-			Logger::log(std::format("Cannot Load Instance #{} Material", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			//Logger::log(std::format("Cannot Load Instance #{} Material", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		}}
 
 		// Draw Mesh Instance

@@ -5,7 +5,18 @@ enum class MeshEnum
     __MCK_DEFAULT = -1,
     // Negative values are reserved for engine use
     DisplayScreen = 0,
-    cube = 1,
-    Suzanne = 2,
-    TestMesh = 3
+    Icosphere = 1,
+    MackerelText = 2,
+    MackerelText_embedded = 3,
+    cube = 4,
+    survivor = 5,
+    Suzanne = 6,
+    Suzanne_GLTF = 7,
+    TestMesh = 8,
+    three_bone = 9,
+    three_bone_2 = 10,
+    three_bone_embedded = 11,
+    three_bone_no_skeleton = 12,
+    xbot = 13,
+    xbot_binary = 14
 };

@@ -19,8 +19,11 @@ namespace MCK::Physics
 		float angularFactor = 1;
 	public:
 		btRigidBody* rigidbody = nullptr;
+		btMotionState* motionState = nullptr;
 		btCollisionShape* collisionShape = nullptr;
 		CollisionCallbackManager onCollisionHandler;
+
+		float mass = 1;
 
 		void AddCentralForce(const Eigen::Vector3f force);
 		void AddTorque(const Eigen::Vector3f torque);
@@ -35,6 +38,8 @@ namespace MCK::Physics
 		void SetCollisionShape(CreateCollisionShapeInfo shapeInfo);
 		void EnableRotation();
 		void DisableRotation();
+		void SetCharacter();
+		void SetMass(float m);
 
 		void OnCreate();
 		void OnUpdate();

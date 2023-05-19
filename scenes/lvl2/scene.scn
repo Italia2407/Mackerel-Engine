@@ -1,0 +1,41 @@
+{
+    "scene": {
+        "entities": [
+            {
+                "entity": {
+                    "name": "PhysicsDemoGeo",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.0,
+                                "positionY": 0.0,
+                                "positionZ": 0.0,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/PhysicsDemoGeo.obj",
+                                "texturePath": "$texPath"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            }
+        ]
+    }
+}

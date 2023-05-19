@@ -164,7 +164,7 @@ namespace MCK::Physics
 	{
 		// Step
 		dynamicsWorld->applyGravity();
-		dynamicsWorld->stepSimulation(static_cast<btScalar>(delta), 0);
+		dynamicsWorld->stepSimulation(static_cast<btScalar>(delta), 20);
 
 		for (const auto& body : sceneBodies)
 		{

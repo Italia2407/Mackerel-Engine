@@ -12,6 +12,7 @@
 
 namespace MCK::AssetType {
 GLuint Shader::k_ProjectionShaderID = GL_ZERO;
+GLuint Shader::k_SkinnedProjectionShaderID = GL_ZERO;
 Shader* Shader::k_DepthOnlyShader = nullptr;
 
 /**
@@ -97,10 +98,19 @@ bool Shader::LoadDefaultShaders()
 		Logger::log("Cannot Reload Vertex Shader", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
+	if (k_SkinnedProjectionShaderID != GL_ZERO) {
+		Logger::log("Cannot Reload Skinned Vertex Shader", Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		return false;
+	}
 
-	// Load Projection Vertex Shader
+
+	// Load Projection Vertex Shaders
 	if (!loadShaderSource("../Mackerel-Core/res/Shaders/vert/projection.vert", GL_VERTEX_SHADER, k_ProjectionShaderID)) {
 		Logger::log("Could not Load Projection Vertex Shader", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
+		return false;
+	}
+	if (!loadShaderSource("../Mackerel-Core/res/Shaders/vert/skinned_projection.vert", GL_VERTEX_SHADER, k_SkinnedProjectionShaderID)) {
+		Logger::log("Could not Load Skinned Projection Vertex Shader", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
@@ -120,6 +130,11 @@ bool Shader::DeleteDefaultShaders()
 		glDeleteShader(k_ProjectionShaderID);
 		k_ProjectionShaderID = GL_ZERO;
 	}
+	if (k_SkinnedProjectionShaderID != GL_ZERO)
+	{
+		glDeleteShader(k_SkinnedProjectionShaderID);
+		k_SkinnedProjectionShaderID = GL_ZERO;
+	}
 
 	if (k_DepthOnlyShader != nullptr)
 		delete k_DepthOnlyShader;
@@ -132,18 +147,24 @@ namespace MCK::AssetType
 {
 Shader::Shader(std::string a_Name = "") :
 	m_Name(a_Name),
-	m_ShaderProgramID(GL_ZERO)
+	m_ShaderProgramID(GL_ZERO),
+	m_SkinnedShaderProgramID(GL_ZERO)
 {}
 Shader::~Shader()
 {}
 
 void Shader::resetShader()
 {
-	// Delete Shader Program
+	// Delete Shader Programs
 	if (m_ShaderProgramID != GL_ZERO)
 	{
 		glDeleteProgram(m_ShaderProgramID);
 		m_ShaderProgramID = GL_ZERO;
+	}
+	if (m_SkinnedShaderProgramID != GL_ZERO)
+	{
+		glDeleteProgram(m_SkinnedShaderProgramID);
+		m_SkinnedShaderProgramID = GL_ZERO;
 	}
 }
 
@@ -160,6 +181,10 @@ bool Shader::LoadFromFile(std::string a_FilePath)
 		Logger::log(std::format("Cannot Reload {} Shader", m_Name), Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		return false;
 	}
+	if (m_SkinnedShaderProgramID != GL_ZERO) {
+		Logger::log(std::format("Cannot Reload {} Skinned Shader", m_Name), Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		return false;
+	}
 
 	// Load & Compile Shader from Source File
 	GLuint shaderID = GL_ZERO;
@@ -168,18 +193,24 @@ bool Shader::LoadFromFile(std::string a_FilePath)
 		return false;
 	}
 
-	// Create Shader Program
+	// Create Shader Programs
 	m_ShaderProgramID = glCreateProgram(); {
 		glAttachShader(m_ShaderProgramID, k_ProjectionShaderID);
 		glAttachShader(m_ShaderProgramID, shaderID);
 
 		glLinkProgram(m_ShaderProgramID);
 	}
+	m_SkinnedShaderProgramID = glCreateProgram(); {
+		glAttachShader(m_SkinnedShaderProgramID, k_SkinnedProjectionShaderID);
+		glAttachShader(m_SkinnedShaderProgramID, shaderID);
+
+		glLinkProgram(m_SkinnedShaderProgramID);
+	}
 
 	// Delete OpenGL Shader
 	glDeleteShader(shaderID);
 
-	// Validate Shader Program
+	// Validate Shader Programs
 	glValidateProgram(m_ShaderProgramID); {
 		GLint validationStatus = GL_FALSE;
 		glGetProgramiv(m_ShaderProgramID, GL_VALIDATE_STATUS, &validationStatus);
@@ -191,19 +222,39 @@ bool Shader::LoadFromFile(std::string a_FilePath)
 			return false;
 		}
 	}
+	glValidateProgram(m_SkinnedShaderProgramID); {
+		GLint validationStatus = GL_FALSE;
+		glGetProgramiv(m_SkinnedShaderProgramID, GL_VALIDATE_STATUS, &validationStatus);
+		if (validationStatus == GL_FALSE) {
+			// Delete Shader Programs
+			resetShader();
+
+			Logger::log(std::format("Could not Validate {} Skinned Shader Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
+			return false;
+		}
+	}
 
 	return true;
 }
 
-bool Shader::UseShaderProgram()
+GLint Shader::GetShaderUniformLocation(std::string a_UniformName, bool a_IsSkinned)
 {
-	if (m_ShaderProgramID == GL_ZERO)
+	GLuint shaderProgramID = a_IsSkinned ? m_SkinnedShaderProgramID : m_ShaderProgramID;
+
+	return glGetUniformLocation(shaderProgramID, a_UniformName.c_str());
+}
+
+bool Shader::UseShaderProgram(bool a_IsSkinned)
+{
+	GLuint shaderProgramID = a_IsSkinned ? m_SkinnedShaderProgramID : m_ShaderProgramID;
+
+	if (shaderProgramID == GL_ZERO)
 	{
 		Logger::log(std::format("Cannot Use Unexistant {} Shader Program", m_Name), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 		return false;
 	}
 
-	glUseProgram(m_ShaderProgramID);
+	glUseProgram(shaderProgramID);
 	return true;
 }
 }

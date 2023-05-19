@@ -8,7 +8,7 @@ TimeManager* TimeManager::instance = nullptr;
 
 TimeManager::TimeManager()
 {
-	timescale = 0.0;
+	timescale = 1.0;
 	lastFrame = 0.0;
 	lastScaledFrame = 0.0;
 	upTime = glfwGetTime();
@@ -129,7 +129,7 @@ double MCK::TimeManager::privGetFPS()
 void MCK::TimeManager::privUpdate()
 {
 	// Enforce wait
-	privWaitForEnforcedFrameTime(0.006);
+	privWaitForEnforcedFrameTime(0.013);
 
 	// update unscaled time
 	lastFrame = upTime;

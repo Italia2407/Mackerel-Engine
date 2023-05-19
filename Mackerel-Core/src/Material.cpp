@@ -685,7 +685,7 @@ bool Material::UseMaterial()
 	// Bind Material Textures to their Respective Slots
 	for (int i = 0; i < 32; i++) {
 	if (m_MaterialTextures[i])
-		m_MaterialTextures[i]->BindTexture(GL_TEXTURE0 + i);
+		m_MaterialTextures[i]->BindTexture(i);
 	}
 
 	return true;
@@ -706,8 +706,83 @@ void Material::ResetMaterial()
 	}
 }
 
-bool Material::LoadFromFile(std::string a_FilePath)
+bool Material::LoadFromFile(std::string a_FilePath, int materialIndex)
 {
-	return false;
+	std::ifstream file(a_FilePath);
+
+	if (!file.is_open())
+	{
+		MCK::Logger::log(std::format("Failed to load material from file: ", a_FilePath), MCK::Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		return false;
+	}
+
+	std::string line;
+	int currentMaterialIndex = -1;
+	GLuint textureSlot = 0;
+
+	while (std::getline(file, line))
+	{
+		std::istringstream lineStream(line);
+		std::string identifier;
+		lineStream >> identifier;
+
+		if (identifier == "newmtl")
+		{
+			currentMaterialIndex++;
+
+			if (currentMaterialIndex != materialIndex)
+			{
+				continue;
+			}
+		}
+
+		// If we're not at the desired material, skip processing the rest of the loop
+		if (currentMaterialIndex != materialIndex)
+		{
+			continue;
+		}
+
+		if (identifier == "Kd")
+		{
+			Eigen::Vector3f colour;
+			lineStream >> colour.x() >> colour.y() >> colour.z();
+
+			this->addVec3Uniform("diffuseColour", colour);
+		}
+		else if (identifier == "Ka")
+		{
+			Eigen::Vector3f colour;
+			lineStream >> colour.x() >> colour.y() >> colour.z();
+
+			this->addVec3Uniform("ambientColour", colour);
+		}
+		else if (identifier == "Ks")
+		{
+			Eigen::Vector3f colour;
+			lineStream >> colour.x() >> colour.y() >> colour.z();
+
+			this->addVec3Uniform("specularColour", colour);
+		}
+		else if (identifier == "map_Kd" || identifier == "map_Ks" || identifier == "map_Bump" || identifier == "bump")
+		{
+			std::string texturePath;
+			lineStream >> texturePath;
+
+			if (textureSlot < 32)
+			{
+				AssetType::Texture* texture = new AssetType::Texture();
+				texture->LoadFromFile(texturePath, false);
+				this->SetTexture(textureSlot++, texture);
+			}
+			else
+				MCK::Logger::log(std::format("Material has too many textures: ", a_FilePath), MCK::Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
+		}
+	}
+
+	file.close();
+	return true;
 }
+
+
+
 }

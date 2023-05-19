@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LoggingSystem.h"
+
 #include <glad/glad.h>
 
 #include <string>

@@ -38,6 +38,8 @@ void FinalDemoApp::Start()
             MCK::AssetType::Texture* menuIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/MenuSmall.png");
             MCK::AssetType::Texture* hudIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/Time.png");
 
+            //MCK::AssetType::Texture* menuIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/Textures/survivorMaleB.png");
+
             // Create a vector of callbacks
             std::vector<std::function<void()>> callbacks = {
                 [&]() { LoadRenderingDemo(); },

@@ -10,7 +10,6 @@ namespace MCK::ExamplePlayer
 	void ExamplePlayerController::OnPlayerCollision(MCK::Physics::CollisionData data)
 	{
 		// test collision
-		std::cout << "Collision" << std::endl;
 
 		if (data.collidedEntity->HasTag("death"))
 		{
@@ -29,6 +28,10 @@ namespace MCK::ExamplePlayer
 
 		playerCollisionCallback = std::bind(&ExamplePlayerController::OnPlayerCollision, this, std::placeholders::_1);
 		receipt = rigidbody->onCollisionHandler.Register(playerCollisionCallback);
+
+		rigidbody->SetCharacter();
+		rigidbody->SetMass(4);
+		rigidbody->DisableRotation();
 
 		startPosition = rigidbody->GetPosition();
 	}

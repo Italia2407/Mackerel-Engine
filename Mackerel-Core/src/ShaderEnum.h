@@ -8,12 +8,14 @@ enum class ShaderEnum
     __MCK_DEFAULT = -1,
     // Negative values are reserved for engine use
     monoColour = 0,
-    unlitShadows = 1,
-    fragmentHeader = 2,
-    unlit = 3,
-    lightsHeader = 4,
-    depthOnly = 5,
-    FBDisplayer = 6,
-    projection = 7,
-    vertexHeader = 8
+    textured = 1,
+    unlitShadows = 2,
+    fragmentHeader = 3,
+    unlit = 4,
+    lightsHeader = 5,
+    depthOnly = 6,
+    FBDisplayer = 7,
+    projection = 8,
+    skinned_projection = 9,
+    vertexHeader = 10
 };
