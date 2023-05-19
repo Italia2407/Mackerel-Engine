@@ -23,6 +23,7 @@
 #include "ExamplePlayerController.h"
 #include "AudioEmitter.h"
 #include "UIComponent.h"
+#include "SkinnedMeshRendererComponent.h"
 
 #include "Light.h"
 #include "ComponentRegistrar.h"

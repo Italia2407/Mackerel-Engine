@@ -628,7 +628,6 @@
     <Media Include="res\Sounds\Voyager.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Textures\survivorMaleB.png" />
     <Image Include="res\UI\ButtonAnimationSmall.png" />
     <Image Include="res\UI\ButtonAudioSmall.png" />
     <Image Include="res\UI\ButtonPhysicsSmall.png" />
@@ -804,6 +803,7 @@
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalModuleDependencies>%(AdditionalModuleDependencies)</AdditionalModuleDependencies>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>

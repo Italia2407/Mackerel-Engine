@@ -9,14 +9,12 @@ enum class MeshEnum
     MackerelText = 2,
     MackerelText_embedded = 3,
     cube = 4,
-    survivor = 5,
-    Suzanne = 6,
-    Suzanne_GLTF = 7,
-    TestMesh = 8,
-    three_bone = 9,
-    three_bone_2 = 10,
-    three_bone_embedded = 11,
-    three_bone_no_skeleton = 12,
-    xbot = 13,
-    xbot_binary = 14
+    Suzanne = 5,
+    Suzanne_GLTF = 6,
+    TestMesh = 7,
+    three_bone = 8,
+    three_bone_2 = 9,
+    three_bone_embedded = 10,
+    three_bone_no_skeleton = 11,
+    xbot = 12
 };

@@ -544,7 +544,11 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 
 		ozz::math::Float4x4* invBinds = reinterpret_cast<ozz::math::Float4x4*>(buffer.data.data() + bufferView.byteOffset);
 		for (uint32_t i = 0; i < accessor.count; i++)
-			m_animData->inverseBindMatrices.push_back(invBinds[i]);
+		{
+			ozz::math::Float4x4 target;
+			memcpy_s(&target, sizeof(ozz::math::Float4x4), invBinds + i, sizeof(ozz::math::Float4x4));
+			m_animData->inverseBindMatrices.push_back(target);
+		}
 	}
 
 	// Generate Mesh GPU Data

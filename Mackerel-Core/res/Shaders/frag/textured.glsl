@@ -15,21 +15,21 @@ layout(location = 1) out vec4 gAlbedoColour;
 layout(location = 2) out vec4 gPosition;
 layout(location = 3) out vec4 gNormal;
 
+layout( binding = 0) uniform sampler2D textureSampler;
+
 layout(std140, binding = 2) uniform MaterialParameters
 {
-	uint lightShaderID;
-	vec3 albedoColour;
+	vec3 ambientColour;
+	vec3 diffuseColour;
+	vec3 specularColour;
 };
-
-layout( binding = 0) uniform sampler2D textureSampler;
 
 void main()
 {
-	gLightShaderID = lightShaderID; //lightShaderID;
 	gLightShaderID = 1; //lightShaderID;
 
-	vec3 colour = albedoColour * v2fTint;
 	gAlbedoColour = texture(textureSampler, v2fUV);
+	//gAlbedoColour = vec4(ambientColour, 1.0f);
 
 	gPosition = vec4(v2fPosition, 1.0f);
 	gNormal = vec4(v2fNormal, 1.0f);

@@ -119,7 +119,7 @@ namespace MCK::EntitySystem {
 		/* are we currently playing an animation? */
 		if (animationQueue.empty())
 		{
-			DefaultPose();
+			DefaultPose(static_cast<float>(progress));
 		}
 		else
 		{
@@ -129,6 +129,8 @@ namespace MCK::EntitySystem {
 			/* is this animation finished */
 			if (is_finished)
 			{
+				start_time = time;
+
 				if (animationQueue.size() > 1 || animationQueue.front().loop == false) /* if the last item in the list is set to loop, loop it */
 				{
 					/* animation is finished */
