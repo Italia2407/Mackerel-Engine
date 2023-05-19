@@ -57,6 +57,9 @@
     <ClCompile Include="src\PhysicsDemo.cpp">
       <Filter>Source Files\Demos</Filter>
     </ClCompile>
+    <ClCompile Include="src\EvaluationApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DemoApp.h">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="src\PhysicsDemo.h">
       <Filter>Source Files\Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EvaluationApp.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

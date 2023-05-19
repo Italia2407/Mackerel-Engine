@@ -151,6 +151,7 @@
     <ClCompile Include="src\AudioDemo.cpp" />
     <ClCompile Include="src\ComponentRegistrar.cpp" />
     <ClCompile Include="src\DemoApp.cpp" />
+    <ClCompile Include="src\EvaluationApp.cpp" />
     <ClCompile Include="src\FinalDemoApp.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\PhysicsDemo.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="src\AudioDemo.h" />
     <ClInclude Include="src\ComponentRegistrar.h" />
     <ClInclude Include="src\DemoApp.h" />
+    <ClInclude Include="src\EvaluationApp.h" />
     <ClInclude Include="src\FinalDemoApp.h" />
     <ClInclude Include="src\PhysicsDemo.h" />
     <ClInclude Include="src\PlatformerDemo.h" />

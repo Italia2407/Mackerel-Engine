@@ -32,11 +32,12 @@ namespace MCK::EntitySystem
 		Eigen::Vector3f new_position = transform->Position() + offset;
 
 		// get delta (scaled frame time)
-		float delta = (float)TimeManager::getScaledFrameTime();
+		float delta = (float)TimeManager::getFrameTime();
 
 		// set target position of camera with smoothing
 		// (camera + (position + offset) * x * delta)
-		camera->Position() = position + new_position * multiplier * delta;
+		//camera->Position() = position + new_position * multiplier * delta;
+		camera->Position() = new_position;
 		position = new_position;
 	}
 

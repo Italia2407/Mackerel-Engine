@@ -7,6 +7,7 @@
 #include "DemoApp.h"
 #include "TestApp.h"
 #include "PlatformerDemo.h"
+#include "EvaluationApp.h"
 #include "FinalDemoApp.h" 
 #include "TestJsonApp.h"
 #include "CacheReader.h"
@@ -18,5 +19,7 @@ int main()
 	//MCK::Instance::Start(new PlatformerApp());
 	//MCK::Instance::Start(new TestJsonApp());
 
-	MCK::Instance::Start(new FinalDemoApp());
+	//MCK::Instance::Start(new FinalDemoApp());
+
+	MCK::Instance::Start(new EvaluationApp());
 }
