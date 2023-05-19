@@ -210,6 +210,11 @@ bool Renderer::RenderFrame()
 {
 	return Instance()->renderFrame();
 }
+
+void Renderer::ResetRenderer()
+{ 
+	Instance()->resetRenderer(); 
+}
 }
 
 namespace MCK::Rendering {
@@ -221,7 +226,7 @@ Renderer::Renderer() :
 	m_CentrePosition(Eigen::Vector3f::Zero()) {}
 Renderer::~Renderer()
 {
-	resetRenderer();
+	clearRenderer();
 }
 
 /**
@@ -260,7 +265,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	m_DepthBufferTexture = new AssetType::Texture();
 
 	if (!m_DepthBufferTexture->GenerateDepthTexture(a_ScreenWidth, a_ScreenHeight)) {
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Generate Depth Buffer Texture", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -273,7 +278,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Add Geometry Buffer Colour Attachments
 	if (!m_GeometryBuffer->AddUIntColourAttachment())
 	{// ID #0 is Reserved for the Lighting Shader ID Map
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Add Geometry Buffer Colour Attachment Texture #0", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -281,7 +286,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	for (int i = 1; i < 31; i++) {
 	if (!m_GeometryBuffer->AddFloatColourAttachment())
 	{// Other ID #s are for General Purpose
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log(std::format("Could not Add Geometry Buffer Colour Attachment Texture #{}", i), Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -290,7 +295,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Assign Depth Buffer Texture Attachment
 	if (!m_GeometryBuffer->AssignExternalDepthBufferTexture(m_DepthBufferTexture))
 	{
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Assign Depth Buffer Texture to Geometry Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -299,7 +304,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Create Geometry Frame Buffer Object
 	if (!m_GeometryBuffer->CreateFrameBuffer())
 	{
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Create Geometry Frame Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -312,7 +317,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Add Output Colour Attachment Texture
 	if (!m_DeferredBuffer->AddFloatColourAttachment())
 	{
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Add Deferred Buffer Output Colour Attachment Texture", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -321,7 +326,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Add Depth Buffer Texture
 	if (!m_DeferredBuffer->AddDepthBufferTexture())
 	{
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Add Deferred Buffer Depth Buffer Texture", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -330,7 +335,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Create Deferred Frame Buffer Object
 	if (!m_DeferredBuffer->CreateFrameBuffer())
 	{
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Create Deferred Frame Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -341,28 +346,28 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	
 	// Add Position to Camera Uniform Buffer
 	if (!m_CameraBuffer->AddVec3BufferUniform("position", Eigen::Vector3f::Zero())) {
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Add Position to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Front to Camera Uniform Buffer
 	if (!m_CameraBuffer->AddVec3BufferUniform("front", Eigen::Vector3f(0.0f, 0.0f, -1.0f))) {
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Add Front to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Up to Camera Uniform Buffer
 	if (!m_CameraBuffer->AddVec3BufferUniform("up", Eigen::Vector3f(0.0f, 1.0f, 0.0f))) {
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Add Up to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
 	}
 	// Add Camera Projection Matrix to Camera Uniform Buffer
 	if (!m_CameraBuffer->AddMat4BufferUniform("cameraProjectionMatrix", Eigen::Matrix4f::Identity())) {
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Add Camera Projection Matrix to Camera Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -371,7 +376,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Create Camera Uniform Buffer Object
 	if (!m_CameraBuffer->CreateUniformBufferObject())
 	{
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Create Camera Uniform Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -382,7 +387,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 
 	// Add Transform Matrix to Mesh Transform Uniform Buffer
 	if (!m_MeshTransformBuffer->AddMat4BufferUniform("transformMatrix", Eigen::Matrix4f::Identity())) {
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Add Transform Matrix to Mesh Transform Uniform Buffer", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -391,7 +396,7 @@ bool Renderer::initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	// Create Transform Uniform Buffer Object
 	if (!m_MeshTransformBuffer->CreateUniformBufferObject())
 	{
-		resetRenderer();
+		clearRenderer();
 
 		Logger::log("Could not Create Transform Uniform Buffer Object", Logger::LogLevel::Fatal, std::source_location::current(), "ENGINE");
 		return false;
@@ -413,10 +418,10 @@ bool Renderer::resizeRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight)
 	return true;
 }
 /**
- * Resets the Renderer & Deletes all Objects.
+ * Clears the Renderer & Deletes all Objects.
  * 
  */
-void Renderer::resetRenderer()
+void Renderer::clearRenderer()
 {
 	// Delete Renderer Buffer Objects
 	if (m_GeometryBuffer) {
@@ -440,6 +445,11 @@ void Renderer::resetRenderer()
 		m_MeshTransformBuffer = nullptr;
 	}
 
+	// Resets the Renderer
+	resetRenderer();
+}
+void Renderer::resetRenderer()
+{
 	// Clear all Per Frame Objects
 	resetRendererFrame();
 
@@ -588,7 +598,7 @@ bool Renderer::renderDeferredBuffer()
 		{	auto light = _pointLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
+			if (!light || !light->UseLight(m_CentrePosition)) {
 				Logger::log(std::format("Could not Load Point Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
@@ -614,7 +624,7 @@ bool Renderer::renderDeferredBuffer()
 			auto light = _directionLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
+			if (!light || !light->UseLight(m_CentrePosition)) {
 				Logger::log(std::format("Could not Load Direction Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
@@ -640,7 +650,7 @@ bool Renderer::renderDeferredBuffer()
 			auto light = _spotLights[j];
 
 			// Load Light Uniforms
-			if (!light || !light->UseLight(Eigen::Vector3f::Zero())) {
+			if (!light || !light->UseLight(m_CentrePosition)) {
 				Logger::log(std::format("Could not Load Spot Light #{}", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 				continue;
 			}
@@ -749,6 +759,9 @@ void Renderer::setCentrePosition(Eigen::Vector3f a_CentrePosition)
  */
 bool Renderer::renderFrame()
 {
+	if (m_CameraBuffer == nullptr)
+		return true;
+
 	// Clear Default Framebuffer Values
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

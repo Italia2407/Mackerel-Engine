@@ -194,6 +194,10 @@ bool SpotLight::updateLightingParameters(Eigen::Vector3f a_CentrePosition)
 	return true;
 }
 
+bool PointLight::BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition)
+{
+	return false;
+}
 bool DirectionLight::BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition)
 {
 	m_ShadowRendererParameters->BindUniformBufferObject(0);
@@ -206,5 +210,9 @@ bool DirectionLight::BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition)
 	m_ShadowRendererParameters->SetMat4BufferUniform("cameraProjectionMatrix", getMVPMatrix(a_CentrePosition));
 
 	return true;
+}
+bool SpotLight::BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition)
+{
+	return false;
 }
 }

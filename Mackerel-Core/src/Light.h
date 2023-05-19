@@ -38,6 +38,10 @@ public:
 
 	bool UseLight(Eigen::Vector3f a_CentrePosition);
 	virtual bool BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition) = 0;
+
+	Eigen::Vector4f& DiffuseColour() { return _diffuseColour; }
+	Eigen::Vector4f& SpecularColour() { return _specularColour; }
+	Eigen::Vector4f& AmbientColour() { return _ambientColour; }
 };
 
 class PointLight : public Light
@@ -50,6 +54,11 @@ protected:
 
 	Eigen::Matrix4f getMVPMatrix(Eigen::Vector3f a_CentrePosition) override;
 	bool updateLightingParameters(Eigen::Vector3f a_CentrePosition) override;
+
+public:
+	bool BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition) override;
+
+	Eigen::Vector3f& Position() { return _position; }
 };
 class DirectionLight : public Light
 {
@@ -64,6 +73,8 @@ protected:
 
 public:
 	bool BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition) override;
+
+	Eigen::Vector3f& Direction() { return _direction; }
 };
 class SpotLight : public Light
 {
@@ -78,5 +89,13 @@ protected:
 
 	Eigen::Matrix4f getMVPMatrix(Eigen::Vector3f a_CentrePosition) override;
 	bool updateLightingParameters(Eigen::Vector3f a_CentrePosition) override;
+
+public:
+	bool BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition) override;
+
+	Eigen::Vector3f& Position() { return _position; }
+	Eigen::Vector3f& Direction() { return _direction; }
+
+	float& BeamAngle() { return _beamAngle; }
 };
 }

@@ -49,15 +49,16 @@ namespace MCK::Audio
     * Releases all resources and shuts down the audio system.
     *
     */
-    void AudioEngine::Teardown()
+    void AudioEngine::Deallocate()
     {
         Reset();
 
-        for (auto it = loadedSounds.begin(); it != loadedSounds.end(); ++it)
+        for (auto itt = loadedSounds.begin(); itt != loadedSounds.end(); itt++)
         {
-            UnloadSound(&(it->second));
-            it = loadedSounds.erase(it);
+            UnloadSound(&itt->second, false);
         }
+
+        loadedSounds.clear();
 
         audioSystem->release();
     }
@@ -139,7 +140,7 @@ namespace MCK::Audio
     * Unloads sound from memory and removes it from 'loadedSounds' map
     *
     */
-    void AudioEngine::UnloadSound(Sound* sound)
+    void AudioEngine::UnloadSound(Sound* sound, bool erase)
     {
         if (sound)
         {
@@ -147,7 +148,8 @@ namespace MCK::Audio
             if (it != loadedSounds.end())
             {
                 sound->sound->release();
-                loadedSounds.erase(it);
+                if(erase)
+                    loadedSounds.erase(it);
             }
         }
     }

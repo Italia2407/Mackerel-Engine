@@ -36,7 +36,7 @@ namespace MCK::EntitySystem
 
 		// set target position of camera with smoothing
 		// (camera + (position + offset) * x * delta)
-		camera->Position() = position + new_position * multiplier * delta;
+		camera->Position() = new_position;//position + new_position * multiplier * delta;
 		position = new_position;
 	}
 

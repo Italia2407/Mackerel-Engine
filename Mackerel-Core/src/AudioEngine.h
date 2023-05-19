@@ -34,7 +34,7 @@ namespace MCK::Audio
 			* Releases all resources and shuts down the audio system.
 			*
 			*/
-			void Teardown();
+			void Deallocate();
 
 			/**
 			 * Updates the audio engine.
@@ -52,7 +52,7 @@ namespace MCK::Audio
 			* Unloads sound from memory and removes it from 'loadedSounds' map
 			*
 			*/
-			void UnloadSound(Sound* sound);
+			void UnloadSound(Sound* sound, bool erase=true);
 
 			/**
 			 * Plays a sound.

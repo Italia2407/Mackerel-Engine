@@ -146,10 +146,12 @@ MeshLibrary::MeshLibrary()
 MeshLibrary::~MeshLibrary()
 {
 	// Free all Mesh Assets Loaded in Memory
-	for (auto [assetEnum, texture] : m_LibraryData)
+	for (auto itt = m_LibraryData.begin(); itt != m_LibraryData.end(); itt++)
 	{
-		freeMesh(assetEnum);
+		freeMesh(itt->first, false);
 	}
+
+	m_LibraryData.clear();
 }
 
 /**
@@ -211,7 +213,7 @@ bool MeshLibrary::loadMesh(MeshEnum a_Asset, std::string a_FilePath)
 * \param a_Asset: Enum Identifier of Desired Mesh
 * \return Whether the Mesh could be Deleted
 */
-bool MeshLibrary::freeMesh(MeshEnum a_Asset)
+bool MeshLibrary::freeMesh(MeshEnum a_Asset, bool erase)
 {
 	if (!m_LibraryData.contains(a_Asset))
 	{// Mesh Asset does not Exist in Memory
@@ -221,7 +223,8 @@ bool MeshLibrary::freeMesh(MeshEnum a_Asset)
 
 	// Unload the Mesh Asset
 	delete m_LibraryData[a_Asset];
-	m_LibraryData.erase(a_Asset);
+	if(erase)
+		m_LibraryData.erase(a_Asset);
 
 	return true;
 }

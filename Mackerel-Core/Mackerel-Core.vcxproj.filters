@@ -363,6 +363,9 @@
     <ClCompile Include="src\SkinnedMeshRendererComponent.cpp">
       <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\LightComponent.cpp">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\Dear-ImGui 1.89.2\backends\imgui_impl_glfw.h">
@@ -1738,6 +1741,9 @@
     </ClInclude>
     <ClInclude Include="src\SkinnedMeshData.h">
       <Filter>Source Files\Systems\Rendering\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightComponent.h">
+      <Filter>Source Files\Systems\EntitySystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

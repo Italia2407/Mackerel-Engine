@@ -32,8 +32,8 @@ layout(std140, binding = 1) uniform MeshTransform
 } mesh;
 
 // Joint Data
-uniform mat4 joint_data[128];
-uniform mat4 inv_bind[128];
+uniform mat4 joint_data[64];
+uniform mat4 inv_bind[64];
 
 void main()
 {
