@@ -108,7 +108,7 @@ void MCK::TimeManager::privSetTimescale(double scale)
 	timescale = scale;
 }
 
-float MCK::TimeManager::privGetTimescale()
+double MCK::TimeManager::privGetTimescale()
 {
 	return timescale;
 }
