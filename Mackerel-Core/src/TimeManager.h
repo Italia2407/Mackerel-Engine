@@ -92,6 +92,13 @@ namespace MCK
 		 */
 		void privSetTimescale(double scale);
 
+
+		/**
+		 * Private implementation of the TimeManager::getTimescale() function.
+		 * Returns the current timescale.
+		 */
+		float privGetTimescale();
+
 		/**
 		 * Private implementation of the TimeManager::getFrameTime() function.
 		 * Function to get the time taken between frames scaled by the timescale.
@@ -186,6 +193,14 @@ namespace MCK
 		static void setTimescale(double scale)
 		{
 			Instance()->privSetTimescale(scale);
+		}
+
+		/**
+		 * Returns the current time scale.
+		 */
+		static float getTimescale()
+		{
+			return Instance()->privGetTimescale();
 		}
 
 		/**

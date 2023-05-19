@@ -108,6 +108,11 @@ void MCK::TimeManager::privSetTimescale(double scale)
 	timescale = scale;
 }
 
+float MCK::TimeManager::privGetTimescale()
+{
+	return timescale;
+}
+
 
 double MCK::TimeManager::privGetFrameTime()
 {

@@ -70,8 +70,7 @@ namespace MCK::UI
 	{
 		ButtonElement* buttonElement = new ButtonElement;
 
-		if (!visible)
-			buttonElement->ToggleVisible();
+		buttonElement->SetVisible(visible);
 		buttonElement->SetPosition(position);
 		buttonElement->SetScale(scale);
 		buttonElement->SetColour(colour);
@@ -93,8 +92,7 @@ namespace MCK::UI
 	UIElement* UISystem::CreateText(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, const std::string& text, const std::function<std::string()>& updateFunc)
 	{
 		TextElement* textElement = new TextElement();
-		if (!visible)
-			textElement->ToggleVisible();
+		textElement->SetVisible(visible);
 		textElement->SetPosition(position);
 		textElement->SetScale(scale);
 		textElement->SetColour(colour);
@@ -112,8 +110,7 @@ namespace MCK::UI
 	UIElement* UISystem::CreateShape(bool visible, const ImVec2& position, float scale, const ImVec4& colour, float transparency, MCK::UI::ShapeElement::ShapeType type, const ImVec2& size, const ImVec4& borderColour, float borderThickness, MCK::AssetType::Texture* image)
 	{
 		ShapeElement* shapeElement = new ShapeElement();
-		if (!visible)
-			shapeElement->ToggleVisible();
+		shapeElement->SetVisible(visible);
 		shapeElement->SetPosition(position);
 		shapeElement->SetScale(scale);
 		shapeElement->SetColour(colour);
