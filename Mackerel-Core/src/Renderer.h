@@ -84,6 +84,8 @@ private:
 private:
 	bool initialiseRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight);
 	bool resizeRenderer(GLuint a_ScreenWidth, GLuint a_ScreenHeight);
+
+	void clearRenderer();
 	void resetRenderer();
 	void resetRendererFrame();
 
