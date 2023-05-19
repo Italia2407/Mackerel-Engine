@@ -48,8 +48,6 @@ namespace MCK::EntitySystem
 			storedTimeScale = TimeManager::getTimescale();
 			TimeManager::setTimescale(0.0);
 		}
-
-		printf("%d\n", storedTimeScale);
 	}
 
 	/**
