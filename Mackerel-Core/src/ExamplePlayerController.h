@@ -13,10 +13,10 @@ namespace MCK::ExamplePlayer
 	class ExamplePlayerController : public EntitySystem::Component<ExamplePlayerController>
 	{
 	private:
-		float moveForceMag = 40;
-		float horizontalDamping =1.1f;
+		float moveForceMag = 120;
+		float horizontalDamping =10.1f;
 		float deceleration = 90; 
-		float jumpVel = 8;
+		float jumpVel = 13;
 		double lastGroundTime;
 
 		EntitySystem::TransformComponent* transform;

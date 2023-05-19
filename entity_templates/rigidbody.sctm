@@ -1,0 +1,40 @@
+{
+  "entity": {
+    "name": "$name",
+    "components": [
+      {
+        "type": "TransformComponent",
+        "data": {
+          "positionX": $posX,
+          "positionY": $posY,
+          "positionZ": $posZ,
+          "rotationX": $rotX,
+          "rotationY": $rotY,
+          "rotationZ": $rotZ,
+          "rotationW": $rotW
+        }
+      },
+      {
+        "type": "MeshRendererComponent",
+        "data": {
+          "modelPath": "$modPath",
+          "texturePath": "$texPath"
+        }
+      },
+      {
+        "type": "RigidbodyComponent",
+        "data": {
+          "type": $colType,
+          "radius": $colRad,
+          "width": $colW,
+          "depth": $colD,
+          "height": $colH,
+          "mass": $mass
+        }
+      }
+    ],
+    "tags": [
+      "body"
+    ]
+  }
+}

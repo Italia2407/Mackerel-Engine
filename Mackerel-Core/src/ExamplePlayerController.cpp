@@ -30,6 +30,8 @@ namespace MCK::ExamplePlayer
 		receipt = rigidbody->onCollisionHandler.Register(playerCollisionCallback);
 
 		rigidbody->SetCharacter();
+		rigidbody->SetMass(4);
+		rigidbody->DisableRotation();
 
 		startPosition = rigidbody->GetPosition();
 	}
