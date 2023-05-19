@@ -16,7 +16,7 @@ namespace MCK
     {
         #pragma region Rendering Init
             boneMesh = new AssetType::Mesh("Bone Mesh");
-            boneMesh->LoadFromFile("../Mackerel-Core/res/Meshes/xbot_binary.glb");
+            boneMesh->LoadFromFile("../Mackerel-Core/res/Meshes/xbot.gltf");
             cubeMesh = new AssetType::Mesh("Cube Mesh");
             cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
 
@@ -33,7 +33,7 @@ namespace MCK
             MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, m_MonoColourShader);
 
             //MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
-            //MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
+            MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
         #pragma endregion
 
         #pragma region Floor Init
@@ -65,8 +65,8 @@ namespace MCK
             playerTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
 
             playerRenderer = new EntitySystem::SkinnedMeshRendererComponent(boneMesh, m_MonoColourShader, yellowMaterial);
-            playerRenderer->SetDefaultAnimation("dance");
-            playerRenderer->PlayAnimation("dance", 0.0f, true, false, true);
+            playerRenderer->SetDefaultAnimation("idle");
+            playerRenderer->PlayAnimation("run", 0.0f, true, false, false);
             playerRenderer->SetTargetFPS(60.0f);
         #pragma endregion
 
