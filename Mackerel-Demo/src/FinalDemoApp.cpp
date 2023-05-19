@@ -24,7 +24,9 @@ void FinalDemoApp::Start()
         #pragma region Scene Init
             constantScene.InitialiseScene();
             light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
-            //MCK::Logger::initialize();
+            AssetType::Shader* m_UnlitShader;
+            MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
+            MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
         #pragma endregion
 
         #pragma region UI Init
@@ -101,11 +103,6 @@ void FinalDemoApp::Start()
             MCK::Logger::log("SETUP COMPLETED", MCK::Logger::LogLevel::Info, std::source_location::current());
 
         #pragma endregion
-
-            GLint maxTextureSize;
-            glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-            MCK::Logger::log(std::format("Max texture size : ", maxTextureSize), MCK::Logger::LogLevel::Info, std::source_location::current());
-
 }
 
 std::string FinalDemoApp::GetCurrentRuntime() {

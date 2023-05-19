@@ -32,7 +32,7 @@ namespace MCK
                 MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, m_MonoColourShader);
 
                 //MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
-                MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
+                //MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
         #pragma endregion
 
         #pragma region Floor Init

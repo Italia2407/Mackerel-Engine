@@ -8,7 +8,7 @@ TimeManager* TimeManager::instance = nullptr;
 
 TimeManager::TimeManager()
 {
-	timescale = 1.0;
+	timescale = 0.0;
 	lastFrame = 0.0;
 	lastScaledFrame = 0.0;
 	upTime = glfwGetTime();
