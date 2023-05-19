@@ -85,7 +85,7 @@ namespace MCK::EntitySystem
 		}
 
 		double delta = MCK::TimeManager::getFrameTime();
-		std::cout << TimeManager::getFPS() << std::endl;
+		//std::cout << TimeManager::getFPS() << std::endl;
 		physicsWorld.ApplySimulation(static_cast<float>(delta));
 		audioEngine.Update();
 	}

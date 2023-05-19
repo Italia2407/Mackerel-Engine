@@ -685,7 +685,7 @@ bool Material::UseMaterial()
 	// Bind Material Textures to their Respective Slots
 	for (int i = 0; i < 32; i++) {
 	if (m_MaterialTextures[i])
-		m_MaterialTextures[i]->BindTexture(GL_TEXTURE0 + i);
+		m_MaterialTextures[i]->BindTexture(i);
 	}
 
 	return true;

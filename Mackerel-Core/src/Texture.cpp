@@ -122,11 +122,6 @@ bool Texture::LoadFromFile(std::string a_FilePath, bool isFor2DObject)
 	// Load image with stb_image
 	unsigned char* data = stbi_load(a_FilePath.c_str(), &width, &height, &channels, 0);
 
-	if (data == nullptr) {
-		const char* failure_reason = stbi_failure_reason();
-		std::cerr << "Failed to load image: " << failure_reason << std::endl;
-	}
-
 	if (data)
 	{
 		// Detrmine format of the image
@@ -169,7 +164,8 @@ bool Texture::LoadFromFile(std::string a_FilePath, bool isFor2DObject)
 	else
 	{
 		// Failed to load image
-		std::cout << "Failed to load texture: " << a_FilePath << std::endl;
+		const char* failure_reason = stbi_failure_reason();
+		MCK::Logger::log(std::format("Failed to load image: ", failure_reason, ". Path: ",  a_FilePath), MCK::Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 		stbi_image_free(data);
 		return false;
 	}

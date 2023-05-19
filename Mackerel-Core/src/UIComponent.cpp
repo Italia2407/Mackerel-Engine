@@ -17,8 +17,7 @@ namespace MCK::EntitySystem
 	 */
 	void UIComponent::OnCreate()
 	{
-		// paused = true;
-		// MCK::TimeManager::setTimescale(0.0f);
+		paused = true;
 
 		buttonInputCallback = std::bind(&UIComponent::PausedCallback, this, std::placeholders::_1, std::placeholders::_2); /* <- syntax for member functions */
 
