@@ -36,7 +36,7 @@ private:
 private:
 	bool getMesh(MeshEnum a_Asset, AssetType::Mesh*& o_Mesh);
 	bool loadMesh(MeshEnum a_Asset, std::string a_FilePath);
-	bool freeMesh(MeshEnum a_Asset);
+	bool freeMesh(MeshEnum a_Asset, bool erase = true);
 	bool getPath(MeshEnum a_Asset, std::string* stringOutput);
 
 public:

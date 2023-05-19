@@ -156,10 +156,12 @@ ShaderLibrary::~ShaderLibrary()
 	AssetType::Shader::DeleteDefaultShaders();
 
 	// Free all Shader Assets Loaded in Memory
-	for (auto [assetEnum, texture] : m_LibraryData)
+	for (auto itt = m_LibraryData.begin(); itt != m_LibraryData.end(); itt++)
 	{
-		freeShader(assetEnum);
+		freeShader(itt->first, false);
 	}
+
+	m_LibraryData.clear();
 }
 
 /**
@@ -221,7 +223,7 @@ bool ShaderLibrary::loadShader(ShaderEnum a_Asset, std::string a_FilePath)
 * \param a_Asset: Enum Identifier of Desired Shader
 * \return Whether the Shader could be Deleted
 */
-bool ShaderLibrary::freeShader(ShaderEnum a_Asset)
+bool ShaderLibrary::freeShader(ShaderEnum a_Asset, bool erase)
 {
 	if (!m_LibraryData.contains(a_Asset))
 	{// Shader Asset does not Exist in Memory
@@ -231,7 +233,8 @@ bool ShaderLibrary::freeShader(ShaderEnum a_Asset)
 
 	// Unload the Shader Asset
 	delete m_LibraryData[a_Asset];
-	m_LibraryData.erase(a_Asset);
+	if(erase)
+		m_LibraryData.erase(a_Asset);
 
 	return true;
 }

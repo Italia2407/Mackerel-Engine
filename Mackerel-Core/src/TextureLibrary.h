@@ -37,7 +37,7 @@ private:
 private:
 	bool getTexture(TextureEnum a_Asset, AssetType::Texture*& o_Texture);
 	bool loadTexture(TextureEnum a_Asset, std::string a_FilePath);
-	bool freeTexture(TextureEnum a_Asset);
+	bool freeTexture(TextureEnum a_Asset, bool erase=true);
 	bool getPath(TextureEnum a_Asset, std::string* stringOutput);
 
 public:

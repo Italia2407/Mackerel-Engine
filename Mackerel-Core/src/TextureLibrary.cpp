@@ -147,10 +147,12 @@ TextureLibrary::TextureLibrary()
 TextureLibrary::~TextureLibrary()
 {
 	// Free all Texture Assets Loaded in Memory
-	for (auto [assetEnum, texture] : m_LibraryData)
+	for (auto itt = m_LibraryData.begin(); itt != m_LibraryData.end(); itt++)
 	{
-		freeTexture(assetEnum);
+		freeTexture(itt->first, false);
 	}
+
+	m_LibraryData.clear();
 }
 
 /**
@@ -209,7 +211,7 @@ bool TextureLibrary::loadTexture(TextureEnum a_Asset, std::string a_FilePath)
 * \param a_Asset: Enum Identifier of Desired Texture
 * \return Whether the Texture could be Deleted
 */
-bool TextureLibrary::freeTexture(TextureEnum a_Asset)
+bool TextureLibrary::freeTexture(TextureEnum a_Asset, bool erase)
 {
 	if (!m_LibraryData.contains(a_Asset))
 	{// Texture Asset does not Exist in Memory
@@ -219,7 +221,8 @@ bool TextureLibrary::freeTexture(TextureEnum a_Asset)
 
 	// Unload the Texture Asset
 	delete m_LibraryData[a_Asset];
-	m_LibraryData.erase(a_Asset);
+	if(erase)
+		m_LibraryData.erase(a_Asset);
 
 	return true;
 }

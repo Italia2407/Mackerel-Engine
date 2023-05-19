@@ -7,6 +7,7 @@
 #include "TimeManager.h"
 #include "JsonHelpers.h"
 #include "Assets.h"
+#include "Renderer.h"
 
 #include <iostream>
 
@@ -16,13 +17,17 @@ namespace MCK::EntitySystem
 {
 	void Scene::InitialiseScene()
 	{
-		physicsWorld.InitialiseWorld();
+		if (!initialised)
+		{
+			physicsWorld.InitialiseWorld();
 
-		// Initialize the audio engine
-		audioEngine.Initialise();
+			// Initialize the audio engine
+			audioEngine.Initialise();
+		}
+
 
 		// Load a sound with ID 1
-		//MCK::Audio::Sound sound1 = audioEngine.LoadSound("../Mackerel-Core/res/Sounds/Voyager.mp3", 1, true, false, false);
+		initialised = true;
 	}
 
 	/**
@@ -72,6 +77,7 @@ namespace MCK::EntitySystem
 	 */
 	void Scene::UpdateScene()
 	{
+		midFrame = true;
 		// Frame start
 		for (unsigned int i = 0; i < entities.size(); ++i)
 		{
@@ -88,6 +94,14 @@ namespace MCK::EntitySystem
 		//std::cout << TimeManager::getFPS() << std::endl;
 		physicsWorld.ApplySimulation(static_cast<float>(delta));
 		audioEngine.Update();
+
+		midFrame = false;
+
+		if (unloadQueued)
+		{
+			unloadQueued = false;
+			Deallocate();
+		}
 	}
 
 	/**
@@ -131,11 +145,6 @@ namespace MCK::EntitySystem
 
 	void Scene::LoadScene(std::string path)
 	{
-		if (sceneLoaded)
-		{
-			UnloadScene();
-		}
-
 		sceneLoaded = true;
 
 		json sceneJson = Helpers::ParseJson(path);
@@ -152,18 +161,29 @@ namespace MCK::EntitySystem
 
 	void Scene::UnloadScene()
 	{
+		if (midFrame)
+			unloadQueued = true;
+		else
+			Deallocate();
+	}
+
+	void Scene::Deallocate()
+	{
+		initialised = false;
+		audioEngine.Deallocate();
 		sceneLoaded = false;
 		physicsWorld.TeardownWorld();
 
 		for (unsigned int i = unsigned int(entities.size()); i > 0; --i)
 		{
-			entities[i-1]->Deallocate();
+			entities[i - 1]->Deallocate();
 		}
 
 		TextureLibrary::ReleaseLibrary();
 		ShaderLibrary::ReleaseLibrary();
 		MaterialLibrary::ReleaseLibrary();
 		MeshLibrary::ReleaseLibrary();
+		Rendering::Renderer::ResetRenderer();
 	}
 
 	Entity* Scene::FindEntityWithTag(std::string tag)

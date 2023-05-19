@@ -33,6 +33,9 @@ namespace MCK::EntitySystem
 
 		entityId idSeed = 0;
 		bool sceneLoaded = false;
+		bool unloadQueued = false;
+		bool initialised = false;
+		bool midFrame = false;
 
 		/**
 		 * Generates a unique ID for an entity.
@@ -40,6 +43,12 @@ namespace MCK::EntitySystem
 		 * \return The id
 		 */
 		entityId GenerateEntityID();
+
+
+		/**
+		 * Frees a scene from memory.
+		 */
+		void Deallocate();
 	public:
 		Physics::PhysicsWorld physicsWorld;
 		MCK::Audio::AudioEngine audioEngine;
@@ -106,6 +115,10 @@ namespace MCK::EntitySystem
 		 */
 		void FreeComponent(ComponentBase* component);
 
+		/**
+		 * Queues a scene to be unloaded.
+		 * 
+		 */
 		void UnloadScene();
 
 		Entity* FindEntityWithTag(std::string tag);

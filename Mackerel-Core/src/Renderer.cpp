@@ -210,6 +210,11 @@ bool Renderer::RenderFrame()
 {
 	return Instance()->renderFrame();
 }
+
+void Renderer::ResetRenderer()
+{ 
+	Instance()->resetRenderer(); 
+}
 }
 
 namespace MCK::Rendering {
@@ -749,6 +754,9 @@ void Renderer::setCentrePosition(Eigen::Vector3f a_CentrePosition)
  */
 bool Renderer::renderFrame()
 {
+	if (m_CameraBuffer == nullptr)
+		return true;
+
 	// Clear Default Framebuffer Values
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
