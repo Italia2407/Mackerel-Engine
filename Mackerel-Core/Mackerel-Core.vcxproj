@@ -628,7 +628,6 @@
     <Media Include="res\Sounds\Voyager.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Textures\survivorMaleB.png" />
     <Image Include="res\UI\ButtonAnimationSmall.png" />
     <Image Include="res\UI\ButtonAudioSmall.png" />
     <Image Include="res\UI\ButtonPhysicsSmall.png" />
