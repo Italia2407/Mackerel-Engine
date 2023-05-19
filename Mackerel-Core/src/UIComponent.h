@@ -17,7 +17,9 @@ namespace MCK::EntitySystem
 		std::vector<MCK::UI::UIElement*> UIElements;
 		MCK::InputCallback buttonInputCallback;
 		MCK::Input::InputSubReceipt receipt;
-		bool paused;
+		static bool paused;
+		static bool doublePauseGuard;
+		double storedTimeScale;
 		std::vector<MCK::AssetType::Texture*> loadedImages;
 
 	public:

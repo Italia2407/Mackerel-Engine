@@ -62,7 +62,7 @@ void main()
 	vec3 position = texture(gPosition, v2fUV).xyz;
 	vec3 normal = texture(gNormal, v2fUV).xyz;
 
-	oColour = vec4(light.ambientColour.rgb, 1.0f);
+	oColour = colour * vec4(light.ambientColour.rgb, 1.0f);
 	//oColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Compare Distance with Shadow-Map
@@ -70,7 +70,7 @@ void main()
 	vec3 normShadowCoord = (shadowCoord + vec3(1.0f, 1.0f, 1.0f)) / 2.0f;
 
 	float occluderDistance = texture(shadowMap, normShadowCoord.xy).z;
-	if (normShadowCoord.z > occluderDistance + 0.001)
+	if (normShadowCoord.z > occluderDistance)
 		discard;
 
 	// Compare Light Direction with normal
@@ -78,5 +78,5 @@ void main()
 	if (incidenceAmount <= 0.0f)
 		return;
 
-	oColour += colour * incidenceAmount * light.diffuseColour;
+	oColour += colour * ((incidenceAmount * light.diffuseColour) + vec4(light.ambientColour.rgb, 1.0f));
 }

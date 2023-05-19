@@ -132,5 +132,7 @@ public:
 	static void SetCentrePosition(Eigen::Vector3f a_CentrePosition);
 
 	static bool RenderFrame();
+
+	static void ResetRenderer();
 };
 }

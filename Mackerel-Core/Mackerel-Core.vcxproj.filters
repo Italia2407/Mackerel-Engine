@@ -1842,8 +1842,5 @@
     <Image Include="res\UI\PlayPhysics.png">
       <Filter>Resource Files\UI</Filter>
     </Image>
-    <Image Include="res\Textures\survivorMaleB.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
   </ItemGroup>
 </Project>

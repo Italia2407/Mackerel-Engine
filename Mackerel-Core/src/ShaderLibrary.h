@@ -36,7 +36,7 @@ private:
 private:
 	bool getShader(ShaderEnum a_Asset, AssetType::Shader*& o_Shader);
 	bool loadShader(ShaderEnum a_Asset, std::string a_FilePath);
-	bool freeShader(ShaderEnum a_Asset);
+	bool freeShader(ShaderEnum a_Asset, bool erase = true);
 	bool getPath(ShaderEnum a_Asset, std::string* stringOutput);
 
 public:
