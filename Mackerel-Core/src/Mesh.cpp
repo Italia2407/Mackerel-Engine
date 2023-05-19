@@ -543,7 +543,6 @@ bool Mesh::GltfExtractUpload(std::string& a_FilePath)
 		tinygltf::Buffer buffer = m_gltfModel->buffers[bufferView.buffer];
 
 		ozz::math::Float4x4* invBinds = reinterpret_cast<ozz::math::Float4x4*>(buffer.data.data() + bufferView.byteOffset);
-
 		for (uint32_t i = 0; i < accessor.count; i++)
 		{
 			ozz::math::Float4x4 target;
