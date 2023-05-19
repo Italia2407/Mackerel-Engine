@@ -37,7 +37,7 @@ namespace MCK::EntitySystem
 
 		MCK::AssetType::Texture* LoadUIImage(const std::string& filename);
 
-		void SetVisible(bool isVisible);
+		void ToggleVisible();
 
 		void PausedCallback(int32_t key, MCK::ButtonEvents ButtonEvents);
 

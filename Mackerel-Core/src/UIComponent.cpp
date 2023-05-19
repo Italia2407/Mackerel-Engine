@@ -65,33 +65,32 @@ namespace MCK::EntitySystem
 		{
 			if (key == MCK::Key::P)
 			{
-				if (!doublePauseGuard)
-				{
-					doublePauseGuard = true;
-					paused = !paused;
-
-					if (!paused)
-					{
-						MCK::TimeManager::setTimescale(storedTimeScale);
-					}
-					else
-					{
-						storedTimeScale = TimeManager::getTimescale();
-						MCK::TimeManager::setTimescale(0.0);
-					}
-					SetVisible(paused);
-				}
+				ToggleVisible();
 			}
 		}
 	}
 
-	void UIComponent::SetVisible(bool isVisible)
+	void UIComponent::ToggleVisible()
 	{
-		paused = isVisible;
+		if (!doublePauseGuard)
+		{
+			doublePauseGuard = true;
+			paused = !paused;
+
+			if (!paused)
+			{
+				MCK::TimeManager::setTimescale(storedTimeScale);
+			}
+			else
+			{
+				storedTimeScale = TimeManager::getTimescale();
+				MCK::TimeManager::setTimescale(0.0);
+			}
+		}
 
 		for (MCK::UI::UIElement* element : UIElements)
 		{
-			element->SetVisible(isVisible);
+			element->SetVisible(!element->IsVisible());
 		}
 	}
 
@@ -192,7 +191,7 @@ namespace MCK::EntitySystem
 			}
 			if (unpauseOnClick)
 			{
-				SetVisible(paused);
+				ToggleVisible();
 			}
 		};
 
