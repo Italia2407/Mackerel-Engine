@@ -102,6 +102,7 @@ void FinalDemoApp::Start()
 
         #pragma endregion
 
+        
 }
 
 std::string FinalDemoApp::GetCurrentRuntime() {
