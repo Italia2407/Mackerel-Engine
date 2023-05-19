@@ -13,9 +13,9 @@ namespace MCK::UI
 
 	}
 
-	void UIElement::ToggleVisible()
+	void UIElement::SetVisible(bool isVisible)
 	{
-		visible = !visible;
+		visible = isVisible;
 	}
 
 	bool UIElement::IsVisible() const

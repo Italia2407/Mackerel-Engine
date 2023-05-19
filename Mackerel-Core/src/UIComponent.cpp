@@ -10,6 +10,8 @@
 
 namespace MCK::EntitySystem
 {
+	bool UIComponent::paused = true;
+	bool UIComponent::doublePauseGuard = false;
 
 	/**
 	 * Invoked when the entity holding the component is created.
@@ -17,7 +19,7 @@ namespace MCK::EntitySystem
 	 */
 	void UIComponent::OnCreate()
 	{
-		paused = true;
+		storedTimeScale = 1.0;
 
 		buttonInputCallback = std::bind(&UIComponent::PausedCallback, this, std::placeholders::_1, std::placeholders::_2); /* <- syntax for member functions */
 
@@ -30,11 +32,24 @@ namespace MCK::EntitySystem
 	*/
 	void UIComponent::OnUpdate()
 	{
+		/* Issues happen if a pause event happens more than once in the same frame */
+		doublePauseGuard = false;
+
 		// Loop through all the elements and call Draw() for each of them
 		for (MCK::UI::UIElement* element : UIElements)
 		{
 			element->Draw();
 		}
+
+		/* Update stored time scale if paused(to ensure changes to timescale made
+			while the game is paused are relfected when unpaused) */
+		if (paused && (TimeManager::getTimescale() != 0.0))
+		{
+			storedTimeScale = TimeManager::getTimescale();
+			TimeManager::setTimescale(0.0);
+		}
+
+		printf("%d\n", storedTimeScale);
 	}
 
 	/**
@@ -52,22 +67,33 @@ namespace MCK::EntitySystem
 		{
 			if (key == MCK::Key::P)
 			{
-				if (paused)
-					MCK::TimeManager::setTimescale(1);
-				else
-					MCK::TimeManager::setTimescale(0);
-				ToggleVisible(); 
+				if (!doublePauseGuard)
+				{
+					doublePauseGuard = true;
+					paused = !paused;
+
+					if (!paused)
+					{
+						MCK::TimeManager::setTimescale(storedTimeScale);
+					}
+					else
+					{
+						storedTimeScale = TimeManager::getTimescale();
+						MCK::TimeManager::setTimescale(0.0);
+					}
+					SetVisible(paused);
+				}
 			}
 		}
 	}
 
-	void UIComponent::ToggleVisible()
+	void UIComponent::SetVisible(bool isVisible)
 	{
-		paused = !paused;
+		paused = isVisible;
 
 		for (MCK::UI::UIElement* element : UIElements)
 		{
-			element->ToggleVisible();
+			element->SetVisible(isVisible);
 		}
 	}
 
@@ -168,7 +194,7 @@ namespace MCK::EntitySystem
 			}
 			if (unpauseOnClick)
 			{
-				ToggleVisible();
+				SetVisible(paused);
 			}
 		};
 

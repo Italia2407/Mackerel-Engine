@@ -26,7 +26,7 @@ namespace MCK::UI
 		UIElement();
 		virtual ~UIElement();
 
-		void ToggleVisible();
+		void SetVisible(bool isVisible);
 		bool IsVisible() const;
 
 		void SetPosition(const ImVec2& newPosition);
