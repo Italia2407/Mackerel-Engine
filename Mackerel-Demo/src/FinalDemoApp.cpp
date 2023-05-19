@@ -102,7 +102,10 @@ void FinalDemoApp::Start()
 
         #pragma endregion
 
-        
+            GLint maxTextureSize;
+            glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+            MCK::Logger::log(std::format("Max texture size : ", maxTextureSize), MCK::Logger::LogLevel::Info, std::source_location::current());
+
 }
 
 std::string FinalDemoApp::GetCurrentRuntime() {
