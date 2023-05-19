@@ -45,9 +45,9 @@ void EvaluationApp::Start()
 
     Physics::CreateCollisionShapeInfo floorShape{};
     floorShape.colliderType = Physics::ColliderTypes::Box;
-    floorShape.width = 10;
+    floorShape.width = 20;
     floorShape.height = 0.5;
-    floorShape.depth = 10;
+    floorShape.depth = 20;
 
     Physics::CollisionComponent* floorCollider = new Physics::CollisionComponent();
 
@@ -107,7 +107,7 @@ void EvaluationApp::Start()
     for (float i = 0; i < objectCount; i++)
     {
         EntitySystem::TransformComponent* objectTransform = new EntitySystem::TransformComponent();
-        objectTransform->Position() = Eigen::Vector3f(-5+i*0.7f, 2, 0 + i * 0.1f);
+        objectTransform->Position() = Eigen::Vector3f(-10+i*0.1f, 2,  float((int)i %10));
         objectTransform->Scale() = Eigen::Vector3f(0.3f, 0.3f, 0.3f);
 
         // Physics
@@ -118,15 +118,24 @@ void EvaluationApp::Start()
         objectShape.depth = 0.3f;
 
 
-        //EntitySystem::MeshRendererComponent* objectRenderer
-          //  = new EntitySystem::MeshRendererComponent(cubeMesh, m_MonoColourShader, blueMaterial);
+        EntitySystem::MeshRendererComponent* objectRenderer
+            = new EntitySystem::MeshRendererComponent(sphereMesh, m_MonoColourShader, blueMaterial);
 
 
         EntitySystem::Entity* objectEntity = scene.CreateEntity();
         objectEntity->AddComponent(objectTransform);
-        //objectEntity->AddComponent(objectRenderer);
+        objectEntity->AddComponent(objectRenderer);
     }
     
+
+#pragma endregion
+
+#pragma region Calculation
+
+    for (int i = 0; i < entitiesCount; i++)
+    {
+
+    }
 
 #pragma endregion
 
@@ -193,7 +202,7 @@ std::string EvaluationApp::GetCurrentFPS() {
 
     // Format string.
     char buffer[100];
-    sprintf(buffer, "FPS: %.0f,  Max FPS: %.0f,   Min FPS: %.0f, Max Time taken: %.0f", fps, maxFPS, minFPS, max);
+    sprintf(buffer, "FPS: %.0f,  Max FPS: %.0f,   Min FPS: %.0f, Max Time taken: %.2f", fps, maxFPS, minFPS, max);
     return std::string(buffer);
 }
 
