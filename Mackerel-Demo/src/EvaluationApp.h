@@ -61,13 +61,16 @@ private:
 	EntitySystem::Scene scene;
 
 	//bool loadedDemo;
-	int rigidbodyCount = 700;
+	int rigidbodyCount = 750;
 	int objectCount = 0;
 	int lightCount = 1;
 	int triangleCount = 0;
+	int animatedCount = 0;
 	double maxFPS = 0;
 	double minFPS = 1000;
-	double timeToStart = 0;
+	double now = 0;
+	double before = 0;
+	double max = 0;
 
 	Rendering::DirectionLight* light;
 
@@ -79,5 +82,4 @@ public:
 	std::string GetCount();
 	std::string GetCurrentFPS();
 
-	void ButtonCallbackTestFunction();
 };

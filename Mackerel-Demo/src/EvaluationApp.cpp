@@ -11,8 +11,6 @@ void EvaluationApp::Start()
 
 #pragma region Scene Init
     scene.InitialiseScene();
-    //scene.LoadScene("../scenes/lvl2/scene.scn");
-    //scene.LoadSceneAdditive("../scenes/lvl2/DynamicScene/scene.scn");
     
 #pragma endregion
 
@@ -32,14 +30,10 @@ void EvaluationApp::Start()
     blueMaterial->addUInt16Uniform("lightShaderID", 0);
     blueMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.6f, 0.6f, 1.f));
 
-    //MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT, m_UnlitShader);
     MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
     MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, m_MonoColourShader);
 
-    //MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
     MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
-
-
     light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
 #pragma endregion
 
@@ -95,14 +89,14 @@ void EvaluationApp::Start()
     playerBody->SetCollisionShape(playerShape);
     //playerBody->DisableRotation();
 
-    //EntitySystem::MeshRendererComponent* playerRenderer
-    //    = new EntitySystem::MeshRendererComponent(cubeMesh, m_MonoColourShader, blueMaterial);
+    EntitySystem::MeshRendererComponent* playerRenderer
+        = new EntitySystem::MeshRendererComponent(cubeMesh, m_MonoColourShader, blueMaterial);
 
     
         EntitySystem::Entity* playerEntity = scene.CreateEntity();
         playerEntity->AddComponent(playerTransform);
         playerEntity->AddComponent(playerBody);
-        //playerEntity->AddComponent(playerRenderer);
+        playerEntity->AddComponent(playerRenderer);
     }
 
 #pragma endregion
@@ -169,18 +163,13 @@ void EvaluationApp::Start()
 
 }
 
-void EvaluationApp::ButtonCallbackTestFunction()
-{
-    std::cout << "Button Pressed" << std::endl;
-}
-
 std::string EvaluationApp::GetCount() {
 
     triangleCount = objectCount * 12;
 
     // Format string.
     char buffer[100];
-    sprintf(buffer, "Count: %i", triangleCount);
+    sprintf(buffer, "Rigid bodies: %i, Triangles: %i, Lights: %i, Animated meshes: %i", rigidbodyCount, triangleCount, lightCount, animatedCount);
     return std::string(buffer);
 }
 
@@ -193,12 +182,18 @@ std::string EvaluationApp::GetCurrentFPS() {
     if (fps < minFPS)
         minFPS = fps;
 
-    if (timeToStart == 0)
-        timeToStart = MCK::TimeManager::GetUpTime();
+    if (max != 0)
+        before = now;
+
+    now = MCK::TimeManager::GetUpTime();
+
+    double new_max = now - before;
+    if (new_max > max)
+        max = new_max;
 
     // Format string.
     char buffer[100];
-    sprintf(buffer, "FPS: %.0f,  Max FPS: %.0f,   Min FPS: %.0f, Start: %.0f", fps, maxFPS, minFPS, timeToStart);
+    sprintf(buffer, "FPS: %.0f,  Max FPS: %.0f,   Min FPS: %.0f, Max Time taken: %.0f", fps, maxFPS, minFPS, max);
     return std::string(buffer);
 }
 
@@ -207,6 +202,7 @@ void EvaluationApp::Update()
     TimeManager::Update();
 
     Rendering::Renderer::QueueDirectionLight(light);
+
     scene.UpdateScene();
 }
 
