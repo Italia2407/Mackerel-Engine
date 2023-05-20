@@ -87,6 +87,8 @@ namespace MCK::EntitySystem {
 
 		bool Deserialise(json a_Data) override;
 
+		void PushUniforms();
+
 		void PlayAnimation(std::string animation, float time = 0.0f, bool interrupt = true, bool queue = false, bool loop = false);
 		bool SetDefaultAnimation(std::string animation);
 		void SetTargetFPS(float fps);

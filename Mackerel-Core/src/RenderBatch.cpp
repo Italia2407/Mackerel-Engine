@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "TransformComponent.h"
+#include "SkinnedMeshRendererComponent.h"
 
 #include <format>
 
@@ -24,11 +25,12 @@ RenderBatch::~RenderBatch()
 	m_Instances.clear();
 }
 
-bool RenderBatch::AddBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Material* a_Material)
+bool RenderBatch::AddBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Material* a_Material, MCK::EntitySystem::SkinnedMeshRendererComponent* a_pSkinnedMeshRenderer)
 {
 	Instance batchInstance{}; {
 		batchInstance.material = a_Material;
 		batchInstance.transformMatrix = a_Transform.GetTransformationMatrix();
+		batchInstance.pSkinnedMeshRenderer = a_pSkinnedMeshRenderer;
 	}
 
 	m_Instances.push_back(batchInstance);
@@ -74,6 +76,11 @@ bool RenderBatch::DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_Dept
 		if (!a_TransformBuffer->SetMat4BufferUniform("transformMatrix", instance.transformMatrix)) {
 			Logger::log(std::format("Cannot Set Instance #{} Transform Matrix in Uniform Buffer", i), Logger::LogLevel::Error, std::source_location::current(), "ENGINE");
 			continue;
+		}
+
+		if (instance.pSkinnedMeshRenderer)
+		{
+			instance.pSkinnedMeshRenderer->PushUniforms();
 		}
 
 		if (!a_DepthOnly) {

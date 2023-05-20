@@ -95,10 +95,10 @@ namespace MCK::EntitySystem {
 					Logger::LogLevel::Warning, std::source_location::current(), "ENGINE");
 			}
 
-			glUniformMatrix4fv(jointTransformShaderLoc,
-				static_cast<GLsizei>(modelTransforms.size()),
-				GL_TRUE,
-				reinterpret_cast<float*>(modelTransforms.data()));
+			//glUniformMatrix4fv(jointTransformShaderLoc,
+			//	static_cast<GLsizei>(modelTransforms.size()),
+			//	GL_TRUE,
+			//	reinterpret_cast<float*>(modelTransforms.data()));
 		}
 		else
 		{
@@ -224,10 +224,10 @@ namespace MCK::EntitySystem {
 
 		m_Shader->UseShaderProgram(true);
 
-		glUniformMatrix4fv(jointTransformShaderLoc,
-			static_cast<GLsizei>(modelTransforms.size()),
-			GL_FALSE,
-			reinterpret_cast<float*>(modelTransforms.data()));
+		//glUniformMatrix4fv(jointTransformShaderLoc,
+		//	static_cast<GLsizei>(modelTransforms.size()),
+		//	GL_FALSE,
+		//	reinterpret_cast<float*>(modelTransforms.data()));
 
 		return true;
 	}
@@ -275,7 +275,7 @@ namespace MCK::EntitySystem {
 	void SkinnedMeshRendererComponent::OnUpdate()
 	{
 		// Queue the Data for the Rendering
-		Rendering::Renderer::QueueMeshInstance(*m_EntityTransformComponent, m_Mesh, m_Shader, m_Material, false, true);
+		Rendering::Renderer::QueueMeshInstance(*m_EntityTransformComponent, m_Mesh, m_Shader, m_Material, false, true, this);
 	}
 
 	bool SkinnedMeshRendererComponent::Deserialise(json a_Data)
@@ -293,6 +293,19 @@ namespace MCK::EntitySystem {
 		m_MaterialEnum = static_cast<MaterialEnum>(meshId);
 
 		return true;
+	}
+
+	void SkinnedMeshRendererComponent::PushUniforms()
+	{
+		glUniformMatrix4fv(jointTransformShaderLoc,
+			static_cast<GLsizei>(modelTransforms.size()),
+			GL_FALSE,
+			reinterpret_cast<float*>(modelTransforms.data()));
+
+		glUniformMatrix4fv(invBindShaderLoc,
+			static_cast<GLsizei>(m_Mesh->m_animData->inverseBindMatrices.size()),
+			GL_FALSE,
+			reinterpret_cast<float*>(m_Mesh->m_animData->inverseBindMatrices.data()));
 	}
 
 	void SkinnedMeshRendererComponent::PlayAnimation(std::string animation, float time, bool interrupt, bool queue, bool loop)

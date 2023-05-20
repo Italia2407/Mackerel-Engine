@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "RigidbodyComponent.h"
 #include "TransformComponent.h"
+#include "SkinnedMeshRendererComponent.h"
 #include "Entity.h"
 #include "InputComponent.h"
 #include "CollisionData.h"
@@ -23,6 +24,7 @@ namespace MCK::ExamplePlayer
 		Physics::RigidbodyComponent* rigidbody;
 		Eigen::Vector3f startPosition;
 		EntitySystem::InputComponent* input;
+		EntitySystem::SkinnedMeshRendererComponent* skinnedMesh;
 
 		std::function<void(MCK::Physics::CollisionData)> playerCollisionCallback;
 		MCK::Physics::CollisionCallbackReceipt receipt;

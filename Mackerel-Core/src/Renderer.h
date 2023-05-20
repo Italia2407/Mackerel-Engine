@@ -30,6 +30,7 @@ class RenderBatch;
 namespace MCK::EntitySystem {
 class CameraComponent;
 class TransformComponent;
+class SkinnedMeshRendererComponent;
 }
 
 namespace MCK::Rendering {
@@ -98,7 +99,9 @@ private:
 	bool renderDeferredBuffer();
 
 	// Functions to tell the Renderer what needs to be Rendered
-	bool queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, bool a_isAnimated = false);
+	bool queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh,
+		AssetType::Shader* a_Shader, AssetType::Material* a_Material, bool a_isAnimated = false,
+		EntitySystem::SkinnedMeshRendererComponent* a_pSkinnedMeshRenderer = nullptr);
 
 	bool queuePointLight(PointLight* pointLight);
 	bool queueDirectionLight(DirectionLight* directionLight);
@@ -123,7 +126,8 @@ public:
 
 	static bool QueueMeshInstance(const EntitySystem::TransformComponent& a_Transform,
 		AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material,
-		bool a_HasTransparency, bool a_isAnimated = false);
+		bool a_HasTransparency, bool a_isAnimated = false,
+		EntitySystem::SkinnedMeshRendererComponent* a_pSkinnedMeshRenderer = nullptr);
 
 	static bool QueuePointLight(PointLight* a_PointLight);
 	static bool QueueDirectionLight(DirectionLight* a_DirectionLight);
