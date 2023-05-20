@@ -65,7 +65,6 @@ namespace MCK::ExamplePlayer
 			/* apply the new facing direction */
 			transform->Rotation() = smooth_q;
 		}
-		printf("%f\n", 1.0f / TimeManager::getFrameTime());
 
 		rigidbody->AddCentralForce(moveForce);
 		
