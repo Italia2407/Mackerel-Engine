@@ -120,8 +120,8 @@ bool Texture::LoadFromFile(std::string a_FilePath, bool isFor2DObject)
 	int width, height, channels;
 
 	// Load image with stb_image
-	if (!isFor2DObject)
-		stbi_set_flip_vertically_on_load(1);
+	//if (!isFor2DObject)
+		//stbi_set_flip_vertically_on_load(1);
 
 	unsigned char* data = stbi_load(a_FilePath.c_str(), &width, &height, &channels, 0);
 
