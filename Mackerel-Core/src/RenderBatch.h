@@ -15,6 +15,7 @@ class Shader;
 }
 namespace MCK::EntitySystem {
 class TransformComponent;
+class SkinnedMeshRendererComponent;
 }
 
 namespace MCK::Rendering {
@@ -33,6 +34,7 @@ private:
 	{
 		Eigen::Matrix4f transformMatrix;
 		AssetType::Material* material;
+		MCK::EntitySystem::SkinnedMeshRendererComponent* pSkinnedMeshRenderer = nullptr;
 	};
 
 private:
@@ -43,7 +45,7 @@ private:
 	std::vector<Instance> m_Instances;
 
 public:
-	bool AddBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Material* a_Material);
+	bool AddBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Material* a_Material, MCK::EntitySystem::SkinnedMeshRendererComponent* a_pSkinnedMeshRenderer = nullptr);
 
 	bool DrawBatchObjects(UniformBuffer* a_TransformBuffer, bool a_DepthOnly);
 };

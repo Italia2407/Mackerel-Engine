@@ -98,6 +98,20 @@ namespace MCK
             playerController = new ExamplePlayer::ExamplePlayerController();
         #pragma endregion
 
+            leftModelTransform = new EntitySystem::TransformComponent();
+            leftModelTransform->Position() = Eigen::Vector3f(-3.5f, 0.0f, 0.0f);
+            leftModelTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
+            leftModelTransform->Rotation() = q;
+            leftModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_MonoColourShader"], materialMap["skin"]);
+            leftModelRenderer->SetDefaultAnimation("run");
+            
+            rightModelTransform = new EntitySystem::TransformComponent();
+            rightModelTransform->Position() = Eigen::Vector3f(3.5f, 0.0f, 0.0f);
+            rightModelTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
+            rightModelTransform->Rotation() = q;
+            rightModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_MonoColourShader"], materialMap["skin"]);
+            rightModelRenderer->SetDefaultAnimation("dance");
+
         #pragma region UI Init
             uiComponent = new EntitySystem::UIComponent();
             MCK::AssetType::Texture* hudIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/PlayAnimation.png");
@@ -123,6 +137,14 @@ namespace MCK
         playerEntity->AddComponent(playerRenderer);
         playerEntity->AddComponent(playerInput);
         playerEntity->AddComponent(playerController);
+
+        EntitySystem::Entity* leftModelEntity = scene.CreateEntity();
+        leftModelEntity->AddComponent(leftModelTransform);
+        leftModelEntity->AddComponent(leftModelRenderer);
+
+        EntitySystem::Entity* rightModelEntity = scene.CreateEntity();
+        rightModelEntity->AddComponent(rightModelTransform);
+        rightModelEntity->AddComponent(rightModelRenderer);
 
         EntitySystem::Entity* uiEntity = scene.CreateEntity();
         uiEntity->AddComponent(uiComponent);

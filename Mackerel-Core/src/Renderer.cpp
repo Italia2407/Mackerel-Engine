@@ -25,6 +25,7 @@
 
 // Entity Headers
 #include "CameraComponent.h"
+#include "SkinnedMeshRendererComponent.h"
 
 // Static Function & Parameters
 namespace MCK::Rendering {
@@ -170,12 +171,12 @@ bool Renderer::AddSpotLightShader(AssetType::Shader* a_Shader)
 /**  */
 bool Renderer::QueueMeshInstance(const EntitySystem::TransformComponent& a_Transform,
 	AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material,
-	bool a_HasTransparency, bool a_isAnimated)
+	bool a_HasTransparency, bool a_isAnimated, EntitySystem::SkinnedMeshRendererComponent* a_pSkinnedMeshRenderer)
 {
 	bool result = false;
 	if (!a_HasTransparency)
 	{
-		result = Instance()->queueGeometryBatchInstance(a_Transform, a_Mesh, a_Shader, a_Material, a_isAnimated);
+		result = Instance()->queueGeometryBatchInstance(a_Transform, a_Mesh, a_Shader, a_Material, a_isAnimated, a_pSkinnedMeshRenderer);
 	}
 
 	return result;
@@ -672,7 +673,9 @@ bool Renderer::renderDeferredBuffer()
  * \param a_Transform: The Geometry Instance's Transform Matrix
  * \return Whether the Geometry Instance was Successfully Added
  */
-bool Renderer::queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh, AssetType::Shader* a_Shader, AssetType::Material* a_Material, bool a_isAnimated)
+bool Renderer::queueGeometryBatchInstance(const EntitySystem::TransformComponent& a_Transform, AssetType::Mesh* a_Mesh,
+	AssetType::Shader* a_Shader, AssetType::Material* a_Material, bool a_isAnimated,
+	EntitySystem::SkinnedMeshRendererComponent* a_pSkinnedMeshRenderer)
 {
 	RenderBatch* geometryBatch = nullptr;
 
@@ -699,7 +702,7 @@ bool Renderer::queueGeometryBatchInstance(const EntitySystem::TransformComponent
 	}
 
 	// Add Mesh Instance to Geometry Batch
-	geometryBatch->AddBatchInstance(a_Transform, a_Material);
+	geometryBatch->AddBatchInstance(a_Transform, a_Material, a_pSkinnedMeshRenderer);
 	return true;
 }
 

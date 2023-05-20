@@ -74,13 +74,19 @@ namespace MCK::ExamplePlayer
 
 			rigidbody->SetLinearVelocity(velocity);
 
-			if (abs(velocity.y()) < 0.2f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
-				skinnedMesh->PlayAnimation("idle", 0.0f, true, true, true);
+			if (skinnedMesh)
+			{
+				if (abs(velocity.y()) < 0.2f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
+					skinnedMesh->PlayAnimation("idle", 0.0f, true, true, true);
+			}
 		}
 		else
 		{
-			if (abs(velocity.y()) < 0.2f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
-				skinnedMesh->PlayAnimation("run", 0.0f, true, true, true);
+			if (skinnedMesh)
+			{
+				if (abs(velocity.y()) < 0.2f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
+					skinnedMesh->PlayAnimation("run", 0.0f, true, true, true);
+			}
 		}
 	
 		// Jump
@@ -89,7 +95,10 @@ namespace MCK::ExamplePlayer
 			velocity.y() = jumpVel;
 			rigidbody->SetLinearVelocity(velocity);
 
-			skinnedMesh->PlayAnimation("jump", 0.0f, true, true, true);
+			if (skinnedMesh)
+			{
+				skinnedMesh->PlayAnimation("jump", 0.0f, true, true, true);
+			}
 		}
 	}
 

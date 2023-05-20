@@ -59,6 +59,11 @@ namespace MCK
             EntitySystem::InputComponent* playerInput;
             ExamplePlayer::ExamplePlayerController* playerController;
 
+            EntitySystem::TransformComponent* leftModelTransform;
+            EntitySystem::SkinnedMeshRendererComponent* leftModelRenderer;
+            EntitySystem::TransformComponent* rightModelTransform;
+            EntitySystem::SkinnedMeshRendererComponent* rightModelRenderer;
+
             EntitySystem::TransformComponent* audioTransform;
             EntitySystem::AudioEmitter* audioComponent;
 
