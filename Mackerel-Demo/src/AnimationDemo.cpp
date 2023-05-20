@@ -104,6 +104,7 @@ namespace MCK
             leftModelTransform->Rotation() = q;
             leftModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_MonoColourShader"], materialMap["skin"]);
             leftModelRenderer->SetDefaultAnimation("run");
+            playerRenderer->SetTargetFPS(60.0f);
             
             rightModelTransform = new EntitySystem::TransformComponent();
             rightModelTransform->Position() = Eigen::Vector3f(3.5f, 0.0f, 0.0f);
@@ -111,6 +112,7 @@ namespace MCK
             rightModelTransform->Rotation() = q;
             rightModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_MonoColourShader"], materialMap["skin"]);
             rightModelRenderer->SetDefaultAnimation("dance");
+            playerRenderer->SetTargetFPS(60.0f);
 
         #pragma region UI Init
             uiComponent = new EntitySystem::UIComponent();
