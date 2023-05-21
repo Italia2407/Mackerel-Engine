@@ -18,6 +18,7 @@ LightComponent::LightComponent(LightComponent::LightType a_LightType,
 	m_PointLight(nullptr), m_DirectionLight(nullptr), m_SpotLight(nullptr),
 	m_LightType(LightComponent::LightType::PointLight),
 	m_DiffuseColour(a_DiffuseColour), m_SpecularColour(a_SpecularColour), m_AmbientColour(a_AmbientColour), m_BeamAngle(a_BeamAngle) {}
+LightComponent::LightComponent() { m_BeamAngle = 50; }
 LightComponent::~LightComponent() {}
 
 void LightComponent::OnCreate()
@@ -49,6 +50,7 @@ void LightComponent::OnDestroy()
 }
 void LightComponent::OnUpdate()
 {
+
 	m_PointLight->Position() = m_EntityTransformComponent->Position();
 	m_SpotLight->Position() = m_EntityTransformComponent->Position();
 
@@ -87,6 +89,27 @@ void LightComponent::OnUpdate()
 }
 bool LightComponent::Deserialise(json a_Data)
 {
-	return false;
+	a_Data = a_Data["data"];
+
+	m_DiffuseColour = Eigen::Vector4f::Ones();
+	m_SpecularColour = Eigen::Vector4f::Ones();
+	m_AmbientColour = Eigen::Vector4f::Zero();
+
+	for (auto itt = a_Data.begin(); itt != a_Data.end(); ++itt)
+	{
+		if (itt.key() == "type")
+		{
+			int lt = a_Data["type"];
+			m_LightType = (LightType)lt;
+		}
+		else if (itt.key() == "diffuse")
+		{
+			m_DiffuseColour.x() = a_Data["diffuse"][0];
+			m_DiffuseColour.y() = a_Data["diffuse"][1];
+			m_DiffuseColour.z() = a_Data["diffuse"][2];
+			m_DiffuseColour.w() = a_Data["diffuse"][3];
+		}
+	}
+	return true;
 }
 }

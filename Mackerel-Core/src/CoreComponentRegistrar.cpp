@@ -19,6 +19,7 @@ namespace MCK
 		REGISTER(PerspectiveCamera, "PerspectiveCamera");
 		REGISTER(RigidbodyComponent, "RigidbodyComponent");
 		REGISTER(TransformComponent, "TransformComponent");
+		REGISTER(LightComponent, "LightComponent");
 	}
 
 	#undef REGISTER

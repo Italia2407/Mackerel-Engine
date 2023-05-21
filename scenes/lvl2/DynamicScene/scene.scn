@@ -21,7 +21,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -61,7 +61,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -101,7 +101,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -141,7 +141,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -181,7 +181,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -221,7 +221,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -261,7 +261,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -301,7 +301,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
-                                "texturePath": "../scenes/lvl2/ball.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Ball.mtl"
                             }
                         },
                         {
@@ -341,7 +341,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/box.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Box.mtl"
                             }
                         },
                         {
@@ -352,7 +352,7 @@
                                 "width": 0.5,
                                 "depth": 0.5,
                                 "height": 0.5,
-                                "mass": 0.10000000149011612
+                                "mass": 0.5
                             }
                         }
                     ],
@@ -381,7 +381,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/box.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Box.mtl"
                             }
                         },
                         {
@@ -392,7 +392,7 @@
                                 "width": 0.5,
                                 "depth": 0.5,
                                 "height": 0.5,
-                                "mass": 0.10000000149011612
+                                "mass": 0.5
                             }
                         }
                     ],
@@ -421,7 +421,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/box.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Box.mtl"
                             }
                         },
                         {
@@ -432,7 +432,7 @@
                                 "width": 0.5,
                                 "depth": 0.5,
                                 "height": 0.5,
-                                "mass": 0.10000000149011612
+                                "mass": 0.5
                             }
                         }
                     ],
@@ -461,7 +461,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/box.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Box.mtl"
                             }
                         },
                         {
@@ -472,7 +472,7 @@
                                 "width": 0.5,
                                 "depth": 0.5,
                                 "height": 0.5,
-                                "mass": 0.10000000149011612
+                                "mass": 0.5
                             }
                         }
                     ],
@@ -501,7 +501,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
-                                "texturePath": "../scenes/lvl2/ball.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Ball.mtl"
                             }
                         },
                         {
@@ -541,7 +541,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
-                                "texturePath": "../scenes/lvl2/ball.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Ball.mtl"
                             }
                         },
                         {
@@ -581,7 +581,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
-                                "texturePath": "../scenes/lvl2/ball.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Ball.mtl"
                             }
                         },
                         {
@@ -621,7 +621,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
-                                "texturePath": "../scenes/lvl2/ball.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Ball.mtl"
                             }
                         },
                         {
@@ -661,7 +661,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Ball.obj",
-                                "texturePath": "../scenes/lvl2/ball.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Ball.mtl"
                             }
                         },
                         {
@@ -701,7 +701,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -741,7 +741,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -781,7 +781,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {
@@ -821,7 +821,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/DynamicScene/Crate.obj",
-                                "texturePath": "../scenes/lvl2/crate.png"
+                                "matPath": "../scenes/lvl2/DynamicScene/Crate.mtl"
                             }
                         },
                         {

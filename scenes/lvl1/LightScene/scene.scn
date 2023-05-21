@@ -1,0 +1,426 @@
+{
+    "scene": {
+        "entities": [
+            {
+                "entity": {
+                    "name": "Lamp",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.300505131483078,
+                                "positionY": 5.579977989196777,
+                                "positionZ": -4.069329738616943,
+                                "rotationX": 0.0,
+                                "rotationY": 0.12039000540971756,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.9927266836166382
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.001",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 1.4665151834487915,
+                                "positionY": 5.579977989196777,
+                                "positionZ": -2.116974353790283,
+                                "rotationX": 0.0,
+                                "rotationY": 0.40686434507369995,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.9134885668754578
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.002",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 3.811377763748169,
+                                "positionY": 5.579977989196777,
+                                "positionZ": -0.8549289703369141,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.003",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -4.356152534484863,
+                                "positionY": 4.475899696350098,
+                                "positionZ": 7.937082290649414,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.004",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.8219234943389893,
+                                "positionY": 4.475899696350098,
+                                "positionZ": 8.902267456054688,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.005",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 2.47417950630188,
+                                "positionY": 4.475899696350098,
+                                "positionZ": 7.90488862991333,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.006",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 12.972610473632812,
+                                "positionY": 3.5282082557678223,
+                                "positionZ": 0.9277713298797607,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.007",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 16.629615783691406,
+                                "positionY": 3.5282082557678223,
+                                "positionZ": 0.9277713298797607,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.008",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 12.322755813598633,
+                                "positionY": 2.416684150695801,
+                                "positionZ": 9.62804889678955,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.009",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 16.85495948791504,
+                                "positionY": 2.416684150695801,
+                                "positionZ": 8.838233947753906,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.010",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 19.808998107910156,
+                                "positionY": 2.416684627532959,
+                                "positionZ": 6.337197303771973,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "Lamp.011",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 20.94371223449707,
+                                "positionY": 2.416684627532959,
+                                "positionZ": 2.1857080459594727,
+                                "rotationX": 0.0,
+                                "rotationY": 0.6904363632202148,
+                                "rotationZ": 0.0,
+                                "rotationW": 0.7233931422233582
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl1/LightScene/Lamp.obj",
+                                "matPath": "../scenes/lvl1/lamp.mtl"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            }
+        ]
+    }
+}

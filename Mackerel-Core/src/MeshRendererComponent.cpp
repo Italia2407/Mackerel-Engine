@@ -113,10 +113,14 @@ bool MeshRendererComponent::Deserialise(json a_Data)
 			m_Mesh = new AssetType::Mesh(path);
 			m_Mesh->LoadFromFile(path);
 		}
-		else if (itt.key() == "texturePath")
+		else if (itt.key() == "matPath")
 		{
+			m_Material = new AssetType::Material();
+			m_Material->LoadFromFile(a_Data["matPath"], 0);
+
 			MCK::ShaderLibrary::LoadShader(ShaderEnum::textured, "../Mackerel-Core/res/Shaders/frag/textured.glsl");
 			MCK::ShaderLibrary::GetShader(ShaderEnum::textured, m_Shader);
+
 		}
 		else if (itt.key() == "meshID")
 		{

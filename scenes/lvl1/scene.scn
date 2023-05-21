@@ -21,7 +21,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl1/IslandGeo.obj",
-                                "texturePath": "../scenes/lvl1/colors.png"
+                                "matPath": "../scenes/lvl1/island.mtl"
                             }
                         },
                         {
@@ -43,9 +43,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -2.8850364685058594,
-                                "positionY": 2.4266469478607178,
-                                "positionZ": -4.472527980804443,
+                                "positionX": -8.41706371307373,
+                                "positionY": 4.133810043334961,
+                                "positionZ": 4.815490245819092,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -56,7 +56,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl1/Bridge.obj",
-                                "texturePath": "../scenes/lvl1/colors.png"
+                                "matPath": "../scenes/lvl1/island.mtl"
                             }
                         },
                         {
@@ -78,9 +78,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -16.396358489990234,
-                                "positionY": -2.714904308319092,
-                                "positionZ": -4.073690414428711,
+                                "positionX": -21.68465232849121,
+                                "positionY": -1.0333406925201416,
+                                "positionZ": 4.003234386444092,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -91,7 +91,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl1/SingleIlsland.obj",
-                                "texturePath": "../scenes/lvl1/colors.png"
+                                "matPath": "../scenes/lvl1/island.mtl"
                             }
                         },
                         {

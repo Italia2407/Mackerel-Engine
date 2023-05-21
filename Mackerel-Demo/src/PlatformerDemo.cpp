@@ -12,8 +12,9 @@ void PlatformerApp::Start()
 
 #pragma region Scene Init
     scene.InitialiseScene();
-    scene.LoadScene("../scenes/lvl2/scene.scn");
-    scene.LoadSceneAdditive("../scenes/lvl2/DynamicScene/scene.scn");
+    scene.LoadSceneAdditive("../scenes/lvl1/LightScene/scene.scn");
+    scene.LoadSceneAdditive("../scenes/lvl1/scene.scn");
+    
     //MCK::Logger::initialize();
 #pragma endregion
 
@@ -42,7 +43,7 @@ void PlatformerApp::Start()
     //MCK::Rendering::Renderer::AddUnlitShader(m_UnlitShader);
     MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
 
-    light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f::Ones(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Ones() / 2.f);
+    light = new Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f).normalized(), Eigen::Vector4f(0.3f, 0.3f, 0.4f, 1.0), Eigen::Vector4f::Zero(), Eigen::Vector4f::Ones() / 2.f);
 #pragma endregion
 
 #pragma region Floor Init

@@ -15,21 +15,15 @@
         }
       },
       {
-        "type": "MeshRendererComponent",
+        "type": "LightComponent",
         "data": {
-          "modelPath": "$modPath",
-          "matPath": "$matPath"
-        }
-      },
-      {
-        "type": "CollisionComponent",
-        "data": {
-          "type": 3
+          "type": $lightType,
+          "diffuse": [$lightDifX, $lightDifY, $lightDifZ, $lightDifW]
         }
       }
     ],
     "tags": [
-      "level_geo"
+      "light"
     ]
   }
 }
