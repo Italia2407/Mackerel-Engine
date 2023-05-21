@@ -30,8 +30,9 @@ namespace MCK
             floorMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.2f, 0.5f, 0.2f));
 
             AssetType::Material* skin = new AssetType::Material();
-            skin->addUInt16Uniform("lightShaderID", 0);
-            skin->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.2f, 0.2f));
+            skin->LoadFromFile("../Mackerel-Core/res/Materials/xbot.mtl", 0);
+            //skin->addUInt16Uniform("lightShaderID", 0);
+            //skin->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.2f, 0.2f));
 
             materialMap["floorMaterial"] = floorMaterial;
             materialMap["skin"] = skin;
@@ -81,7 +82,7 @@ namespace MCK
             playerTransform->Scale() = Eigen::Vector3f(playerSize, playerSize, playerSize);
             playerTransform->Rotation() = q;
 
-            playerRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_MonoColourShader"], materialMap["skin"]);
+            playerRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
             playerRenderer->SetDefaultAnimation("idle");
             playerRenderer->SetTargetFPS(60.0f);
 
@@ -99,18 +100,18 @@ namespace MCK
         #pragma endregion
 
             leftModelTransform = new EntitySystem::TransformComponent();
-            leftModelTransform->Position() = Eigen::Vector3f(-3.5f, 0.0f, 0.0f);
+            leftModelTransform->Position() = Eigen::Vector3f(-3.5f, 0.0f, -4.0f);
             leftModelTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
-            leftModelTransform->Rotation() = q;
-            leftModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_MonoColourShader"], materialMap["skin"]);
+            leftModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
             leftModelRenderer->SetDefaultAnimation("run");
+            playerRenderer->SetTargetFPS(60.0f);
             
             rightModelTransform = new EntitySystem::TransformComponent();
-            rightModelTransform->Position() = Eigen::Vector3f(3.5f, 0.0f, 0.0f);
+            rightModelTransform->Position() = Eigen::Vector3f(3.5f, 0.0f, -4.0f);
             rightModelTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
-            rightModelTransform->Rotation() = q;
-            rightModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_MonoColourShader"], materialMap["skin"]);
+            rightModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
             rightModelRenderer->SetDefaultAnimation("dance");
+            playerRenderer->SetTargetFPS(60.0f);
 
         #pragma region UI Init
             uiComponent = new EntitySystem::UIComponent();

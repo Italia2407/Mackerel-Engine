@@ -45,6 +45,26 @@ namespace MCK::ExamplePlayer
 		Eigen::Vector3f moveForce
 			= Eigen::Vector3f(input->Direction().x(), 0, input->Direction().y())
 			* moveForceMag;
+		
+		/* Player rotation */
+		if (moveForce.squaredNorm() > 0.001f)
+		{
+			/* rotation angles of facing direction and movement direction */
+			float true_rotation_angle = atan2(smoothMoveVector.z(), -smoothMoveVector.x()) - atan2(1.0f, 0.0f);
+			float target_rotation_angle = atan2(movInput.y(), -movInput.x()) - atan2(1.0f, 0.0f);
+
+			/* convert to quaternions */
+			Eigen::Quaternionf true_q = Eigen::Quaternionf(Eigen::AngleAxisf(true_rotation_angle, Eigen::Vector3f(0.0f, 1.0f, 0.0f)));
+			Eigen::Quaternionf target_q = Eigen::Quaternionf(Eigen::AngleAxisf(target_rotation_angle, Eigen::Vector3f(0.0f, 1.0f, 0.0f)));
+
+			/* interpolate 'em to get smooth movement */
+			float smooth_t = turnRate * static_cast<float>(TimeManager::getScaledFrameTime());
+			Eigen::Quaternionf smooth_q = true_q.slerp(smooth_t, target_q);
+			smoothMoveVector = smooth_q * Eigen::Vector3f(0.0f, 0.0f, 1.0f);
+
+			/* apply the new facing direction */
+			transform->Rotation() = smooth_q;
+		}
 
 		rigidbody->AddCentralForce(moveForce);
 		

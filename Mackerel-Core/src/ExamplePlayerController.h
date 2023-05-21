@@ -19,6 +19,8 @@ namespace MCK::ExamplePlayer
 		float deceleration = 90; 
 		float jumpVel = 13;
 		double lastGroundTime;
+		float turnRate = 10.0f;
+		Eigen::Vector3f smoothMoveVector{};
 
 		EntitySystem::TransformComponent* transform;
 		Physics::RigidbodyComponent* rigidbody;
