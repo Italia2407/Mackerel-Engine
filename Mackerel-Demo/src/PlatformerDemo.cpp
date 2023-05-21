@@ -87,6 +87,8 @@ void PlatformerApp::Start()
     playerTransform->Position() = Eigen::Vector3f(0, 10, 0);
     playerTransform->Scale() = Eigen::Vector3f(0.3f, 0.3f, 0.3f);
 
+    EntitySystem::AudioListener* listener = new EntitySystem::AudioListener();
+
     // Physics
     Physics::CreateCollisionShapeInfo playerShape{};
     playerShape.colliderType = Physics::ColliderTypes::Box;
@@ -105,6 +107,8 @@ void PlatformerApp::Start()
     ExamplePlayer::ExamplePlayerController* playerController
         = new ExamplePlayer::ExamplePlayerController();
 
+    //EntitySystem::AudioListener* listener;
+
     EntitySystem::Entity* playerEntity = scene.CreateEntity();
     playerEntity->AddTag("Player");
     playerEntity->AddComponent(playerTransform);
@@ -112,19 +116,20 @@ void PlatformerApp::Start()
     playerEntity->AddComponent(playerRenderer);
     playerEntity->AddComponent(playerInput);
     playerEntity->AddComponent(playerController);
+    playerEntity->AddComponent(listener);
 
 #pragma endregion
 
 #pragma region Audio Init
-   EntitySystem::TransformComponent* audioTransform = new EntitySystem::TransformComponent();
-   audioTransform->Position() = Eigen::Vector3f(-30.f, 0, 0);
-
-    EntitySystem::AudioEmitter* audioComponent = new EntitySystem::AudioEmitter();
-    audioComponent->SetSoundFileName("../Mackerel-Core/res/Sounds/Voyager.mp3");
-
-    EntitySystem::Entity* audioEntity = scene.CreateEntity();
-    audioEntity->AddComponent(audioTransform);
-    audioEntity->AddComponent(audioComponent);
+   //EntitySystem::TransformComponent* audioTransform = new EntitySystem::TransformComponent();
+   //audioTransform->Position() = Eigen::Vector3f(30.f, 0, 0);
+   //
+   // EntitySystem::AudioEmitter* audioComponent = new EntitySystem::AudioEmitter();
+   // audioComponent->SetSoundFileName("../Mackerel-Core/res/Sounds/Voyager.mp3");
+   //
+   // EntitySystem::Entity* audioEntity = scene.CreateEntity();
+   // audioEntity->AddComponent(audioTransform);
+   // audioEntity->AddComponent(audioComponent);
 
 #pragma endregion
 

@@ -1,0 +1,96 @@
+{
+    "scene": {
+        "entities": [
+            {
+                "entity": {
+                    "name": "AudioEmitter",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -11.808207511901855,
+                                "positionY": 3.7193474769592285,
+                                "positionZ": -2.4854657649993896,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "AudioEmitter",
+                            "data": {
+                                "filename": "../scenes/lvl3/music1.mp3",
+                                "loop": 1,
+                                "3d": 1
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "audio_emitter"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "AudioEmitter.001",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 1.4534721374511719,
+                                "positionY": 3.7193474769592285,
+                                "positionZ": -2.4854657649993896,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "AudioEmitter",
+                            "data": {
+                                "filename": "../scenes/lvl3/music3.mp3",
+                                "loop": 1,
+                                "3d": 1
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "audio_emitter"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "AudioEmitter.002",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 14.081632614135742,
+                                "positionY": 3.7193474769592285,
+                                "positionZ": -2.4854657649993896,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "AudioEmitter",
+                            "data": {
+                                "filename": "../scenes/lvl3/music2.ogg",
+                                "loop": 1,
+                                "3d": 1
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "audio_emitter"
+                    ]
+                }
+            }
+        ]
+    }
+}

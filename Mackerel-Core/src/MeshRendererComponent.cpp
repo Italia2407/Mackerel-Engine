@@ -115,7 +115,8 @@ bool MeshRendererComponent::Deserialise(json a_Data)
 		}
 		else if (itt.key() == "texturePath")
 		{
-
+			MCK::ShaderLibrary::LoadShader(ShaderEnum::textured, "../Mackerel-Core/res/Shaders/frag/textured.glsl");
+			MCK::ShaderLibrary::GetShader(ShaderEnum::textured, m_Shader);
 		}
 		else if (itt.key() == "meshID")
 		{

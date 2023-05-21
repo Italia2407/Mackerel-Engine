@@ -1,0 +1,146 @@
+{
+    "scene": {
+        "entities": [
+            {
+                "entity": {
+                    "name": "AudioDemo",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -0.0,
+                                "positionY": 0.0,
+                                "positionZ": 0.0,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl3/AudioDemo.obj",
+                                "texturePath": "../scene/lvl3/grid.png"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "radio",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": -11.477523803710938,
+                                "positionY": 2.9192442893981934,
+                                "positionZ": -2.9943816661834717,
+                                "rotationX": 5.338507591545749e-08,
+                                "rotationY": 0.7071067690849304,
+                                "rotationZ": 0.7071068286895752,
+                                "rotationW": 5.338507946817117e-08
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl3/radio.obj",
+                                "texturePath": "../scenes/lvl3/radio.png"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "radio.001",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 1.280853271484375,
+                                "positionY": 2.9192442893981934,
+                                "positionZ": -2.9943816661834717,
+                                "rotationX": 5.338507591545749e-08,
+                                "rotationY": 0.7071067690849304,
+                                "rotationZ": 0.7071068286895752,
+                                "rotationW": 5.338507946817117e-08
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl3/radio.obj",
+                                "texturePath": "../scenes/lvl3/radio.png"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "radio.002",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 13.890281677246094,
+                                "positionY": 2.9192442893981934,
+                                "positionZ": -2.9943816661834717,
+                                "rotationX": 5.338507591545749e-08,
+                                "rotationY": 0.7071067690849304,
+                                "rotationZ": 0.7071068286895752,
+                                "rotationW": 5.338507946817117e-08
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl3/radio.obj",
+                                "texturePath": "../scenes/lvl3/radio.png"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            }
+        ]
+    }
+}

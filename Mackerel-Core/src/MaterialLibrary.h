@@ -36,7 +36,7 @@ private:
 private:
 	bool getMaterial(MaterialEnum a_Asset, AssetType::Material*& o_Material);
 	bool loadMaterial(MaterialEnum a_Asset, std::string a_FilePath);
-	bool freeMaterial(MaterialEnum a_Asset);
+	bool freeMaterial(MaterialEnum a_Asset, bool erase=true);
 	bool getPath(MaterialEnum a_Asset, std::string* stringOutput);
 
 public:

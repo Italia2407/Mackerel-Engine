@@ -35,6 +35,12 @@ namespace MCK::Audio
         FMOD_VECTOR up = FMOD_VECTOR(0, 1, 0);
 
         audioSystem->set3DListenerAttributes(0, &zero, &zero, &forward, &up);
+
+        float dop;
+        float dist;
+        float roll;
+        audioSystem->get3DSettings(&dop, &dist, &roll);
+        audioSystem->set3DSettings(dop, dist, roll * 2.f);
     }
 
     /**
@@ -268,7 +274,7 @@ namespace MCK::Audio
         Eigen::Vector3f forward_rotated = rotation * Eigen::Vector3f(0, 0, 1);
 
         // calculate rotated up direction
-        Eigen::Vector3f up_rotated = (forward_rotated.cross(Eigen::Vector3f(0, 1, 0))).normalized();
+        Eigen::Vector3f up_rotated = (forward_rotated.cross(Eigen::Vector3f(1, 0, 0))).normalized();
 
         // convert to FMOD
         FMOD_VECTOR pos = FMOD_VECTOR(position[0], position[1], position[2]);

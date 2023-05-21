@@ -144,10 +144,12 @@ MaterialLibrary::MaterialLibrary()
 MaterialLibrary::~MaterialLibrary()
 {
 	// Free all Material Assets Loaded in Memory
-	for (auto [assetEnum, texture] : m_LibraryData)
+	for (auto itt = m_LibraryData.begin(); itt != m_LibraryData.end(); itt++)
 	{
-		freeMaterial(assetEnum);
+		freeMaterial(itt->first, false);
 	}
+
+	m_LibraryData.clear();
 }
 
 /**
@@ -206,7 +208,7 @@ bool MaterialLibrary::loadMaterial(MaterialEnum a_Asset, std::string a_FilePath)
 * \param a_Asset: Enum Identifier of Desired Material
 * \return Whether the Material could be Deleted
 */
-bool MaterialLibrary::freeMaterial(MaterialEnum a_Asset)
+bool MaterialLibrary::freeMaterial(MaterialEnum a_Asset, bool erase)
 {
 	if (!m_LibraryData.contains(a_Asset))
 	{// Material Asset does not Exist in Memory
@@ -216,7 +218,9 @@ bool MaterialLibrary::freeMaterial(MaterialEnum a_Asset)
 
 	// Unload the Material Asset
 	delete m_LibraryData[a_Asset];
-	m_LibraryData.erase(a_Asset);
+
+	if(erase)
+		m_LibraryData.erase(a_Asset);
 
 	return true;
 }

@@ -1,0 +1,30 @@
+{
+  "entity": {
+    "name": "$name",
+    "components": [
+      {
+        "type": "TransformComponent",
+        "data": {
+          "positionX": $posX,
+          "positionY": $posY,
+          "positionZ": $posZ,
+          "rotationX": $rotX,
+          "rotationY": $rotY,
+          "rotationZ": $rotZ,
+          "rotationW": $rotW
+        }
+      },
+      {
+        "type": "AudioEmitter",
+        "data": {
+          "filename": "$audioPath",
+          "loop": $audioLoop,
+          "3d": $audio3d
+        }
+      }
+    ],
+    "tags": [
+      "audio_emitter"
+    ]
+  }
+}

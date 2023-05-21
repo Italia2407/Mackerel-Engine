@@ -178,6 +178,7 @@ namespace MCK::EntitySystem
 
 	bool AudioEmitter::Deserialise(json data)
 	{
+		std::string d = data.dump();
 		data = data["data"];
 
 		auto it = data.find("filename");
@@ -186,8 +187,10 @@ namespace MCK::EntitySystem
 			soundFileName = data["filename"].get<std::string>();
 		}
 
-		soundLoop = data["loop"];
-		sound3D = data["3d"];
+		int sLoop = data["loop"];
+		int s3d = data["3d"];
+		soundLoop = (bool)sLoop;
+		sound3D = (bool)s3d;
 
 		return true;
 	}
