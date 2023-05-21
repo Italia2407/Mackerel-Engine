@@ -8,9 +8,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -0.0,
+                                "positionX": 1.3001434803009033,
                                 "positionY": 0.0,
-                                "positionZ": 0.0,
+                                "positionZ": -1.0941224098205566,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -21,6 +21,76 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/PhysicsDemoGeo.obj",
+                                "texturePath": "$texPath"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "PhysicsDemoGeo.001",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 1.3001434803009033,
+                                "positionY": 0.0,
+                                "positionZ": -1.0941224098205566,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/PhysicsDemoGeo.001.obj",
+                                "texturePath": "$texPath"
+                            }
+                        },
+                        {
+                            "type": "CollisionComponent",
+                            "data": {
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "tags": [
+                        "level_geo"
+                    ]
+                }
+            },
+            {
+                "entity": {
+                    "name": "PhysicsDemoGeo.002",
+                    "components": [
+                        {
+                            "type": "TransformComponent",
+                            "data": {
+                                "positionX": 1.3001434803009033,
+                                "positionY": 0.0,
+                                "positionZ": -1.0941224098205566,
+                                "rotationX": 0.0,
+                                "rotationY": 0.0,
+                                "rotationZ": 0.0,
+                                "rotationW": 1.0
+                            }
+                        },
+                        {
+                            "type": "MeshRendererComponent",
+                            "data": {
+                                "modelPath": "../scenes/lvl2/PhysicsDemoGeo.002.obj",
                                 "texturePath": "$texPath"
                             }
                         },

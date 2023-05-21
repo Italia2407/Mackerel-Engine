@@ -8,13 +8,13 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -0.699901282787323,
-                                "positionY": 1.4675971269607544,
-                                "positionZ": -29.555566787719727,
+                                "positionX": -1.8720043897628784,
+                                "positionY": 0.0,
+                                "positionZ": -1.9184808731079102,
                                 "rotationX": 0.0,
-                                "rotationY": 0.0,
-                                "rotationZ": 0.0,
-                                "rotationW": 1.0
+                                "rotationY": -0.0,
+                                "rotationZ": -0.7071067690849304,
+                                "rotationW": 0.7071068286895752
                             }
                         },
                         {
@@ -48,9 +48,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -0.699901282787323,
+                                "positionX": -28.483478546142578,
                                 "positionY": 2.560702323913574,
-                                "positionZ": -29.555566787719727,
+                                "positionZ": -2.046938896179199,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -88,9 +88,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -1.7210378646850586,
+                                "positionX": -29.50461196899414,
                                 "positionY": 1.4675971269607544,
-                                "positionZ": -29.555566787719727,
+                                "positionZ": -2.046938896179199,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -128,9 +128,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -1.7210378646850586,
+                                "positionX": -29.50461196899414,
                                 "positionY": 2.560702323913574,
-                                "positionZ": -29.555566787719727,
+                                "positionZ": -2.046938896179199,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -168,9 +168,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -3.7288126945495605,
-                                "positionY": 1.4675971269607544,
-                                "positionZ": -26.731504440307617,
+                                "positionX": -24.792957305908203,
+                                "positionY": 1.467597246170044,
+                                "positionZ": 1.2090096473693848,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -208,9 +208,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -3.7288126945495605,
+                                "positionX": -24.792957305908203,
                                 "positionY": 2.560702323913574,
-                                "positionZ": -26.731504440307617,
+                                "positionZ": 1.2090096473693848,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -248,9 +248,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -1.749798059463501,
+                                "positionX": -28.466968536376953,
                                 "positionY": 1.4082683324813843,
-                                "positionZ": -5.844387054443359,
+                                "positionZ": -2.0830512046813965,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -288,9 +288,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -3.031848907470703,
+                                "positionX": -5.499403953552246,
                                 "positionY": 2.467226028442383,
-                                "positionZ": -3.3025155067443848,
+                                "positionZ": -0.6978232860565186,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -328,9 +328,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -2.9985368251800537,
+                                "positionX": -1.6983935832977295,
                                 "positionY": 3.0419132709503174,
-                                "positionZ": 1.2939155101776123,
+                                "positionZ": 0.19979310035705566,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -368,9 +368,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": 1.557582974433899,
-                                "positionY": 1.5720150470733643,
-                                "positionZ": 19.273365020751953,
+                                "positionX": 18.174678802490234,
+                                "positionY": 1.5720155239105225,
+                                "positionZ": -2.884235382080078,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -408,9 +408,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": 1.557582974433899,
-                                "positionY": 2.602724313735962,
-                                "positionZ": 19.273365020751953,
+                                "positionX": 18.174678802490234,
+                                "positionY": 2.60272479057312,
+                                "positionZ": -2.884235382080078,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -448,9 +448,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": 1.557582974433899,
-                                "positionY": 3.6563518047332764,
-                                "positionZ": 19.273365020751953,
+                                "positionX": 18.174678802490234,
+                                "positionY": 3.6563522815704346,
+                                "positionZ": -2.884235382080078,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -488,9 +488,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -2.2751259803771973,
+                                "positionX": -2.486504316329956,
                                 "positionY": 2.939093589782715,
-                                "positionZ": -1.9595712423324585,
+                                "positionZ": -2.0504722595214844,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -528,9 +528,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -3.6486010551452637,
+                                "positionX": 17.284996032714844,
                                 "positionY": 1.9807782173156738,
-                                "positionZ": 20.21149253845215,
+                                "positionZ": 1.6457481384277344,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -568,9 +568,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -3.359981060028076,
+                                "positionX": 17.57361602783203,
                                 "positionY": 2.019003391265869,
-                                "positionZ": 18.25664710998535,
+                                "positionZ": -0.3090972900390625,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -608,9 +608,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -1.2940715551376343,
+                                "positionX": 19.639524459838867,
                                 "positionY": 2.019003391265869,
-                                "positionZ": 19.52098274230957,
+                                "positionZ": 0.9552383422851562,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -648,9 +648,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": 0.4649723768234253,
+                                "positionX": 21.398569107055664,
                                 "positionY": 2.019003391265869,
-                                "positionZ": 18.023359298706055,
+                                "positionZ": -0.5423851013183594,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -688,9 +688,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -0.1528630256652832,
+                                "positionX": -14.23091983795166,
                                 "positionY": 2.8624119758605957,
-                                "positionZ": 8.08852767944336,
+                                "positionZ": -0.8805251121520996,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -728,9 +728,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -0.1528630256652832,
+                                "positionX": -14.23091983795166,
                                 "positionY": 3.955517292022705,
-                                "positionZ": 8.08852767944336,
+                                "positionZ": -0.8805251121520996,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -768,9 +768,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -1.173999547958374,
+                                "positionX": -15.252055168151855,
                                 "positionY": 2.8624119758605957,
-                                "positionZ": 8.08852767944336,
+                                "positionZ": -0.8805251121520996,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
@@ -808,9 +808,9 @@
                         {
                             "type": "TransformComponent",
                             "data": {
-                                "positionX": -1.173999547958374,
+                                "positionX": -15.252055168151855,
                                 "positionY": 3.955517292022705,
-                                "positionZ": 8.08852767944336,
+                                "positionZ": -0.8805251121520996,
                                 "rotationX": 0.0,
                                 "rotationY": 0.0,
                                 "rotationZ": 0.0,
