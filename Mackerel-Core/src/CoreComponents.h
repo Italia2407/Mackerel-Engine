@@ -10,3 +10,4 @@
 #include "MeshRendererComponent.h"
 #include "RigidbodyComponent.h"
 #include "TransformComponent.h"
+#include "LightComponent.h"

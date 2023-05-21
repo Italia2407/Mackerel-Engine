@@ -21,7 +21,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/PhysicsDemoGeo.obj",
-                                "texturePath": "$texPath"
+                                "matPath": "../scenes/lvl2/PhysicsDemoGeo.mtl"
                             }
                         },
                         {
@@ -56,7 +56,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/PhysicsDemoGeo.001.obj",
-                                "texturePath": "$texPath"
+                                "matPath": "../scenes/lvl2/PhysicsDemoGeo.mtl"
                             }
                         },
                         {
@@ -91,7 +91,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl2/PhysicsDemoGeo.002.obj",
-                                "texturePath": "$texPath"
+                                "matPath": "../scenes/lvl2/PhysicsDemoGeo.mtl"
                             }
                         },
                         {
