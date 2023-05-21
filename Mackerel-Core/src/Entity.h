@@ -18,6 +18,8 @@ class ComponentFactory;
 
 using json = nlohmann::json;
 
+const float PI = 3.14159265358979323846f;
+
 namespace MCK::EntitySystem 
 {
 class Entity
