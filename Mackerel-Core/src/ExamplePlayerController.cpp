@@ -14,7 +14,7 @@ namespace MCK::ExamplePlayer
 		if (data.collidedEntity->HasTag("death"))
 		{
 			rigidbody->SetPosition(startPosition);
-			std::cout << "Player died: Respawning" << std::endl;
+			std::cout << "Info: Player died - Respawning" << std::endl;
 		}
 		else
 			lastGroundTime = TimeManager::GetUpTime();
@@ -26,6 +26,9 @@ namespace MCK::ExamplePlayer
 		rigidbody = entity->GetComponent<Physics::RigidbodyComponent>();
 		input = entity->GetComponent<InputComponent>();
 		skinnedMesh = entity->GetComponent<SkinnedMeshRendererComponent>();
+
+		if (entity->childEntities.size() > 0)
+			skinnedMesh = entity->childEntities[0]->GetComponent<SkinnedMeshRendererComponent>();
 
 		playerCollisionCallback = std::bind(&ExamplePlayerController::OnPlayerCollision, this, std::placeholders::_1);
 		receipt = rigidbody->onCollisionHandler.Register(playerCollisionCallback);
