@@ -183,9 +183,7 @@ namespace MCK::EntitySystem
 		ShaderLibrary::ReleaseLibrary();
 		MaterialLibrary::ReleaseLibrary();
 		MeshLibrary::ReleaseLibrary();
-		std::cout << "Here" << std::endl;
 		Rendering::Renderer::ResetRenderer();
-		std::cout << "Here 2" << std::endl;
 	}
 
 	Entity* Scene::FindEntityWithTag(std::string tag)

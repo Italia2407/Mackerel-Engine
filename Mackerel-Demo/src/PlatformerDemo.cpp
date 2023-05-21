@@ -157,7 +157,10 @@ void PlatformerApp::Update()
     TimeManager::Update();
     //floorTransform.Rotation() = floorTransform.Rotation() * Eigen::AngleAxisf(0.001f, Eigen::Vector3f(0.0f, 1.0f, 0.0f));
 
+    Eigen::Vector3f playerPosition = scene.FindEntityWithTag("Player")->GetComponent<EntitySystem::TransformComponent>()->Position();
+
     Rendering::Renderer::QueueDirectionLight(light);
+    Rendering::Renderer::SetCentrePosition(playerPosition);
     scene.UpdateScene();
 }
 
