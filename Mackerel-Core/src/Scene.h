@@ -121,6 +121,12 @@ namespace MCK::EntitySystem
 		 */
 		void UnloadScene();
 
+		/**
+		 * Release all libraries
+		 *
+		 */
+		void ReleaseLibraries();
+
 		Entity* FindEntityWithTag(std::string tag);
 		Entity* FindEntityWithTag(std::string tag, Entity* root);
 

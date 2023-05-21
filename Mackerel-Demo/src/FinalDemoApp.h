@@ -58,6 +58,7 @@ private:
 	bool loadedDemo;
 
 	// Rendering
+	AssetType::Shader* m_UnlitShader;
 	Rendering::DirectionLight* light;
 
 public:

@@ -23,10 +23,6 @@ void FinalDemoApp::Start()
 
         #pragma region Scene Init
             constantScene.InitialiseScene();
-            light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
-            AssetType::Shader* m_UnlitShader;
-            MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
-            MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
         #pragma endregion
 
         #pragma region UI Init
@@ -39,8 +35,6 @@ void FinalDemoApp::Start()
             MCK::AssetType::Texture* quitIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/ButtonQuitSmall.png");
             MCK::AssetType::Texture* menuIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/MenuSmall.png");
             MCK::AssetType::Texture* hudIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/Time.png");
-
-            //MCK::AssetType::Texture* menuIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/Textures/survivorMaleB.png");
 
             // Create a vector of callbacks
             std::vector<std::function<void()>> callbacks = {
@@ -142,6 +136,11 @@ void FinalDemoApp::LoadRenderingDemo()
 
     // Load new scene
     scene.InitialiseScene();
+
+    light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
+    MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
+
     renderingDemo.AddEntities(scene);
     
     loadedDemo = true;
@@ -157,6 +156,11 @@ void FinalDemoApp::LoadPhysicsDemo()
 
     // Load new scene
     scene.InitialiseScene();
+
+    light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
+    MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
+
     physicsDemo.AddEntities(scene);
 
     loadedDemo = true;
@@ -172,6 +176,11 @@ void FinalDemoApp::LoadAnimationDemo()
 
     // Load new scene
     scene.InitialiseScene();
+
+    light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
+    MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
+
     animationDemo.AddEntities(scene);
 
     loadedDemo = true;
@@ -187,6 +196,11 @@ void FinalDemoApp::LoadAudioDemo()
 
     // Load new scene
     scene.InitialiseScene();
+
+    light = new MCK::Rendering::DirectionLight(Eigen::Vector3f(-0.3f, -1.0f, -0.2f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f), Eigen::Vector4f::Zero(), Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
+    MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
+    MCK::Rendering::Renderer::AddDirectionLightShader(m_UnlitShader);
+
     audioDemo.AddEntities(scene);
 
     loadedDemo = true;
@@ -195,7 +209,6 @@ void FinalDemoApp::LoadAudioDemo()
 void FinalDemoApp::Update()
 {
     TimeManager::Update();
-    //floorTransform.Rotation() = floorTransform.Rotation() * Eigen::AngleAxisf(0.001f, Eigen::Vector3f(0.0f, 1.0f, 0.0f));
 
     if (loadedDemo)
     {
@@ -212,6 +225,8 @@ void FinalDemoApp::End()
 
     if (loadedDemo)
         scene.UnloadScene();
+
     constantScene.UnloadScene();
+    constantScene.ReleaseLibraries();
 }
 
