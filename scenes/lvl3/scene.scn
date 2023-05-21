@@ -21,7 +21,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl3/AudioDemo.obj",
-                                "texturePath": "../scene/lvl3/grid.png"
+                                "matPath": "../scenes/lvl3/AudioDemo.mtl"
                             }
                         },
                         {
@@ -56,7 +56,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl3/radio.obj",
-                                "texturePath": "../scenes/lvl3/radio.png"
+                                "matPath": "../scenes/lvl3/radio.mtl"
                             }
                         },
                         {
@@ -91,7 +91,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl3/radio.obj",
-                                "texturePath": "../scenes/lvl3/radio.png"
+                                "matPath": "../scenes/lvl3/radio.mtl"
                             }
                         },
                         {
@@ -126,7 +126,7 @@
                             "type": "MeshRendererComponent",
                             "data": {
                                 "modelPath": "../scenes/lvl3/radio.obj",
-                                "texturePath": "../scenes/lvl3/radio.png"
+                                "matPath": "../scenes/lvl3/radio.mtl"
                             }
                         },
                         {

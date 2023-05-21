@@ -17,7 +17,7 @@ namespace MCK::ExamplePlayer
 		float moveForceMag = 120;
 		float horizontalDamping =10.1f;
 		float deceleration = 90; 
-		float jumpVel = 13;
+		float jumpVel = 12;
 		double lastGroundTime;
 		float turnRate = 10.0f;
 		Eigen::Vector3f smoothMoveVector{};
