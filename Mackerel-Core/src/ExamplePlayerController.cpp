@@ -11,10 +11,11 @@ namespace MCK::ExamplePlayer
 	{
 		// test collision
 
-		if (data.collidedEntity->HasTag("death"))
+		if (data.collidedEntity->HasTag("death") && (TimeManager::GetUpTime() - lastDeath > 1.0))
 		{
 			rigidbody->SetPosition(startPosition);
 			std::cout << "Info: Player died - Respawning" << std::endl;
+			lastDeath = TimeManager::GetUpTime();
 		}
 		else
 			lastGroundTime = TimeManager::GetUpTime();
@@ -37,11 +38,15 @@ namespace MCK::ExamplePlayer
 		rigidbody->SetMass(4);
 		rigidbody->DisableRotation();
 
+		lastDeath = TimeManager::GetUpTime();
+
 		startPosition = rigidbody->GetPosition();
 	}
 
 	void ExamplePlayerController::OnUpdate()
 	{
+		MCK::Rendering::Renderer::SetCentrePosition(rigidbody->GetPosition());
+
 		Eigen::Vector2f movInput = input->Direction();
 
 		// Add Move Force
@@ -99,7 +104,7 @@ namespace MCK::ExamplePlayer
 
 			if (skinnedMesh)
 			{
-				if (abs(velocity.y()) < 0.2f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
+				if (abs(velocity.y()) < 0.05f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
 					skinnedMesh->PlayAnimation("idle", 0.0f, true, true, true);
 			}
 		}
@@ -107,7 +112,7 @@ namespace MCK::ExamplePlayer
 		{
 			if (skinnedMesh)
 			{
-				if (abs(velocity.y()) < 0.2f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
+				if (abs(velocity.y()) < 0.05f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
 					skinnedMesh->PlayAnimation("run", 0.0f, true, true, true);
 			}
 		}

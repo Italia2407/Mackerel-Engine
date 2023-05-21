@@ -57,7 +57,11 @@ namespace MCK
         shaderMap["m_MonoColourShader"] = m_MonoColourShader;
         shaderMap["m_texturedShader"] = m_texturedShader;
 #pragma endregion
+        loaded = false;
+    }
 
+    void  Demo::AudioDemo::AddEntities(EntitySystem::Scene& scene)
+    {
 #pragma region Floor Init
         floorTransform = new EntitySystem::TransformComponent();
         floorTransform->Position() = Eigen::Vector3f(0, -5, -0);
@@ -136,10 +140,28 @@ namespace MCK
         MCK::AssetType::Texture* hudIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/PlayAnimation.png");
         uiComponent->CreateShape(true, ImVec2(10, 10), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, ImVec2(276, 100), ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, hudIMG);
 #pragma endregion
-    }
 
-    void  Demo::AudioDemo::AddEntities(EntitySystem::Scene& scene)
-    {
+        components.push_back(floorTransform);
+        components.push_back(floorMesh);
+        components.push_back(floorCollider);
+        components.push_back(deathFloorTransform);
+        components.push_back(deathFloorMesh);
+        components.push_back(deathFloorCollider);
+        components.push_back(cameraComponent);
+        components.push_back(cameraFollowComponent);
+        components.push_back(playerBaseTransform);
+        components.push_back(playerBody);
+        components.push_back(playerRenderer);
+        components.push_back(playerInput);
+        components.push_back(playerController);
+        components.push_back(playerTransform);
+        components.push_back(AIBaseTransform);
+        components.push_back(AIRenderer);
+        components.push_back(AIBody);
+        components.push_back(AIMove);
+        components.push_back(AITransform);
+        components.push_back(uiComponent);
+
         scene.LoadSceneAdditive("../scenes/lvl3/scene.scn");
         scene.LoadSceneAdditive("../scenes/lvl3/AudioScene/scene.scn");
 
@@ -180,6 +202,13 @@ namespace MCK
 
         EntitySystem::Entity* uiEntity = scene.CreateEntity();
         uiEntity->AddComponent(uiComponent);
+
+        loaded = true;
+    }
+
+    void Demo::AudioDemo::Unload()
+    {
+        loaded = false;
     }
 }
 

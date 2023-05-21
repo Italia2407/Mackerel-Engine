@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "InputComponent.h"
 #include "CollisionData.h"
+#include "Renderer.h"
 //#include "LoggingSystem.h"
 
 
@@ -19,6 +20,7 @@ namespace MCK::ExamplePlayer
 		float deceleration = 90; 
 		float jumpVel = 12;
 		double lastGroundTime;
+		double lastDeath;
 		float turnRate = 10.0f;
 		Eigen::Vector3f smoothMoveVector{};
 

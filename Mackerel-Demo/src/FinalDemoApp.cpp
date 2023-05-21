@@ -131,6 +131,17 @@ void FinalDemoApp::LoadRenderingDemo()
     MCK::Logger::log("Loading Rendering Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
     
     // Unload current scene
+    
+
+    if (renderingDemo.loaded)
+        renderingDemo.Unload();
+    else if (physicsDemo.loaded)
+        physicsDemo.Unload();
+    else if (animationDemo.loaded)
+        animationDemo.Unload();
+    else if (audioDemo.loaded)
+        audioDemo.Unload();
+
     if (loadedDemo)
         scene.UnloadScene();
 
@@ -154,6 +165,15 @@ void FinalDemoApp::LoadPhysicsDemo()
     if (loadedDemo)
         scene.UnloadScene();
 
+    if (renderingDemo.loaded)
+        renderingDemo.Unload();
+    else if (physicsDemo.loaded)
+        physicsDemo.Unload();
+    else if (animationDemo.loaded)
+        animationDemo.Unload();
+    else if (audioDemo.loaded)
+        audioDemo.Unload();
+
     // Load new scene
     scene.InitialiseScene();
 
@@ -174,6 +194,17 @@ void FinalDemoApp::LoadAnimationDemo()
     if (loadedDemo)
         scene.UnloadScene();
 
+    loadedDemo = false;
+
+    if (renderingDemo.loaded)
+        renderingDemo.Unload();
+    else if (physicsDemo.loaded)
+        physicsDemo.Unload();
+    else if (animationDemo.loaded)
+        animationDemo.Unload();
+    else if (audioDemo.loaded)
+        audioDemo.Unload();
+
     // Load new scene
     scene.InitialiseScene();
 
@@ -193,6 +224,15 @@ void FinalDemoApp::LoadAudioDemo()
     // Unload current scene
     if (loadedDemo)
         scene.UnloadScene();
+
+    if (renderingDemo.loaded)
+        renderingDemo.Unload();
+    else if (physicsDemo.loaded)
+        physicsDemo.Unload();
+    else if (animationDemo.loaded)
+        animationDemo.Unload();
+    else if (audioDemo.loaded)
+        audioDemo.Unload();
 
     // Load new scene
     scene.InitialiseScene();
