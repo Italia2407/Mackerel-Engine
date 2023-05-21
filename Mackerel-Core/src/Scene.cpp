@@ -179,10 +179,10 @@ namespace MCK::EntitySystem
 			entities[i - 1]->Deallocate();
 		}
 
-		TextureLibrary::ReleaseLibrary();
-		ShaderLibrary::ReleaseLibrary();
-		MaterialLibrary::ReleaseLibrary();
-		MeshLibrary::ReleaseLibrary();
+		//TextureLibrary::ReleaseLibrary();
+		//ShaderLibrary::ReleaseLibrary();
+		//MaterialLibrary::ReleaseLibrary();
+		//MeshLibrary::ReleaseLibrary();
 		Rendering::Renderer::ResetRenderer();
 	}
 

@@ -31,7 +31,7 @@ namespace MCK::Physics
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,
 			overlappingPairCache, solver, collisionConfiguration);
 
-		dynamicsWorld -> setGravity(btVector3(0, -10, 0));
+		dynamicsWorld -> setGravity(btVector3(0, -17, 0));
 
 		gContactAddedCallback = OnCollision;
 
