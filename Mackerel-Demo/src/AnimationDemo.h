@@ -5,6 +5,7 @@
 
 #include "CameraComponent.h"
 
+#include "AIMovement.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "Shader.h"
@@ -68,6 +69,12 @@ namespace MCK
             std::vector<EntitySystem::TransformComponent*> transforms; 
             std::unordered_map<EntitySystem::SkinnedMeshRendererComponent*, int> skinnedMeshes;
             std::unordered_map<EntitySystem::MeshRendererComponent*, int> meshes;
+
+            EntitySystem::TransformComponent* AIBaseTransform;
+            EntitySystem::SkinnedMeshRendererComponent* AIRenderer;
+            Physics::RigidbodyComponent* AIBody;
+            EntitySystem::AIMovement* AIMove;
+            EntitySystem::TransformComponent* AITransform;
 
             EntitySystem::TransformComponent* audioTransform;
             EntitySystem::AudioEmitter* audioComponent;

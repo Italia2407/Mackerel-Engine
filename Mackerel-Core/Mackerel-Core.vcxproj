@@ -28,6 +28,7 @@
     <ClCompile Include="ext\Dear-ImGui 1.89.2\imgui_widgets.cpp" />
     <ClCompile Include="ext\easyloggingpp-9.97.0\easyloggingpp-9.97.0\src\easylogging++.cpp" />
     <ClCompile Include="ext\GLAD\src\glad.c" />
+    <ClCompile Include="src\AIMovement.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\AudioEmitter.cpp" />
     <ClCompile Include="src\AudioEngine.cpp" />
@@ -454,6 +455,7 @@
     <ClInclude Include="ext\tinygltf\stb_image_write.h" />
     <ClInclude Include="ext\tinygltf\tiny_gltf.h" />
     <ClInclude Include="ext\TinyOBJ\tiny_obj_loader.h" />
+    <ClInclude Include="src\AIMovement.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\AppAttorney.h" />
     <ClInclude Include="src\Assets.h" />

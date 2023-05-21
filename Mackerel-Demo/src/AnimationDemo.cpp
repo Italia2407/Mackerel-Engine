@@ -133,6 +133,31 @@ namespace MCK
             playerTransform->Position() = Eigen::Vector3f(0.0f, -1.0f, 0.0f);
         #pragma endregion
 
+        #pragma region AI Init
+            AIBaseTransform = new EntitySystem::TransformComponent();
+            AIBaseTransform->Position() = Eigen::Vector3f(-3.5f, -1.0f, -2.0f);
+            AIBaseTransform->Scale() = Eigen::Vector3f(playerSize, playerSize, playerSize);
+
+            AIRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
+            AIRenderer->SetDefaultAnimation("run");
+            AIRenderer->SetTargetFPS(60.0f);
+
+            Physics::CreateCollisionShapeInfo AIShape{};
+            AIShape.colliderType = Physics::ColliderTypes::Box;
+            AIShape.width = 0.2f;
+            AIShape.height = playerSize;
+            AIShape.depth = 0.2f;
+
+            AIBody = new Physics::RigidbodyComponent();
+            AIBody->SetCollisionShape(playerShape);
+
+            AIMove = new EntitySystem::AIMovement();
+            AIMove->setEndPosition(Eigen::Vector3f(-3.5f, 0.0f, 5.0f));
+
+            AITransform = new EntitySystem::TransformComponent();
+            AITransform->Position() = Eigen::Vector3f(0.0f, -1.0f, 0.0f);
+        #pragma endregion
+
         #pragma region Items Init
             EntitySystem::TransformComponent* leftModelTransform = new EntitySystem::TransformComponent();
             leftModelTransform->Position() = Eigen::Vector3f(-3.5f, -1.25f, -4.0f);
@@ -221,6 +246,17 @@ namespace MCK
         playerEntity->AddComponent(playerTransform);
 
         playerBaseEntity->AddChild(playerEntity);
+
+        EntitySystem::Entity* AIBaseEntity = scene.CreateEntity();
+        AIBaseEntity->AddComponent(AIBaseTransform);
+        AIBaseEntity->AddComponent(AIBody);
+        AIBaseEntity->AddComponent(AIMove);
+
+        EntitySystem::Entity* AIEntity = scene.CreateEntity();
+        AIEntity->AddComponent(AIRenderer);
+        AIEntity->AddComponent(AITransform);
+
+        AIBaseEntity->AddChild(AIEntity);
 
         for (const auto& item : skinnedMeshes) {
             EntitySystem::Entity* newEntity = scene.CreateEntity();
