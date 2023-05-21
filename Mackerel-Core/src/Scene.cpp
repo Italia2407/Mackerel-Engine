@@ -167,6 +167,14 @@ namespace MCK::EntitySystem
 			Deallocate();
 	}
 
+	void Scene::ReleaseLibraries()
+	{
+		TextureLibrary::ReleaseLibrary();
+		ShaderLibrary::ReleaseLibrary();
+		MaterialLibrary::ReleaseLibrary();
+		MeshLibrary::ReleaseLibrary();
+	}
+
 	void Scene::Deallocate()
 	{
 		initialised = false;
@@ -179,10 +187,6 @@ namespace MCK::EntitySystem
 			entities[i - 1]->Deallocate();
 		}
 
-		//TextureLibrary::ReleaseLibrary();
-		//ShaderLibrary::ReleaseLibrary();
-		//MaterialLibrary::ReleaseLibrary();
-		//MeshLibrary::ReleaseLibrary();
 		Rendering::Renderer::ResetRenderer();
 	}
 
