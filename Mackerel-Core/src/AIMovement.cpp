@@ -98,8 +98,6 @@ namespace MCK::EntitySystem
 			}
 		}
 
-		std::cout << "Pos: " << currentPos.y() << std::endl;
-
 		return movInput;
 	}
 
