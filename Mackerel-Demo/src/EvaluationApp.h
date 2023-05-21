@@ -17,6 +17,7 @@
 #include "PerspectiveCamera.h"
 #include "Renderer.h"
 #include "MeshRendererComponent.h"
+#include "SkinnedMeshRendererComponent.h"
 #include "TimeManager.h"
 #include "PhysicsWorld.h"
 #include "PhysicsHelpers.h"
@@ -43,8 +44,10 @@ public:
 private:
 	AssetType::Mesh* cubeMesh;
 	AssetType::Mesh* sphereMesh;
+	AssetType::Mesh* boneMesh;
 	AssetType::Material* greyMaterial;
 	AssetType::Material* blueMaterial;
+	AssetType::Material* yellowMaterial;
 
 	AssetType::Shader* m_UnlitShader;
 	AssetType::Shader* m_MonoColourShader;
@@ -65,14 +68,14 @@ private:
 	int objectCount = 0;
 	int lightCount = 1;
 	int triangleCount = 0;
-	int animatedCount = 0;
 	double maxFPS = 0;
 	double minFPS = 1000;
 	double now = 0;
 	double before = 0;
 	double max = 0;
-	int entitiesCount = 1;
+	int entitiesCount = 0;
 	int loopsCount = 0;
+	int animCount = 1;
 
 	Rendering::DirectionLight* light;
 

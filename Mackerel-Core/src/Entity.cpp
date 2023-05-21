@@ -4,6 +4,8 @@
 #include "Component.h"
 #include "Scene.h"
 
+#include <cmath>
+
 
 namespace MCK::EntitySystem
 {
@@ -214,5 +216,33 @@ namespace MCK::EntitySystem
 		components.clear();
 		scene->FreeEntity(this);
 		tags.clear();
+	}
+
+	void Entity::Compute()
+	{
+		// compute fibonacci
+		
+		int prev = 0;
+		int current = 1;
+
+		for (int i = 2; i <= 10; ++i)
+		{
+			int temp = current;
+			current = prev + current;
+			prev = temp;
+		}
+		std::cout << current << std::endl;
+		
+
+		/*
+		double result = 0.0;
+
+		for (int i = 0; i < 10000; ++i) {
+			double temp = std::sin(std::exp(std::sqrt(static_cast<double>(i + 1))));
+			result += temp;
+		}
+
+		std::cout << result << std::endl;
+		*/
 	}
 }

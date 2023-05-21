@@ -16,6 +16,9 @@ void EvaluationApp::Start()
 
 #pragma region Rendering Init
 
+    boneMesh = new AssetType::Mesh("Bone Mesh");
+    boneMesh->LoadFromFile("../Mackerel-Core/res/Meshes/xbot_binary.glb");
+
     cubeMesh = new MCK::AssetType::Mesh("Cube Mesh");
     cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
 
@@ -29,6 +32,10 @@ void EvaluationApp::Start()
     blueMaterial = new MCK::AssetType::Material();
     blueMaterial->addUInt16Uniform("lightShaderID", 0);
     blueMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.6f, 0.6f, 1.f));
+
+    yellowMaterial = new AssetType::Material();
+    yellowMaterial->addUInt16Uniform("lightShaderID", 0);
+    yellowMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.8f, 0.2f));
 
     MCK::ShaderLibrary::GetShader(ShaderEnum::__LIGHT_UNLIT_SHADOWS, m_UnlitShader);
     MCK::ShaderLibrary::GetShader(ShaderEnum::__FRAG_MONOCOLOUR, m_MonoColourShader);
@@ -130,12 +137,41 @@ void EvaluationApp::Start()
 
 #pragma endregion
 
+#pragma region Animation Init
+
+
+    for (float i = 0; i < animCount; i++)
+    {
+        EntitySystem::TransformComponent* animTransform = new EntitySystem::TransformComponent();
+        animTransform->Position() = Eigen::Vector3f(-10 + i * 0.1f, 2, float((int)i % 10));
+        animTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
+
+        EntitySystem::SkinnedMeshRendererComponent*  animRenderer = new EntitySystem::SkinnedMeshRendererComponent(boneMesh, m_MonoColourShader, yellowMaterial);
+        animRenderer->SetDefaultAnimation("dance");
+        animRenderer->PlayAnimation("dance", 0.0f, true, false, true);
+        animRenderer->SetTargetFPS(60.0f);
+
+        EntitySystem::Entity* animEntity = scene.CreateEntity();
+        animEntity->AddComponent(animTransform);
+        animEntity->AddComponent(animRenderer);
+    }
+
+
+#pragma endregion
+
 #pragma region Calculation
 
+    double start = glfwGetTime();
     for (int i = 0; i < entitiesCount; i++)
     {
-
+        EntitySystem::Entity* compEntity = scene.CreateEntity();
+        for(int j = 0; j < loopsCount; j++)
+            compEntity->Compute();
     }
+    double end = glfwGetTime();
+
+    std::cout << std::endl;
+    std::cout << end - start << std::endl;
 
 #pragma endregion
 
@@ -178,7 +214,7 @@ std::string EvaluationApp::GetCount() {
 
     // Format string.
     char buffer[100];
-    sprintf(buffer, "Rigid bodies: %i, Triangles: %i, Lights: %i, Animated meshes: %i", rigidbodyCount, triangleCount, lightCount, animatedCount);
+    sprintf(buffer, "Rigid bodies: %i, Triangles: %i, Lights: %i, Animated meshes: %i", rigidbodyCount, triangleCount, lightCount, animCount);
     return std::string(buffer);
 }
 

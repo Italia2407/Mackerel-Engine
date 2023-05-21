@@ -221,6 +221,8 @@ public:
 		*/
 	void Deallocate();
 
+	void Compute();
+
 private:
 	/**
 		* Whether this entity is marked for destruction.
