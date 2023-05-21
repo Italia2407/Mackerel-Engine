@@ -16,27 +16,39 @@ namespace MCK
 
     void Demo::AnimationDemo::Init()
     {
-        #pragma region Rendering Init
+        #pragma region Meshes Init
             AssetType::Mesh* boneMesh = new AssetType::Mesh("Bone Mesh");
             boneMesh->LoadFromFile("../Mackerel-Core/res/Meshes/xbot.gltf");
-            AssetType::Mesh* groundMesh = new AssetType::Mesh("Cube Mesh");
-            groundMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
+            AssetType::Mesh* cubeMesh = new AssetType::Mesh("Cube Mesh");
+            cubeMesh->LoadFromFile("../Mackerel-Core/res/Meshes/Primitives/cube.obj");
 
             meshMap["boneMesh"] = boneMesh;
-            meshMap["groundMesh"] = groundMesh;
+            meshMap["cubeMesh"] = cubeMesh;
+        #pragma endregion
 
+        #pragma region Materials Init
             AssetType::Material* floorMaterial = new AssetType::Material();
             floorMaterial->addUInt16Uniform("lightShaderID", 0);
-            floorMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.2f, 0.5f, 0.2f));
+            floorMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.4f, 0.3f, 0.15f));
+
+            AssetType::Material* blackMaterial = new AssetType::Material();
+            blackMaterial->addUInt16Uniform("lightShaderID", 0);
+            blackMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.0f, 0.0f, 0.0f));
+
+            AssetType::Material* podiumMaterial = new AssetType::Material();
+            podiumMaterial->addUInt16Uniform("lightShaderID", 0);
+            podiumMaterial->addVec3Uniform("albedoColour", Eigen::Vector3f(0.85f, 0.85f, 0.85f));
 
             AssetType::Material* skin = new AssetType::Material();
             skin->LoadFromFile("../Mackerel-Core/res/Materials/xbot.mtl", 0);
-            //skin->addUInt16Uniform("lightShaderID", 0);
-            //skin->addVec3Uniform("albedoColour", Eigen::Vector3f(0.8f, 0.2f, 0.2f));
 
             materialMap["floorMaterial"] = floorMaterial;
+            materialMap["blackMaterial"] = blackMaterial;
+            materialMap["podiumMaterial"] = podiumMaterial;
             materialMap["skin"] = skin;
+        #pragma endregion
 
+        #pragma region Shaders Init
             AssetType::Shader* m_MonoColourShader;
             AssetType::Shader* m_texturedShader;
 
@@ -49,19 +61,38 @@ namespace MCK
         #pragma endregion
 
         #pragma region Floor Init
-            floorTransform.Position() = Eigen::Vector3f(0, -8, -2);
-            floorTransform.Scale() = Eigen::Vector3f(6, 6, 6);
+            floorTransform = new EntitySystem::TransformComponent();
+            floorTransform->Position() = Eigen::Vector3f(0, -5, -0);
+            floorTransform->Scale() = Eigen::Vector3f(6, 3, 6);
 
-            floorMesh = new EntitySystem::MeshRendererComponent(meshMap["groundMesh"], shaderMap["m_MonoColourShader"], materialMap["floorMaterial"]);
+            floorMesh = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["floorMaterial"]);
 
             Physics::CreateCollisionShapeInfo floorShape{};
             floorShape.colliderType = Physics::ColliderTypes::Box;
             floorShape.width = 6;
-            floorShape.height = 6;
+            floorShape.height = 3;
             floorShape.depth = 6;
+            floorShape.mesh = meshMap["cubeMesh"];
 
             floorCollider = new Physics::CollisionComponent();
             floorCollider->SetCollisionShape(floorShape);
+        #pragma endregion
+
+        #pragma region Death Floor Init
+            deathFloorTransform = new EntitySystem::TransformComponent();
+            deathFloorTransform->Position() = Eigen::Vector3f(0, -30, 0);
+            deathFloorTransform->Scale() = Eigen::Vector3f(30.0f, 0.1f, 30.0f);
+
+            deathFloorMesh = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["blackMaterial"]);
+
+            Physics::CreateCollisionShapeInfo deathFloorShape{};
+            deathFloorShape.colliderType = Physics::ColliderTypes::Box;
+            deathFloorShape.width = 30;
+            deathFloorShape.height = 0.1f;
+            deathFloorShape.depth = 30;
+
+            deathFloorCollider = new Physics::CollisionComponent();
+            deathFloorCollider->SetCollisionShape(deathFloorShape);
         #pragma endregion
 
         #pragma region Camera Init
@@ -75,12 +106,12 @@ namespace MCK
         #pragma region Player Init
             float playerSize = 1.0f;
             Eigen::Quaternionf q;
-            q = Eigen::AngleAxisf(PI, Eigen::Vector3f::UnitY()); // M_PI is Pi in C++, equivalent to 180 degrees
+            q = Eigen::AngleAxisf(PI, Eigen::Vector3f::UnitY());
 
-            playerTransform = new EntitySystem::TransformComponent();
-            playerTransform->Position() = Eigen::Vector3f(0.0f, 0.0f, 0.0f);
-            playerTransform->Scale() = Eigen::Vector3f(playerSize, playerSize, playerSize);
-            playerTransform->Rotation() = q;
+            playerBaseTransform = new EntitySystem::TransformComponent();
+            playerBaseTransform->Position() = Eigen::Vector3f(0.0f, 10.0f, 0.0f);
+            playerBaseTransform->Scale() = Eigen::Vector3f(playerSize, playerSize, playerSize);
+            playerBaseTransform->Rotation() = q;
 
             playerRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
             playerRenderer->SetDefaultAnimation("idle");
@@ -88,30 +119,71 @@ namespace MCK
 
             Physics::CreateCollisionShapeInfo playerShape{};
             playerShape.colliderType = Physics::ColliderTypes::Box;
-            playerShape.width = playerSize;
+            playerShape.width = 0.2f;
             playerShape.height = playerSize;
-            playerShape.depth = playerSize;
+            playerShape.depth = 0.2f;
 
             playerBody = new Physics::RigidbodyComponent();
             playerBody->SetCollisionShape(playerShape);
 
             playerInput = new EntitySystem::InputComponent();
             playerController = new ExamplePlayer::ExamplePlayerController();
+
+            playerTransform = new EntitySystem::TransformComponent();
+            playerTransform->Position() = Eigen::Vector3f(0.0f, -1.0f, 0.0f);
         #pragma endregion
 
-            leftModelTransform = new EntitySystem::TransformComponent();
-            leftModelTransform->Position() = Eigen::Vector3f(-3.5f, 0.0f, -4.0f);
+        #pragma region Items Init
+            EntitySystem::TransformComponent* leftModelTransform = new EntitySystem::TransformComponent();
+            leftModelTransform->Position() = Eigen::Vector3f(-3.5f, -1.25f, -4.0f);
             leftModelTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
-            leftModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
+
+            EntitySystem::SkinnedMeshRendererComponent* leftModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
             leftModelRenderer->SetDefaultAnimation("run");
-            playerRenderer->SetTargetFPS(60.0f);
+            leftModelRenderer->SetTargetFPS(60.0f);
             
-            rightModelTransform = new EntitySystem::TransformComponent();
-            rightModelTransform->Position() = Eigen::Vector3f(3.5f, 0.0f, -4.0f);
+            EntitySystem::TransformComponent* rightModelTransform = new EntitySystem::TransformComponent();
+            rightModelTransform->Position() = Eigen::Vector3f(3.5f, -1.25f, -4.0f);
             rightModelTransform->Scale() = Eigen::Vector3f(1.0f, 1.0f, 1.0f);
-            rightModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
+            EntitySystem::SkinnedMeshRendererComponent* rightModelRenderer = new EntitySystem::SkinnedMeshRendererComponent(meshMap["boneMesh"], shaderMap["m_texturedShader"], materialMap["skin"]);
             rightModelRenderer->SetDefaultAnimation("dance");
-            playerRenderer->SetTargetFPS(60.0f);
+            rightModelRenderer->SetTargetFPS(60.0f);
+
+            EntitySystem::TransformComponent* p1Transform = new EntitySystem::TransformComponent();
+            p1Transform->Position() = Eigen::Vector3f(3.5f, -1.5f, -4.0f);
+            p1Transform->Scale() = Eigen::Vector3f(0.7f, 0.25f, 0.5f);
+            EntitySystem::MeshRendererComponent* p1Renderer = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["podiumMaterial"]);
+
+            EntitySystem::TransformComponent* p1BaseTransform = new EntitySystem::TransformComponent();
+            p1BaseTransform->Position() = Eigen::Vector3f(3.5f, -1.875f, -4.0f);
+            p1BaseTransform->Scale() = Eigen::Vector3f(1.2f, 0.125f, 1.0f);
+            EntitySystem::MeshRendererComponent* p1BaseRenderer = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["podiumMaterial"]);
+
+            EntitySystem::TransformComponent* p2Transform = new EntitySystem::TransformComponent();
+            p2Transform->Position() = Eigen::Vector3f(-3.5f, -1.5f, -4.0f);
+            p2Transform->Scale() = Eigen::Vector3f(0.7f, 0.25f, 0.5f);
+            EntitySystem::MeshRendererComponent* p2Renderer = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["podiumMaterial"]);
+
+            EntitySystem::TransformComponent* p2BaseTransform = new EntitySystem::TransformComponent();
+            p2BaseTransform->Position() = Eigen::Vector3f(-3.5f, -1.875f, -4.0f);
+            p2BaseTransform->Scale() = Eigen::Vector3f(1.2f, 0.125f, 1.0f);
+            EntitySystem::MeshRendererComponent* p2BaseRenderer = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["podiumMaterial"]);
+
+            transforms.push_back(leftModelTransform);
+            transforms.push_back(rightModelTransform);
+            transforms.push_back(p1BaseTransform);
+            transforms.push_back(p1Transform);
+            transforms.push_back(p2BaseTransform);
+            transforms.push_back(p2Transform);
+
+            skinnedMeshes.insert(std::make_pair(leftModelRenderer, 0));
+            skinnedMeshes.insert(std::make_pair(rightModelRenderer, 1));
+
+            meshes.insert(std::make_pair(p1BaseRenderer, 2));
+            meshes.insert(std::make_pair(p1Renderer, 3));
+            meshes.insert(std::make_pair(p2BaseRenderer, 4));
+            meshes.insert(std::make_pair(p2Renderer, 5));
+        #pragma endregion
 
         #pragma region UI Init
             uiComponent = new EntitySystem::UIComponent();
@@ -123,29 +195,44 @@ namespace MCK
     void  Demo::AnimationDemo::AddEntities(EntitySystem::Scene& scene)
     {
         EntitySystem::Entity* floorEntity = scene.CreateEntity();
-        floorEntity->AddComponent(&floorTransform);
+        floorEntity->AddComponent(floorTransform);
         floorEntity->AddComponent(floorMesh);
         floorEntity->AddComponent(floorCollider);
 
+        EntitySystem::Entity* deathFloorEntity = scene.CreateEntity();
+        deathFloorEntity->AddTag("death");
+        deathFloorEntity->AddComponent(deathFloorTransform);
+        deathFloorEntity->AddComponent(deathFloorMesh);
+        deathFloorEntity->AddComponent(deathFloorCollider);
+  
         EntitySystem::Entity* cameraEntity = scene.CreateEntity();
         cameraEntity->AddComponent(cameraComponent);
         cameraEntity->AddComponent(cameraFollowComponent);
 
+        EntitySystem::Entity* playerBaseEntity = scene.CreateEntity();
+        playerBaseEntity->AddTag("Player");
+        playerBaseEntity->AddComponent(playerBaseTransform);
+        playerBaseEntity->AddComponent(playerBody);
+        playerBaseEntity->AddComponent(playerInput);
+        playerBaseEntity->AddComponent(playerController);
+
         EntitySystem::Entity* playerEntity = scene.CreateEntity();
-        playerEntity->AddTag("Player");
-        playerEntity->AddComponent(playerTransform);
-        playerEntity->AddComponent(playerBody);
         playerEntity->AddComponent(playerRenderer);
-        playerEntity->AddComponent(playerInput);
-        playerEntity->AddComponent(playerController);
+        playerEntity->AddComponent(playerTransform);
 
-        EntitySystem::Entity* leftModelEntity = scene.CreateEntity();
-        leftModelEntity->AddComponent(leftModelTransform);
-        leftModelEntity->AddComponent(leftModelRenderer);
+        playerBaseEntity->AddChild(playerEntity);
 
-        EntitySystem::Entity* rightModelEntity = scene.CreateEntity();
-        rightModelEntity->AddComponent(rightModelTransform);
-        rightModelEntity->AddComponent(rightModelRenderer);
+        for (const auto& item : skinnedMeshes) {
+            EntitySystem::Entity* newEntity = scene.CreateEntity();
+            newEntity->AddComponent(transforms[item.second]);
+            newEntity->AddComponent(item.first);
+        }
+
+        for (const auto& item : meshes) {
+            EntitySystem::Entity* newEntity = scene.CreateEntity();
+            newEntity->AddComponent(transforms[item.second]);
+            newEntity->AddComponent(item.first);
+        }
 
         EntitySystem::Entity* uiEntity = scene.CreateEntity();
         uiEntity->AddComponent(uiComponent);

@@ -46,23 +46,28 @@ namespace MCK
             std::unordered_map<std::string, AssetType::Material*> materialMap;
             std::unordered_map<std::string, AssetType::Shader*> shaderMap;
 
-            EntitySystem::TransformComponent floorTransform;
+            EntitySystem::TransformComponent* floorTransform;
             EntitySystem::MeshRendererComponent* floorMesh;
             Physics::CollisionComponent* floorCollider;
+
+            EntitySystem::TransformComponent* deathFloorTransform;
+            EntitySystem::MeshRendererComponent* deathFloorMesh;
+            Physics::CollisionComponent* deathFloorCollider;
 
             EntitySystem::PerspectiveCamera* cameraComponent;
             EntitySystem::CameraFollowComponent* cameraFollowComponent;
 
-            EntitySystem::TransformComponent* playerTransform;
+            EntitySystem::TransformComponent* playerBaseTransform;
             Physics::RigidbodyComponent* playerBody;
             EntitySystem::SkinnedMeshRendererComponent* playerRenderer;
             EntitySystem::InputComponent* playerInput;
             ExamplePlayer::ExamplePlayerController* playerController;
 
-            EntitySystem::TransformComponent* leftModelTransform;
-            EntitySystem::SkinnedMeshRendererComponent* leftModelRenderer;
-            EntitySystem::TransformComponent* rightModelTransform;
-            EntitySystem::SkinnedMeshRendererComponent* rightModelRenderer;
+            EntitySystem::TransformComponent* playerTransform;
+
+            std::vector<EntitySystem::TransformComponent*> transforms; 
+            std::unordered_map<EntitySystem::SkinnedMeshRendererComponent*, int> skinnedMeshes;
+            std::unordered_map<EntitySystem::MeshRendererComponent*, int> meshes;
 
             EntitySystem::TransformComponent* audioTransform;
             EntitySystem::AudioEmitter* audioComponent;
