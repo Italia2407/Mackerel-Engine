@@ -50,10 +50,6 @@ namespace MCK
             std::unordered_map<std::string, AssetType::Material*> materialMap;
             std::unordered_map<std::string, AssetType::Shader*> shaderMap;
 
-            EntitySystem::TransformComponent* floorTransform;
-            EntitySystem::MeshRendererComponent* floorMesh;
-            Physics::CollisionComponent* floorCollider;
-
             EntitySystem::TransformComponent* deathFloorTransform;
             EntitySystem::MeshRendererComponent* deathFloorMesh;
             Physics::CollisionComponent* deathFloorCollider;
@@ -72,15 +68,6 @@ namespace MCK
             std::vector<EntitySystem::TransformComponent*> transforms;
             std::unordered_map<EntitySystem::SkinnedMeshRendererComponent*, int> skinnedMeshes;
             std::unordered_map<EntitySystem::MeshRendererComponent*, int> meshes;
-
-            EntitySystem::TransformComponent* AIBaseTransform;
-            EntitySystem::SkinnedMeshRendererComponent* AIRenderer;
-            Physics::RigidbodyComponent* AIBody;
-            EntitySystem::AIMovement* AIMove;
-            EntitySystem::TransformComponent* AITransform;
-
-            EntitySystem::TransformComponent* audioTransform;
-            EntitySystem::AudioEmitter* audioComponent;
 
             EntitySystem::UIComponent* uiComponent;
 

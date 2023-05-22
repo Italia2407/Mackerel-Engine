@@ -43,7 +43,6 @@ namespace MCK::EntitySystem::Demo
 	*/
 	void TestDemoComponent::OnDestroy()
 	{
-		std::cout << "I have been destroyed" << std::endl;
 	}
 
 	bool TestDemoComponent::Deserialise(json data)

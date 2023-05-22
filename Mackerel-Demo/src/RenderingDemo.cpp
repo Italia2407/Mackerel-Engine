@@ -63,24 +63,6 @@ namespace MCK
 
     void  Demo::RenderingDemo::AddEntities(EntitySystem::Scene& scene)
     {
-#pragma region Floor Init
-        floorTransform = new EntitySystem::TransformComponent();
-        floorTransform->Position() = Eigen::Vector3f(0, -5, -0);
-        floorTransform->Scale() = Eigen::Vector3f(6, 3, 6);
-
-        floorMesh = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["floorMaterial"]);
-
-        Physics::CreateCollisionShapeInfo floorShape{};
-        floorShape.colliderType = Physics::ColliderTypes::Box;
-        floorShape.width = 6;
-        floorShape.height = 3;
-        floorShape.depth = 6;
-        floorShape.mesh = meshMap["cubeMesh"];
-
-        floorCollider = new Physics::CollisionComponent();
-        floorCollider->SetCollisionShape(floorShape);
-#pragma endregion
-
 #pragma region Death Floor Init
         deathFloorTransform = new EntitySystem::TransformComponent();
         deathFloorTransform->Position() = Eigen::Vector3f(0, -30, 0);
@@ -142,9 +124,6 @@ namespace MCK
         uiComponent->CreateShape(true, ImVec2(10, 10), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, ImVec2(276, 100), ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, hudIMG);
 #pragma endregion
 
-        components.push_back(floorTransform);
-        components.push_back(floorMesh);
-        components.push_back(floorCollider);
         components.push_back(deathFloorTransform);
         components.push_back(deathFloorMesh);
         components.push_back(deathFloorCollider);
@@ -156,12 +135,7 @@ namespace MCK
         components.push_back(playerInput);
         components.push_back(playerController);
         components.push_back(playerTransform);
-        components.push_back(AIBaseTransform);
-        components.push_back(AIRenderer);
-        components.push_back(AIBody);
-        components.push_back(AIMove);
-        components.push_back(AITransform);
-
+ 
         scene.LoadSceneAdditive("../scenes/lvl1/scene.scn");
         scene.LoadSceneAdditive("../scenes/lvl1/LightScene/scene.scn");
 
@@ -223,6 +197,8 @@ namespace MCK
 
         TimeManager::Release();
         components.clear();
+        skinnedMeshes.clear();
+        meshes.clear();
         loaded = false;
     }
 }

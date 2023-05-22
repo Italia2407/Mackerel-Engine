@@ -131,7 +131,8 @@ void FinalDemoApp::LoadRenderingDemo()
     MCK::Logger::log("Loading Rendering Demo", MCK::Logger::LogLevel::Info, std::source_location::current());
     
     // Unload current scene
-    
+    if (loadedDemo)
+        scene.UnloadScene();
 
     if (renderingDemo.loaded)
         renderingDemo.Unload();
@@ -141,9 +142,6 @@ void FinalDemoApp::LoadRenderingDemo()
         animationDemo.Unload();
     else if (audioDemo.loaded)
         audioDemo.Unload();
-
-    if (loadedDemo)
-        scene.UnloadScene();
 
     // Load new scene
     scene.InitialiseScene();

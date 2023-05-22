@@ -238,7 +238,6 @@ namespace MCK
         components.push_back(AIBody);
         components.push_back(AIMove);
         components.push_back(AITransform);
-        //components.push_back(uiComponent);
 
         EntitySystem::Entity* floorEntity = scene.CreateEntity();
         floorEntity->AddComponent(floorTransform);
@@ -314,6 +313,8 @@ namespace MCK
 
         TimeManager::Release();
         components.clear();
+        skinnedMeshes.clear();
+        meshes.clear();
         loaded = false;
     }
 }
