@@ -70,12 +70,49 @@ void main()
 	vec3 shadowCoord = (light.modelViewProjection * vec4(position, 1.0f)).xyz;
 	vec3 normShadowCoord = (shadowCoord + vec3(1.0f, 1.0f, 1.0f)) / 2.0f;
 
+	float count = 9.0;
+	float texelSize = 1.0 / 1024.0;
+
 	float occluderDistance = texture(shadowMap, normShadowCoord.xy).z;
 	if (normShadowCoord.z > occluderDistance)
-		return;
+		count--;
+
+	occluderDistance = texture(shadowMap, normShadowCoord.xy + vec2(0.0f, texelSize)).z;
+	if (normShadowCoord.z > occluderDistance)
+		count--;
+
+	occluderDistance = texture(shadowMap, normShadowCoord.xy + vec2(0.0f, texelSize)).z;
+	if (normShadowCoord.z > occluderDistance)
+		count--;
+
+	occluderDistance = texture(shadowMap, normShadowCoord.xy + vec2(-texelSize, 0.0f)).z;
+	if (normShadowCoord.z > occluderDistance)
+		count--;
+
+	occluderDistance = texture(shadowMap, normShadowCoord.xy + vec2(texelSize, 0.0f)).z;
+	if (normShadowCoord.z > occluderDistance)
+		count--;
+
+	occluderDistance = texture(shadowMap, normShadowCoord.xy + vec2(texelSize, texelSize)).z;
+	if (normShadowCoord.z > occluderDistance)
+		count--;
+
+	occluderDistance = texture(shadowMap, normShadowCoord.xy + vec2(-texelSize, texelSize)).z;
+	if (normShadowCoord.z > occluderDistance)
+		count--;
+
+	occluderDistance = texture(shadowMap, normShadowCoord.xy + vec2(-texelSize, texelSize)).z;
+	if (normShadowCoord.z > occluderDistance)
+		count--;
+
+	occluderDistance = texture(shadowMap, normShadowCoord.xy + vec2(texelSize, -texelSize)).z;
+	if (normShadowCoord.z > occluderDistance)
+		count--;
+
+	float shadow_val = count / 5.0;
 
 	// Compare Light Direction with normal
-	float incidenceAmount = dot(normal, -light.direction.xyz);
+	float incidenceAmount = dot(normal, -light.direction.xyz) * shadow_val;
 	if (incidenceAmount <= 0.0f)
 		return;
 
