@@ -9,7 +9,9 @@ Our project, a specialized game engine, is meticulously designed to facilitate t
 Getting Started:
 
 Built on Windows 10 or 11 using Visual Studio 2022.
-Installing
+
+Installing:
+
 Simply download the repository and build using Visual Studio, ensuring pre-build events are enabled in the project properties.
 
 Help:
