@@ -78,7 +78,7 @@ void EvaluationApp::Start()
 #pragma endregion
 
 #pragma region Player Init
-    double start = glfwGetTime();
+    //double start = glfwGetTime();
     for (int i = 0; i < rigidbodyCount; i++)
     {
     EntitySystem::TransformComponent* playerTransform = new EntitySystem::TransformComponent();
@@ -105,10 +105,10 @@ void EvaluationApp::Start()
         playerEntity->AddComponent(playerBody);
         playerEntity->AddComponent(playerRenderer);
     }
-    double end = glfwGetTime();
+    //double end = glfwGetTime();
 
-    std::cout << std::endl;
-    std::cout << end - start << std::endl;
+    //std::cout << std::endl;
+    //std::cout << end - start << std::endl;
 
 #pragma endregion
 
@@ -257,11 +257,16 @@ std::string EvaluationApp::GetCurrentFPS() {
 
 void EvaluationApp::Update()
 {
+    double start = glfwGetTime();
     TimeManager::Update();
 
     Rendering::Renderer::QueueDirectionLight(light);
 
     scene.UpdateScene();
+    double end = glfwGetTime();
+
+    std::cout << std::endl;
+    std::cout << end - start << std::endl;
 }
 
 void EvaluationApp::End()
