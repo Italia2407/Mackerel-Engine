@@ -35,18 +35,18 @@ Initial Release:
 
 Acknowledgments / Third-party libraries:
 
-bullet3-master
-Dear-Imgui 1.89.2
-doxygen
-easyloggingapp-9.97.0
-Eigen 3.4.0
-FMOD
-GLAD
-GLFW 3.3.8
-nlohmann
-ozz
-STBI
-tinygltf
+bullet3-master,
+Dear-Imgui 1.89.2,
+doxygen,
+easyloggingapp-9.97.0,
+Eigen 3.4.0,
+FMOD,
+GLAD,
+GLFW 3.3.8,
+nlohmann,
+ozz,
+STBI,
+tinygltf,
 TinyOBJ
 
 All third-party software used in this project are in the Mackerel-Core/ext folder, with their licenses included.
