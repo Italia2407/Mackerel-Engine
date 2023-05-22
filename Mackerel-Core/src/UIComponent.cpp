@@ -56,7 +56,7 @@ namespace MCK::EntitySystem
 	*/
 	void UIComponent::OnDestroy()
 	{
-		UIElements.clear();
+		//UIElements.clear();
 	}
 
 	void UIComponent::PausedCallback(int32_t key, MCK::ButtonEvents ButtonEvents)

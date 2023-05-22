@@ -28,7 +28,7 @@ bool MCK::TimeManager::Release()
 	{
 		instance->timers.clear();
 		instance->scaledTimers.clear();
-		delete instance;
+		//delete instance;
 		success = true;
 	}
 

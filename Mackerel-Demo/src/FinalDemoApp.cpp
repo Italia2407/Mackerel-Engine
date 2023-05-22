@@ -134,6 +134,15 @@ void FinalDemoApp::LoadRenderingDemo()
     if (loadedDemo)
         scene.UnloadScene();
 
+    if (renderingDemo.loaded)
+        renderingDemo.Unload();
+    else if (physicsDemo.loaded)
+        physicsDemo.Unload();
+    else if (animationDemo.loaded)
+        animationDemo.Unload();
+    else if (audioDemo.loaded)
+        audioDemo.Unload();
+
     // Load new scene
     scene.InitialiseScene();
 
@@ -153,6 +162,15 @@ void FinalDemoApp::LoadPhysicsDemo()
     // Unload current scene
     if (loadedDemo)
         scene.UnloadScene();
+
+    if (renderingDemo.loaded)
+        renderingDemo.Unload();
+    else if (physicsDemo.loaded)
+        physicsDemo.Unload();
+    else if (animationDemo.loaded)
+        animationDemo.Unload();
+    else if (audioDemo.loaded)
+        audioDemo.Unload();
 
     // Load new scene
     scene.InitialiseScene();
@@ -174,6 +192,15 @@ void FinalDemoApp::LoadAnimationDemo()
     if (loadedDemo)
         scene.UnloadScene();
 
+    if (renderingDemo.loaded)
+        renderingDemo.Unload();
+    else if (physicsDemo.loaded)
+        physicsDemo.Unload();
+    else if (animationDemo.loaded)
+        animationDemo.Unload();
+    else if (audioDemo.loaded)
+        audioDemo.Unload();
+
     // Load new scene
     scene.InitialiseScene();
 
@@ -193,6 +220,15 @@ void FinalDemoApp::LoadAudioDemo()
     // Unload current scene
     if (loadedDemo)
         scene.UnloadScene();
+
+    if (renderingDemo.loaded)
+        renderingDemo.Unload();
+    else if (physicsDemo.loaded)
+        physicsDemo.Unload();
+    else if (animationDemo.loaded)
+        animationDemo.Unload();
+    else if (audioDemo.loaded)
+        audioDemo.Unload();
 
     // Load new scene
     scene.InitialiseScene();

@@ -22,7 +22,7 @@ namespace MCK::EntitySystem
 	 */
 	void AudioListener::OnUpdate()
 	{
-		audioEngine->UpdateTransform(transform->Position(), transform->Rotation());
+		audioEngine->UpdateListenerTransform(transform->Position(), transform->Rotation());
 	}	
 	
 	void AudioListener::OnDestroy()

@@ -160,7 +160,7 @@ namespace MCK::EntitySystem
 	void AudioEmitter::OnUpdate()
 	{
 		// set the position of the current channel
-		audioEngine->SetPosition(currentChannelID, transform->Position());
+		audioEngine->SetChannelPosition(currentChannelID, transform->Position());
 	}
 
 	/**

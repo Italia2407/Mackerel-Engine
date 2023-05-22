@@ -55,8 +55,8 @@ namespace MCK::EntitySystem
 	void Scene::FreeEntity(Entity* entity)
 	{
 		// If the entity has no parent, we need to remove it from the scenes list of entities
-		if (entity->parent == nullptr)
-		{
+		//if (entity->parent == nullptr)
+		//{
 			size_t numEntities = entities.size();
 			for (unsigned int i = 0; i < numEntities; ++i)
 			{
@@ -66,7 +66,7 @@ namespace MCK::EntitySystem
 					break;
 				}
 			}
-		}
+		//}
 
 		entityFactory.Recycle(entity);
 	}
@@ -91,7 +91,7 @@ namespace MCK::EntitySystem
 		}
 
 		double delta = MCK::TimeManager::getFrameTime();
-		//std::cout << TimeManager::getFPS() << std::endl;
+
 		physicsWorld.ApplySimulation(static_cast<float>(delta));
 		audioEngine.Update();
 
@@ -177,15 +177,17 @@ namespace MCK::EntitySystem
 
 	void Scene::Deallocate()
 	{
+
+		for (unsigned int i = unsigned int(entities.size()); i > 0; --i)
+		{
+			entities[i - 1]->OnDestroy();
+			entities[i - 1]->Deallocate();
+		}
+
 		initialised = false;
 		audioEngine.Deallocate();
 		sceneLoaded = false;
 		physicsWorld.TeardownWorld();
-
-		for (unsigned int i = unsigned int(entities.size()); i > 0; --i)
-		{
-			entities[i - 1]->Deallocate();
-		}
 
 		Rendering::Renderer::ResetRenderer();
 	}
