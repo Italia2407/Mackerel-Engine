@@ -194,8 +194,6 @@ void FinalDemoApp::LoadAnimationDemo()
     if (loadedDemo)
         scene.UnloadScene();
 
-    loadedDemo = false;
-
     if (renderingDemo.loaded)
         renderingDemo.Unload();
     else if (physicsDemo.loaded)

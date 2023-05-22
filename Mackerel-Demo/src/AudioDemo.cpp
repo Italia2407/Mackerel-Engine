@@ -135,6 +135,8 @@ namespace MCK
         playerTransform->Position() = Eigen::Vector3f(0.0f, -1.0f, 0.0f);
 #pragma endregion
 
+        audioListener = new EntitySystem::AudioListener();
+
 #pragma region UI Init
         uiComponent = new EntitySystem::UIComponent();
         MCK::AssetType::Texture* hudIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/PlayAnimation.png");
@@ -160,7 +162,6 @@ namespace MCK
         components.push_back(AIBody);
         components.push_back(AIMove);
         components.push_back(AITransform);
-        components.push_back(uiComponent);
 
         scene.LoadSceneAdditive("../scenes/lvl3/scene.scn");
         scene.LoadSceneAdditive("../scenes/lvl3/AudioScene/scene.scn");
@@ -181,6 +182,7 @@ namespace MCK
         playerBaseEntity->AddComponent(playerBody);
         playerBaseEntity->AddComponent(playerInput);
         playerBaseEntity->AddComponent(playerController);
+        playerBaseEntity->AddComponent(audioListener);
 
         EntitySystem::Entity* playerEntity = scene.CreateEntity();
         playerEntity->AddComponent(playerRenderer);
@@ -208,6 +210,21 @@ namespace MCK
 
     void Demo::AudioDemo::Unload()
     {
+        for (const auto& component : components)
+        {
+            delete component;
+        }
+
+        for (const auto& item : skinnedMeshes) {
+            delete item.first;
+        }
+
+        for (const auto& item : meshes) {
+            delete item.first;
+        }
+
+        TimeManager::Release();
+        components.clear();
         loaded = false;
     }
 }

@@ -16,6 +16,7 @@
 #include "PerspectiveCamera.h"
 #include "CameraFollowComponent.h"
 #include "Renderer.h"
+#include "AudioListener.h"
 #include "MeshRendererComponent.h"
 #include "SkinnedMeshRendererComponent.h"
 #include "TimeManager.h"
@@ -68,6 +69,8 @@ namespace MCK
             ExamplePlayer::ExamplePlayerController* playerController;
 
             EntitySystem::TransformComponent* playerTransform;
+
+            EntitySystem::AudioListener* audioListener;
 
             std::vector<EntitySystem::TransformComponent*> transforms;
             std::unordered_map<EntitySystem::SkinnedMeshRendererComponent*, int> skinnedMeshes;

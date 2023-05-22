@@ -161,7 +161,7 @@ namespace MCK
         components.push_back(AIBody);
         components.push_back(AIMove);
         components.push_back(AITransform);
-        components.push_back(uiComponent);
+        //components.push_back(uiComponent);
 
         scene.LoadSceneAdditive("../scenes/lvl2/scene.scn");
         scene.LoadSceneAdditive("../scenes/lvl2/DynamicScene/scene.scn");
@@ -209,20 +209,21 @@ namespace MCK
 
     void Demo::PhysicsDemo::Unload()
     {
-        //for (const auto& component : components)
-       // {
-          //  delete component;
-       // }
+        for (const auto& component : components)
+        {
+            delete component;
+        }
 
-       // for (const auto& item : skinnedMeshes) {
-          //  delete item.first;
-       // }
+        for (const auto& item : skinnedMeshes) {
+            delete item.first;
+        }
 
-        //for (const auto& item : meshes) {
-          //  delete item.first;
-        //}
+        for (const auto& item : meshes) {
+            delete item.first;
+        }
 
-        //TimeManager::Release();
+        TimeManager::Release();
+        components.clear();
         loaded = false;
     }
 }

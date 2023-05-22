@@ -238,7 +238,7 @@ namespace MCK
         components.push_back(AIBody);
         components.push_back(AIMove);
         components.push_back(AITransform);
-        components.push_back(uiComponent);
+        //components.push_back(uiComponent);
 
         EntitySystem::Entity* floorEntity = scene.CreateEntity();
         floorEntity->AddComponent(floorTransform);
@@ -299,6 +299,21 @@ namespace MCK
 
     void Demo::AnimationDemo::Unload()
     {
+        for (const auto& component : components)
+        {
+            delete component;
+        }
+
+        for (const auto& item : skinnedMeshes) {
+            delete item.first;
+        }
+
+        for (const auto& item : meshes) {
+            delete item.first;
+        }
+
+        TimeManager::Release();
+        components.clear();
         loaded = false;
     }
 }
