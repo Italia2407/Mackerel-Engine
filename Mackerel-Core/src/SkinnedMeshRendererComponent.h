@@ -44,7 +44,8 @@ namespace MCK::EntitySystem {
 		{
 			ozz::animation::Animation* animation = nullptr;
 			std::string animation_name = "";
-			float offset_time = 0.0f;
+			float start_time_offset = 0.0f;
+			float end_time_offset = -1.0f;
 			bool loop = false;
 		};
 		std::list<AnimationItem> animationQueue{};
@@ -77,7 +78,7 @@ namespace MCK::EntitySystem {
 		void CreateAndUploadJointTransforms();
 		void DefaultPose(float time = 0.0f);
 		void DoFrame();
-		bool SetAnimationPose(ozz::animation::Animation* animation, float time, bool* out_finished, bool loop = false);
+		bool SetAnimationPose(ozz::animation::Animation* animation, float time, float end_time, bool* out_finished, bool loop = false);
 
 	public:
 
@@ -89,7 +90,7 @@ namespace MCK::EntitySystem {
 
 		void PushUniforms();
 
-		void PlayAnimation(std::string animation, float time = 0.0f, bool interrupt = true, bool queue = false, bool loop = false);
+		void PlayAnimation(std::string animation, float start_time = 0.0f, float end_time = -1.0f, bool interrupt = true, bool queue = false, bool loop = false);
 		bool SetDefaultAnimation(std::string animation);
 		void SetTargetFPS(float fps);
 	};

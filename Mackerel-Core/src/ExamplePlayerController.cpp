@@ -7,6 +7,10 @@ using namespace MCK::EntitySystem;
 
 namespace MCK::ExamplePlayer
 {
+	bool ExamplePlayerController::isGrounded()
+	{
+		return abs(lastGroundTime - TimeManager::GetUpTime()) < 0.1;
+	}
 	void ExamplePlayerController::OnPlayerCollision(MCK::Physics::CollisionData data)
 	{
 		// test collision
@@ -57,6 +61,7 @@ namespace MCK::ExamplePlayer
 		/* Player rotation */
 		if (moveForce.squaredNorm() > 0.001f)
 		{
+
 			/* rotation angles of facing direction and movement direction */
 			float true_rotation_angle = atan2(smoothMoveVector.z(), -smoothMoveVector.x()) - atan2(1.0f, 0.0f);
 			float target_rotation_angle = atan2(movInput.y(), -movInput.x()) - atan2(1.0f, 0.0f);
@@ -66,7 +71,7 @@ namespace MCK::ExamplePlayer
 			Eigen::Quaternionf target_q = Eigen::Quaternionf(Eigen::AngleAxisf(target_rotation_angle, Eigen::Vector3f(0.0f, 1.0f, 0.0f)));
 
 			/* interpolate 'em to get smooth movement */
-			float smooth_t = turnRate * static_cast<float>(TimeManager::getScaledFrameTime());
+			float smooth_t = 10.0f * static_cast<float>(TimeManager::getScaledFrameTime());
 			Eigen::Quaternionf smooth_q = true_q.slerp(smooth_t, target_q);
 			smoothMoveVector = smooth_q * Eigen::Vector3f(0.0f, 0.0f, 1.0f);
 
@@ -84,10 +89,10 @@ namespace MCK::ExamplePlayer
 
 		rigidbody->AddCentralForce(dampingForce);
 
+		Eigen::Vector3f planearVelocity = Eigen::Vector3f(velocity.x(), 0, velocity.z());
 		// Apply deceleration
 		if (movInput.norm() < 0.3f)
 		{
-			Eigen::Vector3f planearVelocity = Eigen::Vector3f(velocity.x(), 0, velocity.z());
 			Eigen::Vector3f decel = -planearVelocity.normalized();
 			decel = decel * deceleration * TimeManager::getFrameTime();
 
@@ -102,32 +107,49 @@ namespace MCK::ExamplePlayer
 
 			rigidbody->SetLinearVelocity(velocity);
 
-			if (skinnedMesh)
+			if (skinnedMesh && ((lastLand + 0.75) < TimeManager::GetScaledUpTime()))
 			{
 				if (abs(velocity.y()) < 0.05f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
-					skinnedMesh->PlayAnimation("idle", 0.0f, true, true, true);
+					skinnedMesh->PlayAnimation("idle", 0.0f, -1.0f, true, true, true);
 			}
 		}
 		else
 		{
-			if (skinnedMesh)
+			if (skinnedMesh && ((lastLand + 0.75) < TimeManager::GetScaledUpTime()))
 			{
 				if (abs(velocity.y()) < 0.05f && (TimeManager::GetUpTime() - lastGroundTime < 0.5))
-					skinnedMesh->PlayAnimation("run", 0.0f, true, true, true);
+					skinnedMesh->PlayAnimation("run", 0.0f, -1.0f, true, true, true);
 			}
 		}
 	
-		// Jump
-		if ((input->JumpPressed() || input->JumpHeld()) && (TimeManager::GetUpTime() - lastGroundTime < 0.5) && velocity.y() < 0.8)
+		if (isGrounded() && wasGroundedLastFrame == false && planearVelocity.norm() < 0.3f)
 		{
+			/* Land */
+			rigidbody->SetLinearVelocity(velocity);
+
+			if (skinnedMesh)
+			{
+				/* Just plays the landing part of the animation */
+				skinnedMesh->PlayAnimation("jump", 1.46f, -1.0f, true, true, true);
+				lastLand = TimeManager::GetScaledUpTime();
+			}
+		}
+		else if ((input->JumpPressed() || input->JumpHeld()) &&
+			(TimeManager::GetUpTime() - lastGroundTime < 0.5) && velocity.y() < 0.8 &&
+			((lastLand + 0.75) < TimeManager::GetScaledUpTime()))
+		{
+			/* Jump */
 			velocity.y() = jumpVel;
 			rigidbody->SetLinearVelocity(velocity);
 
 			if (skinnedMesh)
 			{
-				skinnedMesh->PlayAnimation("jump", 0.0f, true, true, true);
+				/* Just plays the jump up part of the animation */
+				skinnedMesh->PlayAnimation("jump", 0.15f, 1.17f, true, true);
 			}
 		}
+
+		wasGroundedLastFrame = isGrounded();
 	}
 
 	void ExamplePlayerController::OnDestroy() 

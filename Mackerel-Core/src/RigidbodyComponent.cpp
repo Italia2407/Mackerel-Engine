@@ -225,7 +225,7 @@ namespace MCK::Physics
 		rigidbody->setActivationState(DISABLE_DEACTIVATION);
 		rigidbody->setMotionState(motionState);
 		SetMass(mass);
-		//rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+		rigidbody->setCollisionFlags(rigidbody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 		rigidbody->setAngularFactor(angularFactor);
 
 		//rigidbody->setLinearFactor()
