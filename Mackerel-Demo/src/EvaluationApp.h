@@ -64,7 +64,7 @@ private:
 	EntitySystem::Scene scene;
 
 	//bool loadedDemo;
-	int rigidbodyCount = 0;
+	int rigidbodyCount = 2000;
 	int objectCount = 0;
 	int lightCount = 1;
 	int triangleCount = 0;
@@ -75,7 +75,7 @@ private:
 	double max = 0;
 	int entitiesCount = 0;
 	int loopsCount = 0;
-	int animCount = 1;
+	int animCount = 0;
 
 	Rendering::DirectionLight* light;
 

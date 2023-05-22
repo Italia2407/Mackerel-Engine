@@ -78,7 +78,7 @@ void EvaluationApp::Start()
 #pragma endregion
 
 #pragma region Player Init
-
+    double start = glfwGetTime();
     for (int i = 0; i < rigidbodyCount; i++)
     {
     EntitySystem::TransformComponent* playerTransform = new EntitySystem::TransformComponent();
@@ -105,12 +105,16 @@ void EvaluationApp::Start()
         playerEntity->AddComponent(playerBody);
         playerEntity->AddComponent(playerRenderer);
     }
+    double end = glfwGetTime();
+
+    std::cout << std::endl;
+    std::cout << end - start << std::endl;
 
 #pragma endregion
 
 #pragma region Object Init
     
-
+    //double start = glfwGetTime();
     for (float i = 0; i < objectCount; i++)
     {
         EntitySystem::TransformComponent* objectTransform = new EntitySystem::TransformComponent();
@@ -125,21 +129,27 @@ void EvaluationApp::Start()
         objectShape.depth = 0.3f;
 
 
+        //EntitySystem::MeshRendererComponent* objectRenderer
+          //  = new EntitySystem::MeshRendererComponent(sphereMesh, m_MonoColourShader, blueMaterial);
+
         EntitySystem::MeshRendererComponent* objectRenderer
-            = new EntitySystem::MeshRendererComponent(sphereMesh, m_MonoColourShader, blueMaterial);
+            = new EntitySystem::MeshRendererComponent(cubeMesh, m_MonoColourShader, blueMaterial);
 
 
         EntitySystem::Entity* objectEntity = scene.CreateEntity();
         objectEntity->AddComponent(objectTransform);
         objectEntity->AddComponent(objectRenderer);
     }
-    
+    //double end = glfwGetTime();
+
+    //std::cout << std::endl;
+    //std::cout << end - start << std::endl;
 
 #pragma endregion
 
 #pragma region Animation Init
 
-
+    //double start = glfwGetTime();
     for (float i = 0; i < animCount; i++)
     {
         EntitySystem::TransformComponent* animTransform = new EntitySystem::TransformComponent();
@@ -155,23 +165,26 @@ void EvaluationApp::Start()
         animEntity->AddComponent(animTransform);
         animEntity->AddComponent(animRenderer);
     }
+    //double end = glfwGetTime();
 
+    //std::cout << std::endl;
+    //std::cout << end - start << std::endl;
 
 #pragma endregion
 
 #pragma region Calculation
 
-    double start = glfwGetTime();
+    //double start = glfwGetTime();
     for (int i = 0; i < entitiesCount; i++)
     {
         EntitySystem::Entity* compEntity = scene.CreateEntity();
         for(int j = 0; j < loopsCount; j++)
             compEntity->Compute();
     }
-    double end = glfwGetTime();
+    //double end = glfwGetTime();
 
-    std::cout << std::endl;
-    std::cout << end - start << std::endl;
+    //std::cout << std::endl;
+    //std::cout << end - start << std::endl;
 
 #pragma endregion
 
