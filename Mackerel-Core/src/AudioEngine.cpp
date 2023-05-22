@@ -215,7 +215,7 @@ namespace MCK::Audio
         }
     }
 
-    void AudioEngine::SetPosition(unsigned int id, Eigen::Vector3f position)
+    void AudioEngine::SetChannelPosition(unsigned int id, Eigen::Vector3f position)
     {
         if (channels.count(id))
         {
@@ -268,7 +268,7 @@ namespace MCK::Audio
         return emitterID * channelsPerEmitter + (emitterSeed % channelsPerEmitter);
     }
 
-    void AudioEngine::UpdateTransform(Eigen::Vector3f position, Eigen::Quaternionf rotation)
+    void AudioEngine::UpdateListenerTransform(Eigen::Vector3f position, Eigen::Quaternionf rotation)
     {
         // rotated forward direction
         Eigen::Vector3f forward_rotated = rotation * Eigen::Vector3f(0, 0, 1);

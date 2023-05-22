@@ -89,7 +89,7 @@ namespace MCK::Audio
 			 * \param id: The id of the channel
 			 * \param position: The position of the channel in world space
 			 */
-			void SetPosition(unsigned int id, Eigen::Vector3f position);
+			void SetChannelPosition(unsigned int id, Eigen::Vector3f position);
 
 			/**
 			 * Whether a channel is playing.
@@ -135,7 +135,7 @@ namespace MCK::Audio
 			 * \param position used to set the position of the listener
 			 * \param rotation used to calculate and set the forward and up directions
 			 */
-			void UpdateTransform(Eigen::Vector3f position, Eigen::Quaternionf rotation);
+			void UpdateListenerTransform(Eigen::Vector3f position, Eigen::Quaternionf rotation);
 
 		private:
 			// The current emitter ID to use

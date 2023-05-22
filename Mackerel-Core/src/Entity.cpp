@@ -119,6 +119,18 @@ namespace MCK::EntitySystem
 		{
 			AddTag(tags[i]);
 		}
+
+		auto itt = entity.find("children");
+		if (itt != entity.end())
+		{
+			json children = entity["children"];
+			for (json& entityJson : children)
+			{
+				Entity* newEntity = scene->CreateEntity();
+				AddChild(newEntity);
+				newEntity->Deserialise(entityJson["entity"]);
+			}
+		}
 	}
 
 	/**
