@@ -549,6 +549,7 @@
     <None Include="res\Shaders\frag\monoColour.glsl" />
     <None Include="res\Shaders\frag\textured.glsl" />
     <None Include="res\Shaders\frag\unlitShadows.glsl" />
+    <None Include="res\Shaders\frag\unlitShadows_point.glsl" />
     <None Include="res\Shaders\lightsHeader.glsl" />
     <None Include="res\Shaders\light\unlit.glsl" />
     <None Include="res\Shaders\static\depthOnly.glsl" />

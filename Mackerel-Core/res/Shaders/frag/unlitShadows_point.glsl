@@ -63,20 +63,15 @@ void main()
 	vec3 position = texture(gPosition, v2fUV).xyz;
 	vec3 normal = texture(gNormal, v2fUV).xyz;
 
-	oColour += colour * vec4(light.ambientColour.rgb, 0.0f);
+	oColour += colour * vec4(light.ambientColour.rgb, 1.0f);
 
-	// Compare Distance with Shadow-Map
-	vec3 shadowCoord = (light.modelViewProjection * vec4(position, 1.0f)).xyz;
-	vec3 normShadowCoord = (shadowCoord + vec3(1.0f, 1.0f, 1.0f)) / 2.0f;
-
-	float occluderDistance = texture(shadowMap, normShadowCoord.xy).z;
-	if (normShadowCoord.z > occluderDistance)
-		return;
+	vec3 lightDirection = normalized(position - light.position);
+	float lightDistance = length(position - light.position);
 
 	// Compare Light Direction with normal
-	float incidenceAmount = dot(normal, -light.direction.xyz);
+	float incidenceAmount = dot(normal, lightDirection);
 	if (incidenceAmount <= 0.0f)
 		return;
 
-	oColour += colour * (incidenceAmount * light.diffuseColour);
+	oColour += (colour * (incidenceAmount * light.diffuseColour)) / pow(lightDistance, 2.0f);
 }
