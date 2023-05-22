@@ -48,7 +48,6 @@ Eigen::Matrix4f TransformComponent::GetTransformationMatrix() const
 	*/
 	void TransformComponent::OnDestroy()
 	{
-		std::cout << "I have been destroyed" << std::endl;
 	}
 
 bool TransformComponent::Deserialise(json data)

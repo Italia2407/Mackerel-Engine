@@ -41,6 +41,9 @@ namespace MCK
 
             void AddEntities(EntitySystem::Scene& scene);
             void Init();
+            void Unload();
+
+            bool loaded;
 
         private:
             std::unordered_map<std::string, AssetType::Mesh*> meshMap;
@@ -80,6 +83,8 @@ namespace MCK
             EntitySystem::AudioEmitter* audioComponent;
 
             EntitySystem::UIComponent* uiComponent;
+
+            std::vector<EntitySystem::ComponentBase*> components;
         };
     }
 }

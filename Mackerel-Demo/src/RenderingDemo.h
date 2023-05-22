@@ -41,15 +41,14 @@ namespace MCK
 
             void AddEntities(EntitySystem::Scene& scene);
             void Init();
+            void Unload();
+
+            bool loaded;
 
         private:
             std::unordered_map<std::string, AssetType::Mesh*> meshMap;
             std::unordered_map<std::string, AssetType::Material*> materialMap;
             std::unordered_map<std::string, AssetType::Shader*> shaderMap;
-
-            EntitySystem::TransformComponent* floorTransform;
-            EntitySystem::MeshRendererComponent* floorMesh;
-            Physics::CollisionComponent* floorCollider;
 
             EntitySystem::TransformComponent* deathFloorTransform;
             EntitySystem::MeshRendererComponent* deathFloorMesh;
@@ -70,16 +69,9 @@ namespace MCK
             std::unordered_map<EntitySystem::SkinnedMeshRendererComponent*, int> skinnedMeshes;
             std::unordered_map<EntitySystem::MeshRendererComponent*, int> meshes;
 
-            EntitySystem::TransformComponent* AIBaseTransform;
-            EntitySystem::SkinnedMeshRendererComponent* AIRenderer;
-            Physics::RigidbodyComponent* AIBody;
-            EntitySystem::AIMovement* AIMove;
-            EntitySystem::TransformComponent* AITransform;
-
-            EntitySystem::TransformComponent* audioTransform;
-            EntitySystem::AudioEmitter* audioComponent;
-
             EntitySystem::UIComponent* uiComponent;
+
+            std::vector<EntitySystem::ComponentBase*> components;
         };
     }
 }

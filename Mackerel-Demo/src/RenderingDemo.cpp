@@ -58,36 +58,23 @@ namespace MCK
         shaderMap["m_texturedShader"] = m_texturedShader;
 #pragma endregion
 
-#pragma region Floor Init
-        floorTransform = new EntitySystem::TransformComponent();
-        floorTransform->Position() = Eigen::Vector3f(0, -5, -0);
-        floorTransform->Scale() = Eigen::Vector3f(6, 3, 6);
+        loaded = false;
+    }
 
-        floorMesh = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["floorMaterial"]);
-
-        Physics::CreateCollisionShapeInfo floorShape{};
-        floorShape.colliderType = Physics::ColliderTypes::Box;
-        floorShape.width = 6;
-        floorShape.height = 3;
-        floorShape.depth = 6;
-        floorShape.mesh = meshMap["cubeMesh"];
-
-        floorCollider = new Physics::CollisionComponent();
-        floorCollider->SetCollisionShape(floorShape);
-#pragma endregion
-
+    void  Demo::RenderingDemo::AddEntities(EntitySystem::Scene& scene)
+    {
 #pragma region Death Floor Init
         deathFloorTransform = new EntitySystem::TransformComponent();
         deathFloorTransform->Position() = Eigen::Vector3f(0, -30, 0);
-        deathFloorTransform->Scale() = Eigen::Vector3f(30.0f, 0.1f, 30.0f);
+        deathFloorTransform->Scale() = Eigen::Vector3f(100.0f, 0.1f, 100.0f);
 
         deathFloorMesh = new EntitySystem::MeshRendererComponent(meshMap["cubeMesh"], shaderMap["m_MonoColourShader"], materialMap["blackMaterial"]);
 
         Physics::CreateCollisionShapeInfo deathFloorShape{};
         deathFloorShape.colliderType = Physics::ColliderTypes::Box;
-        deathFloorShape.width = 30;
+        deathFloorShape.width = 100;
         deathFloorShape.height = 0.1f;
-        deathFloorShape.depth = 30;
+        deathFloorShape.depth = 100;
 
         deathFloorCollider = new Physics::CollisionComponent();
         deathFloorCollider->SetCollisionShape(deathFloorShape);
@@ -136,10 +123,19 @@ namespace MCK
         MCK::AssetType::Texture* hudIMG = uiComponent->LoadUIImage("../Mackerel-Core/res/UI/PlayAnimation.png");
         uiComponent->CreateShape(true, ImVec2(10, 10), 1.0f, ImVec4(0.3f, 0.3f, 0.3f, 0.6f), 1.0f, MCK::UI::ShapeElement::ShapeType::Rectangle, ImVec2(276, 100), ImVec4(0.8f, 0.8f, 0.8f, 1.0f), 2.0f, hudIMG);
 #pragma endregion
-    }
 
-    void  Demo::RenderingDemo::AddEntities(EntitySystem::Scene& scene)
-    {
+        components.push_back(deathFloorTransform);
+        components.push_back(deathFloorMesh);
+        components.push_back(deathFloorCollider);
+        components.push_back(cameraComponent);
+        components.push_back(cameraFollowComponent);
+        components.push_back(playerBaseTransform);
+        components.push_back(playerBody);
+        components.push_back(playerRenderer);
+        components.push_back(playerInput);
+        components.push_back(playerController);
+        components.push_back(playerTransform);
+ 
         scene.LoadSceneAdditive("../scenes/lvl1/scene.scn");
         scene.LoadSceneAdditive("../scenes/lvl1/LightScene/scene.scn");
 
@@ -180,6 +176,30 @@ namespace MCK
 
         EntitySystem::Entity* uiEntity = scene.CreateEntity();
         uiEntity->AddComponent(uiComponent);
+
+        loaded = true;
+    }
+
+    void Demo::RenderingDemo::Unload()
+    {
+        for (const auto& component : components)
+        {
+            delete component;
+        }
+
+        for (const auto& item : skinnedMeshes) {
+            delete item.first;
+        }
+
+        for (const auto& item : meshes) {
+            delete item.first;
+        }
+
+        TimeManager::Release();
+        components.clear();
+        skinnedMeshes.clear();
+        meshes.clear();
+        loaded = false;
     }
 }
 
