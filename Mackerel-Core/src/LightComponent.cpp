@@ -13,11 +13,12 @@
 namespace MCK::EntitySystem {
 LightComponent::LightComponent(LightComponent::LightType a_LightType,
 	Eigen::Vector4f a_DiffuseColour, Eigen::Vector4f a_SpecularColour, Eigen::Vector4f a_AmbientColour,
-	float a_BeamAngle) :
+	float a_BeamAngle, Eigen::Vector4f a_AttenuationParams) :
 	m_EntityTransformComponent(nullptr),
 	m_PointLight(nullptr), m_DirectionLight(nullptr), m_SpotLight(nullptr),
 	m_LightType(LightComponent::LightType::PointLight),
-	m_DiffuseColour(a_DiffuseColour), m_SpecularColour(a_SpecularColour), m_AmbientColour(a_AmbientColour), m_BeamAngle(a_BeamAngle) {}
+	m_DiffuseColour(a_DiffuseColour), m_SpecularColour(a_SpecularColour), m_AmbientColour(a_AmbientColour),
+	m_BeamAngle(a_BeamAngle), m_AttenuationParams(a_AttenuationParams) {}
 LightComponent::LightComponent() { m_BeamAngle = 50; }
 LightComponent::~LightComponent() {}
 
@@ -40,7 +41,7 @@ void LightComponent::OnCreate()
 	Eigen::AngleAxisf angleAxis(m_EntityTransformComponent->Rotation());
 	Eigen::Vector3f direction = angleAxis.axis();
 
-	m_PointLight = new Rendering::PointLight(m_EntityTransformComponent->Position(), m_DiffuseColour, m_SpecularColour, m_AmbientColour);
+	m_PointLight = new Rendering::PointLight(m_EntityTransformComponent->Position(), m_AttenuationParams, m_DiffuseColour, m_SpecularColour, m_AmbientColour);
 	m_DirectionLight = new Rendering::DirectionLight(direction, m_DiffuseColour, m_SpecularColour, m_AmbientColour);
 	m_SpotLight = new Rendering::SpotLight(m_EntityTransformComponent->Position(), direction, m_BeamAngle, m_DiffuseColour, m_SpecularColour, m_AmbientColour);
 }

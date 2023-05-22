@@ -10,7 +10,7 @@
 namespace MCK::Rendering {
 Light::Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
 	_diffuseColour(diffuseColour), _specularColour(specularColour), _ambientColour(ambientColour),
-	m_ShadowRenderer(nullptr), m_LightParameters(nullptr), m_LightParams(nullptr), m_ShadowRendererParameters(nullptr)
+	m_ShadowRenderer(nullptr), m_LightParameters(nullptr), m_ShadowRendererParameters(nullptr)
 {
 	// Initialise & Create Shadow Map Renderer Framebuffer
 	m_ShadowRenderer = new FrameBuffer(8192, 8192);
@@ -30,21 +30,15 @@ Light::Light(Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eige
 		// Add Beam Angle
 		m_LightParameters->AddFloatBufferUniform("beamAngle", 0.0f);
 
+		// Add Attenuation Params
+		m_LightParameters->AddVec4BufferUniform("attenuationParams", Eigen::Vector4f::Zero());
+
 		// Add Light Colours
 		m_LightParameters->AddVec4BufferUniform("diffuseColour", Eigen::Vector4f::Zero());
 		m_LightParameters->AddVec4BufferUniform("specularColour", Eigen::Vector4f::Zero());
 		m_LightParameters->AddVec4BufferUniform("ambientColour", Eigen::Vector4f::Zero());
 	}
 	m_LightParameters->CreateUniformBufferObject();
-
-	m_LightParams = new UniformBuffer(); {
-		m_LightParams->AddFloatBufferUniform("beamAngle", 0.0f);
-
-		m_LightParams->AddVec4BufferUniform("diffuseColour", Eigen::Vector4f::Zero());
-		m_LightParams->AddVec4BufferUniform("specularColour", Eigen::Vector4f::Zero());
-		m_LightParams->AddVec4BufferUniform("ambientColour", Eigen::Vector4f::Zero());
-	}
-	m_LightParams->CreateUniformBufferObject();
 
 	// Initialise & Create Shadow Renderer Parameter Object
 	m_ShadowRendererParameters = new UniformBuffer(); {
@@ -62,7 +56,6 @@ bool Light::UseLight(Eigen::Vector3f a_CentrePosition)
 {
 	// Bind Parameters Buffer
 	m_LightParameters->BindUniformBufferObject(3);
-	m_LightParams->BindUniformBufferObject(4);
 
 	updateLightingParameters(a_CentrePosition);
 
@@ -72,8 +65,8 @@ bool Light::UseLight(Eigen::Vector3f a_CentrePosition)
 	return true;
 }
 
-PointLight::PointLight(Eigen::Vector3f position, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
-	Light(diffuseColour, specularColour, ambientColour), _position(position) {}
+PointLight::PointLight(Eigen::Vector3f position, Eigen::Vector4f attenuationParams, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
+	Light(diffuseColour, specularColour, ambientColour), _position(position), m_AttenuationParams(attenuationParams) {}
 DirectionLight::DirectionLight(Eigen::Vector3f direction, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
 	Light(diffuseColour, specularColour, ambientColour), _direction(direction) {}
 SpotLight::SpotLight(Eigen::Vector3f position, Eigen::Vector3f direction, float beamAngle, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour) :
@@ -136,15 +129,12 @@ bool PointLight::updateLightingParameters(Eigen::Vector3f a_CentrePosition)
 
 	// Set Position
 	m_LightParameters->SetVec4BufferUniform("position", Eigen::Vector4f(_position.x(), _position.y(), _position.z(), 1.0f));
+	m_LightParameters->SetVec4BufferUniform("attenuationParams", m_AttenuationParams);
 
 	// Set Colours
 	m_LightParameters->SetVec4BufferUniform("diffuseColour", _diffuseColour);
 	m_LightParameters->SetVec4BufferUniform("specularColour", _specularColour);
 	m_LightParameters->SetVec4BufferUniform("ambientColour", _ambientColour);
-
-	m_LightParams->SetVec4BufferUniform("diffuseColour", _diffuseColour);
-	m_LightParams->SetVec4BufferUniform("specularColour", _specularColour);
-	m_LightParams->SetVec4BufferUniform("ambientColour", _ambientColour);
 
 	return true;
 }
@@ -156,16 +146,10 @@ bool DirectionLight::updateLightingParameters(Eigen::Vector3f a_CentrePosition)
 	// Set Direction
 	m_LightParameters->SetVec4BufferUniform("direction", Eigen::Vector4f(_direction.x(), _direction.y(), _direction.z(), 1.0f));
 
-	m_LightParams->SetFloatBufferUniform("beamAngle", 0.5f);
-
 	// Set Colours
 	m_LightParameters->SetVec4BufferUniform("diffuseColour", _diffuseColour);
 	m_LightParameters->SetVec4BufferUniform("specularColour", _specularColour);
 	m_LightParameters->SetVec4BufferUniform("ambientColour", _ambientColour);
-
-	m_LightParams->SetVec4BufferUniform("diffuseColour", _diffuseColour);
-	m_LightParams->SetVec4BufferUniform("specularColour", _specularColour);
-	m_LightParams->SetVec4BufferUniform("ambientColour", _ambientColour);
 
 	return true;
 }
@@ -180,16 +164,11 @@ bool SpotLight::updateLightingParameters(Eigen::Vector3f a_CentrePosition)
 
 	// Set Beam Angle
 	m_LightParameters->SetFloatBufferUniform("beamAngle", _beamAngle);
-	m_LightParams->SetFloatBufferUniform("beamAngle", _beamAngle);
 
 	// Set Colours
 	m_LightParameters->SetVec4BufferUniform("diffuseColour", _diffuseColour);
 	m_LightParameters->SetVec4BufferUniform("specularColour", _specularColour);
 	m_LightParameters->SetVec4BufferUniform("ambientColour", _ambientColour);
-
-	m_LightParams->SetVec4BufferUniform("diffuseColour", _diffuseColour);
-	m_LightParams->SetVec4BufferUniform("specularColour", _specularColour);
-	m_LightParams->SetVec4BufferUniform("ambientColour", _ambientColour);
 
 	return true;
 }

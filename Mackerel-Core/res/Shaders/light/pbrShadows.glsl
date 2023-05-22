@@ -24,6 +24,7 @@ layout(std140, binding = 3) uniform LightParameters
 	vec4 direction;
 
 	float beamAngle;
+	vec4 attenuationParams;
 
 	vec4 diffuseColour;
 	vec4 specularColour;

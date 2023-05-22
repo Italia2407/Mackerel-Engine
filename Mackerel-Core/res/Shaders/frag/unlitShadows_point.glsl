@@ -24,20 +24,13 @@ layout(std140, binding = 3) uniform LightParameters
 	vec4 direction;
 
 	float beamAngle;
+	vec4 attenuationParams;
 
 	vec4 diffuseColour;
 	vec4 specularColour;
 	vec4 ambientColour;
 } light;
 
-layout(std140, binding = 4) uniform LightParams
-{
-	float beamAngle;
-
-	vec3 diffuseColour;
-	vec3 specularColour;
-	vec3 ambientColour;
-} lightParams;
 // Function to Assert Correct Light Shader Used
 void AssertLightShader(uint a_LightShaderID)
 {

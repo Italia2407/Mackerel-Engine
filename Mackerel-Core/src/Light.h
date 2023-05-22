@@ -27,7 +27,6 @@ protected:
 	FrameBuffer* m_ShadowRenderer;
 
 	UniformBuffer* m_LightParameters;
-	UniformBuffer* m_LightParams;
 	UniformBuffer* m_ShadowRendererParameters;
 
 	virtual Eigen::Matrix4f getMVPMatrix(Eigen::Vector3f a_CentrePosition) = 0;
@@ -47,10 +46,12 @@ public:
 class PointLight : public Light
 {
 public:
-	PointLight(Eigen::Vector3f position, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
+	PointLight(Eigen::Vector3f position, Eigen::Vector4f attenuationParams, Eigen::Vector4f diffuseColour, Eigen::Vector4f specularColour, Eigen::Vector4f ambientColour);
 
 protected:
 	Eigen::Vector3f _position;
+
+	Eigen::Vector4f m_AttenuationParams;
 
 	Eigen::Matrix4f getMVPMatrix(Eigen::Vector3f a_CentrePosition) override;
 	bool updateLightingParameters(Eigen::Vector3f a_CentrePosition) override;
@@ -59,6 +60,8 @@ public:
 	bool BindShadowRendererCamera(Eigen::Vector3f a_CentrePosition) override;
 
 	Eigen::Vector3f& Position() { return _position; }
+
+	Eigen::Vector4f& AttenuationParams() { return m_AttenuationParams; }
 };
 class DirectionLight : public Light
 {

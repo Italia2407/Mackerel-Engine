@@ -29,7 +29,7 @@ public:
 	LightComponent();
 	LightComponent(LightType a_LightType,
 		Eigen::Vector4f a_DiffuseColour = Eigen::Vector4f::Zero(), Eigen::Vector4f a_SpecularColour = Eigen::Vector4f::Zero(), Eigen::Vector4f a_AmbientColour = Eigen::Vector4f::Zero(),
-		float a_BeamAngle = 0.0f);
+		float a_BeamAngle = 0.0f, Eigen::Vector4f a_AttenuationParams = Eigen::Vector4f::Zero());
 	~LightComponent();
 
 private:
@@ -48,6 +48,7 @@ private:
 	Eigen::Vector4f m_AmbientColour;
 
 	float m_BeamAngle;
+	Eigen::Vector4f m_AttenuationParams;
 
 public:
 	void SetDiffuseColour(Eigen::Vector4f a_DiffuseColour);
