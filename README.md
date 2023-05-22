@@ -21,7 +21,7 @@ Authors:
 Agate Elza Popena,
 Alexander Elliott,
 Benjamin Andrew Clouds,
-Ismaele Recca,
+Ismaele Giuseppe Recca,
 Jaina Modisett,
 Tobias Hendricks
 
