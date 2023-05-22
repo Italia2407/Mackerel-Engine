@@ -103,7 +103,7 @@ namespace MCK::EntitySystem {
 		else
 		{
 			bool finished = false;
-			SetAnimationPose(default_anim, time, &finished, true);
+			SetAnimationPose(default_anim, time, default_anim->duration(), &finished, true);
 		}
 	}
 
@@ -124,7 +124,7 @@ namespace MCK::EntitySystem {
 		else
 		{
 			bool is_finished = false;
-			SetAnimationPose(animationQueue.front().animation, static_cast<float>(progress) + animationQueue.front().offset_time, &is_finished, animationQueue.front().loop);
+			SetAnimationPose(animationQueue.front().animation, static_cast<float>(progress) + animationQueue.front().start_time_offset, animationQueue.front().end_time_offset, &is_finished, animationQueue.front().loop);
 
 			/* is this animation finished */
 			if (is_finished)
@@ -157,7 +157,7 @@ namespace MCK::EntitySystem {
 		}
 	}
 
-	bool SkinnedMeshRendererComponent::SetAnimationPose(ozz::animation::Animation* animation, float time, bool* out_finished, bool loop)
+	bool SkinnedMeshRendererComponent::SetAnimationPose(ozz::animation::Animation* animation, float time, float end_time, bool* out_finished, bool loop)
 	{
 		//if (!m_Mesh->m_hasRig)
 		//	Logger::log(std::format("SetAnimationPose() was called with a mesh without a rig!"
@@ -169,9 +169,11 @@ namespace MCK::EntitySystem {
 		smplJob.animation = animation;
 
 		float ratio = time / smplJob.animation->duration();
-		if (ratio > 1.0f)
+		float end_point = (end_time > time) ? (end_time / smplJob.animation->duration()) : 1.0f;
+		end_point = fminf(end_point, 1.0f);
+		if (ratio >= end_point)
 		{
-			ratio = (loop) ? fmod(ratio, 1.0f) : 1.0f;
+			ratio = (loop) ? fmod(ratio, end_point) : end_point;
 			*out_finished = true;
 		}
 		else
@@ -308,22 +310,27 @@ namespace MCK::EntitySystem {
 			reinterpret_cast<float*>(m_Mesh->m_animData->inverseBindMatrices.data()));
 	}
 
-	void SkinnedMeshRendererComponent::PlayAnimation(std::string animation, float time, bool interrupt, bool queue, bool loop)
+	void SkinnedMeshRendererComponent::PlayAnimation(std::string animation, float start_time, float end_time, bool interrupt, bool queue, bool loop)
 	{
-		if (interrupt == true)
-			/* if we're interrupting, clear the queue. this guarantees it will be played next animation frame */
-			animationQueue.clear();
-		else if (animationQueue.empty() == false && queue == false)
-			/* if there are queued animations and the animation is set to not be enqueued, discard it */
-			return;
-
 		/* add the new animation to the queue (it will be the only animation in the queue if interrupt is true) */
 		assert(m_Mesh->m_animData->animations.contains(animation));
+
+		if (interrupt == true)
+		{
+			/* if we're interrupting, clear the queue. this guarantees it will be played next animation frame */
+			animationQueue.clear();
+		}
+		else if (animationQueue.empty() == false && queue == false)
+		{
+			/* if there are queued animations and the animation is set to not be enqueued, discard it */
+			return;
+		}
 
 		animationQueue.push_back({});
 		animationQueue.back().animation_name = animation;
 		animationQueue.back().animation = &m_Mesh->m_animData->animations[animation];
-		animationQueue.back().offset_time = time;
+		animationQueue.back().start_time_offset = start_time;
+		animationQueue.back().end_time_offset = end_time;
 		animationQueue.back().loop = loop;
 	}
 	bool SkinnedMeshRendererComponent::SetDefaultAnimation(std::string animation)

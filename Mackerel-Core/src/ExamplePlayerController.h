@@ -16,12 +16,14 @@ namespace MCK::ExamplePlayer
 	{
 	private:
 		float moveForceMag = 120;
-		float horizontalDamping =10.1f;
+		float horizontalDamping = 10.1f;
 		float deceleration = 90; 
 		float jumpVel = 12;
-		double lastGroundTime;
-		double lastDeath;
 		float turnRate = 10.0f;
+		double lastGroundTime{};
+		double lastDeath{};
+		double lastLand{};
+		bool wasGroundedLastFrame = true;
 		Eigen::Vector3f smoothMoveVector{};
 
 		EntitySystem::TransformComponent* transform;
@@ -32,6 +34,8 @@ namespace MCK::ExamplePlayer
 
 		std::function<void(MCK::Physics::CollisionData)> playerCollisionCallback;
 		MCK::Physics::CollisionCallbackReceipt receipt;
+
+		bool isGrounded();
 
 	public:
 
