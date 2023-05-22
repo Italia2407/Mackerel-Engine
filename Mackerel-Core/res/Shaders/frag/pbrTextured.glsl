@@ -16,20 +16,21 @@ layout(location = 1) out vec4 gAlbedoColour;
 layout(location = 2) out vec4 gPosition;
 layout(location = 3) out vec4 gNormal;
 
-layout(std140, binding = 2) uniform MaterialParameters
-{
-	uint lightShaderID;
-	vec3 albedoColour;
-};
+layout(location = 4) out vec4 gMAR;
+layout(location = 5) out vec4 gCameraViewDirection;
+
+layout(binding = 0) uniform sampler2D textureSampler;
+layout(binding = 1) uniform sampler2d marTextureSampler;
 
 void main()
 {
-	gLightShaderID = lightShaderID; //lightShaderID;
-	gLightShaderID = 1; //lightShaderID;
+	gLightShaderID = 2; //lightShaderID;
 
-	vec3 colour = albedoColour * v2fTint;
-	gAlbedoColour = vec4(colour, 1.0f);
+	gAlbedoColour = texture(textureSampler, v2fUV);
 
 	gPosition = vec4(v2fPosition, 1.0f);
 	gNormal = vec4(v2fNormal, 1.0f);
+
+	gMAR = texture(marTextureSampler, v2fUV);
+	gCameraViewDirection = vec4(v2fCameraViewDirection, 1.0f);
 }

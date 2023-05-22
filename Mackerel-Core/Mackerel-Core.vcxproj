@@ -547,10 +547,13 @@
     <None Include="build\AssetAcquisition.py" />
     <None Include="res\Shaders\fragmentHeader.glsl" />
     <None Include="res\Shaders\frag\monoColour.glsl" />
+    <None Include="res\Shaders\frag\pbrTextured.glsl" />
     <None Include="res\Shaders\frag\textured.glsl" />
     <None Include="res\Shaders\frag\unlitShadows.glsl" />
     <None Include="res\Shaders\frag\unlitShadows_point.glsl" />
     <None Include="res\Shaders\lightsHeader.glsl" />
+    <None Include="res\Shaders\light\pbrShadows.glsl" />
+    <None Include="res\Shaders\light\pbrShadows_point.glsl" />
     <None Include="res\Shaders\light\unlit.glsl" />
     <None Include="res\Shaders\static\depthOnly.glsl" />
     <None Include="res\Shaders\static\FBDisplayer.glsl" />

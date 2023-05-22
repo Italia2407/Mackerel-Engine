@@ -13,6 +13,7 @@ layout(location = 0) out vec3 v2fPosition;
 layout(location = 1) out vec3 v2fNormal;
 layout(location = 2) out vec2 v2fUV;
 layout(location = 3) out vec3 v2fTint;
+layout(location = 4) out vec3 v2fCameraViewDirection;
 
 // Camera Uniform Buffer Object
 layout(std140, binding = 0) uniform Camera
@@ -56,4 +57,6 @@ void main()
 
 	v2fUV = vertexUV;
 	v2fTint = vertexTint;
+
+	v2fCameraViewDirection = vertexPosition - camera.position;
 }
